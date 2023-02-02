@@ -1,0 +1,22 @@
+常用快捷键
+
+alt+enter     快速提示完成，在代码可能存在语法问题时，IDEA 会提示使用该快捷键可以快速自动修正（功能非常强大，最常使用）
+alt + /	快速补全代码
+ctrl+p        方法参数提示
+alt+insert        快速生成含有任意形参的构造器，和私有属性的 Getter / Setter 方法等（最常使用）
+ctrl+alt+i        自动对齐, 整理缩进
+ctrl+alt+l        格式化代码
+ctrl + y        删除行
+redo操作在IDEA中使用ctrl+shift+z
+ctrl + x        剪切行
+ctrl+shift+上下、alt+shift+上下        移动代码
+ctrl+d        复制行
+ctrl+n 或按两下shift        搜索类、文件、变量或方法、操作…
+shift + f6        文件改名
+alt + 左右        切换左右文件标签
+ctrl+alt + 左右        切换到上一个编辑位置或下一个编辑位置
+ctrl+f12        查看一个类的大纲 也支持 xml、yml 等配置
+shift+回车        在下面添加新行
+ctrl+alt+回车        在上面添加新行
+ctrl+alt+shift+c        对一个包名或类名，复制它完整的类型名称
+ctrl+h        查看集成结构
