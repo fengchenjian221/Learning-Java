@@ -7247,10 +7247,10 @@ Partition tolerance：分区容错，即区间通信可能失败，在网络中�
 以下是常见的分布式通信方式：
 
 消息队列（Message Queue）
-  使用消息队列作为中间件，节点之间通过发送和接收消息来实现通信。消息队列提供了异步、解耦和可靠性的通信机制，常见的消息队列系统包括RabbitMQ、Apache Kafka和ActiveMQ等。
+使用消息队列作为中间件，节点之间通过发送和接收消息来实现通信。消息队列提供了异步、解耦和可靠性的通信机制，常见的消息队列系统包括RabbitMQ、Apache Kafka和ActiveMQ等。
 
 实现方式
-  消息队列底层的实现可以有多种方式，具体取决于所使用的消息队列系统。以下是一些常见的底层实现方式：
+消息队列底层的实现可以有多种方式，具体取决于所使用的消息队列系统。以下是一些常见的底层实现方式：
 
 基于内存：某些消息队列系统使用内存作为底层实现，以实现高吞吐量和低延迟。消息在内存中进行存储和传递，因此速度非常快。然而，这种实现方式通常会面临数据持久性和可靠性的挑战，因为内存是易失性存储。
 
@@ -8096,6 +8096,51 @@ Azkaban 大数据任务调度
 1.简单的任务调度：直接使用 Linux 的 Crontab 来定义；
 2.复杂的任务调度：开发调度平台或使用现成的开源调度系统，比如 Ooize、Azkaban、Airflow、DolphinScheduler 等。
 
+Azkaban由三个关键组件构成：
+元数据
+AzkabanWebServer
+AzkabanExecutorServer
+
+元数据
+Azkaban使用关系型数据库存储元数据和执行状态。
+
+AzkabanWebServer
+项目管理：项目、项目权限以及上传的文件。
+作业状态：跟踪执行流程以及执行程序正在运行的流程。
+以前的流程/作业：通过以前的作业和流程执行以及访问其日志文件进行搜索。
+计划程序：保留计划作业的状态。
+SLA：保持所有的SLA规则
+
+AzkabanExecutorServer
+访问项目：从数据库检索项目文件。
+执行流程/作业：检索和更新正在执行的作业流的数据
+日志：将作业和工作流的输出日志存储到数据库中。
+交互依赖关系：如果一个工作流在不同的执行器上运行，它将从数据库中获取状态。
+
+AzkabanWebServer
+AzkabanWebServer是整个Azkaban工作流系统的主要管理者，它负责Project管理、用户登录认证、定时执行工作流、跟踪工作流执行进度等
+一系列任务。同时，它还提供Web服务操作接口，利用该接口，用户可以使用curl或其他Ajax的方式，来执行Azkaban的相关操作。
+操作包括：用户登录、创建Project、上传Workflow、执行Workflow、查询Workflow的执行进度、杀掉Workflow等一系列操作，
+且这些操作的返回结果均是JSON格式。并且Azkaban使用方便，Azkaban使用以.job为后缀名的键值属性文件来定义工作流中的各个任务，
+以及使用dependencies属性来定义作业间的依赖关系链。这些作业文件和关联的代码最终以*.zip的方式通过Azkaban UI上传到Web服务器上。
+
+AzkabanExecutorServer
+以前版本的Azkaban在单个服务中具有AzkabanWebServer和AzkabanExecutorServer功能，
+目前Azkaban已将AzkabanExecutorServer分离成独立的服务器，拆分AzkabanExecutorServer的原因有如下几点：
+
+某个任务流失败后，可以更方便将其重新执行
+便于Azkaban升级
+AzkabanExecutorServer主要负责具体的工作流提交、执行，可以启动多个执行服务器，它们通过关系型数据库来协调任务的执行。
+
+作业流执行过程：
+WebServer根据内存中缓存的各Executor的资源（WebServer有一个线程会遍历各个Active Executor，
+去发送Http请求获取其资源状态信息缓存到内存中），按照选择策略（包括executor资源状态、最近执行流个数等）选择一个Executor下发作业流；
+Executor判断是否设置作业粒度分配，如果未设置作业粒度分配，则在当前Executor执行所有作业；
+如果设置了作业粒度分配，则当前节点会成为作业分配的决策者，即分配节点；
+分配节点从Zookeeper获取各个Executor的资源状态信息，然后根据策略选择一个Executor分配作业；
+被分配到作业的Executor即成为执行节点，执行作业，然后更新数据库。
+
+
 Atlas 大数据元数据管理
 Apache Atlas 为组织提供开放式元数据管理和治理功能，用以构建其数据资产目录，对
 这些资产进行分类和管理，形成数据字典。并为数据分析师和数据治理团队，提供围绕这些
@@ -8108,6 +8153,123 @@ Atlas的使用：
 Atlas 的使用相对简单，其主要工作是同步各服务（主要是 Hive）的元数据，
 并构建元数据实体之间的关联关系，然后对所存储的元数据建立索引，最终未用户提供数据血缘查看。
 
+Apache Atlas为Hadoop的元数据治理提供了以下特性：
+
+数据分类
+- 为元数据导入或定义业务导向的分类注释
+- 定义，注释，以及自动捕获数据集和底层元素之间的关系
+- 导出元数据到第三方系统
+
+集中审计
+- 捕获与所有应用，过程以及与数据交互的安全访问信息
+- 捕获执行，步骤，活动等操作的信息
+
+搜索与血缘
+- 预定义的导航路径用来探索数据分类以及审计信息
+- 基于文本的搜索特性来快速和准确的定位相关联的数据和审计事件
+- 对数据集血缘关系的可视化浏览使用户可以下钻到操作，安全以及数据起源相关的信息
+
+安全与策略引擎
+- 基于数据分类模式，属性以及角色的运行时合理合规策略
+- 基于分类-预测的高级策略定义以防止数据推导
+- 基于cell的属性和值的行/列级别的masking
+
+Core
+- Type System: Atlas 允许用户为他们想要管理的元数据对象定义一个模型。该模型由称为 "类型" 的定义组成。
+"类型" 的 实例被称为 "实体" 表示被管理的实际元数据对象。类型系统是一个组件，允许用户定义和管理类型和实体。
+由 Atlas 管理的所有元数据对象（例如Hive表）都使用类型进行建模，并表示为实体。要在 Atlas 中存储新类型的元数据，
+需要了解类型系统组件的概念。
+
+- Ingest/Export：Ingest 组件允许将元数据添加到 Atlas。类似地，Export 组件暴露由 Atlas 检测到的元数据更改，
+以作为事件引发，消费者可以使用这些更改事件来实时响应元数据更改。
+
+- Graph Engine：在内部，Atlas 通过使用图形模型管理元数据对象。以实现元数据对象之间的巨大灵活性和丰富的关系。
+图形引擎是负责在类型系统的类型和实体之间进行转换的组件，以及基础图形模型。除了管理图形对象之外，
+图形引擎还为元数据对象创建适当的索引，以便有效地搜索它们。
+
+- Titan：目前，Atlas 使用 Titan 图数据库来存储元数据对象。 Titan 使用两个存储：默认情况下元数据存储配置为 HBase ，
+索引存储配置为 Solr。也可以通过构建相应的配置文件使用BerkeleyDB存储元数据存储 和使用ElasticSearch存储 Index。
+元数据存储用于存储元数据对象本身，索引存储用于存储元数据属性的索引，其允许高效搜索。
+
+Integration
+用户可以使用两种方法管理 Atlas 中的元数据：
+- API： Atlas 的所有功能都可以通过 REST API 提供给最终用户，允许创建，更新和删除类型和实体。
+它也是查询和发现通过 Atlas 管理的类型和实体的主要方法。
+- Messaging：除了 API 之外，用户还可以选择使用基于 Kafka 的消息接口与 Atlas 集成。
+这对于将元数据对象传输到 Atlas 以及从 Atlas 使用可以构建应用程序的元数据更改事件都非常有用。
+如果希望使用与 Atlas 更松散耦合的集成，这可以允许更好的可扩展性，可靠性等，消息传递接口是特别有用的。
+Atlas 使用 Apache Kafka 作为通知服务器用于钩子和元数据通知事件的下游消费者之间的通信。
+事件由钩子(hook)和 Atlas 写到不同的 Kafka 主题。
+- ATLAS_HOOK: 来自各个组件的Hook 的元数据通知事件通过写入到名为 ATLAS_HOOK 的 Kafka topic 发送到 Atlas
+- ATLAS_ENTITIES：从 Atlas 到其他集成组件（如Ranger）的事件写入到名为 ATLAS_ENTITIES 的 Kafka topic
+
+
+
+Metadata source
+- Hive：通过hive bridge， atlas可以接入Hive的元数据，包括hive_db/hive_table/hive_column/hive_process
+- Sqoop：通过sqoop bridge，atlas可以接入关系型数据库的元数据，包括sqoop_operation_type/ sqoop_dbstore_usage/sqoop_process/sqoop_dbdatastore
+- Falcon：通过falcon bridge，atlas可以接入Falcon的元数据，包括falcon_cluster/falcon_feed/falcon_feed_creation/falcon_feed_replication/ falcon_process
+- Storm：通过storm bridge，atlas可以接入流式处理的元数据，包括storm_topology/storm_spout/storm_bolt
+- HBase: 通过hbase bridge
+
+Atlas集成大数据组件的元数据源需要实现以下两点：
+
+- 首先，需要基于atlas的类型系统定义能够表达大数据组件元数据对象的元数据模型
+(例如Hive的元数据模型实现在org.apache.atlas.hive.model.HiveDataModelGenerator)；
+
+- 然后，需要提供hook组件去从大数据组件的元数据源中提取元数据对象，实时侦听元数据的变更并反馈给atlas；
+
+Applications
+- Atlas Admin UI: 该组件是一个基于 Web 的应用程序，允许数据管理员和科学家发现和注释元数据。
+Admin UI提供了搜索界面和类SQL的查询语言，可以用来查询由 Atlas 管理的元数据类型和对象。
+Admin UI 使用 Atlas 的 REST API 来构建其功能。
+
+- Tag Based Policies: Apache Ranger 是针对 Hadoop 生态系统的高级安全管理解决方案，与各种 Hadoop 组件具有广泛的集成。
+通过与 Atlas 集成，Ranger 允许安全管理员定义元数据驱动的安全策略，以实现有效的治理。 
+Ranger 是由 Atlas 通知的元数据更改事件的消费者。
+
+- Business Taxonomy:从元数据源获取到 Atlas 的元数据对象主要是一种技术形式的元数据。
+为了增强可发现性和治理能力，Atlas 提供了一个业务分类界面，允许用户首先定义一组代表其业务域的业务术语，
+并将其与 Atlas 管理的元数据实体相关联。业务分类法是一种 Web 应用程序，目前是 Atlas Admin UI 的一部分，
+并且使用 REST API 与 Atlas 集成。
+
+ 
+ATlas类型系统
+Atlas 允许用户为他们想要管理的元数据对象定义一个模型。该模型由称为 “类型” (type)的定义组成。被称为 “实体” (entities)的 “类型” 实例表示被管理的实际元数据对象。由 Atlas 管理的所有元数据对象（例如Hive表）都使用类型进行建模，并表示为实体。
+
+- Type：Atlas中的 “类型” 定义了如何存储和访问特定类型的元数据对象。类型表示了所定义元数据对象的一个或多个属性集合。
+具有开发背景的用户可以将 “类型” 理解成面向对象的编程语言的 “类” 定义的或关系数据库的 “表模式”。
+类型具有元类型，元类型表示 Atlas 中此模型的类型：
+
+- 基本元类型： Int，String，Boolean等
+- 集合元类型：例如Array，Map
+- Class，Struct，Trait
+
+- Entities：Atlas中的 “实体” 是类 “类型” 的特定值或实例，因此表示真实世界中的特定元数据对象。
+  回顾我们的面向对象编程语言的类比，“实例” 是某个 “类” 的 “对象”。
+- Attributes：Atlas中的属性还有一些属性，其定义了与类型系统相关的更多概念，包括：
+- isComposite - 是否复合
+- isIndexable - 是否索引
+- isUnique - 是否唯一
+- multiplicity - 指示此属性是（必需的／可选的／还是可以是多值）的
+
+Atlas 提供了一些预定义的系统类型：
+
+- Referenceable：此类型表示可使用名为 qualifiedName 的唯一属性搜索的所有实体
+
+- Asset：此类型包含名称，说明和所有者等属性
+
+- Infrastructure：此类型扩展了Referenceable和Asset ，通常可用于基础设施元数据对象（如群集，主机等）的常用超类型
+
+- DataSet：此类型扩展了Referenceable和Asset 。在概念上，它可以用于表示存储数据的类型。在 Atlas 中，hive表，Sqoop RDBMS表等
+都是从 DataSet 扩展的类型。扩展 DataSet 的类型可以期望具有模式，它们将具有定义该数据集的属性的属性。
+例如， hive_table 中的 columns 属性。另外，扩展 DataSet 的实体类型的实体参与数据转换，
+这种转换可以由 Atlas 通过 lineage（或 provenance）生成图形。
+
+- Process：此类型扩展了Referenceable和Asset 。在概念上，它可以用于表示任何数据变换操作。
+例如，将原始数据的 hive 表转换为存储某个聚合的另一个 hive 表的 ETL 过程可以是扩展过程类型的特定类型。
+流程类型有两个特定的属性，输入和输出。
+ 
 Prometheus 大数据监控系统	
 Prometheus 是一个开源的完整监控解决方案，其对传统监控系统的测试和告警模型进行了彻底的颠覆，
 形成了基于中央化的规则计算、统一分析和告警的新模型。相比于传统监控系统，Prometheus 具有以下优点：
