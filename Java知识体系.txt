@@ -1100,6 +1100,44 @@ ListeningExecutorService service = MoreExecutors.listeningDecorator(threadpool);
 ListenableFuture<Long> guavaFuture = (ListenableFuture<Long>) service.submit(()-> factorial(number));
 long result = guavaFuture.get();
 
+Java中的object类：
+Object类是Javajava.lang包下的核心类，Object类是所有类的父类，何一个类时候如果没有明确的继承一个父类的话，那么它就是Object的子类；
+
+1. clone()
+保护方法，实现对象的浅复制，只有实现了Cloneable接口才可以调用该方法，否则抛出CloneNotSupportedException异常。
+
+2. getClass()
+final方法，返回Class类型的对象，反射来获取对象。
+
+3. toString()
+该方法用得比较多，一般子类都有覆盖，来获取对象的信息。
+
+4. finalize()
+该方法用于释放资源。因为无法确定该方法什么时候被调用，很少使用。
+
+5. equals()
+比较对象的内容是否相等
+
+6. hashCode()
+该方法用于哈希查找，重写了equals方法一般都要重写hashCode方法。这个方法在一些具有哈希功能的Collection中用到。
+
+7. wait()
+wait方法就是使当前线程等待该对象的锁，当前线程必须是该对象的拥有者，也就是具有该对象的锁。wait()方法一直等待，直到获得锁或者被中断。wait(long timeout)设定一个超时间隔，如果在规定时间内没有获得锁就返回。
+
+调用该方法后当前线程进入睡眠状态，直到以下事件发生。
+
+其他线程调用了该对象的notify方法。
+其他线程调用了该对象的notifyAll方法。
+其他线程调用了interrupt中断该线程。
+时间间隔到了。
+此时该线程就可以被调度了，如果是被中断的话就抛出一个InterruptedException异常。
+
+8. notify()
+该方法唤醒在该对象上等待的某个线程。
+
+9. notifyAll()
+该方法唤醒在该对象上等待的所有线程。
+
 
 Java集合：
 集合 → 数组 ：toArray()
@@ -1232,7 +1270,7 @@ Java泛型：
 所操作的数据类型被指定为一个参数（type parameter）这种参数类型可以用在类、接口和方法的创建中，分别称为泛型类、泛型接口、泛型方法。
 
 在集合中使用泛型:
->集合接口或集合类在idk5.0时都修改为带泛型的结构
+>集合接口或集合类在jdk5.0时都修改为带泛型的结构
 >在实例化集合类时，可以指明具体的泛型类型
 >指明完以后，在集合类或接口中凡是定义类或接口时，内部结构使用到类的泛型的位置，都指定为实例化的泛型类型
 (比如: add(E e) --->实例化以后: add(Integer e))
@@ -1681,6 +1719,34 @@ public class UrlTest02 {
     }
 }
 
+Java Stream：
+Stream流是一种顺序的元素集合，它支持类似于SQL语句的操作，如过滤、映射、排序等。通过使用Stream流，我们可以以声明式的方式对数据进行处理，而不需要关心具体的实现细节。
+
+Stream流的主要特点包括：
+Stream流不存储数据，而是通过管道传输数据。
+Stream流可以操作任何数据源，如集合、数组、I/O通道等。
+Stream流可以进行串行操作和并行操作。
+Java中的Stream流主要包含两种类型：中间操作和终端操作。中间操作用于对流进行一系列的转换和操作，而终端操作用于从流中获取结果。
+
+使用Stream流可以通过以下几个步骤进行：
+
+创建流：可以从集合、数组、I/O通道等数据源中创建Stream流。
+中间操作：对流进行一系列的转换和操作，如过滤、映射、排序等。
+终端操作：从流中获取结果，如聚合、收集、遍历等。
+
+
+常用的 Stream 函数包括：
+1. filter(Predicate<T> predicate)：根据指定的条件过滤出符合条件的元素。
+2. map(Function<T, R> mapper)：将每个元素映射为另一个元素。
+3. flatMap(Function<T, Stream<R>> mapper)：将每个元素映射为一个 Stream，并将所有 Stream 的元素合并为一个 Stream。
+4. distinct()：去除重复的元素。
+5. sorted()：对元素进行排序。
+6. limit(long maxSize)：限制 Stream 的大小。
+7. skip(long n)：跳过前 n 个元素。
+8. forEach(Consumer<T> action)：对每个元素执行指定的操作。
+9. collect(Collector<T, A, R> collector)：将 Stream 中的元素收集到一个结果容器中。
+
+通过使用这些函数，可以简化代码、提高效率，并且使代码更加易读和可维护。
 
 Java反射：
 反射是作为动态语言的关键，反射机制允许程序在执行期借助于Reflection API取得任何类的内部信息，并能直接操作任意对象的内部属性和方法。
@@ -5104,6 +5170,7 @@ Java动态代理：
 Cglib代理也叫作子类代理，他是通过在内存中构建一个子类，并在子类中采用方法拦截的技术拦截所有父类方法的调用，然后加入自己需要的操作。因为使用的是继承的方式，所以不能代理final 类
 动态代理与CGLib动态代理都是实现Spring AOP的基础。如果加入容器的目标对象有实现接口,用动态代理，如果目标对象没有实现接口,用Cglib代理。
 
+动态代理的运用：Spring
 Spring框架：Spring→SpringMVC→SpringBoot 
 Spring 框架就像一个家族，有众多衍生产品例如 boot、security、jpa等等。但他们的基础都是Spring 的 ioc和 aop ioc 提供了依赖注入的容器 aop ，解决了面向横切面的编程，然后在此两者的基础上实现了其他延伸产品的高级功能。Spring MVC是基于 Servlet 的一个 MVC 框架 主要解决 WEB 开发的问题，因为 Spring 的配置非常复杂，各种XML、 JavaConfig、hin处理起来比较繁琐。于是为了简化开发者的使用，从而创造性地推出了Spring boot，约定优于配置，简化了spring的配置流程。
 Spring的工作原理其实是，Spring在启动时读取bean配置信息，这里bean配置信息包括xml文件、Java类#Configuration、注解#AutoWired，
@@ -5282,7 +5349,11 @@ public void before() {
 @Order(1)
 public class PersonProxy
 
-Spring MVC作为MVC框架，使用了MVC设计模式。
+SpringMVC：
+SpringMVC是一个基于Java的Web应用开发框架，用于构建灵活、可扩展的Web应用程序。它是Spring框架的一部分，提供了一种模型-视图-控制器（MVC）的架构模式，用于将应用程序的不同方面分离开来。
+SpringMVC使用了前端控制器（Front Controller）设计模式，其中DispatcherServlet充当中央调度器，负责接收所有的客户端请求并将其分派给相应的处理程序（Controller）。
+它还提供了丰富的功能，如请求映射、数据绑定、数据验证、视图解析和国际化支持等，以简化Web应用程序的开发过程。
+通过使用SpringMVC，开发人员可以轻松地构建可维护和可扩展的Web应用程序，实现松耦合和高度可测试性。它还与其他Spring框架模块（如Spring IoC和Spring AOP）紧密集成，提供了全面的企业级开发解决方案。
 
 Spring MVC的功能
 Spring MVC提供了一种轻度耦合的方式来开发web应用。
@@ -5437,6 +5508,28 @@ SpringMVC中处理编码的过滤器一定要配置到其他过滤器之前，�
 SpringMVC本质上是对Java Web Servlet的封装，使得开发Java Web项目没有那么臃肿。
 Spring MVC是后端渲染式的后台开发框架，没有做到前后端分离，对前端开发人员也要求有Java Web的开发环境。
 前端人员作出的静态Html页面，也需要进行整合，改为Spring MVC里的View。
+
+
+SSH：
+SSH框架是Struts、Spring、Hibernate的一个合成框架，目前市场上比较流行的框架中也有它的身影。Struts是一个基于MVC模式的应用框架，如果学过Servlet。
+那么其本质和Servlet差不多，MVC模式主要包括模型(Model)，视图(View)，控制器(Controller)，而Struts主要作为控制器来建立模型和视图的数据交互。
+本文介绍的Struts以Struts2为主。它通过拦截器处理客户的各种请求。Spring使用基本的JavaBean来完成以前只可能由EJB完成的事情，Spring的核-fl,主要控制翻转(IOC)和面向切面(AOP)，
+简单的说Spring是一种分层的轻量级开源框架。Spring更像是一个容器，将所有配置的Struts和Hibernate中的东西都放置进来，只要能够做好配置，它就会找到相应的位置，进行处理。
+Hibernate是一个开源代码的对象映射框架，是根据JDBC技术基础衍生而来的，它将直接操作原来的数据库变为直接操作数据表后生成的Java类，实现了对象编程思维来操纵数据库。SSH框架中的各种技术相互协调、配合。实现了这一强大的框架。
+
+
+SSM：SSM（Spring+SpringMVC+MyBatis）框架集由Spring、MyBatis两个开源框架整合而成（SpringMVC是Spring中的部分内容），常作为数据源较简单的web项目的框架。
+
+1.spring MVC ＋ spring +mybatis，是标准的MVC设计模式，将整个系统划分为显示层，Controller层，Service层，DAO层四层
+
+使用Spring MVC负责请求的转发和视图管理
+
+spring实现业务对象管理，mybatis作为数据对象的持久化引擎。
+
+2、Spring是一个开源框架，Spring是一个轻量级的控制反转（IoC）和面向切面（AOP）的容器框架，还能更好的让其他框架整合。
+3、Spring MVC框架是有一个MVC框架，通过实现Model-View-Controller模式来很好地将数据、业务与展现进行分离。
+4、MyBatis 是一个基于Java的持久层框架
+
 
 关于GET请求的安全性：
 Get是不安全的，因为在传输过程，数据被放在请求的URL中，
@@ -7276,7 +7369,7 @@ System.out.println("加锁成功，执行业务..."+Thread.currentThread().getId
 Thread.sleep( millis: 300e0);
 }catch (Exception e){
 
-}finally (
+}finally {
 
 //3、解锁 将设解锁代码没有运行，redisson会不会出现死锁
 System.out.println("释放锁..."+Thread.currentThread().getId());lock.unlock();
