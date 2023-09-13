@@ -951,8 +951,8 @@ class Number implements Callable {
 多线程的实现方式（四）
 创建线程池		
 优点：1.提高响应速度 2.降低资源消耗 3.便于线程管理
-		
-		import java.util.ArrayList;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -1737,6 +1737,19 @@ public class UrlTest02 {
     }
 }
 
+NGINX：
+NGINX是一个高性能的HTTP和反向代理web服务器，同时也提供了IMAP/POP3/SMTP服务。
+NGINX是由伊戈尔·赛索耶夫为俄罗斯访问量第二的Rambler.ru站点开发的，公开版本1.19.6发布于2020年12月15日。
+其将源代码以类BSD许可证的形式发布，因它的稳定性、丰富的功能集、简单的配置文件和低系统资源的消耗而闻名。
+
+NGINX的作用如下：
+作为Web服务器：NGINX可以高效地提供静态文件服务，如HTML、CSS、JavaScript、图像等。
+它能够直接从磁盘中读取静态文件并发送给客户端，避免将请求传递给后端应用程序的开销，提供更快的响应速度。
+作为反向代理服务器：NGINX可以接收客户端请求，并将其转发到后端的多个服务器上。
+通过负载均衡和代理策略，NGINX可以分摊请求负载并提高应用程序的可用性和性能。
+作为负载均衡服务器：NGINX支持Rails、PHP和HTTP代理服务器对外提供服务，还支持简单的容错和利用算法进行负载均衡。
+
+       
 Java Stream：
 Stream流是一种顺序的元素集合，它支持类似于SQL语句的操作，如过滤、映射、排序等。通过使用Stream流，我们可以以声明式的方式对数据进行处理，而不需要关心具体的实现细节。
 
@@ -8004,7 +8017,7 @@ DFS的主要目的是允许物理分布式系统的用户通过使用公共文�
 4.**InterPlanetary File System (IPFS)**。 IPFS 是一个基于内容寻址的分布式文件系统，
 它通过哈希函数将文件的元数据（如名称、内容等）编码成一个唯一的地址，从而可以在全球范围内进行文件的查找和访问。
 
-       
+
 
 Spring Cloud：
 Spring Cloud是一个为构建分布式系统的微服务框架。
@@ -8052,6 +8065,47 @@ Hystrix提供两个命令，分别是HystrixCommand、HystrixObservableCommand�
 监控：追踪有意义的数据和统计结果
 静态资源处理：直接在Zull中处理静态资源，从而避免其转发到内部集群
 
+SpringCloud是如何实现RPC的?
+Spring Cloud基于Spring Boot提供了一套微服务开发工具，其中包括了分布式服务调用（RPC）的解决方案。
+Spring Cloud的RPC框架主要有两种：Spring Cloud和gRPC。
+
+下面简单介绍一下Spring Cloud实现RPC的流程：
+
+定义接口和实现类：首先定义一个接口，并实现该接口。该接口定义了需要调用的方法，例如：
+java
+public interface HelloService {
+    String hello(String name);
+}
+
+注册服务：将实现类注册到注册中心，例如ZooKeeper或Eureka。
+java
+@Service
+public class HelloServiceImpl implements HelloService {
+    @Override
+    public String hello(String name) {
+        return "Hello, " + name;
+    }
+}
+
+发现服务：客户端通过注册中心发现服务。
+java
+@Autowired
+private ServiceDiscoveryService serviceDiscovery;
+
+public String hello(String name) {
+    // 通过服务发现获取服务列表
+    List<ServiceInstance> instances = serviceDiscovery.getInstances("hello-service");
+    // 选择一个服务实例进行调用
+    ServiceInstance instance = instances.get(0);
+    // 根据服务实例的URL和端口号构造调用接口的URL
+    String url = String.format("http://%s:%d/hello", instance.getHost(), instance.getPort());
+    // 通过RestTemplate或WebClient调用服务
+    return restTemplate.getForObject(url, String.class, name);
+}
+调用服务：客户端通过构造的URL和服务实例的端口号调用服务。
+
+这种基于HTTP协议的RPC框架实现起来比较简单，但是性能较低，因为每次调用都需要经过网络传输。
+如果需要高性能的RPC框架，可以选择gRPC等其他协议的框架。
 Dubbo：
 一款分布式服务框架
 高性能和透明化的RPC远程服务调用方案
