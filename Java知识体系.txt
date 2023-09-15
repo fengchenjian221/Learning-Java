@@ -8348,6 +8348,15 @@ Git是一个开源的分布式版本控制系统，可以有效、高速地处�
 2、打上补丁，解决冲突（可以自己解决，也可以要求开发者之间解决以后再重新提交，如果是开源项目，还要决定哪些补丁有用，哪些不用）。
 3、向公共服务器提交结果，然后通知所有开发人员。
 
+GitHub的一些功能：
+watch：观察项目，如果watch了某个项目，表示你以后会关注这个项目的所有动态，以后只要这个项目发生变动，
+如别人提交了pull request、被别人发起了issue等等情况，就会收到关于这个项目的通知提醒。
+issue：问题，在项目中遇到问题时，可以通过issue来寻求他人的帮助或者提供相关信息；也可以通过issue来告知开发者项目存在的问题。
+fork：从别人的仓库里复制一份到自己的仓库里，可以理解成复制一个分支，在复制的这个分支上进行修改、提交，
+原仓库的更新不会影响这个分支。
+pull request：将自己的修改推送给原仓库，向原仓库的开发者申请将自己在其他分支做的修改合并到原仓库的主分支中，
+原仓库的开发者同意后，会自动将修改合并到原仓库的主分支中，这就实现了多人协作开发同一个项目。
+
 Java大数据：
 从业务层面来说，"大数据" 指的是由企业、组织和个人生成的大量和复杂的数据集。
 这些数据集太大、太快或太复杂，它们无法用传统的数据处理工具进行处理和分析，它们通常来自多种来源，
@@ -8451,6 +8460,26 @@ Container，container-launch-specification信息包含了能够让Container和Ap
 Hive是由 Facebook 开源用于解决海量结构化日志的数据统计工具，Hive 是基于 Hadoop 的一个数据仓库工具，
 可以将结构化的数据文件映射为一张表，并提供类 SQL 查询功能。
 
+Hive常见指令如下：
+
+查看数据库：show databases。
+进入数据库：use database_name。
+查看库下所有的表：show tables。
+查看表结构：desc table_name 或 show create table table_name。
+查看Hive分区：show partitions table_name。
+删除数据库：drop database database_name。
+删除表数据：drop table table_name删掉整个表；truncate table table_name只是删除表的内容，并不会删除表；
+delete from table_name where column_name = value，用于删除表中某一行的内容。
+插入语句：insert into table_name values(value1,value2...)，或 insert overwrite table table_name select column1,column2... from another_table。
+
+Hive和SQL在建表语句、对等值连接和非等值连接、存储NULL值、落地方式等方面有较大的差异。
+
+建表语句：Hive在创建表时，会根据导入的数据格式来指定字段分隔符和列分隔符，而SQL没有这方面需求。
+等值连接：Hive不支持等值连接，如果想进行等值连接操作，需要使用SQL语句。
+存储NULL值：在传统数据库中字段没有值或者为空即表示为NULL，但是在Hive中默认的NULL值是\N。
+落地方式：Hive将数据落地到HDFS，而SQL将数据落地到文件。
+
+
 Hive的本质是将HQL转化成MapReduce程序：
 Hive 通过给用户提供的一系列交互接口，接收到用户的指令(SQL)，使用自己的 Driver，结合元数据(MetaStore)，
 将这些指令翻译成 MapReduce，提交到 Hadoop 中执行，最后，将执行返回的结果输出到用户交互接口。
@@ -8460,8 +8489,7 @@ Hive的优缺点：
 （1）操作接口采用类 SQL 语法，提供快速开发的能力（简单、容易上手）。
 （2）避免了去写 MapReduce，减少开发人员的学习成本。
 （3）Hive 的执行延迟比较高，因此 Hive 常用于数据分析，对实时性要求不高的场合。
-（4）Hive 优势在于处理大数据，对于处理小数据没有优势，因为 Hive 的执行延迟比较
-高。
+（4）Hive 优势在于处理大数据，对于处理小数据没有优势，因为 Hive 的执行延迟比较高。
 （5）Hive 支持用户自定义函数，用户可以根据自己的需求来实现自己的函数。
 
 缺点：
@@ -8518,6 +8546,75 @@ RDD 中的所有转换都是惰性求值/延迟执行的，也就是说并不会
 只有当发生一个要求返回结果给 Driver 的 Action动作时，这些转换才会真正运行。
 之所以使用惰性求值/延迟执行，是因为这样可以在 Action 时对 RDD 操作形成 DAG有向无环图进行 Stage 的划分和并行优化，
 这种设计让 Spark 更加有效率地运行。
+
+Spark Core常用API：
+>转换算子：transfromation
+1.value类型 ：
+map（）映射：参数f是一个函数可以写作匿名子类，它可以接收一个参数。当某个RDD执行map方法时，会遍历该RDD中的每一个数据项，并依次应用f函数，从而产生一个新的RDD。即，这个新RDD中的每一个元素都是原来RDD中每一个元素依次应用f函数而得到的。 
+mapPartitons()：遍历RDD的每个分区
+flatmap（）扁平化：
+与map操作类似，将RDD中的每一个元素通过应用f函数依次转换为新的元素，并封装到RDD中。 很像hive中的炸裂函数。和map（）的区别：在flatMap操作中，f函数的返回值是一个集合，并且会将每一个该集合中的元素拆分出来放到新的RDD中。
+
+groupBy()分组：按照传入函数的返回值进行分组。将相同的key对应value值放入一个迭代器。
+groupBy会存在shuffle过程(将不同的分区数据进行打乱重组的过程)
+
+filter()过滤：接收一个返回值为布尔类型的函数作为参数。当某个RDD调用filter方法时，会对该RDD中每一个元素应用f函数，
+如果返回值类型为true，则该元素会被添加到新的RDD中，如果为false，则不会加入到RDD中。
+
+distinct()去重：对内部的元素去重，并将去重后的元素放到新的RDD中。distinct的层层实际是groupBy()+map()（根据key值进行分组，将key值放到迭代器，
+然后通过map()求出pariRDD的key值），因此distinct也是有shuffle的。
+
+sortBy()：在排序之前，将数据通过f函数进行处理，之后按照f函数处理的结果进行排序，默认为正序排列。
+排序后新产生的RDD的分区数与原RDD的分区数一致。Spark的排序结果是全局有序。
+
+PS：全局有序是怎么做到的？首先我们知道在hive中sortBy是分区内有序的，spark中是全局有序，是因为是分桶排序，
+先对数据抽样、排序、选取等分点，然后将对应数据进入分区，这样可以保证分区间有序，再对分内内排序，保证了全局有序。
+因此我们在web界面会看到两个任务，第一个job就是用来分桶来指定分区内数据范围。
+
+
+2.key value类型(pairRDD是kv结构的RDD)
+创建一个pairRDD：
+System.out.println("==========直接创建javaPairRDD==============");
+ArrayList<Tuple2<String,Integer>> list = new ArrayList<>();
+list.add(new Tuple2<>("A", 1));
+list.add(new Tuple2<>("B", 1));
+list.add(new Tuple2<>("C", 1));
+list.add(new Tuple2<>("D", 1));
+JavaPairRDD<String, Integer> javaPairRDD = sc.parallelizePairs(list, 2);
+
+PS：Spark Core中的Tuple是元组（元祖）类型的一种表现形式。它们允许你存储多个不同类型的数据，并可以通过名称访问这些数据。
+pairRDD的转换算子：
+mapValues()：针对于(K,V)形式的类型只对V进行操作
+
+groupByKey()：groupByKey对每个key进行操作，但只生成一个seq（sequencer序列），并不进行聚合。
+该操作可以指定分区器或者分区数（默认使用HashPartitioner）。
+根据value进行分组：①使用groupBy ②先将javaPairRDD的key和value交换（使用mapToPair），再使用groupByKey  
+③先将javaPairRDD的key和value交换（使用map，变为javaRDD），再使用groupByKey。
+
+reduceByKey()：该操作可以将RDD[K,V]中的元素按照相同的K对V进行聚合。其存在多种重载形式，还可以设置新RDD的分区数。
+两者的区别不仅仅是 reduceByKey减少了聚合的步骤，reduceByKey还提前进行了combine，reduceByKey效率是groupByKey的100倍多，
+数据量越大，reduceByKey对于shuffle的效果文件越明显。在不影响业务逻辑的前提下，优先选用reduceByKey。
+
+sortByKey()：按照key进行排序，key必须实现ordered接口。
+如果按照value值进行排序：将 javaPairRDD转换成RDD或使用map对pairRDD进行k、v倒转然后再使用sortBy
+
+
+行动算子：action
+行动算子作用：触发整个作业的执行，转换算子是懒加载，只有action算子执行后才会执行。
+行动算子：
+collect()：collect 将所有executor（rdd的数据）的分区数据，收集到driver ，并且按照分区号顺序收集（0 ，1， 2），
+慎用collect，因为executor数据量大， 而driver的内存小，一般driver内存就4G足够。
+count()：返回RDD中元素的个数。作用：一般拿来预估总数据量，先预估出每条数据的平均大小 x count值，就能预估出总数据量大小。
+first()：返回RDD中的第一个元素
+take()：返回由RDD前n个元素组成的数组，类似于 sql当中的 limit 获取几条数据查看结果。
+countByKey()：统计每种key的个数。作用：判断数据倾斜的key
+saveAsTextFile(path)：保存成Text文件
+saveAsObjectFile(path) ：序列化成对象保存到文件
+foreach()：遍历RDD中每一个元素
+foreach 和 collect 的区别：foreach是在executor直接循环遍历打印，collect是将数据拉取到driver然后循环遍历打印。
+在driver是单线程进行遍历，在executor是多线程进行，所以foreach不是按照分区顺序进行打印的，collect是按照分区号顺序打印。
+foreach用的最多，因为计算之后的数据要写到各种各样的数据目的地（hdfs、hbase、mysql、redis）。
+foreachPartition ()：遍历RDD中每一个分区
 
 存储级别
 默认的存储级别都是仅在内存存储一份，Spark 的存储级别还有好多种，存储级别在 object StorageLevel 中定义的。
@@ -8601,6 +8698,22 @@ object BroadcastVariablesTest {
 Spark SQL:Spark SQL 是 Spark 用来操作结构化数据的组件。
 通过 Spark SQL，用户可以使用 SQL或者 Apache Hive 版本的 SQL 方言（HQL）来查询数据。
 
+Spark SQL常用语句如下：
+SELECT：用于从数据表中查询数据。
+INSERT INTO：用于向表中插入数据。
+UPDATE：用于更新数据表中的数据。
+DELETE FROM：用于从数据表中删除数据。
+CREATE TABLE：用于创建一个新的数据表。
+ALTER TABLE：用于修改现有的数据表结构。
+DROP TABLE：用于删除一个数据表。
+LOAD DATA：用于加载本地文件系统中的数据文件到数据表中。
+SHOW COLUMNS：用于显示表中的所有列。
+COUNT：用于计算表中的行数。
+GROUP BY：用于根据指定的列对数据进行分组。
+ORDER BY：用于根据指定的列对数据进行排序。
+WHERE：用于对数据进行过滤。
+
+Spark SQL的数据抽象：
 Spark SQL数据抽象可以分为两类：
 ① DataFrame：DataFrame 是一种以 RDD 为基础的分布式数据集，类似于传统数据库的二维表格，
 带有 Schema 元信息(可以理解为数据库的列名和类型)。DataFrame = RDD ＋ 泛型 + SQL 的操作 + 优化
@@ -8622,9 +8735,19 @@ Spark Streaming 的特点：
 容错：SparkStreaming 在没有额外代码和配置的情况下可以恢复丢失的工作。
 易整合到 Spark 体系：流式处理与批处理和交互式查询相结合。
 
+Spark Streaming常用语句：
+
+输出操作：writeStream.format("parquet")或writeStream.format("kafka")等输出操作。
+定义输出路径：.option("path", "path/to/destination/dir")或.option("kafka.bootstrap.servers", "host1:port1,host2:port2")
+等参数定义输出路径等参数。
+指定输出topic：.option("topic", "updates")等参数指定输出对应的Kafka topic。
+启动流计算：使用start()操作来执行查询语句。
+
 Spark Streaming工作流程：
-① Spark Streaming 中，会有一个接收器组件 Receiver，作为一个长期运行的 task 跑在一个 Executor 上，Receiver 接收外部的数据流形成 input DStream。
-② DStream 会被按照时间间隔划分成一批一批的 RDD，当批处理间隔缩短到秒级时，便可以用于处理实时数据流（时间间隔的大小可以由参数指定，一般设在 500 毫秒到几秒之间）。
+① Spark Streaming 中，会有一个接收器组件 Receiver，作为一个长期运行的 task 跑在一个 Executor 上，
+Receiver 接收外部的数据流形成 input DStream。
+② DStream 会被按照时间间隔划分成一批一批的 RDD，当批处理间隔缩短到秒级时，便可以用于处理实时数据流
+（时间间隔的大小可以由参数指定，一般设在 500 毫秒到几秒之间）。
 ③ 对 DStream 进行操作就是对 RDD 进行操作，计算处理的结果可以传给外部系统。
 ④ 接受到实时数据后，给数据分批次，然后传给 Spark Engine 处理最后生成该批次的结果。
 
@@ -8693,6 +8816,10 @@ Flink 的一些关键特性包括：
 高效数据处理：Flink 通过其流水线数据处理架构提供高效的数据处理，减少了中间数据存储的需求。
 易于使用：Flink 提供了一个用户友好的编程模型，支持 Java 和 Scala，并提供类似 SQL 的查询语言进行流数据处理。
 
+Flink的运行中必须依靠Hadoop组件吗？
+Flink是一个开源的流处理和批处理框架，与Apache Hadoop不同，它不直接依赖Hadoop。
+尽管Flink在某些情况下可以与Hadoop生态系统中的一些组件集成，但Flink本身并不依赖Hadoop。
+
 Flink 应用程序结构：
 Source: 数据源，Flink 在流处理和批处理上的 source 大概有 4 类：基于本地集合的 source、基于文件的 source、
 基于网络套接字的 source、自定义的 source。自定义的 source 常见的有 Apache kafka、RabbitMQ 等，
@@ -8707,12 +8834,15 @@ Apache kafka、RabbitMQ、MySQL、ElasticSearch、Apache Cassandra、Hadoop File
 同理你也可以定义自己的 sink。
 
 2. Flink 并行数据流
-Flink 程序在执行的时候，会被映射成一个 Streaming Dataflow，一个 Streaming Dataflow 是由一组 Stream 和 Transformation Operator 组成的。在启动时从一个或多个 Source Operator 开始，结束于一个或多个 Sink Operator。
-Flink 程序本质上是并行的和分布式的，在执行过程中，一个流(stream)包含一个或多个流分区，而每一个 operator 包含一个或多个 operator 子任务。操作子任务间彼此独立，在不同的线程中执行，甚至是在不同的机器或不同的容器上。operator 子任务的数量是这一特定 operator 的并行度。相同程序中的不同 operator 有不同级别的并行度。
+Flink 程序在执行的时候，会被映射成一个 Streaming Dataflow，一个 Streaming Dataflow 是由一组 Stream 和 Transformation Operator 组成的。
+在启动时从一个或多个 Source Operator 开始，结束于一个或多个 Sink Operator。
+Flink 程序本质上是并行的和分布式的，在执行过程中，一个流(stream)包含一个或多个流分区，
+而每一个 operator 包含一个或多个 operator 子任务。操作子任务间彼此独立，在不同的线程中执行，甚至是在不同的机器或不同的容器上。
+operator 子任务的数量是这一特定 operator 的并行度。相同程序中的不同 operator 有不同级别的并行度。
 
-一个 Stream 可以被分成多个 Stream 的分区，也就是 Stream Partition。一个 Operator 也可以被分为多个 Operator Subtask。如上图中，Source 被分成 Source1 和 Source2，它们分别为 Source 的 Operator Subtask。
+一个 Stream 可以被分成多个 Stream 的分区，也就是 Stream Partition。一个 Operator 也可以被分为多个 Operator Subtask。
 每一个 Operator Subtask 都是在不同的线程当中独立执行的。一个 Operator 的并行度，就等于 Operator Subtask 的个数。
-上图 Source 的并行度为 2。而一个 Stream 的并行度就等于它生成的 Operator 的并行度。
+而一个 Stream 的并行度就等于它生成的 Operator 的并行度。
 
 数据在两个 operator 之间传递的时候有两种模式：
 One to One 模式：两个 operator 用此模式传递的时候，会保持数据的分区数和数据的排序；如上图中的 Source1 到 Map1，它就保留的 Source 的分区特性，以及分区元素处理的有序性。
@@ -8779,12 +8909,27 @@ Flink 中就是这么划分边界的，本文会详细讲解。
 另一种是边界内数据与外部数据进行关联计算，比如：统计最近五分钟内浏览新闻的用户都是来自哪些地区，
 这种就需要将五分钟内浏览新闻的用户信息与 hive 中的地区维表进行关联，然后在进行相关计算。
 
+Flink的Window API提供了以下几种窗口函数：
+
+Tumbling Windows：这种窗口函数将数据分成固定大小的窗口。每个窗口内的数据是一组数据。
+Sliding Windows：这种窗口函数将数据分成固定大小的窗口，并且窗口可以滑动。每个窗口内的数据也是一组数据。
+Session Windows：这种窗口函数将数据分成会话窗口。每个会话窗口内的数据是一组数据。会话窗口是根据时间或数据之间的距离来定义的。
+Global Windows：这种窗口函数将数据分成一个全局窗口。每个全局窗口内的数据是一组数据。全局窗口的大小取决于数据的数量。
+
+此外，Flink还提供了以下几种窗口函数的方法：
+
+countWindow(size)：将数据分成指定大小的窗口，每个窗口内的数据是一组数据。
+timeWindow(size, slide)：将数据按照时间分成指定大小和滑动间隔的窗口，每个窗口内的数据是一组数据。
+sessionWindow(size, slide)：将数据按照时间分成指定大小和滑动间隔的会话窗口，每个会话窗口内的数据是一组数据。
+globalWindow()：将数据分成一个全局窗口，每个全局窗口内的数据是一组数据。
+
+
 Time：
 在Flink中，如果以时间段划分边界的话，那么时间就是一个极其重要的字段。
-
 Flink中的时间有三种类型：
 
-Event Time：是事件创建的时间。它通常由事件中的时间戳描述，例如采集的日志数据中，每一条日志都会记录自己的生成时间，Flink通过时间戳分配器访问事件时间戳。
+Event Time：是事件创建的时间。它通常由事件中的时间戳描述，例如采集的日志数据中，
+每一条日志都会记录自己的生成时间，Flink通过时间戳分配器访问事件时间戳。
 Ingestion Time：是数据进入Flink的时间。
 Processing Time：是每一个执行基于时间操作的算子的本地系统时间，与机器相关，默认的时间属性就是Processing Time。
 
@@ -8792,19 +8937,16 @@ Processing Time：是每一个执行基于时间操作的算子的本地系统�
 日志的内容：2021-01-06 18:37:15.624 INFO Fail over to rm2
 对于业务来说，要统计1min内的故障日志个数，哪个时间是最有意义的？—— eventTime，因为我们要根据日志的生成时间进行统计。
 
-Window：
-Window，即窗口，我们前面一直提到的边界就是这里的Window(窗口)。
-官方解释：流式计算是一种被设计用于处理无限数据集的数据处理引擎，而无限数据集是指一种不断增长的本质上无限的数据集，
-而window是一种切割无限数据为有限块进行处理的手段。
-所以Window是无限数据流处理的核心，Window将一个无限的stream拆分成有限大小的”buckets”桶，
-我们可以在这些桶上做计算操作。
+此外，Flink还提供了以下几种时间函数的方法：
 
-Window类型
-本文刚开始提到，划分窗口就两种方式：
-根据时间进行截取(time-driven-window)，比如每1分钟统计一次或每10分钟统计一次。
-根据数据进行截取(data-driven-window)，比如每5个数据统计一次或每50个数据统计一次。
+timeWindow(size, slide)：将数据按照时间分成指定大小和滑动间隔的窗口，每个窗口内的数据是一组数据。
+sessionWindow(size, slide)：将数据按照时间分成指定大小和滑动间隔的会话窗口，每个会话窗口内的数据是一组数据。
+countWindow(size)：将数据分成指定大小的窗口，每个窗口内的数据是一组数据。
+globalWindow()：将数据分成一个全局窗口，每个全局窗口内的数据是一组数据。
+
 
 总之，Flink 是一个强大的大数据处理框架，适用于批量数据和实时数据处理。它提供了低延迟处理、容错性、可扩展性
+
 
 ClickHouse 大数据列式存储：
 ClickHouse是一个开源的，用于联机分析（OLAP）的列式数据库管理系统（DBMS-database manager system）, 它是面向列的，
