@@ -1749,7 +1749,914 @@ NGINX的作用如下：
 通过负载均衡和代理策略，NGINX可以分摊请求负载并提高应用程序的可用性和性能。
 作为负载均衡服务器：NGINX支持Rails、PHP和HTTP代理服务器对外提供服务，还支持简单的容错和利用算法进行负载均衡。
 
-       
+Java比其他语言更适合开发Web应用程序的原因如下：
+
+1.跨平台性。Java由于其跨平台的特点，可以在多种操作系统上运行，这使得Java在服务器端程序中占据了主导地位。
+2.面向对象。Java是一种面向对象编程语言，具有封装、继承和多态等特性，这使得Java在编程中更易于理解和维护。
+开源。Java拥有一个庞大的开源社区，提供了大量的开源框架和库，这使得Java在Web开发中具有更强的灵活性和可扩展性。
+3.J2EE技术。J2EE是Java在Web开发中的一种重要技术，它提供了一组标准的技术和API，如Servlet、JSP和EJB等，
+使得开发者可以轻松地构建出高性能、可扩展、可维护且安全的企业级应用程序。
+4.高度安全。Java具有某些内置的安全功能，例如密码学、高级身份验证和访问控制，这些功能在很大程度上促成了Java开发服务的蓬勃发展。
+5.可扩展性和多线程。Java是高度可扩展的，可以适应Web应用程序的需求，并为开发人员提供水平和垂直扩展的能力。
+此外，Java的NIO（非阻塞I/O）API促进了在软件的单个副本中创建尽可能多的线程，这极大地提高了应用程序的性能。
+
+
+J2EE应用程序开发技术：
+前端技术：
+HTML：
+HTML 指的是超文本标记语言: HyperText Markup Language
+HTML 允许你格式化文本，添加图片，创建链接、输入表单、框架和表格等等，并可将之存为文本文件，浏览器即可读取和显示。
+
+HTML标签：
+<!DOCTYPE html> 声明为 HTML5 文档
+<html> 元素是 HTML 页面的根元素
+<head> 元素包含了文档的元（meta）数据，如 <meta charset="utf-8"> 定义网页编码格式为 utf-8（由于在大部分浏览器中直接输出中文会出现乱码，所以要在头部将字符声明为UTF-8）
+<title> 元素描述了文档的标题
+<body> 元素包含了可见的页面内容
+<h1> 元素定义一个大标题
+<p> 元素定义一个段落
+
+CSS：Cascading Style Sheet 层叠样式表
+是一组样式设置的规则，用于控制页面的外观样式
+
+CSS语法：
+<head>
+	<style>
+		选择器{
+			属性名：属性值;
+			属性名：属性值;
+		}
+	</style>
+</head>
+
+JavaScript：JavaScript诞生于1995年，它的出现主要是用于处理网页中的前端验证。
+所谓的前端验证，就是指检查用户输入的内容是否符合一定的规则。比如：用户名的长度，密码的长度，邮箱的格式等。
+
+DOM概述：
+当网页被加载时，浏览器会创建页面的文档对象模型（Document Object Model）。
+
+通过DOM对象模型，JavaScript 获得创建动态 HTML ：
+
+JavaScript 能改变页面中的所有 HTML 元素
+JavaScript 能改变页面中的所有 HTML 属性
+JavaScript 能改变页面中的所有 CSS 样式
+JavaScript 能删除已有的 HTML 元素和属性
+JavaScript 能添加新的 HTML 元素和属性
+JavaScript 能对页面中所有已有的 HTML 事件作出反应
+JavaScript 能在页面中创建新的 HTML 事件
+换言之：HTML DOM 是关于如何获取、更改、添加或删除 HTML 元素的标准。
+
+
+JSON：
+JavaScript Object Notation（JavaScript 对象标记法），它是一种存储和交换数据的语法。
+当数据在浏览器与服务器之间进行交换时，这些数据只能是文本，
+JSON 属于文本并且我们能够把任何 JavaScript 对象转换为 JSON，然后将 JSON 发送到服务器。
+我们也能把从服务器接收到的任何 JSON 转换为 JavaScript 对象。
+以这样的方式，我们能够把数据作为 JavaScript 对象来处理，无需复杂的解析和转译。
+
+JSON语法：
+在json中，每一个数据项，都是由一个键值对（或者说是名值对）组成的，但是键必须是字符串，
+且由双引号包围，而值必须是以下数据类型之一：
+
+字符串（在 JSON 中，字符串值必须由双引号编写）
+数字
+对象（JSON 对象）
+数组
+布尔
+null
+
+数组（Array）用方括号(“[]”)表示。
+对象（0bject）用大括号(“{}”)表示。
+名称/值对(name/value）组合成数组和对象。
+名称(name）置于双引号中，值（value）有字符串、数值、布尔值、null、对象和数组。
+并列的数据之间用逗号(“,”）分隔
+
+JSONArray可以添加JSONObject对象。
+JSON 的值不可以是以下数据类型之一：
+
+函数
+日期
+undefined
+
+AJAX：
+传统的web交互是用户触发一个http请求服务器，然后服务器收到之后，在做出响应到用户，并且返回一个新的页面，
+每当服务器处理客户端提交的请求时，客户都只能空闲等待，并且哪怕只是一次很小的交互、
+只需从服务器端得到很简单的一个数据，都要返回一个完整的HTML页，而用户每次都要浪费时间和带宽去重新读取整个页面。
+这个做法浪费了许多带宽，由于每次应用的交互都需要向服务器发送请求，应用的响应时间就依赖于服务器的响应时间，
+这导致了用户界面的响应比本地应用慢得多。
+
+AJAX 的出现,刚好解决了传统方法的缺陷，AJAX 是一种用于创建快速动态网页的技术，通过在后台与服务器进行少量数据交换，
+AJAX 可以使网页实现异步更新，这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。
+
+AJAX的XMLHttpRequest对象：
+AJAX 的核心是 XMLHttpRequest 对象。 所有现代浏览器都支持 XMLHttpRequest 对象。
+XMLHttpRequest 对象用于幕后同服务器交换数据，这意味着可以更新网页的部分，而不需要重新加载整个页面。
+所有现代浏览器（Chrom、IE7+、Firefox、Safari 以及 Opera）都有内建的 XMLHttpRequest 对象。
+
+创建 XMLHttpRequest 的语法是：
+variable = new XMLHttpRequest();
+
+为了应对所有浏览器，包括 IE5 和 IE6，请检查浏览器是否支持 XMLHttpRequest 对象。
+如果支持，创建 XMLHttpRequest 对象，如果不支持，则创建 ActiveX 对象：
+var xhttp;
+if (window.XMLHttpRequest) {
+    xhttp = new XMLHttpRequest();
+} else {
+    // code for IE6, IE5
+    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+}
+
+AJAX的请求整合：
+JSON：
+[
+  {"name":"孙悟空","age":18,"gender":"男"},
+  {"name":"猪八戒","age":19,"gender":"男"},
+  {"name":"唐僧","age":20,"gender":"男"},
+  {"name":"沙和尚","age":21,"gender":"男"}
+]
+
+index.html:
+var Ajax = {
+    get: function (url, fn) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200 || xhr.status == 304) {
+                fn.call(this, xhr.responseText);
+            }
+        };
+        xhr.send();
+    },
+    post: function (url, data, fn) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 304)) {
+                fn.call(this, xhr.responseText);
+            }
+        };
+        xhr.send(data);
+    }
+};
+
+// 演示GET请求
+Ajax.get("users.json", function (response) {
+    console.log(response);
+});
+
+// 演示POST请求
+Ajax.post("users.json", "", function (response) {
+    console.log(response);
+});
+
+Cookie:
+Cookie 是一些数据，存储于你电脑上的文本文件中，当 web 服务器向浏览器发送 web 页面时，在连接关闭后，服务端不会记录用户的信息，Cookie 的作用就是用于解决 “如何记录客户端的用户信息”：
+
+当用户访问 web 页面时，它的名字可以记录在 cookie 中。
+在用户下一次访问该页面时，可以在 cookie 中读取用户访问记录。
+
+一个的Cookie创建，添加了过期时间和路径：
+document.cookie = "username=zhangsan; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
+
+VUE：动态构建用户界面的渐进式JavaScript框架
+
+Vue的特点：
+遵循MVVM模式
+编码简洁，体积小，运行效率高，适合移动/PC端开发
+它本身只关注UI，可以引入其它第三方库开发项目
+
+与其他JS框架的关联：
+借鉴 Angular 的模板和数据绑定技术
+借鉴 React 的组件化和虚拟DOM技术
+
+Vue周边库：
+vue-cli：vue脚手架
+vue-resource
+axios
+vue-router：路由
+vuex：状态管理
+element-ui：基于vue的UI组件库（PC端）
+
+VUE简单实现：
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初识vue</title>
+    <!-- 引入Vue -->
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+    <!-- 准备好一个容器 -->
+    <div id="root">
+        <h1>Hello！{{name}}!</h1>
+    </div>
+
+    <script>
+        Vue.config.productionTip = false // 阻止vue在启动时生成生产提示
+        new Vue({
+            el:'#root', //el用于指定当前Vue实例为哪个容器服务，值通常为css选择器字符串
+            data:{ //data用于存储数据，数据共el所指定的容器去使用
+                name:'JOJO'
+            }
+        })
+    </script>
+</body>
+</html>
+
+注意：
+
+想让Vue工作，就必须创建一个Vue实例，且要传入一个配置对象
+root容器里的代码依然符合html规范，只不过混入了一些特殊的Vue语法
+root容器里的代码被称为Vue模板
+Vue实例与容器是一一对应的
+真实开发中只有一个Vue实例，并且会配合着组件一起使用
+{{xxx}}中的xxx要写js表达式，且xxx可以自动读取到data中的所有属性
+一旦data中的数据发生变化，那么模板中用到该数据的地方也会自动更新
+
+关于GET请求的安全性：
+Get是不安全的，因为在传输过程，数据被放在请求的URL中，
+而如今现有的很多服务器、代理服务器或者用户代理都会将请求URL记录到日志文件中，然后放在某个地方，
+这样就可能会有一些隐私的信息被第三方看到。另外，用户也可以在浏览器上直接看到提交的数据，
+一些系统内部消息将会一同显示在用户面前。Post的所有操作对用户来说都是不可见的。
+
+关于servlet：
+Servlet（Server Applet）是Java Servlet的简称，称为小服务程序或服务连接器，用Java编写的服务器端程序，具有独立于平台和协议的特性，主要功能在于交互式地浏览和生成数据，生成动态Web内容。
+狭义的Servlet是指Java语言实现的一个接口，广义的Servlet是指任何实现了这个Servlet接口的类，一般情况下，人们将Servlet理解为后者。Servlet运行于支持Java的应用服务器中。
+从原理上讲，Servlet可以响应任何类型的请求，但绝大多数情况下Servlet只用来扩展基于HTTP协议的Web服务器。
+最早支持Servlet标准的是JavaSoft的Java Web Server，此后，一些其它的基于Java的Web服务器开始支持标准的Servlet。
+
+Servlet的工作原理：
+Servlet接口定义了Servlet与servlet容器之间的契约。这个契约是：Servlet容器将Servlet类载入内存，并产生Servlet实例和调用它具体的方法。但是要注意的是，在一个应用程序中，每种Servlet类型只能有一个实例。
+用户请求致使Servlet容器调用Servlet的Service（）方法，并传入一个ServletRequest对象和一个ServletResponse对象。ServletRequest对象和ServletResponse对象都是由Servlet容器（例如TomCat）封装好的，
+并不需要程序员去实现，程序员可以直接使用这两个对象。
+ServletRequest中封装了当前的Http请求，因此，开发人员不必解析和操作原始的Http数据。
+ServletResponse表示当前用户的Http响应，程序员只需直接操作ServletResponse对象就能把响应轻松的发回给用户。
+对于每一个应用程序，Servlet容器还会创建一个ServletContext对象。这个对象中封装了上下文（应用程序）的环境详情。
+每个应用程序只有一个ServletContext。每个Servlet对象也都有一个封装Servlet配置的ServletConfig对象。
+
+Servlet的生命周期：
+init( ),service( ),destroy( )是Servlet生命周期的方法，代表了Servlet的生命周期，即Servlet从“出生”到“工作”再到“死亡 ”的过程。
+Servlet容器（例如TomCat）会根据下面的规则来调用这三个方法：
+1.init( ),当Servlet第一次被请求时，Servlet容器就会开始调用这个方法来初始化一个Servlet对象出来，
+但是这个方法在后续请求中不会在被Servlet容器调用，就像人只能“出生”一次一样。我们可以利用init（ ）方法来执行相应的初始化工作。
+调用这个方法时，Servlet容器会传入一个ServletConfig对象进来从而对Servlet对象进行初始化。
+
+2.service( )方法，每当请求Servlet时，Servlet容器就会调用这个方法。就像人一样，需要不停的接受老板的指令并且“工作”。
+第一次请求时，Servlet容器会先调用init( )方法初始化一个Servlet对象出来，然后会调用它的service( )方法进行工作，
+但在后续的请求中，Servlet容器只会调用service方法了。
+
+3.destory,当要销毁Servlet时，Servlet容器就会调用这个方法，就如人一样，到时期了就得死亡。
+在卸载应用程序或者关闭Servlet容器时，就会发生这种情况，一般在这个方法中会写一些清除代码。
+
+
+关于转发和重定向的区别：
+
+1.重定向访问服务器两次，转发只访问服务器一次。
+2.转发页面的URL不会改变，而重定向地址会改变
+3.转发只能转发到自己的web应用内，重定向可以重定义到任意资源路径。
+4.转发相当于服务器跳转，相当于方法调用，在执行当前文件的过程中转向执行目标文件，两个文件(当前文件和目标文件)属于同一次请求，前后页共用一个request，
+可以通过此来传递一些数据或者session信息，request.setAttribute()和 request.getAttribute()。而重定向会产生一个新的request，不能共享request域信息与请求参数
+5.由于转发相当于服务器内部方法调用，所以转发后面的代码仍然会执行(转发之后记得return)；重定向代码执行之后是方法执行完成之后进行重定向操作，也就是访问第二个请求，如果是方法的最后一行进行重定向那就会马上进行重定向(重定向也需要return)。
+6.无论是RequestDispatcher.forward方法，还是HttpServletResponse.sendRedirect方法，在调用它们之前，都不能有内容已经被实际输出到了客户端。如果缓冲区中已经有了一些内容，这些内容将被从缓冲区中移除。
+
+
+关于JSP和Servlet的区别：
+1.  不同之处在哪？
+Servlet在Java代码中通过HttpServletResponse对象动态输出HTML内容
+JSP在静态HTML内容中嵌入Java代码，Java代码被动态执行后生成HTML内容
+
+2.  各自的特点
+Servlet能够很好地组织业务逻辑代码，但是在Java源文件中通过字符串拼接的方式生成动态HTML内容会导致代码维护困难、可读性差
+JSP虽然规避了Servlet在生成HTML内容方面的劣势，但是在HTML中混入大量、复杂的业务逻辑同样也是不可取的
+
+关于浏览器渲染数据：
+前端渲染:
+前端渲染就是指后端返回JSON数据或者JSONP数据，在前端利用预先写的html模板，循环读取JSON数据或者JSONP数据，进行选取，拼接，并且将这些数据插入页面来达到渲染效果。
+后端渲染：
+前端进行数据请求，后端用后台模板引擎直接生成html，前端接受到数据之后，直接插入页面。
+
+前端渲染和后端渲染两者的好处和坏处:
+1.前端渲染:
+好处：网络传输数据量小。不占用服务端运算资源（解析模板），模板在前端（很有可能仅部分在前端），改结构变交互都前端自己来了，改完自己调就行。
+坏处：前端耗时较多，对前端工作人员水平要求相对较高。前端代码较多，因为部分以前在后台处理的交互逻辑交给了前端处理。占用少部分客户端运算资源用于解析模板。
+2.后端渲染
+好处：前端耗时少，即减少了首屏时间，模板统一在后端。前端（相对）省事，不占用客户端运算资源（解析模板）
+坏处：占用服务器资源。
+
+前端渲染与后端渲染对比：
+    
+前端渲染：
+页面呈现速度：主要受限于带宽和客户端机器的好坏，优化效果好，可以逐步动态展开内容，感觉上会更快一点。
+可维护性强，前后端分离，各施其职，代码一目明了。
+SEO友好度(seo=Search(搜索) Engine(引擎) Optimization(优化),即搜索引擎优化)：差，大量使用ajax，多数浏览器不能抓取ajax数据。
+编码效率：高，前后端各自只做自己擅长的东西，后端最后只输出接口，不用管页面呈现，只要前后端人员能力不错，效率不会低。
+    
+后端渲染：
+页面呈现速度：快，受限于用户的带宽
+可维护性：差（前后端不分离）
+SEO友好度：好,后端的数据一步搞定,直接生成相对应的模板网页
+编码效率：低（有时候可能手忙脚乱,找不到数据对应的位置或者数据）
+
+在SpringBoot中创建Servlet：
+方式一： 通过注解扫描方式实现
+创建一个servlet类
+
+package com.liuhaiyang.springboot.servlet;
+ 
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+ 
+//servlet第一种方式
+@WebServlet(urlPatterns = "/myservlet")  //定义请求路径，通过该路径能访问到这个servlet
+public class MyServlet extends HttpServlet {
+ 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.getWriter().println("My Springboot-servlet-1");
+        resp.getWriter().flush();
+        resp.getWriter().close();
+    }
+ 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPost(req, resp);
+    }
+}
+ 
+在SpringBoot项目的入口类上方使用注解 @ServletComponentScan 注解来扫描Servlet中的注解即可。
+
+package com.liuhaiyang.springboot;
+ 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
+ 
+@SpringBootApplication
+@ServletComponentScan(basePackages = "com.liuhaiyang.springboot.servlet")   //第一种的注解
+public class SpringbootTest13Application {
+ 
+    public static void main(String[] args) {
+        SpringApplication.run(SpringbootTest13Application.class, args);
+    }
+ 
+}
+
+方式二：通过 SpringBoot 的配置类实现（组件注册）
+
+再次创建一个Servlet类。
+
+package com.liuhaiyang.springboot.servlet2;
+ 
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+ 
+ 
+//servlet第二种方式
+public class MyServlet extends HttpServlet {
+ 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.getWriter().println("My Springboot-servlet-2");
+        resp.getWriter().flush();
+        resp.getWriter().close();
+    }
+ 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPost(req, resp);
+    }
+}
+
+编写一个 Spring Boot 的配置类，在该类中注册 Servlet
+创建 ServletConfig 配置类
+
+package com.liuhaiyang.springboot.config;
+ 
+import com.liuhaiyang.springboot.servlet2.MyServlet;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+ 
+@Configuration //该注解将此类定义为配置类（相当于一个xml文件）
+public class ServletConfig {
+    //@Bean是一个方法级别上的注解，主要用于配置类里 相当于<beans> <bean id="" class="" > </beans>
+    @Bean
+    public ServletRegistrationBean myServletRegistrationBean(){
+        ServletRegistrationBean servletRegistrationBean=new ServletRegistrationBean(new MyServlet(),"/myservlet");
+        return servletRegistrationBean;
+    }
+}
+
+
+什么是过滤器（Filter）
+过滤器，是在java web中将你传入的request、response提前过滤掉一些信息，或者提前设置一些参数。
+然后再传入Servlet或Struts2的 action进行业务逻辑处理。比如过滤掉非法url（不是login.do的地址请求，如果用户没有登陆都过滤掉），
+或者在传入Servlet或Struts2的action前统一设置字符集，或者去除掉一些非法字符。
+过滤器处于客户端与Web资源（Servlet、JSP、HTML）之间，客户端与Web资源之间的请求和响应都要通过过滤器进行过滤。
+
+什么是拦截器（Interceptor）
+拦截器是一种面向方面/切面编程（AOP Aspect-Oriented Programming），而面向切面就是将多个模块的通用服务进行分离，
+如权限管理、日志服务，他们在多个模块中都会用到，就可以将其各自封装为一个可重用模块。
+而这些通用服务的具体实现是通过拦截器来完成，比如用户客户端访问一些保密模块都应先通过权限审查的拦截器来进行权限审查，
+确定用户是否具有该项操作的权限后方能向下执行。在面向切面编程的就是在你的service或者一个方法前调用一个方法，
+或者在方法后调用一个方法，比如动态代理就是拦截器的简单实现，在你调用方法前打印出字符串（或者做其它业务逻辑的操作），
+也可以在你调用方法后打印出字符串，甚至在你抛出异常的时候做业务逻辑的操作。
+
+二者区别
+1、拦截器是基于java的反射机制的，而过滤器是基于函数回调（职责链）
+2、过滤器依赖与servlet容器，而拦截器不依赖与servlet容器
+3、拦截器只能对action请求起作用，而过滤器则可以对几乎所有的请求起作用
+4、拦截器可以访问action上下文、值栈里的对象，而过滤器不能
+5、在action的生命周期中，拦截器可以多次被调用，而过滤器只能在容器初始化时被调用一次
+6、拦截器可以获取IOC容器中的各个bean，而过滤器不行，这点很重要，在拦截器里注入一个service，可以调用业务逻辑。
+
+通俗理解：
+（1）过滤器（Filter）：当你有一堆东西的时候，你只希望选择符合你要求的某一些东西。定义这些要求的工具，就是过滤器。（理解：就是一堆字母中取一个B）
+（2）拦截器（Interceptor）：在一个流程正在进行的时候，你希望干预它的进展，甚至终止它进行，这是拦截器做的事情。（理解：就是一堆字母中，干预它，通过验证的少点，顺便干点别的东西
+
+触发时机与执行顺序
+触发时机：
+拦截器与过滤器触发时机不一样
+过滤器是在请求进入容器后，但请求进入servlet之前进行预处理的。请求结束返回也是，是在servlet处理完后，返回给前端之前。
+
+过滤器包裹servlet，servlet包裹住拦截器。
+
+执行顺序 ：
+过滤前 - 拦截前 - Action处理 - 拦截后 - 过滤后。个人认为过滤是一个横向的过程，首先把客户端提交的内容进行过滤(例如未登录用户不能访问内部页面的处理)；
+过滤通过后，拦截器将检查用户提交数据的验证，做一些前期的数据处理，接着把处理后的数据发给对应的Action；
+Action处理完成返回后，拦截器还可以做其他过程(还没想到要做啥)，再向上返回到过滤器的后续操作。
+
+例子：自定义拦截器
+@Component
+public class MyInterceptor implements HandlerInterceptor {
+  @Override
+  public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+                           Object handler) throws Exception {
+		return true;
+		}
+		
+需要再写一个自己的配置类：
+@Configuration
+public class MyConfiguration implements WebMvcConfigurer {
+	 @Override
+	 public void addInterceptors(InterceptorRegistry registry) {
+		  //将我们自定义的拦截器加入配置
+	 	 InterceptorRegistration interceptor = registry.addInterceptor(new MyInterceptor());
+		  //设置拦截的url
+		  interceptor.addPathPatterns("/user/**");
+	 }
+}
+
+SpringBoot配置嵌入式Servlet容器：
+1、找到接口ConfigurableEmbeddedServletContainer
+2、找到接口EmbeddedServletContainerCustomizer
+3、注册Servlet、Filter、Listener
+	>ServletRegistrationBean
+	>FilterRegistrationBean
+	>ServletListenerRegistrationBean
+
+配置Servlet:
+@WebServlet(urlPatterns = "/portal/*")
+public class HelloServlet extends HttpServlet {
+    public HelloServlet() {
+        super();
+    }
+ 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("name");
+        System.out.println("=====================Hello "+ name +", this is doGet Filter===================");
+        PrintWriter writer = resp.getWriter();
+        writer.write("Your request parameter is " + name);
+        writer.flush();
+        writer.close();
+    }
+ 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("=====================Hello doPost Filter===================");
+        super.doPost(req, resp);
+    }
+ 
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("=====================Hello doPut Filter===================");
+        super.doPut(req, resp);
+    }
+}
+
+配置Filter：
+@WebFilter(urlPatterns = "/*", filterName = "helloFilter")
+public class HelloFilter implements Filter {
+ 
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        System.out.println("================init filter===================");
+    }
+ 
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        System.out.println("=================this is filer method====================");
+        filterChain.doFilter(servletRequest, servletResponse);
+    }
+ 
+    @Override
+    public void destroy() {
+        System.out.println("==========================destroy method===================");
+    }
+}
+
+配置Listener：
+package com.learn.listener;
+ 
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
+ 
+/**
+ * springBoot整合Listener
+ *
+ *<listener>
+ *	<listener-class>com.learn.listener.FirstListener</listener-class>
+ *</listener>
+ */
+@WebListener
+public class MyListener implements ServletContextListener {
+ 
+	@Override
+	public void contextDestroyed(ServletContextEvent arg0) {
+		// TODO Auto-generated method stub
+ 
+	}
+ 
+	@Override
+	public void contextInitialized(ServletContextEvent arg0) {
+		System.out.println("Listener...init......");
+ 
+	}
+ 
+}
+
+Java WEB 中什么是前后端不分离？
+在Java WEB开发中，前后端不分离和前后端分离是两种常见的架构设计方式。
+前后端不分离（Monolithic Architecture）：在这种架构中，前端和后端是紧密耦合的，它们运行在同一个应用程序中。
+这种架构的设计初衷是为了简化开发和维护，尤其是在小型应用或初创公司中。下面是一些前后端不分离的例子：
+
+1.Spring Boot：Spring Boot是一个全栈的Java框架，它可以创建独立的、生产级别的Spring应用程序。
+Spring Boot可以构建Web应用，并且内置了Tomcat服务器，前端和后端代码都放在同一个应用中。
+2.**JavaServer Pages (JSP)**：JSP是一种Java技术，让你可以在HTML中嵌入Java代码。
+JSP在服务器上运行，并动态生成HTML页面返回给客户端。这种方式下，前端和后端的代码是混在一起的。
+
+
+前后端分离（Microservices Architecture）：与前后端不分离相反，前后端分离将前端和后端的职责完全分开。
+前端通常负责展示数据和用户交互，而后端则负责处理业务逻辑和数据持久化。这种架构有助于提高可扩展性、模块化和独立性。
+下面是一些前后端分离的例子：
+
+1.Spring Cloud + React/Vue：这是一种常见的微服务架构。Spring Cloud用于构建后端微服务，如API网关、服务发现、负载均衡等。
+而React或Vue等前端框架则负责构建用户界面。
+2.RESTful API + Front-end SPA：后端提供RESTful API来处理业务逻辑和数据，
+而前端使用Single Page Application (SPA)框架（如Angular、React或Vue）来获取数据并展示给用户。
+
+总之：这两种架构都有其优缺点。前后端不分离的架构简单易用，但在大型项目中可能限制了可扩展性和模块化。
+前后端分离的架构提供了更高的灵活性，但同时也增加了开发和维护的复杂性。
+
+
+路由控制:前后端分离的情况后端在任何都会返回一个json数据，不涉及路由处理，即页面跳转全是由前端自己完成。
+不分离的情况，路由跳转一般由后端完成，而且携带数据，通过重定向或请求转发实现，依赖Servlet中的内置对象。
+返回数据:前后端分离的情况后端返回的整体划分上只有执行逻辑响应的消息实体类和对应的需要展示的数据分页类对应的JSON。
+不分离后端返回的是经过视图解析器处理前的字符串。
+
+请求方式:前后端分离的情况以Rest风格的方式处理为主,当执行增删改查对应http请求方法POST,DELEE,PUT,GET,
+一般以异步请求为主,不分离情况一般同步异步结合。请求上以GET和POST为主。
+
+注解使用：前后端分离，接收的数据是Json时需要@RequestBody作用在方法参数上。
+用于将POST请求数据转化为实体类。返回数据时使用@ResponseBody用于将POST请求数据转化为实体类。
+返回数据时使用@ResponseBody,作用在方法上,当然对于全局的也可以使用@RespController注解。
+前后端不分离一般使用@RequestMapping，请求方式不用管。前后端不分离一般使用@RequestMapping，请求方式不用管。
+
+
+Spring Boot的功能及实现原理:
+众所周知Spring框架需要进行大量的配置，Spring Boot引入自动配置的概念，让项目设置变得很容易。
+Spring Boot本身并不提供Spring框架的核心特性以及扩展功能，只是用于快速、敏捷地开发新一代基于Spring框架的应用程序。
+也就是说，它并不是用来替代Spring的解决方案，而是和Spring框架紧密结合用于提升Spring开发者体验的工具。
+同时它集成了大量常用的第三方库配置(例如Jackson, JDBC, Mongo, Redis, Mail等等)，
+Spring Boot应用中这些第三方库几乎可以零配置的开箱即用(out-of-the-box)，
+大部分的Spring Boot应用都只需要非常少量的配置代码，开发者能够更加专注于业务逻辑。
+Spring Boot只是承载者，辅助你简化项目搭建过程的。如果承载的是WEB项目，使用Spring MVC作为MVC框架，
+那么工作流程和你上面描述的是完全一样的，因为这部分工作是Spring MVC做的而不是Spring Boot。
+对使用者来说，换用Spring Boot以后，项目初始化方法变了，配置文件变了，另外就是不需要单独安装Tomcat这类容器服务器了，
+maven打出jar包直接跑起来就是个网站，但你最核心的业务逻辑实现与业务流程实现没有任何变化。
+
+
+所以，用最简练的语言概括就是：
+Spring 是一个“引擎”；
+Spring MVC 是基于Spring的一个 MVC 框架 ；
+Spring Boot 是基于Spring4的条件注册的一套快速开发整合包。
+
+SpringBoot中定制Web扩展配置：WebMvcConfigurerAdapter接口
+这是一个接口，里边声明了很多的方法，例如拦截器，视图解析器，格式转化器。
+如果想在webmvc中添加自己的功能，只需要去WebMvcConfigurer看看想增加什么功能，然后按照源码去写。
+
+Spring与SpringBoot常用注解：
+@SpringBootApplication：实现自动化装配，启动SpringBoot，包含@Configuration、@EnableAutoConfiguration、@ComponentScan通常用在主类上
+@Component：普通pojo注入spring容器
+@Service：Service注入Spring容器
+@Controller：Controller注入容器
+@Repository：Dao注入容器
+@ResponseBody：将java对象转为json格式的数据
+@RestController：该注解是@Controller和@ResponseBody的结合体，一般用于类，作用等于在类上面添加了@ResponseBody和@Controller
+@AutoWired：默认按类型装配，如果发现找到多个bean，则按照name方式比对，如果还有多个，则报出异常
+@Qualifier：spring的注解，按名字注入 一般当出现两个及以上bean时,不知道要注入哪个，结合@AutoWired使用
+@Resource：默认按名称注入例如@Resource(name = “zhaozhao”)则根据name属性注入找不到则报错，
+若无name属性则根据属性名称注入，如果匹配不成功则按照类型匹配匹配不成功则报错。
+@RequestMapping：@RequestMapping（url），通过该注解就可以通过配置的url进行访问，方式可以是get或post请求，两种方式均可
+@GetMapping：只是这个限定了只能是Get请求
+@PostMapping：只是这个限定了只能是Post请求
+@Value：用于获取bean的属性，一般用于读取配置文件的数据，作用在变量上 
+@ConfigurationProperties：用于注入Bean属性，然后再通过当前Bean获取注入值，作用在类上 
+@PropertySource：用于指定要读取的配置文件，可以和@Value或@ConfigurationProperties配合使用
+@Configuration：作用于类上表示这是一个配置类，可理解为用spring的时候xml里面的< beans>标签 
+@Bean：产生bean对象加入容器，作用于方法，可理解为用spring的时候xml里面的标签
+@RequestParam：获取查询参数。即url?name=这种形式
+@RequestBody：获取Body的参数，一般用于post获取参数 
+@PathVariable：获取路径参数。即url/{id}这种形式 
+@RequestHeader：获取请求头的信息 
+@CookieValue：获取Cookie的信息
+
+Spring Boot的启动类实现方式：
+1、程序从main方法开始运行
+2、使用SpringApplication.run()加载主程序类
+3、主程序类需要标注@SpringBootApplication
+4、@EnableAutoConfiguration是核心注解；
+5、@Import导入所有的自动配置场景
+6、@AutoConfigurationPackage定义默认的包扫描规则
+7、程序启动扫描加载主程序类所在的包以及下面所有子包的组件；
+
+Spring Boot使用的全局配置文件：
+>application.properties
+>application.yml
+
+配置文件放在src/main/resources目录或者类路径/config下
+.yml是YAML(YAML Aint Markup Language)编写的文件格式，YAML是一种直观的能够被电脑识别的的数据数据序列化格式，
+比json、xml等更适合做配置文件
+
+转载：https://www.zhihu.com/question/64671972/answer/223383505
+作者：zhonghd
+链接：https://www.jianshu.com/p/1d4d57a4db51
+来源：简书
+-------------------------------------------------------------------------------
+
+
+后端技术：
+Servlet → Java spring → springMVC
+以前：J2EE应用框架 J2EE开发框架主要有Hibernate，Spring，Struts2，EXTJS，Json。
+
+Hibernate：
+Hibernate是一个开放源代码的对象关系映射框架，它对JDBC进行了非常轻量级的对象封装，
+它将POJO与数据库表建立映射关系，是一个全自动的orm框架，hibernate可以自动生成SQL语句，自动执行，
+使得Java程序员可以随心所欲的使用对象编程思维来操纵数据库。Hibernate可以应用在任何使用JDBC的场合，
+既可以在Java的客户端程序使用，也可以在Servlet/JSP的Web应用中使用，
+最具革命意义的是，Hibernate可以在应用EJB的JavaEE架构中取代CMP，完成数据持久化的重任。
+
+创建映射配置文件：
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+	<!-- 建立类与表的映射 -->
+	<class name="com.meimeixia.hibernate.demo01.Customer" table="cst_customer">
+		<!-- 建立类中的属性与表中的主键相对应 -->
+		<id name="cust_id" column="cust_id">
+			<!-- 主键的生成策略，后面会讲，现在使用的是本地生成策略 -->
+			<generator class="native" />
+		</id>
+		
+		<!-- 建立类中的普通属性和表中的字段相对应 -->
+		<property name="cust_name" column="cust_name" />
+		<property name="cust_source" column="cust_source" />
+		<property name="cust_industry" column="cust_industry" />
+		<property name="cust_level" column="cust_level" />
+		<property name="cust_phone" column="cust_phone" />
+		<property name="cust_mobile" column="cust_mobile" />
+	</class>
+</hibernate-mapping>
+
+创建核心配置文件：
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+	
+<hibernate-configuration>
+	<session-factory>
+		<!-- 下面是三个必须要有的配置 -->
+		<!-- 配置连接MySQL数据库的基本参数 -->
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql:///hibernate_demo01</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">liayun</property>
+		
+		<!-- 配置Hibernate的方言 -->
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		
+		<!-- 下面两个是可选的配置！ -->
+		<!-- 打印sql语句 -->
+		<property name="hibernate.show_sql">true</property>
+		<!-- 格式化sql语句 -->
+		<property name="hibernate.format_sql">true</property>
+		
+		<!-- 告诉Hibernate的核心配置文件加载哪个映射文件 -->
+		<mapping resource="com/meimeixia/hibernate/demo01/Customer.hbm.xml"/>
+	</session-factory>
+</hibernate-configuration>
+
+创建单元测试类：
+package com.meimeixia.hibernate.demo01;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.junit.Test;
+
+/**
+ * Hibernate的入门案例
+ * @author 
+ *
+ */
+public class HibernateDemo1 {
+	
+	//保存用户的案例
+	@Test
+	public void demo1() {
+		//1. 加载Hibernate的核心配置文件
+		Configuration configuration = new Configuration().configure();
+		//如果在Hibernate的核心配置文件没有设置加载哪个映射文件，则可手动加载映射文件
+		//configuration.addResource("com/meimeixia/hibernate/demo01/Customer.hbm.xml");
+		
+		//2. 创建SessionFactory对象，类似于JDBC中的连接池
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		
+		//3. 通过SessionFactory获取到Session对象，类似于JDBC中的Connection
+		Session session = sessionFactory.openSession();
+		
+		//4. 手动开启事务，（最好是手动开启事务）
+		Transaction transaction = session.beginTransaction();
+		
+		//5. 编写代码
+		Customer customer = new Customer();
+		customer.setCust_name("张小敬aaa");
+		
+		session.save(customer);//保存一个用户
+		
+		//6. 事务提交
+		transaction.commit();
+		
+		//7. 释放资源
+		session.close();
+		sessionFactory.close();
+	}
+	
+}
+
+Struts2：
+Struts2框架是一个用于开发Java EE网络应用程序的开放源代码网页应用程序架构。它利用并延伸了Java Servlet API，鼓励开发者采用MVC架构。
+Struts2以WebWork优秀的设计思想为核心，吸收了Struts框架的部分优点，提供了一个更加整洁的MVC设计模式实现的Web应用程序框架。
+
+Strut2核心过滤器：web.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" 
+	xmlns="http://java.sun.com/xml/ns/javaee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+  <display-name></display-name>	
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <!-- 配置struts2的核心过滤器 -->
+  <!-- 所有请求都要通过核心过滤器 -->
+  <filter>
+  	<filter-name>struts2</filter-name>
+  	<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+  </filter>
+  
+  <filter-mapping>
+  	<filter-name>struts2</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+</web-app>
+
+编写启动类：
+package com.banana.struts.demo1;
+/*
+ * Struts2的Action类
+ */
+public class HelloAction {
+	public String execute(){
+		System.out.print("HelloAction执行了......");
+		return "success";
+	}
+}
+
+编写struts.xml来控制转向：
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<!-- Struts2为了管理Action的配置，通过包进行管理 -->
+	<!-- 配置Struts2的包 -->
+	<package name="hello" extends="struts-default" namespace="/">
+		<!-- 配置Action -->
+		<action name="hello" class="com.banana.struts.demo1.HelloAction">
+		<!-- 页面的跳转 -->
+			<result name="success">/demo1/success.jsp</result>
+		</action>
+	</package>
+</struts>
+
+添加页面：
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <base href="<%=basePath%>">
+    <title>My JSP 'demo1' starting page</title>
+  </head>
+  
+  <body>
+    <h1>Struts2的入门</h1>
+    <h3><a href="${ pageContext.request.contextPath }/hello.action">Struts2的入门</a></h3>
+  </body>
+  
+</html>
+
+
+MVC设计模式：MVC指MVC模式的某种框架，它强制性地使应用程序的输入、处理和输出分开。
+使用MVC应用程序被分成三个核心部件：模型、视图、控制器。
+
+>M即model模型是指模型表示业务规则。在MVC的三个部件中，模型拥有最多的处理任务。即Bean层、mapper层和service层。
+被模型返回的数据是中立的，模型与数据格式无关，这样一个模型能为多个视图提供数据，由于应用于模型的代码只需写一次就可以被多个视图重用，所以减少了代码的重复性。
+
+>V即View视图是指用户看到并与之交互的界面。比如由html元素组成的网页界面，或者软件的客户端界面。
+MVC的好处之一在于它能为应用程序处理很多不同的视图。在视图中其实没有真正的处理发生，它只是作为一种输出数据并允许用户操作的方式。
+
+>C即controller控制器是指控制器接受用户的输入并调用模型和视图去完成用户的需求，控制器本身不输出任何东西和做任何处理。
+它只是接收请求并决定调用哪个模型构件去处理请求，然后再确定用哪个视图来显式返回的数据。
+
+MVC(Model模型、View视图、Control控制层)，将软件进行分层达到松耦合的效果。
+通用的软件编程思想, 在MVC设计模式中认为, 任何软件都可以分三层：
+控制层（Controller）、数据处理模型（Model）、负责展示数据的视图（View）。
+在MVC设计思想中要求一个符合MVC设计思想的软件应该保证上面这三部分相互独立，互不干扰，每一个部分只负责自己擅长的部分。
+如果某一个模块发生变化，应该尽量做到不影响其他两个模块。提高代码的可读性，实现程序间的松耦合、提高代码复用性。
+
+
+SSH：
+SSH框架是Struts、Spring、Hibernate的一个合成框架，目前市场上比较流行的框架中也有它的身影。
+Struts是一个基于MVC模式的应用框架，如果学过Servlet,那么其本质和Servlet差不多。
+MVC模式主要包括模型(Model)，视图(View)，控制器(Controller)，而Struts主要作为控制器来建立模型和视图的数据交互。
+Struts通过拦截器处理客户的各种请求。Spring使用基本的JavaBean来完成以前只可能由EJB完成的事情，
+Spring的核-fl，主要控制翻转(IOC)和面向切面(AOP)，简单的说Spring是一种分层的轻量级开源框架。
+Spring更像是一个容器，将所有配置的Struts和Hibernate中的东西都放置进来，只要能够做好配置，它就会找到相应的位置，进行处理。
+Hibernate是一个开源代码的对象映射框架，是根据JDBC技术基础衍生而来的，它将直接操作原来的数据库变为直接操作数据表后生成的Java类，
+实现了对象编程思维来操纵数据库。SSH框架中的各种技术相互协调、配合。实现了这一强大的框架。
+
+
+SSM：SSM（Spring+SpringMVC+MyBatis）框架集由Spring、MyBatis两个开源框架整合而成（SpringMVC是Spring中的部分内容），常作为数据源较简单的web项目的框架。
+
+1.spring MVC ＋ spring +mybatis，是标准的MVC设计模式，将整个系统划分为显示层，Controller层，Service层，DAO层四层
+使用Spring MVC负责请求的转发和视图管理
+spring实现业务对象管理，mybatis作为数据对象的持久化引擎。
+2、Spring是一个开源框架，Spring是一个轻量级的控制反转（IoC）和面向切面（AOP）的容器框架，还能更好的让其他框架整合。
+3、Spring MVC框架是有一个MVC框架，通过实现Model-View-Controller模式来很好地将数据、业务与展现进行分离。
+4、MyBatis 是一个基于Java的持久层框架
+
+
+  
 Java Stream：
 Stream流是一种顺序的元素集合，它支持类似于SQL语句的操作，如过滤、映射、排序等。通过使用Stream流，我们可以以声明式的方式对数据进行处理，而不需要关心具体的实现细节。
 
@@ -1863,7 +2770,426 @@ Constructor 类： Java.lang.reflec 包中的类，表示类的构造方法。
 getFields():获取当前运行时类及父类中声明为public访问权限的属性
 getDeclaredFields()：获取当前运行时类中声明的所有属性（不包括父类）
 getMethods():获取当前运行时类及其父类中声明为public的方法
-				
+	
+
+注解、反射、动态代理→ Java Spring  
+JavaBean:JavaBean 是一种JAVA语言写成的可重用组件。为写成JavaBean，类必须是具体的和公共的，并且具有无参数的构造器。
+JavaBean 通过提供符合一致性设计模式的公共方法将内部域暴露成员属性，set和get方法获取。
+
+作用：JavaBean是一种可重用的Java组件，它可以被Applet、Servlet、JSP等Java应用程序调用。
+也可以可视化地被Java开发工具使用。它包含属性(Properties)、方法(Methods)、事件(Events)等特性。
+
+Java注解：
+生成文档，通过代码里标识的元数据生成javadoc文档。
+编译检查，通过代码里标识的元数据让编译器在编译期间进行检查验证。
+编译时动态处理，编译时通过代码里标识的元数据动态处理，例如动态生成代码。
+运行时动态处理，运行时通过代码里标识的元数据动态处理，例如使用反射注入实例。
+
+四种元注解：
+ ▷ Retention：指定注解的作用范围，三种 SOURCE,CLASS,RUNTIME
+ ▷ Target：指定注解可以在哪些地方使用
+ ▷ Documented ：指定该注解是否会在 javadoc 体现
+ ▷ Inherited：子类会继承父类注解
+
+注解的注意事项：
+▷ 注解仅存在于源码中，在class字节码文件中不包含
+▷ 默认的保留策略，注解会在class字节码文件中存在，但运行时无法获得，
+▷ 注解会在class字节码文件中存在，在运行时可以通过反射获取到
+▷ 首先要明确生命周期长度 SOURCE < CLASS < RUNTIME ，前者能作用的地方后者一定也能作用。
+        ①：一般如果需要在 运行时去动态获取注解信息，那只能用 RUNTIME 注解；
+        ②：如果要在 编译时进行一些预处理操作，比如生成一些辅助代码（如 ButterKnife），就用 CLASS注解；
+        ③：如果只是做一些 检查性的操作如 @Override 和 @SuppressWarnings，则可选用 SOURCE 注解。
+
+		
+Retention注解：
+只能用于修饰一个 Annotation 定义, 用于指定该 Annotation 可以保留多长时间,
+@Rentention 包含一个 RetentionPolicy 类型的成员变量, 使用 @Rentention 时必须为该 value 成员变量指定值（值有三种）。
+▲ 三种值：
+▷ RetentionPolicy.SOURCE: 编译器使用后，直接丢弃这种策略的注释。
+▷ RetentionPolicy.CLASS: 编译器将把注解记录在 class 文件中。当运行 Java 程序时 , JVM 不会保留注解。 这是默认值。
+▷ RetentionPolicy.RUNTIME: 编译器将把注解记录在 class 文件中。当运行 Java 程序时 , JVM 会保留注解。程序可以通过反射获取该注解。
+
+3、Target 注解
+用于修饰 Annotation 定义，指定被修饰的 Annotation 能用于修饰哪些程序元素。@Target 也包含一个名为 value 的成员变量。
+
+​​​​​​4、Documented 注解
+@Documented: 用于指定被该元注解修饰的 Annotation 类将被javadoc 工具提取成文档，即在生成文档时，可以看到该注解。
+注意：
+定义为@Documented 的注解必须设置Retention值为RUNTIME。
+
+5、Inherited 注解
+被@Inherited 修饰的注解 将具有继承性，如果某个类使用了被 @Inherited修饰的注解，则其子类将自动具有该注解
+	
+Java动态代理：
+代理类在程序运行时创建的代理方式被成为动态代理。在静态代理中，代理类（RenterProxy）是自己已经定义好了的，在程序运行之前就已经编译完成。
+而动态代理是在运行时根据我们在Java代码中的“指示”动态生成的。Java运用了反射实现了动态代理。
+动态代理相较于静态代理的优势在于可以很方便的对代理类的所有函数进行统一管理，如果我们想在每个代理方法前都加一个方法，如果代理方法很多，我们需要在每个代理方法都要写一遍，很麻烦。而动态代理则不需要。
+代码实现：创建RenterInvocationHandler类，这个类实现了InvocationHandler接口，并持有一个被代理类的对象，InvocationHandler中有一个invoke方法，所有执行代理对象的方法都会被替换成执行invoke方法。
+然后通过反射在invoke方法中执行代理类的方法。在代理过程中，在执行代理类的方法前或者后可以执行自己的操作，这就是spring aop的主要原理。
+
+动态代理之Cglib代理：
+动态代理需要被代理类实现接口，如果被代理类没有实现接口，那么这么实现动态代理？这时候就需要用到CGLib了。这种代理方式就叫做CGlib代理。
+Cglib代理也叫作子类代理，他是通过在内存中构建一个子类，并在子类中采用方法拦截的技术拦截所有父类方法的调用，然后加入自己需要的操作。因为使用的是继承的方式，所以不能代理final 类
+动态代理与CGLib动态代理都是实现Spring AOP的基础。如果加入容器的目标对象有实现接口,用动态代理，如果目标对象没有实现接口,用Cglib代理。
+
+动态代理的运用：Spring
+Spring框架：Spring→SpringMVC→SpringBoot 
+Spring 框架就像一个家族，有众多衍生产品例如 boot、security、jpa等等。但他们的基础都是Spring 的 ioc和 aop ioc 提供了依赖注入的容器 aop ，解决了面向横切面的编程，然后在此两者的基础上实现了其他延伸产品的高级功能。Spring MVC是基于 Servlet 的一个 MVC 框架 主要解决 WEB 开发的问题，因为 Spring 的配置非常复杂，各种XML、 JavaConfig、hin处理起来比较繁琐。于是为了简化开发者的使用，从而创造性地推出了Spring boot，约定优于配置，简化了spring的配置流程。
+Spring的工作原理其实是，Spring在启动时读取bean配置信息，这里bean配置信息包括xml文件、Java类#Configuration、注解#AutoWired，
+存放到Bean注册表，并根据Bean注册表实例化Bean，实际上就是实例化Bean的实现类，然后将Bean实例放到Spring容器中。
+
+Spring的IOC是通过反射来实现的：
+在Spring中，通过IOC可以将实现类、参数信息等配置在其对应的配置文件中，当需要更改实现类或参数信息时，只需要修改配置文件即可。
+Spring的IOC实现原理利用的就是Java的反射机制，Spring的工厂类会帮我们完成配置文件的读取、利用反射机制注入对象等工作，
+我们可以通过bean的名称获取对应的对象。
+
+Spring AOP（Aspect-Oriented Programming）是面向切面编程的一种实现技术，主要用于实现程序功能的统一维护。
+Spring AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
+Spring AOP的三种使用方式：
+
+注解方式：通过注解的方式配置切入点，然后定义增强处理。
+XML方式：通过XML配置文件的方式配置切入点，然后定义增强处理。
+Java方式：通过Java配置类的方式配置切入点，然后定义增强处理。
+
+
+Spring AOP是运用反射来实现的：
+Spring AOP即面向切面编程，是Spring核心之一，其可以快速横向扩展。在Spring中，每一个代理实例都有一个关联的调用处理程序对象，
+它实现了接口InvocationHandler，该接口的invoke方法用于处理代理实例上的方法调用。
+在Spring中，当需要使用该Service时，Spring会自动将对应的Bean注入到需要它的地方，这个过程是自动的，
+对于开发人员来说是透明的，无需手动进行配置。
+
+
+Spring IOC举例————IOC操作Bean管理（基于XML方式）
+1、基于 xml 方式创建对象
+（1）在 spring 配置文件中，使用 bean 标签，标签里面添加对应属性，就可以实现对象创建
+（2）在 bean 标签有很多属性，介绍常用的属性
+* id 属性：唯一标识
+* class 属性：类全路径（包类路径）
+（3）创建对象时候，默认也是执行无参数构造方法完成对象创建
+<bean id = "user" class = "Spring.User"></bean>
+
+2、基于 xml 方式注入属性
+（1）DI：依赖注入，就是注入属性
+
+3、第一种注入方式：使用 set 方法进行注入
+（1）创建类，定义属性和对应的 set 方法
+/**
+* 演示使用 set 方法进行注入属性
+*/
+public class Book {
+ //创建属性
+ private String bname;
+ private String bauthor;
+ //创建属性对应的 set 方法
+ public void setBname(String bname) {
+ this.bname = bname;
+ }
+ public void setBauthor(String bauthor) {
+ this.bauthor = bauthor;
+ }
+}
+（2）在 spring 配置文件配置对象创建，配置属性注入
+<!--2 set 方法注入属性-->
+<bean id="book" class="com.atguigu.spring5.Book">
+ <!--使用 property 完成属性注入
+ name：类里面属性名称
+ value：向属性注入的值
+ -->
+ <property name="bname" value="易筋经"></property>
+ <property name="bauthor" value="达摩老祖"></property>
+</bean>
+4、第二种注入方式：使用有参数构造进行注入
+（1）创建类，定义属性，创建属性对应有参数构造方法
+public class Orders {
+ //属性
+ private String oname;
+ private String address;
+ //有参数构造
+ public Orders(String oname,String address) {
+ this.oname = oname;
+ this.address = address;
+ }
+}
+（2）在 spring 配置文件中进行配置
+<!--3 有参数构造注入属性-->
+<bean id="orders" class="com.atguigu.spring5.Orders">
+ <constructor-arg name="oname" value="电脑"></constructor-arg>
+ <constructor-arg name="address" value="China"></constructor-arg>
+</bean>
+
+Spring AOP举例
+1、创建类，在类里面定义方法
+public class User {
+ public void add() {
+ System.out.println("add.......");
+ }
+}
+2、创建增强类（编写增强逻辑）
+（1）在增强类里面，创建方法，让不同方法代表不同通知类型
+//增强的类
+public class UserProxy {
+ public void before() {//前置通知
+ System.out.println("before......");
+ }
+}
+
+3、进行通知的配置
+（1）在 spring 配置文件中，开启注解扫描
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xmlns:context="http://www.springframework.org/schema/context" 
+ xmlns:aop="http://www.springframework.org/schema/aop" 
+ xsi:schemaLocation="http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans.xsd 
+ http://www.springframework.org/schema/context 
+http://www.springframework.org/schema/context/spring-context.xsd 
+ http://www.springframework.org/schema/aop 
+http://www.springframework.org/schema/aop/spring-aop.xsd">
+ <!-- 开启注解扫描 -->
+ <context:component-scan basepackage="com.atguigu.spring5.aopanno"></context:component-scan>
+
+ （2）使用注解创建 User 和 UserProxy 对象
+//被增强的类
+@Component
+public class User{
+//代码部分
+}
+
+//增强的类
+@Component
+public class UserProxy{
+//代码部分
+}
+
+（3）在增强类上面添加注解 @Aspect
+//增强的类
+@Component
+@Aspect //生成代理对象
+public class UserProxy {
+
+（4）在 spring 配置文件中开启生成代理对象
+<!-- 开启 Aspect 生成代理对象-->
+<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+
+4、配置不同类型的通知
+（1）在增强类的里面，在作为通知方法上面添加通知类型注解，使用切入点表达式配置
+//增强的类
+@Component
+@Aspect //生成代理对象
+public class UserProxy {
+ //前置通知
+ //@Before 注解表示作为前置通知
+ @Before(value = "execution(* com.atguigu.spring5.aopanno.User.add(..))")
+ public void before() {
+ System.out.println("before.........");
+ }
+ //后置通知（返回通知）
+ @AfterReturning(value = "execution(* 
+com.atguigu.spring5.aopanno.User.add(..))")
+ public void afterReturning() {
+ System.out.println("afterReturning.........");
+ }
+ //最终通知
+ @After(value = "execution(* com.atguigu.spring5.aopanno.User.add(..))")
+ public void after() {
+ System.out.println("after.........");
+ }
+ //异常通知
+ @AfterThrowing(value = "execution(* 
+com.atguigu.spring5.aopanno.User.add(..))")
+ public void afterThrowing() {
+ System.out.println("afterThrowing.........");
+ }
+ //环绕通知
+ @Around(value = "execution(* com.atguigu.spring5.aopanno.User.add(..))")
+ public void around(ProceedingJoinPoint proceedingJoinPoint) throws 
+Throwable {
+ System.out.println("环绕之前.........");
+ //被增强的方法执行
+ proceedingJoinPoint.proceed();
+ System.out.println("环绕之后.........");
+ }
+}
+5、相同的切入点抽取
+//相同切入点抽取
+@Pointcut(value = "execution(* com.atguigu.spring5.aopanno.User.add(..))")
+public void pointdemo() {
+}
+//前置通知
+//@Before 注解表示作为前置通知
+@Before(value = "pointdemo()")
+public void before() {
+ System.out.println("before.........");
+}
+6、有多个增强类多同一个方法进行增强，设置增强类优先级
+（1）在增强类上面添加注解 @Order(数字类型值)，数字类型值越小优先级越高
+@Component
+@Aspect
+@Order(1)
+public class PersonProxy
+
+SpringMVC：
+SpringMVC是一个基于Java的Web应用开发框架，用于构建灵活、可扩展的Web应用程序。它是Spring框架的一部分，提供了一种模型-视图-控制器（MVC）的架构模式，用于将应用程序的不同方面分离开来。
+SpringMVC使用了前端控制器（Front Controller）设计模式，其中DispatcherServlet充当中央调度器，负责接收所有的客户端请求并将其分派给相应的处理程序（Controller）。
+它还提供了丰富的功能，如请求映射、数据绑定、数据验证、视图解析和国际化支持等，以简化Web应用程序的开发过程。
+通过使用SpringMVC，开发人员可以轻松地构建可维护和可扩展的Web应用程序，实现松耦合和高度可测试性。它还与其他Spring框架模块（如Spring IoC和Spring AOP）紧密集成，提供了全面的企业级开发解决方案。
+
+Spring MVC的功能
+Spring MVC提供了一种轻度耦合的方式来开发web应用。
+Spring MVC是Spring的一个模块，是一个web框架。通过Dispatcher Servlet, ModelAndView 和 View Resolver，开发web应用变得很容易。
+解决的问题领域是网站应用程序或者服务开发——URL路由、Session、模板引擎、静态Web资源等等。
+
+Spring MVC获取请求参数的过程：
+1、通过ServletAPI获取
+将HttpServletRequest作为控制器方法的形参，此时HttpServletRequest类型的参数表示封装了当前请
+求的请求报文的对象
+@RequestMapping("/testParam")
+public String testParam(HttpServletRequest request){
+String username = request.getParameter("username");
+String password = request.getParameter("password");
+System.out.println("username:"+username+",password:"+password);
+return "success";
+}
+
+2、通过控制器方法的形参获取请求参数
+在控制器方法的形参位置，设置和请求参数同名的形参，当浏览器发送请求，匹配到请求映射时，在
+DispatcherServlet中就会将请求参数赋值给相应的形参
+
+<a th:href="@{/testRest/1/admin}">测试路径中的占位符-->/testRest</a><br>
+@RequestMapping("/testRest/{id}/{username}")
+
+@RequestMapping("/testParam")
+public String testParam(String username, String password){
+System.out.println("username:"+username+",password:"+password);
+return "success";
+}
+
+
+注：
+若请求所传输的请求参数中有多个同名的请求参数，此时可以在控制器方法的形参中设置字符串
+数组或者字符串类型的形参接收此请求参数
+若使用字符串数组类型的形参，此参数的数组中包含了每一个数据
+若使用字符串类型的形参，此参数的值为每个数据中间使用逗号拼接的结果
+
+3、@RequestParam
+@RequestParam是将请求参数和控制器方法的形参创建映射关系
+@RequestParam注解一共有三个属性：
+value：指定为形参赋值的请求参数的参数名
+required：设置是否必须传输此请求参数，默认值为true
+若设置为true时，则当前请求必须传输value所指定的请求参数，若没有传输该请求参数，且没有设置
+defaultValue属性，则页面报错400：Required String parameter 'xxx' is not present；若设置为
+false，则当前请求不是必须传输value所指定的请求参数，若没有传输，则注解所标识的形参的值为
+null
+defaultValue：不管required属性值为true或false，当value所指定的请求参数没有传输或传输的值
+为""时，则使用默认值为形参赋值
+
+4、@RequestHeader
+@RequestHeader是将请求头信息和控制器方法的形参创建映射关系
+@RequestHeader注解一共有三个属性：value、required、defaultValue，用法同@RequestParam
+
+5、@CookieValue
+@CookieValue是将cookie数据和控制器方法的形参创建映射关系
+@CookieValue注解一共有三个属性：value、required、defaultValue，用法同@RequestParam
+
+6、通过POJO获取请求参数
+可以在控制器方法的形参位置设置一个实体类类型的形参，此时若浏览器传输的请求参数的参数名和实
+体类中的属性名一致，那么请求参数就会为此属性赋值
+
+Spring MVC的工作流程：
+用户通过视图层发送请求到服务器，在服务器中请求被Controller接收，
+Controller调用相应的Model层处理请求，处理完毕将结果返回到Controller，
+Controller再根据请求处理的结果找到相应的View视图，渲染数据后最终响应给浏览器。
+
+<form th:action="@{/testpojo}" method="post">
+用户名：<input type="text" name="username"><br>
+密码：<input type="password" name="password"><br>
+性别：<input type="radio" name="sex" value="男">男<input type="radio"
+name="sex" value="女">女<br>
+年龄：<input type="text" name="age"><br>
+邮箱：<input type="text" name="email"><br>
+<input type="submit">
+</form>
+@RequestMapping("/testpojo")
+public String testPOJO(User user){
+System.out.println(user);
+return "success";
+}
+//最终结果-->User{id=null, username='张三', password='123', age=23, sex='男',
+email='123@qq.com'}
+
+7、解决获取请求参数的乱码问题
+解决获取请求参数的乱码问题，可以使用SpringMVC提供的编码过滤器CharacterEncodingFilter，但是
+必须在web.xml中进行注册
+注：
+SpringMVC中处理编码的过滤器一定要配置到其他过滤器之前，否则无效
+
+
+SpringMVC流程
+1、用户发送请求至前端控制器DispatcherServlet。
+2、DispatcherServlet收到请求调用HandlerMapping处理器映射器。
+3、处理器映射器找到具体的处理器(可以根据xml配置、注解进行查找)，生成处理器对象及处理器拦截器(如果有则生成)一并返回给DispatcherServlet。
+4、DispatcherServlet调用HandlerAdapter处理器适配器。
+5、HandlerAdapter经过适配调用具体的处理器(Controller，也叫后端控制器)。
+6、Controller执行完成返回ModelAndView。
+7、HandlerAdapter将controller执行结果ModelAndView返回给DispatcherServlet。
+8、DispatcherServlet将ModelAndView传给ViewReslover视图解析器。
+9、ViewReslover解析后返回具体View。
+10、DispatcherServlet根据View进行渲染视图（即将模型数据填充至视图中）。
+11、DispatcherServlet响应用户。
+
+以下组件通常使用框架提供实现：
+
+DispatcherServlet：作为前端控制器，整个流程控制的中心，控制其它组件执行，统一调度，降低组件之间的耦合性，提高每个组件的扩展性。
+HandlerMapping：通过扩展处理器映射器实现不同的映射方式，例如：配置文件方式，实现接口方式，注解方式等。
+HandlAdapter：通过扩展处理器适配器，支持更多类型的处理器。
+ViewResolver：通过扩展视图解析器，支持更多类型的视图解析，例如：jsp、freemarker、pdf、excel等。
+
+
+域对象共享数据
+1、使用ServletAPI向request域对象共享数据
+<form th:action="@{/testpojo}" method="post">
+用户名：<input type="text" name="username"><br>
+密码：<input type="password" name="password"><br>
+性别：<input type="radio" name="sex" value="男">男<input type="radio"
+name="sex" value="女">女<br>
+年龄：<input type="text" name="age"><br>
+邮箱：<input type="text" name="email"><br>
+<input type="submit">
+</form>
+@RequestMapping("/testpojo")
+public String testPOJO(User user){
+System.out.println(user);
+return "success";
+}
+//最终结果-->User{id=null, username='张三', password='123', age=23, sex='男',
+email='123@qq.com'}
+<!--配置springMVC的编码过滤器-->
+<filter>
+<filter-name>CharacterEncodingFilter</filter-name>
+<filterclass>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+<init-param>
+<param-name>encoding</param-name>
+<param-value>UTF-8</param-value>
+</init-param>
+<init-param>
+<param-name>forceResponseEncoding</param-name>
+<param-value>true</param-value>
+</init-param>
+</filter>
+<filter-mapping>
+<filter-name>CharacterEncodingFilter</filter-name>
+<url-pattern>/*</url-pattern>
+</filter-mapping>
+注：
+SpringMVC中处理编码的过滤器一定要配置到其他过滤器之前，否则无效
+
+总结：
+SpringMVC本质上是对Java Web Servlet的封装，使得开发Java Web项目没有那么臃肿。
+Spring MVC是后端渲染式的后台开发框架，没有做到前后端分离，对前端开发人员也要求有Java Web的开发环境。
+前端人员作出的静态Html页面，也需要进行整合，改为Spring MVC里的View。
+
+	
 Java JVM：
 Java虚拟机(Jvm)是可运行Java代码的假想计算机。Java虚拟机包括一套字节码指令集、一组寄存器、一个栈、一个垃圾回收堆和一个存储方法域。
 JVM让Java成为跨平台语言，Java有JVM从软件层面屏蔽了底层硬件、指令层面的细节让他兼容各种系统。
@@ -5126,7 +6452,9 @@ def select_sort(L):
 
 堆排序
 堆的概念
-堆：本质是一种数组对象。特别重要的一点性质：<b>任意的叶子节点小于（或大于）它所有的父节点</b>。对此，又分为大顶堆和小顶堆，大顶堆要求节点的元素都要大于其孩子，小顶堆要求节点元素都小于其左右孩子，两者对左右孩子的大小关系不做任何要求。
+堆：本质是一种数组对象。特别重要的一点性质：<b>任意的叶子节点小于（或大于）它所有的父节点</b>。
+对此，又分为大顶堆和小顶堆，大顶堆要求节点的元素都要大于其孩子，
+小顶堆要求节点元素都小于其左右孩子，两者对左右孩子的大小关系不做任何要求。
 利用堆排序，就是基于大顶堆或者小顶堆的一种排序方法。下面，我们通过大顶堆来实现。
 
 基本思想：
@@ -5387,1291 +6715,8 @@ def radix_sort(L):
         for x in range(0,len(L)):
             L[x] = bucket[x]
 
-				
-注解、反射、动态代理→ Java Spring  
-JavaBean:JavaBean 是一种JAVA语言写成的可重用组件。为写成JavaBean，类必须是具体的和公共的，并且具有无参数的构造器。
-JavaBean 通过提供符合一致性设计模式的公共方法将内部域暴露成员属性，set和get方法获取。
 
-作用：JavaBean是一种可重用的Java组件，它可以被Applet、Servlet、JSP等Java应用程序调用。
-也可以可视化地被Java开发工具使用。它包含属性(Properties)、方法(Methods)、事件(Events)等特性。
-
-Java注解：
-生成文档，通过代码里标识的元数据生成javadoc文档。
-编译检查，通过代码里标识的元数据让编译器在编译期间进行检查验证。
-编译时动态处理，编译时通过代码里标识的元数据动态处理，例如动态生成代码。
-运行时动态处理，运行时通过代码里标识的元数据动态处理，例如使用反射注入实例。
-
-四种元注解：
- ▷ Retention：指定注解的作用范围，三种 SOURCE,CLASS,RUNTIME
- ▷ Target：指定注解可以在哪些地方使用
- ▷ Documented ：指定该注解是否会在 javadoc 体现
- ▷ Inherited：子类会继承父类注解
-
-注解的注意事项：
-▷ 注解仅存在于源码中，在class字节码文件中不包含
-▷ 默认的保留策略，注解会在class字节码文件中存在，但运行时无法获得，
-▷ 注解会在class字节码文件中存在，在运行时可以通过反射获取到
-▷ 首先要明确生命周期长度 SOURCE < CLASS < RUNTIME ，前者能作用的地方后者一定也能作用。
-        ①：一般如果需要在 运行时去动态获取注解信息，那只能用 RUNTIME 注解；
-        ②：如果要在 编译时进行一些预处理操作，比如生成一些辅助代码（如 ButterKnife），就用 CLASS注解；
-        ③：如果只是做一些 检查性的操作如 @Override 和 @SuppressWarnings，则可选用 SOURCE 注解。
-
-		
-Retention注解：
-只能用于修饰一个 Annotation 定义, 用于指定该 Annotation 可以保留多长时间,
-@Rentention 包含一个 RetentionPolicy 类型的成员变量, 使用 @Rentention 时必须为该 value 成员变量指定值（值有三种）。
-▲ 三种值：
-▷ RetentionPolicy.SOURCE: 编译器使用后，直接丢弃这种策略的注释。
-▷ RetentionPolicy.CLASS: 编译器将把注解记录在 class 文件中。当运行 Java 程序时 , JVM 不会保留注解。 这是默认值。
-▷ RetentionPolicy.RUNTIME: 编译器将把注解记录在 class 文件中。当运行 Java 程序时 , JVM 会保留注解。程序可以通过反射获取该注解。
-
-3、Target 注解
-用于修饰 Annotation 定义，指定被修饰的 Annotation 能用于修饰哪些程序元素。@Target 也包含一个名为 value 的成员变量。
-
-​​​​​​4、Documented 注解
-@Documented: 用于指定被该元注解修饰的 Annotation 类将被javadoc 工具提取成文档，即在生成文档时，可以看到该注解。
-注意：
-定义为@Documented 的注解必须设置Retention值为RUNTIME。
-
-5、Inherited 注解
-被@Inherited 修饰的注解 将具有继承性，如果某个类使用了被 @Inherited修饰的注解，则其子类将自动具有该注解
-	
-Java动态代理：
-代理类在程序运行时创建的代理方式被成为动态代理。在静态代理中，代理类（RenterProxy）是自己已经定义好了的，在程序运行之前就已经编译完成。
-而动态代理是在运行时根据我们在Java代码中的“指示”动态生成的。Java运用了反射实现了动态代理。
-动态代理相较于静态代理的优势在于可以很方便的对代理类的所有函数进行统一管理，如果我们想在每个代理方法前都加一个方法，如果代理方法很多，我们需要在每个代理方法都要写一遍，很麻烦。而动态代理则不需要。
-代码实现：创建RenterInvocationHandler类，这个类实现了InvocationHandler接口，并持有一个被代理类的对象，InvocationHandler中有一个invoke方法，所有执行代理对象的方法都会被替换成执行invoke方法。
-然后通过反射在invoke方法中执行代理类的方法。在代理过程中，在执行代理类的方法前或者后可以执行自己的操作，这就是spring aop的主要原理。
-
-动态代理之Cglib代理：
-动态代理需要被代理类实现接口，如果被代理类没有实现接口，那么这么实现动态代理？这时候就需要用到CGLib了。这种代理方式就叫做CGlib代理。
-Cglib代理也叫作子类代理，他是通过在内存中构建一个子类，并在子类中采用方法拦截的技术拦截所有父类方法的调用，然后加入自己需要的操作。因为使用的是继承的方式，所以不能代理final 类
-动态代理与CGLib动态代理都是实现Spring AOP的基础。如果加入容器的目标对象有实现接口,用动态代理，如果目标对象没有实现接口,用Cglib代理。
-
-动态代理的运用：Spring
-Spring框架：Spring→SpringMVC→SpringBoot 
-Spring 框架就像一个家族，有众多衍生产品例如 boot、security、jpa等等。但他们的基础都是Spring 的 ioc和 aop ioc 提供了依赖注入的容器 aop ，解决了面向横切面的编程，然后在此两者的基础上实现了其他延伸产品的高级功能。Spring MVC是基于 Servlet 的一个 MVC 框架 主要解决 WEB 开发的问题，因为 Spring 的配置非常复杂，各种XML、 JavaConfig、hin处理起来比较繁琐。于是为了简化开发者的使用，从而创造性地推出了Spring boot，约定优于配置，简化了spring的配置流程。
-Spring的工作原理其实是，Spring在启动时读取bean配置信息，这里bean配置信息包括xml文件、Java类#Configuration、注解#AutoWired，
-存放到Bean注册表，并根据Bean注册表实例化Bean，实际上就是实例化Bean的实现类，然后将Bean实例放到Spring容器中。
-
-Spring的IOC是通过反射来实现的：
-在Spring中，通过IOC可以将实现类、参数信息等配置在其对应的配置文件中，当需要更改实现类或参数信息时，只需要修改配置文件即可。
-Spring的IOC实现原理利用的就是Java的反射机制，Spring的工厂类会帮我们完成配置文件的读取、利用反射机制注入对象等工作，
-我们可以通过bean的名称获取对应的对象。
-
-Spring AOP（Aspect-Oriented Programming）是面向切面编程的一种实现技术，主要用于实现程序功能的统一维护。
-Spring AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
-Spring AOP的三种使用方式：
-
-注解方式：通过注解的方式配置切入点，然后定义增强处理。
-XML方式：通过XML配置文件的方式配置切入点，然后定义增强处理。
-Java方式：通过Java配置类的方式配置切入点，然后定义增强处理。
-
-
-Spring AOP是运用反射来实现的：
-Spring AOP即面向切面编程，是Spring核心之一，其可以快速横向扩展。在Spring中，每一个代理实例都有一个关联的调用处理程序对象，
-它实现了接口InvocationHandler，该接口的invoke方法用于处理代理实例上的方法调用。
-在Spring中，当需要使用该Service时，Spring会自动将对应的Bean注入到需要它的地方，这个过程是自动的，
-对于开发人员来说是透明的，无需手动进行配置。
-
-
-Spring IOC举例————IOC操作Bean管理（基于XML方式）
-1、基于 xml 方式创建对象
-（1）在 spring 配置文件中，使用 bean 标签，标签里面添加对应属性，就可以实现对象创建
-（2）在 bean 标签有很多属性，介绍常用的属性
-* id 属性：唯一标识
-* class 属性：类全路径（包类路径）
-（3）创建对象时候，默认也是执行无参数构造方法完成对象创建
-<bean id = "user" class = "Spring.User"></bean>
-
-2、基于 xml 方式注入属性
-（1）DI：依赖注入，就是注入属性
-
-3、第一种注入方式：使用 set 方法进行注入
-（1）创建类，定义属性和对应的 set 方法
-/**
-* 演示使用 set 方法进行注入属性
-*/
-public class Book {
- //创建属性
- private String bname;
- private String bauthor;
- //创建属性对应的 set 方法
- public void setBname(String bname) {
- this.bname = bname;
- }
- public void setBauthor(String bauthor) {
- this.bauthor = bauthor;
- }
-}
-（2）在 spring 配置文件配置对象创建，配置属性注入
-<!--2 set 方法注入属性-->
-<bean id="book" class="com.atguigu.spring5.Book">
- <!--使用 property 完成属性注入
- name：类里面属性名称
- value：向属性注入的值
- -->
- <property name="bname" value="易筋经"></property>
- <property name="bauthor" value="达摩老祖"></property>
-</bean>
-4、第二种注入方式：使用有参数构造进行注入
-（1）创建类，定义属性，创建属性对应有参数构造方法
-public class Orders {
- //属性
- private String oname;
- private String address;
- //有参数构造
- public Orders(String oname,String address) {
- this.oname = oname;
- this.address = address;
- }
-}
-（2）在 spring 配置文件中进行配置
-<!--3 有参数构造注入属性-->
-<bean id="orders" class="com.atguigu.spring5.Orders">
- <constructor-arg name="oname" value="电脑"></constructor-arg>
- <constructor-arg name="address" value="China"></constructor-arg>
-</bean>
-
-Spring AOP举例
-1、创建类，在类里面定义方法
-public class User {
- public void add() {
- System.out.println("add.......");
- }
-}
-2、创建增强类（编写增强逻辑）
-（1）在增强类里面，创建方法，让不同方法代表不同通知类型
-//增强的类
-public class UserProxy {
- public void before() {//前置通知
- System.out.println("before......");
- }
-}
-
-3、进行通知的配置
-（1）在 spring 配置文件中，开启注解扫描
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" 
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
- xmlns:context="http://www.springframework.org/schema/context" 
- xmlns:aop="http://www.springframework.org/schema/aop" 
- xsi:schemaLocation="http://www.springframework.org/schema/beans 
-http://www.springframework.org/schema/beans/spring-beans.xsd 
- http://www.springframework.org/schema/context 
-http://www.springframework.org/schema/context/spring-context.xsd 
- http://www.springframework.org/schema/aop 
-http://www.springframework.org/schema/aop/spring-aop.xsd">
- <!-- 开启注解扫描 -->
- <context:component-scan basepackage="com.atguigu.spring5.aopanno"></context:component-scan>
-
- （2）使用注解创建 User 和 UserProxy 对象
-//被增强的类
-@Component
-public class User{
-//代码部分
-}
-
-//增强的类
-@Component
-public class UserProxy{
-//代码部分
-}
-
-（3）在增强类上面添加注解 @Aspect
-//增强的类
-@Component
-@Aspect //生成代理对象
-public class UserProxy {
-
-（4）在 spring 配置文件中开启生成代理对象
-<!-- 开启 Aspect 生成代理对象-->
-<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
-
-4、配置不同类型的通知
-（1）在增强类的里面，在作为通知方法上面添加通知类型注解，使用切入点表达式配置
-//增强的类
-@Component
-@Aspect //生成代理对象
-public class UserProxy {
- //前置通知
- //@Before 注解表示作为前置通知
- @Before(value = "execution(* com.atguigu.spring5.aopanno.User.add(..))")
- public void before() {
- System.out.println("before.........");
- }
- //后置通知（返回通知）
- @AfterReturning(value = "execution(* 
-com.atguigu.spring5.aopanno.User.add(..))")
- public void afterReturning() {
- System.out.println("afterReturning.........");
- }
- //最终通知
- @After(value = "execution(* com.atguigu.spring5.aopanno.User.add(..))")
- public void after() {
- System.out.println("after.........");
- }
- //异常通知
- @AfterThrowing(value = "execution(* 
-com.atguigu.spring5.aopanno.User.add(..))")
- public void afterThrowing() {
- System.out.println("afterThrowing.........");
- }
- //环绕通知
- @Around(value = "execution(* com.atguigu.spring5.aopanno.User.add(..))")
- public void around(ProceedingJoinPoint proceedingJoinPoint) throws 
-Throwable {
- System.out.println("环绕之前.........");
- //被增强的方法执行
- proceedingJoinPoint.proceed();
- System.out.println("环绕之后.........");
- }
-}
-5、相同的切入点抽取
-//相同切入点抽取
-@Pointcut(value = "execution(* com.atguigu.spring5.aopanno.User.add(..))")
-public void pointdemo() {
-}
-//前置通知
-//@Before 注解表示作为前置通知
-@Before(value = "pointdemo()")
-public void before() {
- System.out.println("before.........");
-}
-6、有多个增强类多同一个方法进行增强，设置增强类优先级
-（1）在增强类上面添加注解 @Order(数字类型值)，数字类型值越小优先级越高
-@Component
-@Aspect
-@Order(1)
-public class PersonProxy
-
-SpringMVC：
-SpringMVC是一个基于Java的Web应用开发框架，用于构建灵活、可扩展的Web应用程序。它是Spring框架的一部分，提供了一种模型-视图-控制器（MVC）的架构模式，用于将应用程序的不同方面分离开来。
-SpringMVC使用了前端控制器（Front Controller）设计模式，其中DispatcherServlet充当中央调度器，负责接收所有的客户端请求并将其分派给相应的处理程序（Controller）。
-它还提供了丰富的功能，如请求映射、数据绑定、数据验证、视图解析和国际化支持等，以简化Web应用程序的开发过程。
-通过使用SpringMVC，开发人员可以轻松地构建可维护和可扩展的Web应用程序，实现松耦合和高度可测试性。它还与其他Spring框架模块（如Spring IoC和Spring AOP）紧密集成，提供了全面的企业级开发解决方案。
-
-Spring MVC的功能
-Spring MVC提供了一种轻度耦合的方式来开发web应用。
-Spring MVC是Spring的一个模块，是一个web框架。通过Dispatcher Servlet, ModelAndView 和 View Resolver，开发web应用变得很容易。
-解决的问题领域是网站应用程序或者服务开发——URL路由、Session、模板引擎、静态Web资源等等。
-
-Spring MVC获取请求参数的过程：
-1、通过ServletAPI获取
-将HttpServletRequest作为控制器方法的形参，此时HttpServletRequest类型的参数表示封装了当前请
-求的请求报文的对象
-@RequestMapping("/testParam")
-public String testParam(HttpServletRequest request){
-String username = request.getParameter("username");
-String password = request.getParameter("password");
-System.out.println("username:"+username+",password:"+password);
-return "success";
-}
-
-2、通过控制器方法的形参获取请求参数
-在控制器方法的形参位置，设置和请求参数同名的形参，当浏览器发送请求，匹配到请求映射时，在
-DispatcherServlet中就会将请求参数赋值给相应的形参
-
-<a th:href="@{/testRest/1/admin}">测试路径中的占位符-->/testRest</a><br>
-@RequestMapping("/testRest/{id}/{username}")
-
-@RequestMapping("/testParam")
-public String testParam(String username, String password){
-System.out.println("username:"+username+",password:"+password);
-return "success";
-}
-
-
-注：
-若请求所传输的请求参数中有多个同名的请求参数，此时可以在控制器方法的形参中设置字符串
-数组或者字符串类型的形参接收此请求参数
-若使用字符串数组类型的形参，此参数的数组中包含了每一个数据
-若使用字符串类型的形参，此参数的值为每个数据中间使用逗号拼接的结果
-
-3、@RequestParam
-@RequestParam是将请求参数和控制器方法的形参创建映射关系
-@RequestParam注解一共有三个属性：
-value：指定为形参赋值的请求参数的参数名
-required：设置是否必须传输此请求参数，默认值为true
-若设置为true时，则当前请求必须传输value所指定的请求参数，若没有传输该请求参数，且没有设置
-defaultValue属性，则页面报错400：Required String parameter 'xxx' is not present；若设置为
-false，则当前请求不是必须传输value所指定的请求参数，若没有传输，则注解所标识的形参的值为
-null
-defaultValue：不管required属性值为true或false，当value所指定的请求参数没有传输或传输的值
-为""时，则使用默认值为形参赋值
-
-4、@RequestHeader
-@RequestHeader是将请求头信息和控制器方法的形参创建映射关系
-@RequestHeader注解一共有三个属性：value、required、defaultValue，用法同@RequestParam
-
-5、@CookieValue
-@CookieValue是将cookie数据和控制器方法的形参创建映射关系
-@CookieValue注解一共有三个属性：value、required、defaultValue，用法同@RequestParam
-
-6、通过POJO获取请求参数
-可以在控制器方法的形参位置设置一个实体类类型的形参，此时若浏览器传输的请求参数的参数名和实
-体类中的属性名一致，那么请求参数就会为此属性赋值
-
-Spring MVC的工作流程：
-用户通过视图层发送请求到服务器，在服务器中请求被Controller接收，
-Controller调用相应的Model层处理请求，处理完毕将结果返回到Controller，
-Controller再根据请求处理的结果找到相应的View视图，渲染数据后最终响应给浏览器。
-
-<form th:action="@{/testpojo}" method="post">
-用户名：<input type="text" name="username"><br>
-密码：<input type="password" name="password"><br>
-性别：<input type="radio" name="sex" value="男">男<input type="radio"
-name="sex" value="女">女<br>
-年龄：<input type="text" name="age"><br>
-邮箱：<input type="text" name="email"><br>
-<input type="submit">
-</form>
-@RequestMapping("/testpojo")
-public String testPOJO(User user){
-System.out.println(user);
-return "success";
-}
-//最终结果-->User{id=null, username='张三', password='123', age=23, sex='男',
-email='123@qq.com'}
-
-7、解决获取请求参数的乱码问题
-解决获取请求参数的乱码问题，可以使用SpringMVC提供的编码过滤器CharacterEncodingFilter，但是
-必须在web.xml中进行注册
-注：
-SpringMVC中处理编码的过滤器一定要配置到其他过滤器之前，否则无效
-
-
-SpringMVC流程
-1、用户发送请求至前端控制器DispatcherServlet。
-2、DispatcherServlet收到请求调用HandlerMapping处理器映射器。
-3、处理器映射器找到具体的处理器(可以根据xml配置、注解进行查找)，生成处理器对象及处理器拦截器(如果有则生成)一并返回给DispatcherServlet。
-4、DispatcherServlet调用HandlerAdapter处理器适配器。
-5、HandlerAdapter经过适配调用具体的处理器(Controller，也叫后端控制器)。
-6、Controller执行完成返回ModelAndView。
-7、HandlerAdapter将controller执行结果ModelAndView返回给DispatcherServlet。
-8、DispatcherServlet将ModelAndView传给ViewReslover视图解析器。
-9、ViewReslover解析后返回具体View。
-10、DispatcherServlet根据View进行渲染视图（即将模型数据填充至视图中）。
-11、DispatcherServlet响应用户。
-
-以下组件通常使用框架提供实现：
-
-DispatcherServlet：作为前端控制器，整个流程控制的中心，控制其它组件执行，统一调度，降低组件之间的耦合性，提高每个组件的扩展性。
-HandlerMapping：通过扩展处理器映射器实现不同的映射方式，例如：配置文件方式，实现接口方式，注解方式等。
-HandlAdapter：通过扩展处理器适配器，支持更多类型的处理器。
-ViewResolver：通过扩展视图解析器，支持更多类型的视图解析，例如：jsp、freemarker、pdf、excel等。
-
-
-域对象共享数据
-1、使用ServletAPI向request域对象共享数据
-<form th:action="@{/testpojo}" method="post">
-用户名：<input type="text" name="username"><br>
-密码：<input type="password" name="password"><br>
-性别：<input type="radio" name="sex" value="男">男<input type="radio"
-name="sex" value="女">女<br>
-年龄：<input type="text" name="age"><br>
-邮箱：<input type="text" name="email"><br>
-<input type="submit">
-</form>
-@RequestMapping("/testpojo")
-public String testPOJO(User user){
-System.out.println(user);
-return "success";
-}
-//最终结果-->User{id=null, username='张三', password='123', age=23, sex='男',
-email='123@qq.com'}
-<!--配置springMVC的编码过滤器-->
-<filter>
-<filter-name>CharacterEncodingFilter</filter-name>
-<filterclass>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-<init-param>
-<param-name>encoding</param-name>
-<param-value>UTF-8</param-value>
-</init-param>
-<init-param>
-<param-name>forceResponseEncoding</param-name>
-<param-value>true</param-value>
-</init-param>
-</filter>
-<filter-mapping>
-<filter-name>CharacterEncodingFilter</filter-name>
-<url-pattern>/*</url-pattern>
-</filter-mapping>
-注：
-SpringMVC中处理编码的过滤器一定要配置到其他过滤器之前，否则无效
-
-总结：
-SpringMVC本质上是对Java Web Servlet的封装，使得开发Java Web项目没有那么臃肿。
-Spring MVC是后端渲染式的后台开发框架，没有做到前后端分离，对前端开发人员也要求有Java Web的开发环境。
-前端人员作出的静态Html页面，也需要进行整合，改为Spring MVC里的View。
-
-
-SSH：
-SSH框架是Struts、Spring、Hibernate的一个合成框架，目前市场上比较流行的框架中也有它的身影。Struts是一个基于MVC模式的应用框架，如果学过Servlet。
-那么其本质和Servlet差不多，MVC模式主要包括模型(Model)，视图(View)，控制器(Controller)，而Struts主要作为控制器来建立模型和视图的数据交互。
-本文介绍的Struts以Struts2为主。它通过拦截器处理客户的各种请求。Spring使用基本的JavaBean来完成以前只可能由EJB完成的事情，Spring的核-fl,主要控制翻转(IOC)和面向切面(AOP)，
-简单的说Spring是一种分层的轻量级开源框架。Spring更像是一个容器，将所有配置的Struts和Hibernate中的东西都放置进来，只要能够做好配置，它就会找到相应的位置，进行处理。
-Hibernate是一个开源代码的对象映射框架，是根据JDBC技术基础衍生而来的，它将直接操作原来的数据库变为直接操作数据表后生成的Java类，实现了对象编程思维来操纵数据库。SSH框架中的各种技术相互协调、配合。实现了这一强大的框架。
-
-
-SSM：SSM（Spring+SpringMVC+MyBatis）框架集由Spring、MyBatis两个开源框架整合而成（SpringMVC是Spring中的部分内容），常作为数据源较简单的web项目的框架。
-
-1.spring MVC ＋ spring +mybatis，是标准的MVC设计模式，将整个系统划分为显示层，Controller层，Service层，DAO层四层
-
-使用Spring MVC负责请求的转发和视图管理
-
-spring实现业务对象管理，mybatis作为数据对象的持久化引擎。
-
-2、Spring是一个开源框架，Spring是一个轻量级的控制反转（IoC）和面向切面（AOP）的容器框架，还能更好的让其他框架整合。
-3、Spring MVC框架是有一个MVC框架，通过实现Model-View-Controller模式来很好地将数据、业务与展现进行分离。
-4、MyBatis 是一个基于Java的持久层框架
-
-
-关于GET请求的安全性：
-Get是不安全的，因为在传输过程，数据被放在请求的URL中，
-而如今现有的很多服务器、代理服务器或者用户代理都会将请求URL记录到日志文件中，然后放在某个地方，
-这样就可能会有一些隐私的信息被第三方看到。另外，用户也可以在浏览器上直接看到提交的数据，
-一些系统内部消息将会一同显示在用户面前。Post的所有操作对用户来说都是不可见的。
-
-关于servlet：
-Servlet（Server Applet）是Java Servlet的简称，称为小服务程序或服务连接器，用Java编写的服务器端程序，具有独立于平台和协议的特性，主要功能在于交互式地浏览和生成数据，生成动态Web内容。
-狭义的Servlet是指Java语言实现的一个接口，广义的Servlet是指任何实现了这个Servlet接口的类，一般情况下，人们将Servlet理解为后者。Servlet运行于支持Java的应用服务器中。
-从原理上讲，Servlet可以响应任何类型的请求，但绝大多数情况下Servlet只用来扩展基于HTTP协议的Web服务器。
-最早支持Servlet标准的是JavaSoft的Java Web Server，此后，一些其它的基于Java的Web服务器开始支持标准的Servlet。
-
-Servlet的工作原理：
-Servlet接口定义了Servlet与servlet容器之间的契约。这个契约是：Servlet容器将Servlet类载入内存，并产生Servlet实例和调用它具体的方法。但是要注意的是，在一个应用程序中，每种Servlet类型只能有一个实例。
-用户请求致使Servlet容器调用Servlet的Service（）方法，并传入一个ServletRequest对象和一个ServletResponse对象。ServletRequest对象和ServletResponse对象都是由Servlet容器（例如TomCat）封装好的，
-并不需要程序员去实现，程序员可以直接使用这两个对象。
-ServletRequest中封装了当前的Http请求，因此，开发人员不必解析和操作原始的Http数据。
-ServletResponse表示当前用户的Http响应，程序员只需直接操作ServletResponse对象就能把响应轻松的发回给用户。
-对于每一个应用程序，Servlet容器还会创建一个ServletContext对象。这个对象中封装了上下文（应用程序）的环境详情。
-每个应用程序只有一个ServletContext。每个Servlet对象也都有一个封装Servlet配置的ServletConfig对象。
-
-Servlet的生命周期：
-init( ),service( ),destroy( )是Servlet生命周期的方法，代表了Servlet的生命周期，即Servlet从“出生”到“工作”再到“死亡 ”的过程。
-Servlet容器（例如TomCat）会根据下面的规则来调用这三个方法：
-1.init( ),当Servlet第一次被请求时，Servlet容器就会开始调用这个方法来初始化一个Servlet对象出来，
-但是这个方法在后续请求中不会在被Servlet容器调用，就像人只能“出生”一次一样。我们可以利用init（ ）方法来执行相应的初始化工作。
-调用这个方法时，Servlet容器会传入一个ServletConfig对象进来从而对Servlet对象进行初始化。
-
-2.service( )方法，每当请求Servlet时，Servlet容器就会调用这个方法。就像人一样，需要不停的接受老板的指令并且“工作”。
-第一次请求时，Servlet容器会先调用init( )方法初始化一个Servlet对象出来，然后会调用它的service( )方法进行工作，
-但在后续的请求中，Servlet容器只会调用service方法了。
-
-3.destory,当要销毁Servlet时，Servlet容器就会调用这个方法，就如人一样，到时期了就得死亡。
-在卸载应用程序或者关闭Servlet容器时，就会发生这种情况，一般在这个方法中会写一些清除代码。
-
-
-关于转发和重定向的区别：
-
-1.重定向访问服务器两次，转发只访问服务器一次。
-2.转发页面的URL不会改变，而重定向地址会改变
-3.转发只能转发到自己的web应用内，重定向可以重定义到任意资源路径。
-4.转发相当于服务器跳转，相当于方法调用，在执行当前文件的过程中转向执行目标文件，两个文件(当前文件和目标文件)属于同一次请求，前后页共用一个request，
-可以通过此来传递一些数据或者session信息，request.setAttribute()和 request.getAttribute()。而重定向会产生一个新的request，不能共享request域信息与请求参数
-5.由于转发相当于服务器内部方法调用，所以转发后面的代码仍然会执行(转发之后记得return)；重定向代码执行之后是方法执行完成之后进行重定向操作，也就是访问第二个请求，如果是方法的最后一行进行重定向那就会马上进行重定向(重定向也需要return)。
-6.无论是RequestDispatcher.forward方法，还是HttpServletResponse.sendRedirect方法，在调用它们之前，都不能有内容已经被实际输出到了客户端。如果缓冲区中已经有了一些内容，这些内容将被从缓冲区中移除。
-
-
-关于JSP和Servlet的区别：
-1.  不同之处在哪？
-Servlet在Java代码中通过HttpServletResponse对象动态输出HTML内容
-JSP在静态HTML内容中嵌入Java代码，Java代码被动态执行后生成HTML内容
-
-2.  各自的特点
-Servlet能够很好地组织业务逻辑代码，但是在Java源文件中通过字符串拼接的方式生成动态HTML内容会导致代码维护困难、可读性差
-JSP虽然规避了Servlet在生成HTML内容方面的劣势，但是在HTML中混入大量、复杂的业务逻辑同样也是不可取的
-
-关于浏览器渲染数据：
-前端渲染:
-前端渲染就是指后端返回JSON数据或者JSONP数据，在前端利用预先写的html模板，循环读取JSON数据或者JSONP数据，进行选取，拼接，并且将这些数据插入页面来达到渲染效果。
-后端渲染：
-前端进行数据请求，后端用后台模板引擎直接生成html，前端接受到数据之后，直接插入页面。
-
-前端渲染和后端渲染两者的好处和坏处:
-1.前端渲染:
-好处：网络传输数据量小。不占用服务端运算资源（解析模板），模板在前端（很有可能仅部分在前端），改结构变交互都前端自己来了，改完自己调就行。
-坏处：前端耗时较多，对前端工作人员水平要求相对较高。前端代码较多，因为部分以前在后台处理的交互逻辑交给了前端处理。占用少部分客户端运算资源用于解析模板。
-2.后端渲染
-好处：前端耗时少，即减少了首屏时间，模板统一在后端。前端（相对）省事，不占用客户端运算资源（解析模板）
-坏处：占用服务器资源。
-
-前端渲染与后端渲染对比：
-    
-前端渲染：
-页面呈现速度：主要受限于带宽和客户端机器的好坏，优化效果好，可以逐步动态展开内容，感觉上会更快一点。
-可维护性强，前后端分离，各施其职，代码一目明了。
-SEO友好度(seo=Search(搜索) Engine(引擎) Optimization(优化),即搜索引擎优化)：差，大量使用ajax，多数浏览器不能抓取ajax数据。
-编码效率：高，前后端各自只做自己擅长的东西，后端最后只输出接口，不用管页面呈现，只要前后端人员能力不错，效率不会低。
-    
-后端渲染：
-页面呈现速度：快，受限于用户的带宽
-可维护性：差（前后端不分离）
-SEO友好度：好,后端的数据一步搞定,直接生成相对应的模板网页
-编码效率：低（有时候可能手忙脚乱,找不到数据对应的位置或者数据）
-
-Spring Boot的功能及实现原理:
-
-众所周知Spring框架需要进行大量的配置，Spring Boot引入自动配置的概念，让项目设置变得很容易。
-Spring Boot本身并不提供Spring框架的核心特性以及扩展功能，只是用于快速、敏捷地开发新一代基于Spring框架的应用程序。也就是说，它并不是用来替代Spring的解决方案，而是和Spring框架紧密结合用于提升Spring开发者体验的工具。同时它集成了大量常用的第三方库配置(例如Jackson, JDBC, Mongo, Redis, Mail等等)，Spring Boot应用中这些第三方库几乎可以零配置的开箱即用(out-of-the-box)，大部分的Spring Boot应用都只需要非常少量的配置代码，开发者能够更加专注于业务逻辑。
-Spring Boot只是承载者，辅助你简化项目搭建过程的。如果承载的是WEB项目，使用Spring MVC作为MVC框架，那么工作流程和你上面描述的是完全一样的，因为这部分工作是Spring MVC做的而不是Spring Boot。
-对使用者来说，换用Spring Boot以后，项目初始化方法变了，配置文件变了，另外就是不需要单独安装Tomcat这类容器服务器了，maven打出jar包直接跑起来就是个网站，但你最核心的业务逻辑实现与业务流程实现没有任何变化。
-所以，用最简练的语言概括就是：
-Spring 是一个“引擎”；
-Spring MVC 是基于Spring的一个 MVC 框架 ；
-Spring Boot 是基于Spring4的条件注册的一套快速开发整合包。
-
-SpringBoot中定制Web扩展配置：WebMvcConfigurerAdapter接口
-这是一个接口，里边声明了很多的方法，例如拦截器，视图解析器，格式转化器。
-如果想在webmvc中添加自己的功能，只需要去WebMvcConfigurer看看想增加什么功能，然后按照源码去写。
-
-在SpringBoot中创建Servlet：
-方式一： 通过注解扫描方式实现
-创建一个servlet类
-
-package com.liuhaiyang.springboot.servlet;
- 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
- 
-//servlet第一种方式
-@WebServlet(urlPatterns = "/myservlet")  //定义请求路径，通过该路径能访问到这个servlet
-public class MyServlet extends HttpServlet {
- 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().println("My Springboot-servlet-1");
-        resp.getWriter().flush();
-        resp.getWriter().close();
-    }
- 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
-    }
-}
-
-在SpringBoot项目的入口类上方使用注解 @ServletComponentScan 注解来扫描Servlet中的注解即可。
-
-package com.liuhaiyang.springboot;
- 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.ServletComponentScan;
- 
-@SpringBootApplication
-@ServletComponentScan(basePackages = "com.liuhaiyang.springboot.servlet")   //第一种的注解
-public class SpringbootTest13Application {
- 
-    public static void main(String[] args) {
-        SpringApplication.run(SpringbootTest13Application.class, args);
-    }
- 
-}
-
-方式二：通过 SpringBoot 的配置类实现（组件注册）
-
-再次创建一个Servlet类。
-
-package com.liuhaiyang.springboot.servlet2;
- 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
- 
- 
-//servlet第二种方式
-public class MyServlet extends HttpServlet {
- 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().println("My Springboot-servlet-2");
-        resp.getWriter().flush();
-        resp.getWriter().close();
-    }
- 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
-    }
-}
-
-编写一个 Spring Boot 的配置类，在该类中注册 Servlet
-创建 ServletConfig 配置类
-
-package com.liuhaiyang.springboot.config;
- 
-import com.liuhaiyang.springboot.servlet2.MyServlet;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
- 
-@Configuration //该注解将此类定义为配置类（相当于一个xml文件）
-public class ServletConfig {
-    //@Bean是一个方法级别上的注解，主要用于配置类里 相当于<beans> <bean id="" class="" > </beans>
-    @Bean
-    public ServletRegistrationBean myServletRegistrationBean(){
-        ServletRegistrationBean servletRegistrationBean=new ServletRegistrationBean(new MyServlet(),"/myservlet");
-        return servletRegistrationBean;
-    }
-}
-
-
-什么是过滤器（Filter）
-过滤器，是在java web中将你传入的request、response提前过滤掉一些信息，或者提前设置一些参数。
-然后再传入Servlet或Struts2的 action进行业务逻辑处理。比如过滤掉非法url（不是login.do的地址请求，如果用户没有登陆都过滤掉），
-或者在传入Servlet或Struts2的action前统一设置字符集，或者去除掉一些非法字符。
-过滤器处于客户端与Web资源（Servlet、JSP、HTML）之间，客户端与Web资源之间的请求和响应都要通过过滤器进行过滤。
-
-什么是拦截器（Interceptor）
-拦截器是一种面向方面/切面编程（AOP Aspect-Oriented Programming），而面向切面就是将多个模块的通用服务进行分离，
-如权限管理、日志服务，他们在多个模块中都会用到，就可以将其各自封装为一个可重用模块。
-而这些通用服务的具体实现是通过拦截器来完成，比如用户客户端访问一些保密模块都应先通过权限审查的拦截器来进行权限审查，
-确定用户是否具有该项操作的权限后方能向下执行。在面向切面编程的就是在你的service或者一个方法前调用一个方法，
-或者在方法后调用一个方法，比如动态代理就是拦截器的简单实现，在你调用方法前打印出字符串（或者做其它业务逻辑的操作），
-也可以在你调用方法后打印出字符串，甚至在你抛出异常的时候做业务逻辑的操作。
-
-二者区别
-1、拦截器是基于java的反射机制的，而过滤器是基于函数回调（职责链）
-2、过滤器依赖与servlet容器，而拦截器不依赖与servlet容器
-3、拦截器只能对action请求起作用，而过滤器则可以对几乎所有的请求起作用
-4、拦截器可以访问action上下文、值栈里的对象，而过滤器不能
-5、在action的生命周期中，拦截器可以多次被调用，而过滤器只能在容器初始化时被调用一次
-6、拦截器可以获取IOC容器中的各个bean，而过滤器不行，这点很重要，在拦截器里注入一个service，可以调用业务逻辑。
-
-通俗理解：
-（1）过滤器（Filter）：当你有一堆东西的时候，你只希望选择符合你要求的某一些东西。定义这些要求的工具，就是过滤器。（理解：就是一堆字母中取一个B）
-（2）拦截器（Interceptor）：在一个流程正在进行的时候，你希望干预它的进展，甚至终止它进行，这是拦截器做的事情。（理解：就是一堆字母中，干预它，通过验证的少点，顺便干点别的东西
-
-触发时机与执行顺序
-触发时机：
-拦截器与过滤器触发时机不一样
-过滤器是在请求进入容器后，但请求进入servlet之前进行预处理的。请求结束返回也是，是在servlet处理完后，返回给前端之前。
-
-过滤器包裹servlet，servlet包裹住拦截器。
-
-执行顺序 ：
-过滤前 - 拦截前 - Action处理 - 拦截后 - 过滤后。个人认为过滤是一个横向的过程，首先把客户端提交的内容进行过滤(例如未登录用户不能访问内部页面的处理)；过滤通过后，拦截器将检查用户提交数据的验证，做一些前期的数据处理，接着把处理后的数据发给对应的Action；Action处理完成返回后，拦截器还可以做其他过程(还没想到要做啥)，再向上返回到过滤器的后续操作。
-
-例子：自定义拦截器
-@Component
-public class MyInterceptor implements HandlerInterceptor {
-  @Override
-  public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-                           Object handler) throws Exception {
-		return true;
-		}
-		
-需要再写一个自己的配置类：
-@Configuration
-public class MyConfiguration implements WebMvcConfigurer {
-	 @Override
-	 public void addInterceptors(InterceptorRegistry registry) {
-		  //将我们自定义的拦截器加入配置
-	 	 InterceptorRegistration interceptor = registry.addInterceptor(new MyInterceptor());
-		  //设置拦截的url
-		  interceptor.addPathPatterns("/user/**");
-	 }
-}
-
-SpringBoot配置嵌入式Servlet容器：
-1、找到接口ConfigurableEmbeddedServletContainer
-2、找到接口EmbeddedServletContainerCustomizer
-3、注册Servlet、Filter、Listener
-	>ServletRegistrationBean
-	>FilterRegistrationBean
-	>ServletListenerRegistrationBean
-
-配置Servlet:
-@WebServlet(urlPatterns = "/portal/*")
-public class HelloServlet extends HttpServlet {
-    public HelloServlet() {
-        super();
-    }
- 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
-        System.out.println("=====================Hello "+ name +", this is doGet Filter===================");
-        PrintWriter writer = resp.getWriter();
-        writer.write("Your request parameter is " + name);
-        writer.flush();
-        writer.close();
-    }
- 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("=====================Hello doPost Filter===================");
-        super.doPost(req, resp);
-    }
- 
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("=====================Hello doPut Filter===================");
-        super.doPut(req, resp);
-    }
-}
-
-配置Filter：
-@WebFilter(urlPatterns = "/*", filterName = "helloFilter")
-public class HelloFilter implements Filter {
- 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        System.out.println("================init filter===================");
-    }
- 
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        System.out.println("=================this is filer method====================");
-        filterChain.doFilter(servletRequest, servletResponse);
-    }
- 
-    @Override
-    public void destroy() {
-        System.out.println("==========================destroy method===================");
-    }
-}
-
-配置Listener：
-package com.learn.listener;
- 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
- 
-/**
- * springBoot整合Listener
- *
- *<listener>
- *	<listener-class>com.learn.listener.FirstListener</listener-class>
- *</listener>
- */
-@WebListener
-public class MyListener implements ServletContextListener {
- 
-	@Override
-	public void contextDestroyed(ServletContextEvent arg0) {
-		// TODO Auto-generated method stub
- 
-	}
- 
-	@Override
-	public void contextInitialized(ServletContextEvent arg0) {
-		System.out.println("Listener...init......");
- 
-	}
- 
-}
-
-Spring与SpringBoot常用注解：
-@SpringBootApplication：实现自动化装配，启动SpringBoot，包含@Configuration、@EnableAutoConfiguration、@ComponentScan通常用在主类上
-@Component：普通pojo注入spring容器
-@Service：Service注入Spring容器
-@Controller：Controller注入容器
-@Repository：Dao注入容器
-@ResponseBody：将java对象转为json格式的数据
-@RestController：该注解是@Controller和@ResponseBody的结合体，一般用于类，作用等于在类上面添加了@ResponseBody和@Controller
-@AutoWired：默认按类型装配，如果发现找到多个bean，则按照name方式比对，如果还有多个，则报出异常
-@Qualifier：spring的注解，按名字注入 一般当出现两个及以上bean时,不知道要注入哪个，结合@AutoWired使用
-@Resource：默认按名称注入例如@Resource(name = “zhaozhao”)则根据name属性注入找不到则报错，
-若无name属性则根据属性名称注入，如果匹配不成功则按照类型匹配匹配不成功则报错。
-@RequestMapping：@RequestMapping（url），通过该注解就可以通过配置的url进行访问，方式可以是get或post请求，两种方式均可
-@GetMapping：只是这个限定了只能是Get请求
-@PostMapping：只是这个限定了只能是Post请求
-@Value：用于获取bean的属性，一般用于读取配置文件的数据，作用在变量上 
-@ConfigurationProperties：用于注入Bean属性，然后再通过当前Bean获取注入值，作用在类上 
-@PropertySource：用于指定要读取的配置文件，可以和@Value或@ConfigurationProperties配合使用
-@Configuration：作用于类上表示这是一个配置类，可理解为用spring的时候xml里面的< beans>标签 
-@Bean：产生bean对象加入容器，作用于方法，可理解为用spring的时候xml里面的标签
-@RequestParam：获取查询参数。即url?name=这种形式
-@RequestBody：获取Body的参数，一般用于post获取参数 
-@PathVariable：获取路径参数。即url/{id}这种形式 
-@RequestHeader：获取请求头的信息 
-@CookieValue：获取Cookie的信息
-
-Spring Boot的启动类实现方式：
-1、程序从main方法开始运行
-2、使用SpringApplication.run()加载主程序类
-3、主程序类需要标注@SpringBootApplication
-4、@EnableAutoConfiguration是核心注解；
-5、@Import导入所有的自动配置场景
-6、@AutoConfigurationPackage定义默认的包扫描规则
-7、程序启动扫描加载主程序类所在的包以及下面所有子包的组件；
-
-Spring Boot使用的全局配置文件：
->application.properties
->application.yml
-
-配置文件放在src/main/resources目录或者类路径/config下
-.yml是YAML(YAML Aint Markup Language)编写的文件格式，YAML是一种直观的能够被电脑识别的的数据数据序列化格式，
-比json、xml等更适合做配置文件
-
-转载：https://www.zhihu.com/question/64671972/answer/223383505
-作者：zhonghd
-链接：https://www.jianshu.com/p/1d4d57a4db51
-来源：简书
--------------------------------------------------------------------------------
-
-
-J2EE应用程序开发技术：
-前端技术：
-HTML：
-HTML 指的是超文本标记语言: HyperText Markup Language
-HTML 允许你格式化文本，添加图片，创建链接、输入表单、框架和表格等等，并可将之存为文本文件，浏览器即可读取和显示。
-
-HTML标签：
-<!DOCTYPE html> 声明为 HTML5 文档
-<html> 元素是 HTML 页面的根元素
-<head> 元素包含了文档的元（meta）数据，如 <meta charset="utf-8"> 定义网页编码格式为 utf-8（由于在大部分浏览器中直接输出中文会出现乱码，所以要在头部将字符声明为UTF-8）
-<title> 元素描述了文档的标题
-<body> 元素包含了可见的页面内容
-<h1> 元素定义一个大标题
-<p> 元素定义一个段落
-
-CSS：Cascading Style Sheet 层叠样式表
-是一组样式设置的规则，用于控制页面的外观样式
-
-CSS语法：
-<head>
-	<style>
-		选择器{
-			属性名：属性值;
-			属性名：属性值;
-		}
-	</style>
-</head>
-
-JavaScript：JavaScript诞生于1995年，它的出现主要是用于处理网页中的前端验证。
-所谓的前端验证，就是指检查用户输入的内容是否符合一定的规则。比如：用户名的长度，密码的长度，邮箱的格式等。
-
-DOM概述：
-当网页被加载时，浏览器会创建页面的文档对象模型（Document Object Model）。
-
-通过DOM对象模型，JavaScript 获得创建动态 HTML ：
-
-JavaScript 能改变页面中的所有 HTML 元素
-JavaScript 能改变页面中的所有 HTML 属性
-JavaScript 能改变页面中的所有 CSS 样式
-JavaScript 能删除已有的 HTML 元素和属性
-JavaScript 能添加新的 HTML 元素和属性
-JavaScript 能对页面中所有已有的 HTML 事件作出反应
-JavaScript 能在页面中创建新的 HTML 事件
-换言之：HTML DOM 是关于如何获取、更改、添加或删除 HTML 元素的标准。
-
-
-JSON：
-JavaScript Object Notation（JavaScript 对象标记法），它是一种存储和交换数据的语法。
-当数据在浏览器与服务器之间进行交换时，这些数据只能是文本，
-JSON 属于文本并且我们能够把任何 JavaScript 对象转换为 JSON，然后将 JSON 发送到服务器。
-我们也能把从服务器接收到的任何 JSON 转换为 JavaScript 对象。
-以这样的方式，我们能够把数据作为 JavaScript 对象来处理，无需复杂的解析和转译。
-
-JSON语法：
-在json中，每一个数据项，都是由一个键值对（或者说是名值对）组成的，但是键必须是字符串，
-且由双引号包围，而值必须是以下数据类型之一：
-
-字符串（在 JSON 中，字符串值必须由双引号编写）
-数字
-对象（JSON 对象）
-数组
-布尔
-null
-
-数组（Array）用方括号(“[]”)表示。
-对象（0bject）用大括号(“{}”)表示。
-名称/值对(name/value）组合成数组和对象。
-名称(name）置于双引号中，值（value）有字符串、数值、布尔值、null、对象和数组。
-并列的数据之间用逗号(“,”）分隔
-
-JSONArray可以添加JSONObject对象。
-JSON 的值不可以是以下数据类型之一：
-
-函数
-日期
-undefined
-
-AJAX：
-传统的web交互是用户触发一个http请求服务器，然后服务器收到之后，在做出响应到用户，并且返回一个新的页面，
-每当服务器处理客户端提交的请求时，客户都只能空闲等待，并且哪怕只是一次很小的交互、
-只需从服务器端得到很简单的一个数据，都要返回一个完整的HTML页，而用户每次都要浪费时间和带宽去重新读取整个页面。
-这个做法浪费了许多带宽，由于每次应用的交互都需要向服务器发送请求，应用的响应时间就依赖于服务器的响应时间，
-这导致了用户界面的响应比本地应用慢得多。
-
-AJAX 的出现,刚好解决了传统方法的缺陷，AJAX 是一种用于创建快速动态网页的技术，通过在后台与服务器进行少量数据交换，
-AJAX 可以使网页实现异步更新，这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。
-
-AJAX的XMLHttpRequest对象：
-AJAX 的核心是 XMLHttpRequest 对象。 所有现代浏览器都支持 XMLHttpRequest 对象。
-XMLHttpRequest 对象用于幕后同服务器交换数据，这意味着可以更新网页的部分，而不需要重新加载整个页面。
-所有现代浏览器（Chrom、IE7+、Firefox、Safari 以及 Opera）都有内建的 XMLHttpRequest 对象。
-
-创建 XMLHttpRequest 的语法是：
-variable = new XMLHttpRequest();
-
-为了应对所有浏览器，包括 IE5 和 IE6，请检查浏览器是否支持 XMLHttpRequest 对象。
-如果支持，创建 XMLHttpRequest 对象，如果不支持，则创建 ActiveX 对象：
-var xhttp;
-if (window.XMLHttpRequest) {
-    xhttp = new XMLHttpRequest();
-} else {
-    // code for IE6, IE5
-    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-}
-
-AJAX的请求整合：
-JSON：
-[
-  {"name":"孙悟空","age":18,"gender":"男"},
-  {"name":"猪八戒","age":19,"gender":"男"},
-  {"name":"唐僧","age":20,"gender":"男"},
-  {"name":"沙和尚","age":21,"gender":"男"}
-]
-
-index.html:
-var Ajax = {
-    get: function (url, fn) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200 || xhr.status == 304) {
-                fn.call(this, xhr.responseText);
-            }
-        };
-        xhr.send();
-    },
-    post: function (url, data, fn) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 304)) {
-                fn.call(this, xhr.responseText);
-            }
-        };
-        xhr.send(data);
-    }
-};
-
-// 演示GET请求
-Ajax.get("users.json", function (response) {
-    console.log(response);
-});
-
-// 演示POST请求
-Ajax.post("users.json", "", function (response) {
-    console.log(response);
-});
-
-Cookie:
-Cookie 是一些数据，存储于你电脑上的文本文件中，当 web 服务器向浏览器发送 web 页面时，在连接关闭后，服务端不会记录用户的信息，Cookie 的作用就是用于解决 “如何记录客户端的用户信息”：
-
-当用户访问 web 页面时，它的名字可以记录在 cookie 中。
-在用户下一次访问该页面时，可以在 cookie 中读取用户访问记录。
-
-一个的Cookie创建，添加了过期时间和路径：
-document.cookie = "username=zhangsan; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
-
-VUE：动态构建用户界面的渐进式JavaScript框架
-
-Vue的特点：
-遵循MVVM模式
-编码简洁，体积小，运行效率高，适合移动/PC端开发
-它本身只关注UI，可以引入其它第三方库开发项目
-
-与其他JS框架的关联：
-借鉴 Angular 的模板和数据绑定技术
-借鉴 React 的组件化和虚拟DOM技术
-
-Vue周边库：
-vue-cli：vue脚手架
-vue-resource
-axios
-vue-router：路由
-vuex：状态管理
-element-ui：基于vue的UI组件库（PC端）
-
-VUE简单实现：
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>初识vue</title>
-    <!-- 引入Vue -->
-    <script src="../js/vue.js"></script>
-</head>
-<body>
-    <!-- 准备好一个容器 -->
-    <div id="root">
-        <h1>Hello！{{name}}!</h1>
-    </div>
-
-    <script>
-        Vue.config.productionTip = false // 阻止vue在启动时生成生产提示
-        new Vue({
-            el:'#root', //el用于指定当前Vue实例为哪个容器服务，值通常为css选择器字符串
-            data:{ //data用于存储数据，数据共el所指定的容器去使用
-                name:'JOJO'
-            }
-        })
-    </script>
-</body>
-</html>
-
-注意：
-
-想让Vue工作，就必须创建一个Vue实例，且要传入一个配置对象
-root容器里的代码依然符合html规范，只不过混入了一些特殊的Vue语法
-root容器里的代码被称为Vue模板
-Vue实例与容器是一一对应的
-真实开发中只有一个Vue实例，并且会配合着组件一起使用
-{{xxx}}中的xxx要写js表达式，且xxx可以自动读取到data中的所有属性
-一旦data中的数据发生变化，那么模板中用到该数据的地方也会自动更新
-
-
-
-后端技术：
-Servlet → Java spring → springMVC
-以前：J2EE应用框架 J2EE开发框架主要有Hibernate，Spring，Struts2，EXTJS，Json。
-
-Hibernate：
-Hibernate是一个开放源代码的对象关系映射框架，它对JDBC进行了非常轻量级的对象封装，
-它将POJO与数据库表建立映射关系，是一个全自动的orm框架，hibernate可以自动生成SQL语句，自动执行，
-使得Java程序员可以随心所欲的使用对象编程思维来操纵数据库。Hibernate可以应用在任何使用JDBC的场合，
-既可以在Java的客户端程序使用，也可以在Servlet/JSP的Web应用中使用，
-最具革命意义的是，Hibernate可以在应用EJB的JavaEE架构中取代CMP，完成数据持久化的重任。
-
-创建映射配置文件：
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC 
-    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-    
-<hibernate-mapping>
-	<!-- 建立类与表的映射 -->
-	<class name="com.meimeixia.hibernate.demo01.Customer" table="cst_customer">
-		<!-- 建立类中的属性与表中的主键相对应 -->
-		<id name="cust_id" column="cust_id">
-			<!-- 主键的生成策略，后面会讲，现在使用的是本地生成策略 -->
-			<generator class="native" />
-		</id>
-		
-		<!-- 建立类中的普通属性和表中的字段相对应 -->
-		<property name="cust_name" column="cust_name" />
-		<property name="cust_source" column="cust_source" />
-		<property name="cust_industry" column="cust_industry" />
-		<property name="cust_level" column="cust_level" />
-		<property name="cust_phone" column="cust_phone" />
-		<property name="cust_mobile" column="cust_mobile" />
-	</class>
-</hibernate-mapping>
-
-创建核心配置文件：
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration PUBLIC
-	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
-	
-<hibernate-configuration>
-	<session-factory>
-		<!-- 下面是三个必须要有的配置 -->
-		<!-- 配置连接MySQL数据库的基本参数 -->
-		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="hibernate.connection.url">jdbc:mysql:///hibernate_demo01</property>
-		<property name="hibernate.connection.username">root</property>
-		<property name="hibernate.connection.password">liayun</property>
-		
-		<!-- 配置Hibernate的方言 -->
-		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-		
-		<!-- 下面两个是可选的配置！ -->
-		<!-- 打印sql语句 -->
-		<property name="hibernate.show_sql">true</property>
-		<!-- 格式化sql语句 -->
-		<property name="hibernate.format_sql">true</property>
-		
-		<!-- 告诉Hibernate的核心配置文件加载哪个映射文件 -->
-		<mapping resource="com/meimeixia/hibernate/demo01/Customer.hbm.xml"/>
-	</session-factory>
-</hibernate-configuration>
-
-创建单元测试类：
-package com.meimeixia.hibernate.demo01;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.junit.Test;
-
-/**
- * Hibernate的入门案例
- * @author 
- *
- */
-public class HibernateDemo1 {
-	
-	//保存用户的案例
-	@Test
-	public void demo1() {
-		//1. 加载Hibernate的核心配置文件
-		Configuration configuration = new Configuration().configure();
-		//如果在Hibernate的核心配置文件没有设置加载哪个映射文件，则可手动加载映射文件
-		//configuration.addResource("com/meimeixia/hibernate/demo01/Customer.hbm.xml");
-		
-		//2. 创建SessionFactory对象，类似于JDBC中的连接池
-		SessionFactory sessionFactory = configuration.buildSessionFactory();
-		
-		//3. 通过SessionFactory获取到Session对象，类似于JDBC中的Connection
-		Session session = sessionFactory.openSession();
-		
-		//4. 手动开启事务，（最好是手动开启事务）
-		Transaction transaction = session.beginTransaction();
-		
-		//5. 编写代码
-		Customer customer = new Customer();
-		customer.setCust_name("张小敬aaa");
-		
-		session.save(customer);//保存一个用户
-		
-		//6. 事务提交
-		transaction.commit();
-		
-		//7. 释放资源
-		session.close();
-		sessionFactory.close();
-	}
-	
-}
-
-Struts2：
-Struts2框架是一个用于开发Java EE网络应用程序的开放源代码网页应用程序架构。它利用并延伸了Java Servlet API，鼓励开发者采用MVC架构。
-Struts2以WebWork优秀的设计思想为核心，吸收了Struts框架的部分优点，提供了一个更加整洁的MVC设计模式实现的Web应用程序框架。
-
-Strut2核心过滤器：web.xml
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5" 
-	xmlns="http://java.sun.com/xml/ns/javaee" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
-	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-  <display-name></display-name>	
-  <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
-  </welcome-file-list>
-  
-  <!-- 配置struts2的核心过滤器 -->
-  <!-- 所有请求都要通过核心过滤器 -->
-  <filter>
-  	<filter-name>struts2</filter-name>
-  	<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
-  </filter>
-  
-  <filter-mapping>
-  	<filter-name>struts2</filter-name>
-  	<url-pattern>/*</url-pattern>
-  </filter-mapping>
-  
-</web-app>
-
-编写启动类：
-package com.banana.struts.demo1;
-/*
- * Struts2的Action类
- */
-public class HelloAction {
-	public String execute(){
-		System.out.print("HelloAction执行了......");
-		return "success";
-	}
-}
-
-编写struts.xml来控制转向：
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE struts PUBLIC
-	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
-	"http://struts.apache.org/dtds/struts-2.3.dtd">
-
-<struts>
-	<!-- Struts2为了管理Action的配置，通过包进行管理 -->
-	<!-- 配置Struts2的包 -->
-	<package name="hello" extends="struts-default" namespace="/">
-		<!-- 配置Action -->
-		<action name="hello" class="com.banana.struts.demo1.HelloAction">
-		<!-- 页面的跳转 -->
-			<result name="success">/demo1/success.jsp</result>
-		</action>
-	</package>
-</struts>
-
-添加页面：
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%
-String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <base href="<%=basePath%>">
-    <title>My JSP 'demo1' starting page</title>
-  </head>
-  
-  <body>
-    <h1>Struts2的入门</h1>
-    <h3><a href="${ pageContext.request.contextPath }/hello.action">Struts2的入门</a></h3>
-  </body>
-  
-</html>
-
-
-MVC设计模式：MVC指MVC模式的某种框架，它强制性地使应用程序的输入、处理和输出分开。
-使用MVC应用程序被分成三个核心部件：模型、视图、控制器。
-
->M即model模型是指模型表示业务规则。在MVC的三个部件中，模型拥有最多的处理任务。即Bean层、mapper层和service层。
-被模型返回的数据是中立的，模型与数据格式无关，这样一个模型能为多个视图提供数据，由于应用于模型的代码只需写一次就可以被多个视图重用，所以减少了代码的重复性。
-
->V即View视图是指用户看到并与之交互的界面。比如由html元素组成的网页界面，或者软件的客户端界面。
-MVC的好处之一在于它能为应用程序处理很多不同的视图。在视图中其实没有真正的处理发生，它只是作为一种输出数据并允许用户操作的方式。
-
->C即controller控制器是指控制器接受用户的输入并调用模型和视图去完成用户的需求，控制器本身不输出任何东西和做任何处理。
-它只是接收请求并决定调用哪个模型构件去处理请求，然后再确定用哪个视图来显式返回的数据。
-
-MVC(Model模型、View视图、Control控制层)，将软件进行分层达到松耦合的效果。
-通用的软件编程思想, 在MVC设计模式中认为, 任何软件都可以分三层：
-控制层（Controller）、数据处理模型（Model）、负责展示数据的视图（View）。
-在MVC设计思想中要求一个符合MVC设计思想的软件应该保证上面这三部分相互独立，互不干扰，每一个部分只负责自己擅长的部分。
-如果某一个模块发生变化，应该尽量做到不影响其他两个模块。提高代码的可读性，实现程序间的松耦合、提高代码复用性。
-
-Web开发中前后端分离和前后端不分离的对比：
-https://www.cnblogs.com/liruilong/p/12244925.html
-
-路由控制:前后端分离的情况后端在任何都会返回一个json数据，不涉及路由处理，即页面跳转全是由前端自己完成。
-不分离的情况，路由跳转一般由后端完成，而且携带数据，通过重定向或请求转发实现，依赖Servlet中的内置对象。
-返回数据:前后端分离的情况后端返回的整体划分上只有执行逻辑响应的消息实体类和对应的需要展示的数据分页类对应的JSON。
-不分离后端返回的是经过视图解析器处理前的字符串。
-
-请求方式:前后端分离的情况以Rest风格的方式处理为主,当执行增删改查对应http请求方法POST,DELEE,PUT,GET,
-一般以异步请求为主,不分离情况一般同步异步结合。请求上以GET和POST为主。
-
-注解使用：前后端分离，接收的数据是Json时需要@RequestBody作用在方法参数上。
-用于将POST请求数据转化为实体类。返回数据时使用@ResponseBody用于将POST请求数据转化为实体类。
-返回数据时使用@ResponseBody,作用在方法上,当然对于全局的也可以使用@RespController注解。
-前后端不分离一般使用@RequestMapping，请求方式不用管。前后端不分离一般使用@RequestMapping，请求方式不用管。
-
-数据库及持久层技术以及多种数据库的应用：
+Java数据库及持久层技术以及多种数据库的应用：
 关系型数据库及其底层工作原理：
 MYSQL体系结构：
 Client Connectors
