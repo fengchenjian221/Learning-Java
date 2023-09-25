@@ -1194,6 +1194,25 @@ wait方法就是使当前线程等待该对象的锁，当前线程必须是该�
 9. notifyAll()
 该方法唤醒在该对象上等待的所有线程。
 
+操作系统并发区别于Java并发吗？Java并发是否用了操作系统并发
+操作系统并发和Java并发是两个不同但相关的概念，它们在多线程编程中发挥不同的作用，但也有一些联系。
+
+1. 操作系统并发：
+   - 操作系统并发是指操作系统的内核和调度器如何管理和调度计算机上的进程和线程。
+   - 操作系统负责分配CPU时间片、管理进程和线程的状态、实现上下文切换等，以便多个进程和线程可以在同一台计算机上并发执行。
+   - 操作系统提供了基本的多线程支持，但它通常是底层的，与具体编程语言无关。
+
+2. Java并发：
+   - Java并发是一种编程范式，用于在Java编程语言中实现多线程和多任务处理。
+   - Java提供了丰富的多线程编程工具和库，包括`java.lang.Thread`类、同步机制（如`synchronized`关键字）、线程池、原子操作类、并发集合等。
+   - Java并发是建立在操作系统并发之上的，它通过Java虚拟机（JVM）实现多线程调度和管理。
+
+虽然Java并发建立在操作系统并发之上，但它具有一些独立的特点和抽象，使得多线程编程更容易和可移植。例如，Java的线程模型抽象了底层的操作系统线程，使开发人员可以更轻松地创建和管理线程，而无需关心操作系统的细节。
+Java并发通常使用了操作系统提供的底层线程支持，但它也在其之上构建了更高级别的抽象，以便于开发人员处理并发编程。 Java的并发库和工具旨在提供更高级别的抽象，帮助开发人员解决常见的并发问题，如同步、锁、线程安全性等。
+这些工具和库在跨平台开发中尤其有用，因为它们隐藏了操作系统差异，使得Java程序在不同操作系统上的行为更加一致。
+
+总的来说，操作系统并发和Java并发是相关的，但它们在概念上和实现上存在差异。 Java并发建立在操作系统并发之上，提供了更高级别的抽象和工具，以便于开发人员编写多线程应用程序。
+操作系统并发管理底层的线程和进程，而Java并发是编写多线程Java应用程序的一种编程范式。
 
 Java集合：
 集合 → 数组 ：toArray()
@@ -1873,6 +1892,47 @@ public class HttpClientExample {
     }
 }
 
+什么是负载均衡？
+负载均衡建立在现有网络结构之上，它提供了一种廉价有效透明的方法扩展网络设备和服务器的带宽、增加吞吐量、
+加强网络数据处理能力、提高网络的灵活性和可用性。
+负载均衡（Load Balance）其意思就是分摊到多个操作单元上进行执行，
+例如Web服务器、FTP服务器、企业关键应用服务器和其它关键任务服务器等，从而共同完成工作任务。
+
+
+explain the difference between distributed system load balancing（分布式系统负载均衡）,cluster load balancing(集群负载均衡),operating system load balancing（操作系统负载均衡）,link load balancing （链路负载均衡）
+
+Load balancing is a technique used in computer systems to distribute workloads or network traffic across multiple resources (such as servers or network links) to ensure optimal performance, 
+minimize resource overload, and enhance system reliability. There are different types of load balancing, and here's an explanation of the differences between distributed system load balancing, 
+cluster load balancing, operating system load balancing, and link load balancing:
+
+Distributed System Load Balancing:
+
+Purpose: Distributed system load balancing involves distributing workloads across multiple servers or nodes within a distributed computing environment.
+ The goal is to improve the overall system's performance, scalability, and fault tolerance.
+Use Case: It is commonly used in web applications, cloud computing, and large-scale distributed systems to evenly distribute user requests and processing tasks across multiple servers.
+Techniques: Distributed load balancers often use algorithms like Round Robin, Least Connections, or Weighted Round Robin to determine how to route incoming requests to available resources.
+Cluster Load Balancing:
+
+Purpose: Cluster load balancing is a subset of distributed system load balancing. It specifically applies to clusters or groups of servers or nodes that work together as a single entity to provide services.
+Use Case: Cluster load balancing is used in scenarios where high availability and fault tolerance are critical, such as in database clusters or application server clusters.
+Techniques: Techniques like virtual IP addresses and load balancing algorithms are used to evenly distribute traffic among the nodes within the cluster.
+Operating System Load Balancing:
+
+Purpose: Operating system load balancing focuses on distributing the processing load among the CPU cores or processors within a single machine or server.
+Use Case: It is relevant in multi-core or multi-processor systems where applications can benefit from parallelism and efficient resource utilization.
+Techniques: Modern operating systems often have built-in load balancing mechanisms that distribute tasks or threads across available CPU cores based on factors like CPU utilization and affinity policies.
+Link Load Balancing:
+
+Purpose: Link load balancing (or network load balancing) involves distributing network traffic across multiple network links or paths to optimize network performance, increase bandwidth, 
+and improve network reliability.
+Use Case: It is commonly used in environments with redundant network connections, such as data centers, to ensure uninterrupted network connectivity and efficient use of available bandwidth.
+Techniques: Network load balancers may use techniques like Equal-Cost Multipath (ECMP) routing or dynamic link aggregation (LACP) to balance traffic across multiple network links.
+
+In summary, load balancing techniques are used at various levels of computing infrastructure to achieve different objectives. 
+Distributed system load balancing is about distributing workloads across multiple servers or nodes in a distributed environment, 
+while cluster load balancing specifically applies to clusters of servers. 
+Operating system load balancing manages CPU resources within a single machine, and link load balancing optimizes network traffic distribution across multiple network links. 
+Each type of load balancing serves a unique purpose and addresses specific performance and scalability challenges.
 
 NGINX：
 NGINX是一个高性能的HTTP和反向代理web服务器，同时也提供了IMAP/POP3/SMTP服务。
@@ -8359,11 +8419,6 @@ Dubbo优缺点
 服务发现：服务实例通过注册中心，获取到注册到其中的服务实例的信息，通过这些信息去请求它们提供的服务
 服务剔除：服务注册中心将出问题的服务自动剔除到可用列表之外，使其不会被调用到
 
-什么是负载均衡？
-负载均衡建立在现有网络结构之上，它提供了一种廉价有效透明的方法扩展网络设备和服务器的带宽、增加吞吐量、
-加强网络数据处理能力、提高网络的灵活性和可用性。
-负载均衡（Load Balance）其意思就是分摊到多个操作单元上进行执行，
-例如Web服务器、FTP服务器、企业关键应用服务器和其它关键任务服务器等，从而共同完成工作任务。
 
 Zookeeper：注册中心
 eureka：注册中心
