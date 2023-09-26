@@ -1535,6 +1535,23 @@ public class ObjectInputStreamTest01 {
 
 使用场景：所有可在网络上传输的对象都必须是可序列化的，否则会出错；所有需要保存到磁盘的Java对象都必须是可序列化的。
 
+
+磁盘IO：
+磁盘I/O速度较慢，因为它需要等待物理磁盘的旋转和磁头的定位，同时还受到硬盘的物理限制。
+通常发生在文件系统层面，用于读写文件或数据块。
+
+磁盘I/O的工作机制主要有以下三种方式：
+
+1.直接I/O方式。不经系统内核空间直接访问磁盘数据的方式（减少一次内核空间缓存到用户程序缓存的复制操作），
+通常是在一些数据库管理系统中实现，该管理系统明确知道需要缓存哪些数据，不需要哪些数据，这样就可以对数据进行预加载，
+提高数据的访问效率。但是当数据需要从磁盘中加载的时候，直接加载会非常缓慢。
+2.同步访问文件的方式。访问方式同标准访问文件的方式大体上是一样的，只是需要等到数据同步到磁盘上才能成功返回应用程序，
+性能较差，但安全性高。
+3.异步访问文件的方式。当发起访问数据的请求之后，线程就会继续执行其他的操作，直到请求数据返回。
+
+
+RandomAccessFile是Java输入/输出流体系中功能最丰富的文件内容访问类，既可以读取文件内容，也可以向文件输出数据。
+
 RandomAccessFlie的使用：
 1.RandomAccessFlie直接继承于java.lang.Object，实现了DataInput和DataOutput
 2.RandomAccessFlie既可以作为输入流，又可以作为输出流
@@ -1548,7 +1565,8 @@ Java NIO是Java1.4之后推出来的一套IO接口，NIO提供了一种完全不
 新增了许多用于处理输入输出的类，这些类都被放在java.nio包及子包下，并且对原java.io包中的很多类进行改写，新增了满足NIO的功能。
 
 Java NIO： 同步非阻塞，服务器实现模式为一个线程处理多个请求(连接)，即客户端发送的连接请求都会注册到多路复用器上，多路复用器轮询到连接有I/O请求就进行处理。
-一个线程中就可以调用多路复用接口（java中是select）阻塞同时监听来自多个客户端的IO请求，一旦有收到IO请求就调用对应函数处理，NIO擅长1个线程管理多条连接，节约系统资源。
+一个线程中就可以调用多路复用接口（java中是select）阻塞同时监听来自多个客户端的IO请求，
+一旦有收到IO请求就调用对应函数处理，NIO擅长1个线程管理多条连接，节约系统资源。
 
 运用Java NIO通信框架有Mina、Netty、Grizzly等。
 
@@ -1564,14 +1582,78 @@ Selector(选择器)
 https://static.mikechen.cc/wp-content/uploads/2022/03/java-nio-08.png
 
 关系图的说明：
-每个 Channel 对应一个 Buffer。
-Selector 对应一个线程，一个线程对应多个 Channel。
-该图反应了有三个 Channel 注册到该 Selector。
-程序切换到那个 Channel 是由事件决定的（Event）。
-Selector 会根据不同的事件，在各个通道上切换。
-Buffer 就是一个内存块，底层是有一个数组。
-数据的读取和写入是通过 Buffer，但是需要flip()切换读写模式，而 BIO 是单向的，要么输入流要么输出流。
+1.每个 Channel 对应一个 Buffer。
+2.Selector 对应一个线程，一个线程对应多个 Channel。
+3.该图反应了有三个 Channel 注册到该 Selector。
+4.程序切换到那个 Channel 是由事件决定的（Event）。
+5.Selector 会根据不同的事件，在各个通道上切换。
+6.Buffer 就是一个内存块，底层是有一个数组。
+7.数据的读取和写入是通过 Buffer，但是需要flip()切换读写模式，而 BIO 是单向的，要么输入流要么输出流。
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+
+public class NIOExample {
+    public static void main(String[] args) {
+        try (FileChannel channel = FileChannel.open(Paths.get("example.txt"), StandardOpenOption.READ)) {
+            ByteBuffer buffer = ByteBuffer.allocate(1024);
+            while (channel.read(buffer) > 0) {
+                buffer.flip();
+                while (buffer.hasRemaining()) {
+                    System.out.print((char) buffer.get());
+                }
+                buffer.clear();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+这个例子中，我们使用FileChannel类打开了一个名为example.txt的文件，并创建了一个ByteBuffer对象作为缓冲区。
+然后我们循环读取文件内容到缓冲区中，并使用flip()方法切换缓冲区的读写模式，然后逐个字节读取缓冲区中的内容并打印出来。
+最后使用clear()方法清除缓冲区。
+
+创建NIOServer：
+public static void main(String[] args) throws  Exception{
+        //创建ServerSocketChannel，-->> ServerSocket
+        ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+        InetSocketAddress inetSocketAddress = new InetSocketAddress(5555);
+        serverSocketChannel.socket().bind(inetSocketAddress);
+        serverSocketChannel.configureBlocking(false); //设置成非阻塞
+ 
+        //开启selector,并注册accept事件
+        Selector selector = Selector.open();
+        serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+ 
+        while(true) {
+            selector.select(2000);  //监听所有通道
+            //遍历selectionKeys
+            Set<SelectionKey> selectionKeys = selector.selectedKeys();
+            Iterator<SelectionKey> iterator = selectionKeys.iterator();
+            while (iterator.hasNext()) {
+                SelectionKey key = iterator.next();
+                if(key.isAcceptable()) {  //处理连接事件
+                    SocketChannel socketChannel = serverSocketChannel.accept();
+                    socketChannel.configureBlocking(false);  //设置为非阻塞
+                    System.out.println("client:" + socketChannel.getLocalAddress() + " is connect");
+                    socketChannel.register(selector, SelectionKey.OP_READ); //注册客户端读取事件到selector
+                } else if (key.isReadable()) {  //处理读取事件
+                    ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+                    SocketChannel channel = (SocketChannel) key.channel();
+                    channel.read(byteBuffer);
+                    System.out.println("client:" + channel.getLocalAddress() + " send " + new String(byteBuffer.array()));
+                }
+                iterator.remove();  //事件处理完毕，要记得清除
+            }
+        }
+ 
+    }
+	
+	
 网络编程：网络编程是指编写运行在多个设备（计算机）的程序，这些设备都通过网络连接起来。程序之间可以通信，互相发送消息。
 
 网络七层架构的作用与协议：
@@ -1891,6 +1973,14 @@ public class HttpClientExample {
         }
     }
 }
+
+
+什么是CDN？
+CDN工作机制是通过在现有的Internet中增加一层新的网站架构，将网站的内容发布到最接近用户的网络“边缘”，使用户可以就近取得所需内容，提高用户访问网站的响应速度。
+CDN以缓存网站中的静态数据为主，如CSS、JS、图片和静态页面等数据。用户从主站服务器请求到动态内容后，再从CDN上下载静态数据，
+从而加速网页数据内容的下载数据，如淘宝有90%以上的数据都是由CDN来提供。
+DNS服务器根据用户IP地址，将域名解析成相应节点的缓存服务器IP地址，实现用户就近访问。
+使用CDN服务的网站，只需将其域名解析权交给CDN的GSLB设备，将需要分发的内容注入CDN，就可以实现内容加速了。
 
 什么是负载均衡？
 负载均衡建立在现有网络结构之上，它提供了一种廉价有效透明的方法扩展网络设备和服务器的带宽、增加吞吐量、
