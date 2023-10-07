@@ -2129,10 +2129,8 @@ JavaScript 能在页面中创建新的 HTML 事件
 
 JSON：
 JavaScript Object Notation（JavaScript 对象标记法），它是一种存储和交换数据的语法。
-当数据在浏览器与服务器之间进行交换时，这些数据只能是文本，
-JSON 属于文本并且我们能够把任何 JavaScript 对象转换为 JSON，然后将 JSON 发送到服务器。
-我们也能把从服务器接收到的任何 JSON 转换为 JavaScript 对象。
-以这样的方式，我们能够把数据作为 JavaScript 对象来处理，无需复杂的解析和转译。
+当数据在浏览器与服务器之间进行交换时，这些数据只能是文本，JSON 属于文本并且我们能够把任何 JavaScript 对象转换为 JSON，然后将 JSON 发送到服务器。
+我们也能把从服务器接收到的任何 JSON 转换为 JavaScript 对象。以这样的方式，我们能够把数据作为 JavaScript 对象来处理，无需复杂的解析和转译。
 
 JSON语法：
 在json中，每一个数据项，都是由一个键值对（或者说是名值对）组成的，但是键必须是字符串，
@@ -2145,18 +2143,97 @@ JSON语法：
 布尔
 null
 
-数组（Array）用方括号(“[]”)表示。
+数组（Array）用方括号(“[]”)表示。对象也可以是一个数组。
+例：[1,2,"three","four",true,false,null,[1,2],{"name":"兮动人"}]
+
 对象（0bject）用大括号(“{}”)表示。
+例：{"name": "兮动人","age":22}
+
 名称/值对(name/value）组合成数组和对象。
-名称(name）置于双引号中，值（value）有字符串、数值、布尔值、null、对象和数组。
-并列的数据之间用逗号(“,”）分隔
+>名称(name）置于双引号中，值（value）有字符串、数值、布尔值、null、对象和数组。
+>并列的数据之间用逗号(“,”）分隔
 
-JSONArray可以添加JSONObject对象。
 JSON 的值不可以是以下数据类型之一：
-
 函数
 日期
 undefined
+
+
+JSON与Java对象转换-JSON转换库：
+GSON:
+GSON是Google提供的用于在Java对象和JSON数据之间进行相互转换的库，其包含的JSON解析方法主要有：
+
+toJson()：将Java对象转化为JSON字符串。
+fromJson()：将JSON字符串转化为Java对象。
+
+
+将Java对象转化为JSON字符串：
+Gson g = new Gson();
+book b = new book("100","金苹果","种植苹果的故事");
+String s = g.toJson(b);
+
+
+将JSON字符串转化为Java对象：
+
+Gson g = new Gson();
+//2. 转换 {"id":"100","name":"金苹果","info":"种植苹果的故事","page":["远赴人间惊鸿晏","一度人间盛世颜","致hdd"]}
+//2.1  返回book类型
+book b = g.fromJson("{\"id\":\"100\",\"name\":\"金苹果\",\"info\":\"种植苹果的故事\"}", book.class);
+System.out.println(b.getId());
+
+//2.2 返回MAP类型，键值对形式
+HashMap hm = g.fromJson("{\"id\":\"100\",\"name\":\"金苹果\",\"info\":\"种植苹果的故事\"}", HashMap.class);
+System.out.println(hm.get("id"));
+
+//2.3 MAP类型中值是一个数组形式
+HashMap data = g.fromJson("{\"id\":\"100\",\"name\":\"金苹果\",\"info\":\"种植苹果的故事\",\"page\":[\"远赴人间惊鸿晏\",\"一度人间盛世颜\",\"致hdd\"]}", HashMap.class);
+List list = (List) data.get("page");
+System.out.println(list.get(1));
+
+
+FastJson：
+FastJson是阿里巴巴公司基于Java语言开发的高性能且功能完善的JSON操作类库。
+Fastjson可以解析JSON格式的字符串，支持将Java Bean序列化为JSON字符串，也可以从JSON字符串反序列化到JavaBean。
+
+
+将Java对象转化为JSON字符串：
+book b = new book("1002","水浒传","讲述了一群讲义气的莽夫");
+String s = JSON.toJSONString(b);
+
+
+将JSON字符串转化为Java对象：
+
+book b = new book("1002","水浒传","讲述了一群讲义气的莽夫");
+
+//1. 转换 {"id":"1002","info":"讲述了一群讲义气的莽夫","name":"水浒传"}   转换成对象
+book books = JSON.parseObject("{\"id\":\"1002\",\"info\":\"讲述了一群讲义气的莽夫\",\"name\":\"水浒传\"}", book.class);
+System.out.println(books.getName());
+
+//2. 转换成数组 ["人生本该自由","乘兴而去","尽兴而归"]
+List<String> strings = JSON.parseArray("[\"人生本该自由\",\"乘兴而去\",\"尽兴而归\"]", String.class);
+for(String s:strings){
+    System.out.println(s);
+}
+
+JSON与JS对象之间的互相转换：
+JSON字符串转换为JS对象：
+<script>
+	var str = '{"name": "兮动人","age":22}';
+	var obj = JSON.parse(str);
+	console.log(obj);
+</script>
+
+
+JS对象转换为JSON字符串：
+<script>
+	var str = '{"name": "兮动人","age":22}';
+	var obj = JSON.parse(str);
+	console.log(obj);
+        
+	var jsonstr = JSON.stringify(obj);
+	console.log(jsonstr);
+</script>
+
 
 AJAX：
 传统的web交互是用户触发一个http请求服务器，然后服务器收到之后，在做出响应到用户，并且返回一个新的页面，
