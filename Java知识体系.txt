@@ -8869,15 +8869,78 @@ Feign执行流程：
 RequestTemplate生成Request请求，结合Ribbon实现服务调用负载均衡策略
 Feign最核心的就是动态代理，同时整合了Ribbon和Hystrix，具备负载均衡、隔离、熔断和降级功能
 
+//在主程序上添加注解@EnableFeignClients
+@SpringBootApplication
+@EnableFeignClients
+public class Microservice {
+    public static void main(String[] args) {
+        SpringApplication.run(Microservice.class, args);
+    }
+}
+
+//在需要调用其他微服务的模块中，定义一个继承自FeignClient接口的自定义接口
+//其中的@FeignClient注解指定了需要调用的远程服务名，@RequestMapping注解指定了远程服务的接口映射路径。
+@FeignClient(name = "remote-service")
+public interface RemoteServiceClient {
+
+    @RequestMapping(value = "/api/remote-service/hello", method = RequestMethod.GET)
+    String hello();
+}
+
 3.Ribbon（负载均衡）
 Ribbon是一个客户端的负载均衡器，他提供对大量的HTTP和TCP客户端的访问控制
 Ribbon负载均衡策略：简单轮询、权重、随机、重试等多种策略
 
+//编写Ribbon配置类
+@Configuration
+public class ApplicationContextConfig {
+    @Bean
+    @LoadBalanced//使用@LoadBalanced注解赋予RestTemplate负载均衡的能力
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
+    }
+}
+
+//编写Ribbon自定义配置类，配置负载均衡策略
+@Configuration
+public class MySelfRule {
+    @Bean //lRule：根据特定算法中从服务列表中选取一个要访问的服务
+    public IRule myRule(){
+        return new RandomRule();//随机访问
+    }
+}
+
 4.Hystrix（服务熔断）
 Hystrix提供两个命令，分别是HystrixCommand、HystrixObservableCommand，通常是在Spring中通过注解和AOP来实现对象的构造
-熔断：简单来说，就是我们生活中的“保险丝”。如果熔断器打开，就会执行短路，直接进行降级；如果熔断器关闭，就会进入隔离逻辑。默认触发熔断器的条件为：最近一个时间窗口（默认为10秒），总请求次数大于等于circuitBreakerRequestVolume Threshold（默认为20次）并且异常请求比例大于circuitBreakerError ThresholdPercentage（默认为50%），此时熔断器触发
-隔离：一般分为两种：线程池隔离和信号量隔离。线程池隔离指的是每个服务对应一个线程池，线程池满了就会降级；信号量隔离是基于tomcat线程池来控制的，当线程达到某个百分比，走降级流程
+熔断：简单来说，就是我们生活中的“保险丝”。如果熔断器打开，就会执行短路，直接进行降级；如果熔断器关闭，就会进入隔离逻辑。
+默认触发熔断器的条件为：最近一个时间窗口（默认为10秒），总请求次数大于等于circuitBreakerRequestVolume Threshold（默认为20次）
+并且异常请求比例大于circuitBreakerError ThresholdPercentage（默认为50%），此时熔断器触发
+隔离：一般分为两种：线程池隔离和信号量隔离。线程池隔离指的是每个服务对应一个线程池，线程池满了就会降级；
+信号量隔离是基于tomcat线程池来控制的，当线程达到某个百分比，走降级流程
 降级：作为Hystrix中兜底的策略，当出现业务异常、线程池已满、执行超时等情况，调用fallback方法返回一个错误提示
+
+//在application.properties文件配置Hystrix
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds=5000
+hystrix.command.default.execution.isolation.strategy=THREAD
+
+//创建Hystrix服务
+@Service
+public class MyService {
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @HystrixCommand(fallbackMethod = "fallbackMethod")
+    public String doSomething() {
+        // 这里调用远程服务
+        return restTemplate.getForObject("http://example.com/api/something", String.class);
+    }
+
+    public String fallbackMethod() {
+        // 这里是熔断后的fallback方法，返回一个默认值或者处理异常的逻辑
+        return "fallback";
+    }
+}
+
 
 5.Zull（网关）
 网关相当于一个网络服务架构的入口，所有网络请求必须通过网关转发到具体的服务。
@@ -8903,7 +8966,7 @@ public interface HelloService {
 }
 
 注册服务：将实现类注册到注册中心，例如ZooKeeper或Eureka。
-java
+
 @Service
 public class HelloServiceImpl implements HelloService {
     @Override
@@ -8913,7 +8976,7 @@ public class HelloServiceImpl implements HelloService {
 }
 
 发现服务：客户端通过注册中心发现服务。
-java
+
 @Autowired
 private ServiceDiscoveryService serviceDiscovery;
 
@@ -8931,6 +8994,7 @@ public String hello(String name) {
 
 这种基于HTTP协议的RPC框架实现起来比较简单，但是性能较低，因为每次调用都需要经过网络传输。
 如果需要高性能的RPC框架，可以选择gRPC等其他协议的框架。
+
 Dubbo：
 一款分布式服务框架
 高性能和透明化的RPC远程服务调用方案
@@ -8983,8 +9047,7 @@ Dubbo优缺点
 在分布式架构中，服务会注册到这里，当服务需要调用其它服务时，就到这里找到服务的地址并进行调用。
 注册中心本质上是为了解耦服务提供者和服务消费者。对于任何一个微服务，原则上都应存在或者支持多个提供者，这是由微服务的分布式属性决定的，
 更进一步，为了支持弹性扩缩容特性，一个微服务的提供者的数量和分布往往是动态变化的，也是无法预先确定的。
-因此，原本在单体应用阶段常用的静态LB机制就不再适用了，需要引入额外的组件来管理微服务提供者的注册与发现，
-而这个组件就是服务注册中心。
+因此，原本在单体应用阶段常用的静态LB机制就不再适用了，需要引入额外的组件来管理微服务提供者的注册与发现，而这个组件就是服务注册中心。
 
 注册中心的核心功能：
 服务注册：服务实例将自身服务信息注册到注册中心
