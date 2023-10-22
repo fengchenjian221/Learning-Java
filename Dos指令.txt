@@ -1,19 +1,35 @@
 常用的dos命令：
-dir:列出当前目录下的文件以及文件夹
-
-md:创建目录
-
-rd:删除目录
-
-cd:进入指定目录
-
-cd..:退回到上一级目录
-
-cd\:退回到根目录
-
-del:删除文件
-
-exit:退出
+1. **dir**：显示当前目录下的文件和子目录。
+
+2. **cd**：更改当前目录。例如，`cd C:\MyFolder` 会将当前目录更改为"C:\MyFolder"。
+
+3. **mkdir**：创建新目录。例如，`mkdir NewDirectory` 会在当前目录下创建名为"NewDirectory"的新文件夹。
+
+4. **rmdir**：删除目录。例如，`rmdir OldDirectory` 会删除名为"OldDirectory"的文件夹。
+
+5. **del**：删除文件。例如，`del myfile.txt` 会删除名为"myfile.txt"的文件。
+
+6. **copy**：复制文件。例如，`copy file1.txt file2.txt` 会将"file1.txt"复制到"file2.txt"。
+
+7. **move**：移动文件或重命名文件。例如，`move file1.txt C:\NewFolder` 会将"file1.txt"移动到"C:\NewFolder"。
+
+8. **ren**：重命名文件。例如，`ren oldfile.txt newfile.txt` 会将"oldfile.txt"重命名为"newfile.txt"。
+
+9. **type**：显示文本文件的内容。例如，`type myfile.txt` 会在命令行中显示"myfile.txt"的文本内容。
+
+10. **edit**：打开DOS编辑器，允许用户编辑文本文件。
+
+11. **ipconfig**：显示计算机的网络配置信息，包括IP地址、子网掩码和默认网关。
+
+12. **ping**：向另一台计算机发送网络请求，以测试连接是否正常。例如，`ping www.example.com` 会测试与"www.example.com"的连接。
+
+13. **tasklist**：列出当前运行的进程列表。
+
+14. **taskkill**：终止运行中的进程。例如，`taskkill /F /IM notepad.exe` 会强制关闭所有名为"notepad.exe"的进程。
+
+15. **shutdown**：关闭或重启计算机。例如，`shutdown /s` 会关闭计算机，而`shutdown /r` 会重新启动计算机。
+
+16. **help**：获取有关特定DOS命令的帮助信息。例如，`help dir` 会提供有关"dir"命令的信息。
 
 常用快捷键：
 
