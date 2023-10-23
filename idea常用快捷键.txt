@@ -1,22 +1,41 @@
 常用快捷键
 
 alt+enter     快速提示完成，在代码可能存在语法问题时，IDEA 会提示使用该快捷键可以快速自动修正（功能非常强大，最常使用）
-alt + /	快速补全代码
+alt + /	      快速补全代码
+alt + 左右    切换左右文件标签
+alt+鼠标选择   列选择模式，按列选择
+alt+7	      列出当前列的所有方法
 ctrl+p        方法参数提示
-alt+insert        快速生成含有任意形参的构造器，和私有属性的 Getter / Setter 方法等（最常使用）
-ctrl+alt+i        自动对齐, 整理缩进
-ctrl+alt+l        格式化代码
+alt+insert    快速生成含有任意形参的构造器，和私有属性的 Getter / Setter 方法等（最常使用）
+ctrl+alt+i    自动对齐, 整理缩进
+ctrl+alt+O	  自动删除未使用的import
+ctrl+alt+l    格式化代码
+ctrl+alt+T	  快捷代码块 try catch 等
+ctrl+alt+V	  抽取代码，提取方法参数为变量，然后方法调用传入新生成的变量
+ctrl+alt+P	  将内容提取成所在方法的参数
+ctrl+alt+C	  将内容提取成常量
+ctrl+alt+M	  提取方法，将选中的代码提取到方法里
+ctrl+alt+左	  光标返回上次编辑位置
+ctrl+alt+左右        切换到上一个编辑位置或下一个编辑位置
+ctrl+alt+回车        在当前行前插入一行 
+ctrl + shift + f10   运行
+ctrl+alt+shift+c        对一个包名或类名，复制它完整的类型名称
+ctrl+shift+z  撤销
 ctrl + y        删除行
-redo操作在IDEA中使用ctrl+shift+z
+ctrl + E	    最近的文件
+ctrl + W	    选择光标所在单词、行、块等
 ctrl + x        剪切行
+ctrl + h        查看集成结构
+ctrl + f12      查看一个类的大纲 也支持 xml、yml 等配置
 ctrl+shift+上下、alt+shift+上下        移动代码
 ctrl+d        复制行
 ctrl+n 或按两下shift        搜索类、文件、变量或方法、操作…
 shift + f6        文件改名
-alt + 左右        切换左右文件标签
-ctrl+alt + 左右        切换到上一个编辑位置或下一个编辑位置
-ctrl+f12        查看一个类的大纲 也支持 xml、yml 等配置
-shift+回车        在下面添加新行
-ctrl+alt+回车        在上面添加新行
-ctrl+alt+shift+c        对一个包名或类名，复制它完整的类型名称
-ctrl+h        查看集成结构
+shift + 回车        在下面添加新行
+f2            快速定位到文件报错位置
+
+
+
+
+
+
