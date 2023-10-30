@@ -1,4 +1,4 @@
-package boot.constant;
+package boot.config;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.*;
