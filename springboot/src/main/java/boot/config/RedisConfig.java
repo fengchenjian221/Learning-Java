@@ -5,23 +5,30 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import java.net.UnknownHostException;
 
 @Configuration
 public class RedisConfig {
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
-        template.setConnectionFactory(factory);
-        // key采用String的序列化方式
-        template.setKeySerializer(new StringRedisSerializer());
-        // hash的key也采用String的序列化方式
-        template.setHashKeySerializer(new StringRedisSerializer());
-        // value序列化方式采用jackson
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        // hash的value序列化方式采用jackson
-        template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
-        template.afterPropertiesSet();
-        return template;
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory)
+            throws UnknownHostException {
+        // 创建模板
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        // 设置连接工厂
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        // 设置序列化工具
+        GenericJackson2JsonRedisSerializer jsonRedisSerializer =
+                new GenericJackson2JsonRedisSerializer();
+        // key和 hashKey采用 string序列化
+        redisTemplate.setKeySerializer(RedisSerializer.string());
+        redisTemplate.setHashKeySerializer(RedisSerializer.string());
+        // value和 hashValue采用 JSON序列化
+        redisTemplate.setValueSerializer(jsonRedisSerializer);
+        redisTemplate.setHashValueSerializer(jsonRedisSerializer);
+        return redisTemplate;
     }
 }
+

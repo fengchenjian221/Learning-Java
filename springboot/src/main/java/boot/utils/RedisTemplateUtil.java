@@ -5,6 +5,7 @@ import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -49,6 +50,9 @@ public class RedisTemplateUtil {
          * @return 时间(秒) 返回0代表为永久有效
          */
         public long getExpire(String key) {
+            if(key == null || key.isEmpty()){
+                return 0;
+            }
             return redisTemplate.getExpire(key, TimeUnit.SECONDS);
         }
 
@@ -60,7 +64,7 @@ public class RedisTemplateUtil {
          */
         public boolean hasKey(String key) {
             try {
-                return redisTemplate.hasKey(key);
+                return Boolean.TRUE.equals(redisTemplate.hasKey(key));
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
