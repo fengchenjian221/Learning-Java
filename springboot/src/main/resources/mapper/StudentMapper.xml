@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="boot.mapper.StudentMapper">
+    <resultMap id="StudentResult" type="boot.entity.Student">
+        <result property="id" column="id" />
+        <result property="stuId" column="stu_id" />
+        <result property="name" column="name" />
+        <result property="grade" column="grade" />
+        <result property="class1" column="class" />
+        <result property="score" column="score" />
+    </resultMap>
+    <select id="queryStudentList" resultType="boot.entity.Student">
+        select id,stu_id,name,grade,class,score from my_db.student
+    </select>
+
+    <select id="selectStudentList" parameterType="long" resultType="boot.entity.Student">
+        select id,stu_id,name,grade,class from my_db.student where id = #{id}
+    </select>
+
+    <select id="countScore" resultType="map">
+        select stu_id,score from my_db.student
+    </select>
+
+    <select id="queryUserById" resultType="boot.entity.Student">
+        select id,stu_id,name,grade,class from my_db.student where id=#{id};
+    </select>
+
+    <insert id="addStudent" parameterType="boot.entity.Student">
+        insert into my_db.student(id,stu_id,name,grade,class,score)
+        values(#{id},#{stuId},#{name},#{grade},#{class1},#{score});
+    </insert>
+
+    <update id="updateStudent" parameterType="boot.entity.Student">
+        update my_db.student
+        set stu_id=#{stuId},name=#{name},grade=#{grade},class=#{class1},score=#{score}
+        where id=#{id};
+    </update>
+
+    <delete id="deleteStudent" parameterType="int">
+        delete
+        from my_db.student
+        where stu_id=#{stuId};
+    </delete>
+
+</mapper>
