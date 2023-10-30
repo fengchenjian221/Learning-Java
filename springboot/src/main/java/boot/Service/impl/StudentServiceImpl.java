@@ -16,13 +16,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> queryStudentList() {
-        List<Student> list = studentMapper.queryStudentList();
-        return list;
-    }
-
-    @Override
-    public List<Student> selectStudentList(long id) {
-        List<Student> list = studentMapper.queryStudentList();
         return studentMapper.queryStudentList();
     }
 

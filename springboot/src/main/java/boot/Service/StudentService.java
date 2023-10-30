@@ -10,8 +10,6 @@ public interface StudentService {
 
     List<Student> queryStudentList();
 
-    List<Student> selectStudentList(long id);
-
     int addStudent(Student student);
 
     Student updateStudent(Student student);
