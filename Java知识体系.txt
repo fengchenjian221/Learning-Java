@@ -2005,6 +2005,9 @@ public class HttpClientExample {
     }
 }
 
+HTTPS中反斜杠（/）通常用于表示路径（path）的一部分。路径是指URL中主机名和查询字符串之间的部分，用于指定请求的资源位置。
+其中，https中反斜杠指向的路径部分指定的是服务器的资源位置。当客户端向服务器发送请求时，服务器会根据路径部分来查找和提供相应的资源。
+
 
 什么是CDN？
 CDN工作机制是通过在现有的Internet中增加一层新的网站架构，将网站的内容发布到最接近用户的网络“边缘”，使用户可以就近取得所需内容，提高用户访问网站的响应速度。
@@ -2351,6 +2354,80 @@ HashMap data = g.fromJson("{\"id\":\"100\",\"name\":\"金苹果\",\"info\":\"种
 List list = (List) data.get("page");
 System.out.println(list.get(1));
 
+JWT:
+JSON Web Tokens（JWT）是一种用于在网络应用中传递信息的开放标准（RFC 7519），它以紧凑且自包含的方式表示数据，
+通常用于在身份验证和授权系统中进行安全传输信息。JWT 的具体作用如下：
+
+1. **身份验证**：JWT可用于验证用户的身份。当用户登录成功后，服务器可以生成一个JWT令牌并将其返回给客户端。
+客户端在后续请求中可以携带这个令牌，服务器可以使用令牌来验证用户的身份，而无需在每个请求中再次提供用户名和密码。
+
+2. **授权**：JWT可以包含有关用户的授权信息，例如用户的角色或权限。
+这使得服务器可以在接收到JWT后，轻松地确定用户是否有权限执行特定操作。
+
+3. **信息交换**：JWT是一种方便的方式来在不同组件或微服务之间安全地传递信息。
+例如，一个用户在一个身份验证服务登录后，可以生成一个JWT令牌，然后将其传递给其他服务，
+这些服务可以使用令牌来验证用户身份和访问权限。
+
+4. **状态无关性**：JWT是无状态的，令牌中包含了所有必要的信息，因此不需要在服务器上保留会话状态。
+这使得 JWT 适用于分布式应用程序和负载均衡环境。
+
+5. **跨域通信**：由于 JWT 可以在 HTTP 头或 URL 中传递，它们可以用于在不同域之间进行通信。
+这对于单点登录（Single Sign-On，SSO）等应用程序非常有用。
+
+6. **安全性**：JWT使用数字签名或加密来验证令牌的完整性和真实性。
+这意味着只有拥有正确密钥的人才能生成有效的令牌，从而防止伪造令牌。
+
+JWT通常由三部分组成：
+
+- **Header（头部）**：包含了令牌类型和所用的签名算法等信息。
+- **Payload（负载）**：包含了要传输的数据，如用户ID、过期时间、授权信息等。
+- **Signature（签名）**：用于验证令牌的真实性。通常由头部和负载中的信息以及密钥生成。
+
+创建一个JWT：
+package boot.utils;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import java.security.Key;
+import java.util.Date;
+public class JWTUtils {
+
+    private static final String SECRET_KEY = "secret_key";
+
+    public String JwtTokenGenerator (long userId){
+
+            // 当前时间
+            Date now = new Date();
+
+            // 过期时间，设置为5小时后
+            Date expiration = new Date(now.getTime() + 5 * 60 * 60 * 1000);
+
+            // 创建JWT
+            String jwt = Jwts.builder()
+                    .setSubject(Long.toString(userId))  // 设置用户ID作为JWT的主题
+                    .setIssuedAt(now)  // 设置JWT的发行时间
+                    .setExpiration(expiration)  // 设置JWT的过期时间
+                    .signWith(SignatureAlgorithm.HS256,SECRET_KEY)  // 使用密钥签名JWT
+                    .compact();
+
+            return jwt;
+
+    }
+
+    public String getUsernameFromToken(String token) {
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+
+    public boolean validateToken(String token, String userName) {
+        String username = getUsernameFromToken(token);
+        return username.equals(userName);
+    }
+
+}
 
 FastJson：
 FastJson是阿里巴巴公司基于Java语言开发的高性能且功能完善的Json操作类库。
@@ -8571,6 +8648,9 @@ MVC架构将网络交互层和数据交互层区分开，实现了业务读取�
 也因此衍生出了一系列相应的技术，如对服务提供、服务调用、连接处理、通信协议、序列化方式、服务发现、服务路由、日志输出等行为进行封装的服务框架。
 在分布式架构的基础上，延申出的架构。
 
+对于分布式系统和垂直系统的理解：
+一个微服务是垂直式MVC的集合，而分布式RPC是将多个微服务整合的系统，并保证系统的一致性、高性能、高可用和可拓展性等特性。
+
 可以把分布式系统理解为集群吗？
 分布式系统和集群是相关概念，但它们并不完全相同，尽管它们通常一起使用。以下是它们之间的区别：
 
@@ -10356,8 +10436,7 @@ Pometheus 鼓励用户监控服务的内部状态，基于 Prometheus 丰富的 
 3 强大的数据模型
 所有采集的监控数据均以指标(metric)的形式保存在内置的时间序列数据库当中(TSDB)。
 所有的样本除了基本的指标名称以外，还包含一组用于描述该样本特征的标签。
-每一条时间序列由指标名称(Metrics Name)以及一组标签(Labels)唯一标识。每条时
-间序列按照时间的先后顺序存储一系列的样本值。
+每一条时间序列由指标名称(Metrics Name)以及一组标签(Labels)唯一标识。每条时间序列按照时间的先后顺序存储一系列的样本值。
 ➢ http_request_status：指标名称(Metrics Name)
 ➢ {code='200',content_path='/api/path',environment='produment'}：表示维度的
 标签，基于这些 Labels 我们可以方便地对监控数据进行聚合，过滤，裁剪。
