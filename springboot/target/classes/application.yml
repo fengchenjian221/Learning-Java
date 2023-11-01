@@ -12,3 +12,34 @@ server:
         max-wait: 1ms #连接池最大阻塞等待时间
         max-idle: 4 #连接池中的最大空闲连接
         min-idle: 0 #连接池中的最小空闲连接
+
+## HBase 配置
+hbase:
+  config:
+    hbase:
+      zookeeper:
+        quorum: 10.0.1.109
+        port: 2181
+        znode: /hadoop/data_ha
+      master: 10.0.1.109:16000
+      client:
+        keyvalue:
+          maxsize: 1572864000
+
+  #配置rabbitMq 服务器
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: root
+    password: root
+    #虚拟host 可以不设置,使用server默认host
+    virtual-host: JCcccHost
+
+  custom:
+    spark:
+      appName: appName_demo
+      sparkHome: .
+      # master 可指定为：
+      #  1. Spark，Mesos 或 YARN 的 cluster URL。例：spark://127.0.0.1:7077
+      #  2. 本地模式(local mode)。例如：local；local[4]
+      master: local[4]
