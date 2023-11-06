@@ -2191,7 +2191,115 @@ Nginx（发音为"engine-x"）是一个高性能、可伸缩、开源的反向�
 这些特性使得Nginx成为一个非常受欢迎的Web服务器和反向代理服务器，适用于各种用例，从静态文件服务到高流量的Web应用程序。 
 Nginx的性能和可伸缩性使其在构建现代Web架构中广泛使用。
 
+Netty：
+Netty是一个由JBOSS提供的开源框架，用于快速开发高性能、高可靠性的网络应用程序。
+它简化和流线化了网络应用的编程开发过程，基于NIO（非阻塞IO）开发，使用异步事件驱动的方式处理网络请求。
 
+Netty的主要特点包括：
+异步事件驱动：Netty基于事件驱动编程模型，通过异步方式处理网络请求，避免了阻塞IO带来的性能问题。
+基于NIO：Netty基于Java的NIO（非阻塞IO）库开发，能够高效地处理大量并发连接。
+简化开发：Netty提供了一套丰富的API和工具类，使得开发者可以更加专注于业务逻辑的实现，而无需深入了解底层网络协议和IO处理的细节。
+可扩展性强：Netty的设计采用了模块化结构，各个模块之间耦合度低，可以根据需要灵活地扩展和定制。
+社区活跃：Netty拥有庞大的开发者社区，不断有新的功能和优化被加入到框架中，为开发者提供了强有力的支持。
+
+使用netty创建一个服务器：
+import io.netty.bootstrap.ServerBootstrap;  
+import io.netty.channel.ChannelFuture;  
+import io.netty.channel.ChannelInitializer;  
+import io.netty.channel.ChannelOption;  
+import io.netty.channel.EventLoopGroup;  
+import io.netty.channel.nio.NioEventLoopGroup;  
+import io.netty.channel.socket.SocketChannel;  
+import io.netty.channel.socket.nio.NioServerSocketChannel;  
+import io.netty.handler.logging.LogLevel;  
+import io.netty.handler.logging.LoggingHandler;  
+  
+public class ServerBootstrap {  
+    public static void main(String[] args) throws Exception {  
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1);  
+        EventLoopGroup workerGroup = new NioEventLoopGroup();  
+        try {  
+            ServerBootstrap bootstrap = new ServerBootstrap();  
+            bootstrap.group(bossGroup, workerGroup)  
+                     .channel(NioServerSocketChannel.class)  
+                     .option(ChannelOption.SO_BACKLOG, 128)  
+                     .childOption(ChannelOption.SO_KEEPALIVE, true)  
+                     .handler(new LoggingHandler(LogLevel.INFO))  
+                     .childHandler(new ChannelInitializer<SocketChannel>() {  
+                         @Override  
+                         public void initChannel(SocketChannel ch) throws Exception {  
+                             ch.pipeline().addLast(new ServerHandler());  
+                         }  
+                     });  
+            ChannelFuture future = bootstrap.bind(8080).sync();  
+            future.channel().closeFuture().sync();  
+        } finally {  
+            bossGroup.shutdownGracefully();  
+            workerGroup.shutdownGracefully();  
+        }  
+    }  
+}
+
+使用netty创建客户端：
+使用netty创建客户端引导程序
+import io.netty.bootstrap.Bootstrap;  
+import io.netty.channel.ChannelFuture;  
+import io.netty.channel.ChannelInitializer;  
+import io.netty.channel.ChannelOption;  
+import io.netty.channel.EventLoopGroup;  
+import io.netty.channel.nio.NioEventLoopGroup;  
+import io.netty.channel.socket.SocketChannel;  
+import io.netty.channel.socket.nio.NioSocketChannel;  
+import io.netty.handler.logging.LogLevel;  
+import io.netty.handler.logging.LoggingHandler;  
+  
+public class ClientBootstrap {  
+    public static void main(String[] args) throws Exception {  
+        EventLoopGroup group = new NioEventLoopGroup();  
+        try {  
+            Bootstrap bootstrap = new Bootstrap();  
+            bootstrap.group(group)  
+                     .channel(NioSocketChannel.class)  
+                     .option(ChannelOption.SO_KEEPALIVE, true)  
+                     .handler(new LoggingHandler(LogLevel.INFO))  
+                     .childHandler(new ChannelInitializer<SocketChannel>() {  
+                         @Override  
+                         public void initChannel(SocketChannel ch) throws Exception {  
+                             ch.pipeline().addLast(new ClientHandler());  
+                         }  
+                     });  
+            ChannelFuture future = bootstrap.connect("localhost", 8080).sync();  
+            future.channel().closeFuture().sync();  
+        } finally {  
+            group.shutdownGracefully();  
+        }  
+    }  
+}
+
+创建客户端处理器
+import io.netty.buffer.ByteBuf;  
+import io.netty.channel.ChannelHandlerContext;  
+import io.netty.channel.ChannelInboundHandlerAdapter;  
+import io.netty.handler.codec.http.*;  
+import java.nio.charset.Charset;  
+  
+public class ClientHandler extends ChannelInboundHandlerAdapter {  
+    @Override  
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {  
+        if (msg instanceof FullHttpResponse) {  
+            FullHttpResponse response = (FullHttpResponse) msg;  
+            System.out.println(response.content().toString(Charset.forName("UTF-8")));  
+        } else {  
+            super.channelRead(ctx, msg);  
+        }  
+    }  
+    @Override public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {   
+        cause.printStackTrace();   
+        ctx.close();   
+    }   
+}
+
+关于网络传输的几个问题：
 在实际生活中有哪些因素影响网络传输？
 
 网络传输的性能和可靠性受到许多因素的影响，这些因素可以分为以下几类：
@@ -10144,6 +10252,22 @@ ClickHouse同时支持列式存储和数据压缩，这是对于一款高性能�
 一个非常流行的观点认为，如果你想让查询变得更快，最简单且有效的方法是减少数据扫描范围和数据传输时的大小，
 而列式存储和数据压缩就可以帮助我们实现上述两点，列式存储和数据压缩通常是伴生的，因为一般来说列式存储是数据压缩的前提。
 
+ClickHouse的特性包括：
+1.完备的DBMS功能：ClickHouse具备DDL（数据定义语言）、DML（数据操作语言）、分布式管理、权限控制、数据备份与恢复等功能。
+2.数据压缩：ClickHouse具有数据压缩功能，可以减少数据存储空间和网络带宽的使用。
+3.数据的磁盘存储：ClickHouse将数据存储在磁盘上，不同于其他列式数据库大多需要在内存中处理。
+4.多核心并行处理：ClickHouse具有多核心并行处理能力，可以充分利用多核CPU的性能。
+5.多服务器分布式处理：ClickHouse支持多服务器分布式处理，可以处理大规模的数据。
+6.支持SQL：ClickHouse支持SQL语言，可以方便地进行数据查询和操作。
+7.向量引擎：ClickHouse采用向量引擎，能够高效地处理大规模的向量数据。
+8.实时数据更新：ClickHouse支持实时数据更新，可以快速地响应数据变化。
+9.索引：ClickHouse支持索引，可以提高查询效率。
+10.适合在线查询：ClickHouse适合在线查询，可以快速地返回查询结果。
+11.支持近似计算：ClickHouse支持近似计算，可以在一定程度上减少计算误差。
+12.支持数据复制和数据完整性：ClickHouse支持数据复制和数据完整性，可以保证数据的可靠性和一致性。
+13.角色的访问控制：ClickHouse提供角色的访问控制功能，可以按照用户粒度设置数据库或者表的操作权限，保障数据的安全性。
+
+例：在clickhouse中进行模糊查询 SELECT * FROM table_name WHERE column_name LIKE '%keyword%';
 Zookeeper 大数据分布式协调服务
 Zookeeper从设计模式角度来理解：是一个基于观察者模式设计的分布式服务管理框架，
 它负责存储和管理大家都关心的数据，然后接受观察者的注册，
