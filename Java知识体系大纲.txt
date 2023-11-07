@@ -24,6 +24,7 @@ Java：
 ③Java语言高级运用
 -异步
 -多线程
+-JUC
 -集合
 -泛型
 -序列化
@@ -46,6 +47,7 @@ web开发后端知识体系：
 -HTTP协议/HTTPS协议
 -Tomcat
 -Nginx
+-Netty
 -HTML
 -JavaScript
 -Json
@@ -86,7 +88,11 @@ web开发后端知识体系：
 -分布式搜索引擎Elasticsearch
 -分布式实时数据分析Clickhouse
 -分布式版本控制系统Git
-⑦大数据
+⑦安全
+-Spring Security
+-Shiro
+-Java安全编码指南
+⑧分布式计算-大数据
 -底层原理Hadoop
 -大数据资源管理系统YARN
 -数据仓库工具Hive
@@ -99,7 +105,7 @@ web开发后端知识体系：
 -大数据任务调度Azkaban
 -大数据元数据管理Atlas
 -大数据监控系统Prometheus
-⑧分布式账本
+⑨分布式账本
 -区块链
 -密码学
 
