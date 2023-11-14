@@ -103,6 +103,22 @@ String：不可变的字符串序列
 StringBuffer ：可变的字符串序列，线程安全，效率低，多线程时用
 StringBuilder ：可变的字符串序列，线程不安全，效率高
 
+String可以直接赋值或者创建对象
+String s1 = "Hello"; // 通过直接赋值创建String对象  
+String s2 = new String("Hello"); // 通过new关键字创建String对象
+
+StringBuffer是Java中的一个可变类，它允许我们在同一个对象上进行多次的字符串操作。
+StringBuffer sb = new StringBuffer(); // 创建一个空的StringBuffer对象  
+sb.append("Hello"); // 添加字符串  
+sb.append(" World"); // 添加另一个字符串  
+System.out.println(sb.toString()); // 输出 "Hello World"
+
+StringBuilder：StringBuilder和StringBuffer类似，也是Java中的一个可变类，允许我们在同一个对象上进行多次的字符串操作。
+StringBuilder sb = new StringBuilder(); // 创建一个空StringBuilder对象  
+sb.append("Hello"); // 添加字符串  
+sb.append(" World"); // 添加另一个字符串  
+System.out.println(sb.toString()); // 输出 "Hello World"
+
 创建StringBuffer时，底层创建了一个长度为16的字符串char型数组；
 如果创建时传了参数，则在此基础上增加一个长度为16的字符串char型数组，
 默认情况下，扩容为原来的2倍+2，同时将原有数组的元素复制到新的数组中
@@ -162,10 +178,10 @@ System.out.println(a % b); // 0 --->模运算相当于数学中除法的余数
 
 int a = 1;
 a++; // 后置++ 表示给a的值加1，此时a的值为2
-System.out.println(a++); // 注意：后置++是先使用变量原来值，表示式结束时给变量+1，因此输出2
+System.out.println(a++); // 注意：后置++是先使用变量原来值，表示式结束时再给变量+1，因此输出2
 System.out.println(a); // 输出3
 ++a; // 前置++ 表示给a的值加1
-System.out.println(++a); // 注意：前置++是先给变量+1，然后使用变量中的值，因此输出5
+System.out.println(++a); // 注意：前置++是先给变量+1，然后使用变量中的值，再使用表达式，因此输出5
 System.out.println(a); // 输出5
 
 混合使用，【前置++】先+1，然后使用变量+1之后的值，【后置++】先使用变量原来的值，表达式结束时给变量+1 只有变量才能使用自增/自减运算符，常量不能使用，因为常量不允许被修改。
@@ -187,8 +203,32 @@ public boolean equals(Object obj){
 }
 像String、Date、File、包装类等都重写了Object类中的equals()方法，比较两个对象的实体内容
 
+在Java8中String类重写的equals()方法：
+public boolean equals(Object anObject) {  
+    if (this == anObject) {  
+        return true;  
+    }  
+    if (anObject instanceof String) {  
+        String anotherString = (String)anObject;  
+        int n = value.length;  
+        if (n == anotherString.value.length) {  
+            char v1[] = value;  
+            char v2[] = anotherString.value;  
+            int i = 0;  
+            while (n-- != 0) {  
+                if (v1[i] != v2[i])  
+                    return false;  
+                i++;  
+            }  
+            return true;  
+        }  
+    }  
+    return false;  
+}
+
+
 通常情况下，自定义的类需要重写equals()方法
-重写equals()方法的步骤一般如下：
+自定义类重写equals()方法的步骤一般如下：
 1、先用“==”判断是否相等。
 
 2、判断equals()方法的参数是否为null，如果为null，则返回false；因为当前对象不可能为null，如果为null，则不能调用其equals()方法，否则抛java.lang.NullPointerException异常。
@@ -453,7 +493,7 @@ Comparator定制排序：
 当元素的类型没有实现Comparable接口而又不方便修改代码，或者实现了Comparable
 接口的排序规则不适合当前的操作，可以考虑使用Comparator的对象来排序
 
-Java面向对象：
+Java编程范式-面向对象：
 "万事万物皆对象"
 1.在Java语言中，我们把功能、结构等封装到类中，通过类的实例化，来调用具体的功能结构
 2.涉及到Java语言与前端HTML或者后端数据库做交互时，都体现为用类、对象去做交互
@@ -487,8 +527,18 @@ mall.show(new Phone())
 生命周期：随着方法进栈而诞生，随着方法出栈而消失
 不可以使用权限修饰符
 
+public class MyClass {  
+    // 成员变量  
+    public String myMemberVariable;  
+      
+    public void myMethod() {  
+        // 局部变量  
+        String myLocalVariable = "Hello, World!";  
+    }  
+}
+
 修饰符：private：同类下访问  → 缺省：同包下访问 → protected：子包下可以访问，同包也可以访问。不同包下的子类，访问protected修饰的，需要使用子类的对象访问，不能使用父类的对象访问  → public ：项目中所有类都可以访问
-修饰类的时候，只能用缺省和public。
+PS:修饰类的时候，只能用缺省和public。
 
 方法的重载：在 Java 类中可以定义 多个名称相同的方法 ，若只是参数不同，功能类似，那么可以将这类方法称为同名方法，也可以叫做方法重载
 例如：sort(byte[] a) 与 sort(char[] a) 构成了方法的重载
@@ -497,6 +547,17 @@ Java中可变个数的形参 jdk5.0以上 格式：public void show(String ... s
 
 Java里面值传递机制只有一种：值传递。即将实际参数值的副本（复制）传入方法内，而参数本身不受影响。
 >形参是基本数据类型，将实参的数据值传递给形参；形参是引用数据类型，将实参的地址值（含变量的数据类型）传递给形参。
+
+Java中的值传递机制是指在传递基本数据类型的参数时，实际是将参数的值复制一份传递给方法或函数，而不是传递参数本身。这意味着在方法或函数内部对参数的修改不会影响到原始变量的值。
+具体来说，当我们将基本类型的变量传递给方法时，实际上是将变量的值复制一份传递给方法，而不是传递变量本身。这意味着在方法内部对参数的修改不会影响到原始变量的值。
+
+例如，如果我们定义一个方法来交换两个整数的值：
+public static void swap(int x, int y) {  
+    int temp = x;  
+    x = y;  
+    y = temp;  
+}
+当我们调用swap(a, b)时，实际传递的是a和b的值，而不是a和b本身。这意味着在swap方法内部对x和y的修改不会影响到原始的a和b的值。因此，调用swap(a, b)后，a的值不会改变，而b的值会被交换。
 
 PS：String很奇特，虽然是引用数据类型，但是采用的却是值传递！！！
 
@@ -507,9 +568,45 @@ PS：String很奇特，虽然是引用数据类型，但是采用的却是值传
 高内聚就是类的内部数据操作细节自己来完成，不允许外部干涉，低耦合：就是， 仅暴露少量的方法给外部使用
 
 封装的体现：
-将类的属性私有化，同时提供公共的(public)方法来获取(get)和设置(set)
-将类的方法私有化，仅用于内部方法调用
-单例模式
+①将类的属性私有化，同时提供公共的(public)方法来获取(get)和设置(set)
+②将类的方法私有化，仅用于内部方法调用
+③单例模式
+
+以下是一个示例，展示如何在Java中编写一个私有类的get和set方法，体现Java的封装性：
+
+public class Person {  
+    private String name;  
+    private int age;  
+  
+    public Person(String name, int age) {  
+        this.name = name;  
+        this.age = age;  
+    }  
+  
+    // Getter方法  
+    public String getName() {  
+        return name;  
+    }  
+  
+    public int getAge() {  
+        return age;  
+    }  
+  
+    // Setter方法  
+    public void setName(String name) {  
+        this.name = name;  
+    }  
+  
+    public void setAge(int age) {  
+        if (age > 0) {  
+            this.age = age;  
+        } else {  
+            System.out.println("年龄必须大于0");  
+        }  
+    }  
+}
+在上面的示例中，我们定义了一个名为Person的类，其中包含两个私有属性：name和age。我们使用构造函数来初始化这两个属性。然后，我们提供了getter方法来获取属性的值，以及setter方法来设置属性的值。
+注意，setter方法只允许我们设置年龄为大于0的值，否则会输出一条错误消息。这就是Java封装性的体现，我们将属性封装在类内部，并通过getter和setter方法来控制对属性的访问。
 
 构造器（构造方法）：
 1.如果没有显式的定义的构造器，则系统默认定义空参的构造器
@@ -521,6 +618,15 @@ PS：String很奇特，虽然是引用数据类型，但是采用的却是值传
 构造器的作用：
 1.创建对象
 2.初始化对象的属性
+
+空参构造器：Person person = new Person();
+
+带参构造器：
+public Person(String name, int age) {  
+    this.name = name;  
+    this.age = age;  
+}  
+
 
 Java属性赋值的先后顺序：
 1.默认初始化
@@ -552,6 +658,29 @@ Java之this关键字：
 >规定："this.形参列表"必须声明在构造器的首行
 >构造器内部，只能声明一个"this.形参列表"调用其他构造器
 
+public class MyClass {  
+    private int x;  
+    private int y;  
+  
+    public MyClass() {  
+        this(0, 0); // 使用 this 调用另一个构造器  
+    }  
+  
+    public MyClass(int x, int y) {  
+        this.x = x;  
+        this.y = y;  
+    }  
+}
+
+
+public class MyClass {  
+    private int x;  
+  
+    public void setX(int x) {  
+        this.x = x; // 使用 this 引用当前对象  
+    }  
+}
+
 Java之package关键字：
 1.为了更好的实现类的管理，提供包的概念
 2.声明在原文件的首行
@@ -579,6 +708,37 @@ Java中表现继承的关系需要借助关键字extends，子类继承父类。
 · 如果子类与父类中有同名的成员变量，则优先访问子类自己的，即子类将父类的同名变量隐藏
 · 如果我们没有显式的声明一个类的父类，则该类继承于Object类。Object类是所有类的父类
 
+// 基类（父类）  
+public class Animal {  
+    private String name;  
+  
+    public Animal(String name) {  
+        this.name = name;  
+    }  
+  
+    public void eat() {  
+        System.out.println(name + " is eating...");  
+    }  
+}  
+  
+// 子类（狗类）  
+public class Dog extends Animal {  
+    private String breed;  
+  
+    public Dog(String name, String breed) {  
+        super(name);  // 调用父类的构造方法  
+        this.breed = breed;  
+    }  
+  
+    public void bark() {  
+        System.out.println(getName() + " is barking...");  
+    }  
+  
+    public String getBreed() {  
+        return breed;  
+    }  
+}
+
 继承之super关键字：
 1.super可以用来调用属性、方法、构造器。
 2.通过使用"super.属性"或"super.方法"的形式在子类中显式的调用父类的属性和方法
@@ -592,6 +752,32 @@ Java中表现继承的关系需要借助关键字extends，子类继承父类。
  构造哪个类的对象，就调用哪个类的构造方法，调用构造方法时先调用基类，在调用子类(即在子类中隐藏super())
 >如果父类的构造方法是带有参数的，此时编译器不会给子类生成默认的构造方法，此时需要用户在子类中显式定义构造方法，并在子类构造方法中选取合适的父类构造方法调用
 
+// 父类  
+public class Parent {  
+    protected int num;  
+  
+    public Parent(int num) {  
+        this.num = num;  
+    }  
+  
+    public int getNum() {  
+        return num;  
+    }  
+}  
+  
+// 子类  
+public class Child extends Parent {  
+    private int num;  
+  
+    public Child(int num) {  
+        super(num); // 调用父类的构造器  
+        this.num = num * 2;  
+    }  
+  
+    public int getNum() {  
+        return super.getNum() * 2; // 调用父类的方法  
+    }  
+}
 
 继承之执行顺序：
 
@@ -635,6 +821,20 @@ final关键字修饰类不能被继承。
 
 5.声明为static的方法不能被重写，但是能够被再次声明（可以被继承）;声明为final的方法不能被重写。
 
+// 父类  
+public class Animal {  
+    public void makeSound() {  
+        System.out.println("The animal makes a sound");  
+    }  
+}  
+  
+// 子类（狗类）  
+public class Dog extends Animal {  
+    @Override  // 使用@Override注解表示该方法是一个重写方法  
+    public void makeSound() {  
+        System.out.println("The dog barks");  
+    }  
+}
 
 Java多态：
 父类的引用指向子类的对象。
@@ -665,6 +865,46 @@ Java instanceof 关键字：
 判断对象a是否是类A的一个实例，如果是，返回true(如果是多态对象，也会返回true);如果不是，返回false
 使用instanceof关键字避免多态对象强制转化出现ClassCastException异常。
 
+// 父类  
+public class Shape {  
+    public void draw() {  
+        System.out.println("Drawing a shape...");  
+    }  
+}  
+  
+// 子类（圆形类）  
+public class Circle extends Shape {  
+    @Override  // 使用@Override注解表示该方法是一个重写方法  
+    public void draw() {  
+        System.out.println("Drawing a circle...");  
+    }  
+}  
+  
+// 子类（矩形类）  
+public class Rectangle extends Shape {  
+    @Override  // 使用@Override注解表示该方法是一个重写方法  
+    public void draw() {  
+        System.out.println("Drawing a rectangle...");  
+    }  
+}  
+  
+// 主类  
+public class Main {  
+    public static void main(String[] args) {  
+        Shape[] shapes = new Shape[2];  // 创建一个Shape类型的数组，并分配两个空间  
+        shapes[0] = new Circle();  // 将第一个空间指向Circle类的对象  
+        shapes[1] = new Rectangle();  // 将第二个空间指向Rectangle类的对象  
+          
+        for (Shape shape : shapes) {  // 循环遍历数组中的每一个对象，并调用它们的draw()方法  
+            shape.draw();  // 由于多态的存在，这个方法将调用Circle类和Rectangle类各自的draw()方法，而不是Shape类的draw()方法  
+        }  
+    }  
+}
+在上面的例子中，Shape 类是一个父类，它有一个 draw() 方法。Circle 和 Rectangle 类是两个子类，它们分别继承了 Shape 类并重写了 draw() 方法。
+在 Main 类的 main() 方法中，首先创建了一个 Shape 类型的数组，并分别将两个子类的对象赋值给数组中的两个空间。
+然后，使用一个for-each循环遍历数组中的每一个对象，并调用它们的 draw() 方法。由于多态的存在，这个方法将调用每个子类自己的 draw() 方法，而不是父类的 draw() 方法。
+
+
 Java 包装类：
 针对八种基本数据类型定义相应的引用类型（具有类的特征）
 
@@ -690,11 +930,42 @@ static修饰的方法一般称作静态方法，由于静态方法不依赖于�
 因为非静态成员方法/变量都是必须依赖具体的对象才能够被调用。
 但是要注意的是，虽然在静态方法中不能访问非静态成员方法和非静态成员变量，但是在非静态成员方法中是可以访问静态成员方法/变量的。
 
+public class StaticMethodExample {  
+    // 静态方法  
+    public static int add(int a, int b) {  
+        return a + b;  
+    }  
+  
+    public static void main(String[] args) {  
+        // 直接通过类名调用静态方法  
+        int sum = StaticMethodExample.add(5, 3);  
+        System.out.println("The sum is: " + sum);  
+    }  
+}
+
 static变量：
 static修饰的属性也称作静态变量，静态变量和非静态变量的区别是：
 静态变量被所有的对象所共享，声明在方法区，在内存中只有一个副本，它当且仅当在类初次加载时会被初始化。
 而非静态变量是对象所拥有的，在创建对象的时候被初始化，声明在堆中，存在多个副本，各个对象拥有的副本互不影响。
 static成员变量的初始化顺序按照定义的顺序进行初始化。
+
+public class SharedVariableExample {  
+    // 静态变量  
+    public static int sharedVariable;  
+  
+    public static void main(String[] args) {  
+        // 创建两个实例  
+        SharedVariableExample example1 = new SharedVariableExample();  
+        SharedVariableExample example2 = new SharedVariableExample();  
+  
+        // 修改静态变量的值  
+        example1.sharedVariable = 10;  
+  
+        // 打印静态变量的值，可以看到它在这两个实例中是相同的  
+        System.out.println("example1.sharedVariable: " + example1.sharedVariable);  
+        System.out.println("example2.sharedVariable: " + example2.sharedVariable);  
+    }  
+}
 
 static代码块：
 (代码块的作用：用来初始化类、对象）
@@ -705,10 +976,31 @@ static块可以置于类中的任何地方，类中可以有多个static块。
 静态代码块的执行顺序按照声明的前后顺序执行。
 静态代码块的执行要优于非静态代码块的执行，而且静态代码块只能调用静态的属性、方法，不能调用非静态的结构。
 
-开发中，如何确定一个属性是否要声明为static？
-属性是可以被多个对象所共享的
-操作静态属性的方法，通常设计成static的
-工具类中的方法，习惯上声明为static的
+public class StaticBlockExample {  
+    // 静态变量  
+    public static int staticVariable;  
+  
+    // 静态代码块  
+    static {  
+        System.out.println("This is a static block.");  
+        staticVariable = 10;  
+    }  
+  
+    public static void main(String[] args) {  
+        // 创建两个实例  
+        StaticBlockExample example1 = new StaticBlockExample();  
+        StaticBlockExample example2 = new StaticBlockExample();  
+  
+        // 打印静态变量的值，可以看到它在这两个实例中是相同的  
+        System.out.println("example1.staticVariable: " + example1.staticVariable);  
+        System.out.println("example2.staticVariable: " + example2.staticVariable);  
+    }  
+}
+
+PS：开发中，如何确定一个属性是否要声明为static？
+①属性是可以被多个对象所共享的
+②操作静态属性的方法，通常设计成static的
+③工具类中的方法，习惯上声明为static的
 
 Java final关键字
 1.用来修饰类
@@ -757,6 +1049,20 @@ Java abstract关键字
 >抽象类一般位于体系结构的上层,用来定义功能
 
 注意:如果一个类继承了抽象类,那么这个类要么重写抽象类中所有的抽象方法,要么将此类也抽象化
+abstract class Animal {  
+    // 抽象方法  
+    abstract void makeSound();  
+  
+    // 非抽象方法  
+    void eat() {  
+        System.out.println("The animal eats.");  
+    }  
+}
+
+PS:在Java中被abstract修饰的类不能被final修饰
+在Java中，如果一个类被abstract修饰，那么这个类就是一个抽象类。而如果一个类被final修饰，那么这个类就是一个最终类，不能被继承。
+由于抽象类被设计为不能被实例化的类，因此它不能同时被final修饰，因为final意味着这个类不能被继承，这与抽象类的设计初衷相矛盾。因此，在Java中，一个类不能同时被abstract和final修饰。
+
 
 2.用来修饰方法: 被修饰的方法称为抽象方法
 >抽象方法只有方法的声明,没有方法体(在一些比较顶层的类中,它的方法实现与子类大多不同,此时没必要在顶层实现具体的方法,只需声明功能即可)
@@ -764,11 +1070,17 @@ Java abstract关键字
 >若子类重写父类中所有的抽象方法,则子类才可实例化
 >若未重写父类抽象类所有的方法,则此子类也是一个抽象类,需要用abstract修饰
 
+abstract class Animal {  
+    public abstract void makeSound();  
+}
+在这个例子中，Animal是一个抽象类，它有一个抽象方法makeSound()。由于该方法没有具体的实现代码，因此它只能被声明而不能被实现。任何继承自Animal的类都必须提供makeSound()方法的具体实现。
+
+
 注意:
 abstract不能用来修饰属性,方法
 abstract不能用来修饰: 私有方法,静态方法,final修饰的方法,final修饰的类
 
-抽象类的匿名子类：
+//抽象类的匿名子类
 Worker worker = new Worker();
 //非匿名类的非匿名对象
 method1(worker);
@@ -792,6 +1104,12 @@ Java接口：
 除非实现接口的类是抽象类，否则该类要定义接口中的所有方法。
 接口无法被实例化，但是可以被实现。一个实现接口的类，必须实现接口内所描述的所有方法，否则就必须声明为抽象类。另外，在 Java 中，接口类型可用来声明一个变量，他们可以成为一个空指针，或是被绑定在一个以此接口实现的对象。
 
+public interface MyInterface {  
+    void method1();  
+  
+    int method2(String str);  
+}
+
 抽象类和接口的对比：
 1、抽象类和接口都不能直接实例化。如果要实例化，抽象类变量必须指向实现所有抽象方法的子类对象，接口变量必须指向实现所有接口方法的类对象。
 2、抽象类要被子类继承，接口要被类实现。
@@ -809,10 +1127,12 @@ Java接口：
 1.抽象类是对事物的抽象，即对类抽象；接口是对行为抽象，即局部抽象。抽象类对整体形为进行抽象，包括形为和属性。接口只对行为进行抽象。
 2.抽象类是多个子类的像类，是一种模板式设计；接口是一种形为规范，是一种辐射式设计。
 
+
+
 Java高级应用：
 异步、多线程、集合、泛型、序列化、IO、网络编程、反射、动态代理、jdk8.0以及以后新特性
 
-Java多线程：
+Java多线程：Java多线程实现的原理是基于Java虚拟机（JVM）的线程调度。JVM通过线程调度器负责分配CPU时间，实现多线程的并发执行。
 Java多线程编程需要注意以下几点：
 
 1.同步问题，如果不同步可能导致线程安全问题；
@@ -833,7 +1153,7 @@ Java多线程生命周期：
 2、在MyThread类中重写run（）方法
 3、在测试类中创建MyThread类的对象
 4、启动线程
-
+PS:调用start()方法启动线程后，线程会从run()方法开始执行。
 
 public class Demo01 {
     public static void main(String[] args) {
@@ -895,7 +1215,7 @@ run方法在分支栈的栈底部，main方法在主栈的栈底部。run和main
 3、创建Thread对象，并把MyRunnable对象作为Tread类构造方法的参数传递进去
 4、启动线程
 开发中使用这种方式创建多线程，而不是继承Thread类
-
+PS:调用start()方法启动线程后，线程会从run()方法开始执行。
 
 public class Demo02 {
     public static void main(String[] args) {
