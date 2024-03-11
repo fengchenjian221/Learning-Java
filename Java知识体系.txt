@@ -1438,9 +1438,8 @@ sleep和wait的区别
 
 
 Java线程异步：
-Java 的线程异步是指在 Java 应用程序中，多个线程同时执行不同的任务，并且他们是独立的，互不影响，
-任意一个线程的完成不会影响其他线程的运行。 在 Java 异步编程中，不同的线程可以在不需要阻塞等待的情况下并行执行，
-这样可以提高程序的执行效率。
+Java 的线程异步是指在 Java 应用程序中，多个线程同时执行不同的任务，并且他们是独立的，互不影响，任意一个线程的完成不会影响其他线程的运行。
+在Java 异步编程中，不同的线程可以在不需要阻塞等待的情况下并行执行，这样可以提高程序的执行效率。
 
 线程异步需要考虑原子性：
 在Java中异步编程中，线程原子性是需要考虑的因素。线程原子性指的是线程执行过程中不会被其他线程打断的特性。
@@ -2718,14 +2717,40 @@ Java比其他语言更适合开发Web应用程序的原因如下：
 5.可扩展性和多线程。Java是高度可扩展的，可以适应Web应用程序的需求，并为开发人员提供水平和垂直扩展的能力。
 此外，Java的NIO（非阻塞I/O）API促进了在软件的单个副本中创建尽可能多的线程，这极大地提高了应用程序的性能。
 
+为什么Java不是纯面向对象？
+Java 是一种广泛使用的编程语言，它确实具有许多面向对象的特性，如类、对象、继承、封装和多态等。然而，Java 并不是纯面向对象的语言，原因主要有以下几点：
+
+基本数据类型：Java 中有八种基本数据类型（如 int、float、char 等），这些基本数据类型不是对象。虽然 Java 为这些基本数据类型提供了对应的包装类（如 Integer、Float、Character 等），但在某些情况下，为了性能考虑，程序员仍然会直接使用基本数据类型。
+静态成员和方法：Java 中的静态成员（包括静态变量和静态方法）并不属于任何对象实例，而是属于类本身。静态成员和方法可以通过类名直接访问，而不需要创建类的实例。这种特性与面向对象的封装和实例化的概念不完全一致。
+单例模式：单例模式是一种设计模式，它保证一个类仅有一个实例，并提供一个全局访问点。在某些情况下，为了实现单例模式，需要使用静态成员和方法。这同样与面向对象的多实例、多态等特性不完全吻合。
+原始类型数组：Java 中的数组实际上是原始类型，而不是对象。虽然数组可以包含对象，但数组本身并不是对象。这意味着数组没有继承自任何类，也没有实现任何接口。
+主类和主方法：Java 程序从主类（包含 main 方法的类）开始执行。这个主方法是静态的，它不属于任何对象实例。这也是 Java 与纯面向对象语言的一个不同之处。
+
+虽然 Java 不是纯面向对象的语言，但它的面向对象特性仍然非常强大和灵活。Java 通过类和对象的概念，以及封装、继承和多态等机制，为程序员提供了一种高效、可维护的方式来构建复杂的应用程序。
+同时，Java 也提供了一些非面向对象的特性，以满足特定场景下的需求。这种折衷使得 Java 在实际应用中既具有面向对象的优势，又具有一定的灵活性。
 
 J2EE应用程序开发技术：
 前端技术：
-HTML：
+在线帮助文档 https://www.w3school.com.cn/
+HTML：(主要用于网页主体结构的搭建)
 HTML 指的是超文本标记语言: HyperText Markup Language
-HTML 允许你格式化文本，添加图片，创建链接、输入表单、框架和表格等等，并可将之存为文本文件，浏览器即可读取和显示。
+HTML（HyperText Markup Language），全称超文本标记语言，是一种用于创建网页的标准标记语言。
+它通过一系列标签将网络上的文档格式统一，使得分散的Internet资源能够连接成一个逻辑整体。
+这些标签不仅可以描述文字，还可以描述图形、动画、声音、表格、链接等网页元素。
 
-HTML标签：
+HTML文本由HTML命令组成，这些命令用于说明网页中的各种元素。一个HTML文档通常包括头部（Head）和主体（Body）两大部分。
+头部描述浏览器所需的信息，如文档的标题、字符集、样式表链接等；主体则包含所要说明的具体内容，如段落、列表、图片、链接等。
+
+HTML标签结构：
+双标签：例<p></p>
+单标签: 例</p>
+属性: 例<a href = "http://www.xxx.com"/> 中，href = "http://www.xxx.com"是属性，href是属性名，"http://www.xxx.com"是属性值
+文本：例<p>段落</p> 中，双标签中的文字
+元素：开始标签+属性+文本 +结束标签，称之为一个元素
+
+在Java Web中，.html文件通常放在服务器上。当用户通过浏览器访问Web应用时，服务器会响应请求并发送相应的.html文件给客户端（即用户的浏览器）。浏览器接收并解析这些.html文件，然后展示给用户。
+
+HTML常用标签：
 <!DOCTYPE html> 声明为 HTML5 文档
 <html> 元素是 HTML 页面的根元素
 <head> 元素包含了文档的元（meta）数据，如 <meta charset="utf-8"> 定义网页编码格式为 utf-8（由于在大部分浏览器中直接输出中文会出现乱码，所以要在头部将字符声明为UTF-8）
@@ -2734,7 +2759,26 @@ HTML标签：
 <h1> 元素定义一个大标题
 <p> 元素定义一个段落
 
-CSS：Cascading Style Sheet 层叠样式表
+问：HTML语言比Java、python等语言语法都不严格，是因为浏览器的编译强大吗？
+答：HTML语言（HyperText Markup Language，超文本标记语言）与Java、Python等编程语言在设计和用途上存在本质的区别，这导致了它们在语法严格性上的差异。
+因此，不能简单地将HTML的语法不严格归因于浏览器的编译强大。
+
+首先，HTML是一种标记语言，主要用于创建网页和网站结构。它的语法相对简单和直观，旨在允许开发人员通过标记（tags）来定义网页内容的结构和样式。
+HTML的主要目的是让内容在浏览器中正确地显示，而不是执行复杂的逻辑或计算任务。
+
+相比之下，Java和Python是编程语言，它们具有更复杂的语法和更强大的功能。这些语言允许开发人员编写复杂的程序，
+包括算法、数据处理、系统操作等。因此，它们的语法需要更加严格和精确，以确保程序的正确性和可靠性。
+
+浏览器的编译能力确实强大，能够解析和渲染HTML、CSS和JavaScript等前端技术。
+然而，浏览器的编译过程主要是将HTML和CSS等标记语言转换为可视化的网页内容，而不是执行像Java或Python那样的复杂程序逻辑。
+
+此外，HTML的语法不严格也与其设计初衷和用途有关。HTML的目标是使内容易于阅读和编写，
+同时允许开发者通过简单的标记来控制内容的呈现方式。这种简单性和直观性使得HTML成为非专业开发人员也能轻松上手的工具。
+
+HTML语言比Java、Python等语言语法不严格的原因在于它们的设计目的和用途不同，而不是因为浏览器的编译强大。
+每种语言都有其适用的场景和优势，选择使用哪种语言取决于具体的开发需求和目标。
+
+CSS：（主要用于页面元素美化）Cascading Style Sheet 层叠样式表
 是一组样式设置的规则，用于控制页面的外观样式
 
 CSS语法：
@@ -2747,7 +2791,7 @@ CSS语法：
 	</style>
 </head>
 
-JavaScript：JavaScript诞生于1995年，它的出现主要是用于处理网页中的前端验证。
+JavaScript：（主要用于页面元素的动态处理）JavaScript诞生于1995年，它的出现主要是用于处理网页中的前端验证。
 所谓的前端验证，就是指检查用户输入的内容是否符合一定的规则。比如：用户名的长度，密码的长度，邮箱的格式等。
 
 DOM概述：
@@ -4218,10 +4262,64 @@ Java方式：通过Java配置类的方式配置切入点，然后定义增强处
 
 
 Spring AOP是运用反射来实现的：
-Spring AOP即面向切面编程，是Spring核心之一，其可以快速横向扩展。在Spring中，每一个代理实例都有一个关联的调用处理程序对象，
-它实现了接口InvocationHandler，该接口的invoke方法用于处理代理实例上的方法调用。
-在Spring中，当需要使用该Service时，Spring会自动将对应的Bean注入到需要它的地方，这个过程是自动的，
-对于开发人员来说是透明的，无需手动进行配置。
+Spring AOP即面向切面编程，是Spring核心之一，其可以快速横向扩展。在Spring中，每一个代理实例都有一个关联的调用处理程序对象，它实现了接口InvocationHandler，该接口的invoke方法用于处理代理实例上的方法调用。
+在Spring中，当需要使用该Service时，Spring会自动将对应的Bean注入到需要它的地方，这个过程是自动的，对于开发人员来说是透明的，无需手动进行配置。
+
+SpringAOP创建步骤：
+1.需要先自定义一个注解
+package com.itheima.anno;
+import java.lang.annotation.ElementType ;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy
+import java.lang.annotation.Target;
+@Retention(RetentionPolicy.RUNTIME)
+@sarget(ElementType.METHOD)
+public @interface Log{
+
+}
+
+2.创建切面类
+@Slf4j
+@Component
+@Aspect //切新类
+public class LogAspect {
+
+@Autowired
+private HttpServletRequest request;
+
+@Autowired
+private perateLogMapper operateLogMapper;
+
+@Around("@annotation(com.itheima.anno.Log)")
+public Obiect recordLog(ProceedingdoinPoint joinPoint) throws Throwable {
+//操作人ID-当前登录员工ID
+//获取请求头中的iwt令牌，解析令牌
+String jwt=request.getHeader(name: "token");
+Claims claims=JwtUtils.parseuWT(jwt);
+Integer operateUser =(Integer)claims.qet("id");
+//操作时间
+LocalDateTime operateTime = LocalDateTime.now();
+//操作类名
+String className = joinPoint.getTarget().getclass().getName ();
+//操作方法名
+String methodName = joinPoint.getSignature().getName ();
+//操作方法参数
+Object result =joinPoint.proceed();
+String methodParams =Arrays.tostring(args);
+long begin =System.currentTimeMillis();//调用原始目标方法运行
+long end=System.currentTimeMillis();
+//方法返回值
+String returnValue = JsONObject.touSONstring(result);
+//操作耗时
+Long costTime =end-begin;
+//记录操作日志
+OperateLog operateLog = new OperateLog( id: null,operateUser,operaoperate,operateTime,className,methodName,methodName,returnValue,costTime)
+LogMapper.insert(operateLog);
+log.info("AOP记录操作日志:{}"operateLog);
+return result;
+    }
+}
+3.在需要的方法上添加注解
 
 
 Spring IOC举例————IOC操作Bean管理（基于XML方式）
@@ -4614,8 +4712,7 @@ Java在运行原理上与C++的对比：
 python的运行原理与Java也不相同：
 从计算机底层的角度来说，Python运行的过程可以大致分为以下几个步骤：
 
-编译：当Python代码被执行时，首先会经过一个编译的过程。Python的编译过程与传统的编译过程有些不同，
-它并不是将代码直接编译成机器码，而是将代码编译成一种叫做字节码（bytecode）的形式。
+编译：当Python代码被执行时，首先会经过一个编译的过程。Python的编译过程与传统的编译过程有些不同，它并不是将代码直接编译成机器码，而是将代码编译成一种叫做字节码（bytecode）的形式。
 这些字节码是平台无关的，可以在任何支持Python的平台上运行。这个编译过程是由Python解释器自动完成的，无需程序员手动干预。
 
 解释执行：接下来，编译后的字节码会被加载到Python解释器中。Python解释器会按照字节码的指令顺序逐条解释执行。
@@ -4702,10 +4799,8 @@ Java JVM的双亲委派机制（Parent Delegation Mechanism）是一种类加载
 它确保了Java的核心类库只被系统类加载器加载一次，从而避免了类定义的混乱和冲突。
 
 沙箱安全机制：
-Java JVM里的沙箱安全机制是一种将Java代码限定在虚拟机特定运行范围中，并严格限制代码对本地系统资源访问的机制，
-以保证对代码的有效隔离，防止对本地系统造成破坏。
-沙箱主要限制了CPU、内存、文件系统、网络等系统资源的访问，不同级别的沙箱对这些资源访问的限制也可以不一样。
-所有的Java程序运行都可以指定沙箱，可以定制安全策略。
+Java JVM里的沙箱安全机制是一种将Java代码限定在虚拟机特定运行范围中，并严格限制代码对本地系统资源访问的机制，以保证对代码的有效隔离，防止对本地系统造成破坏。
+沙箱主要限制了CPU、内存、文件系统、网络等系统资源的访问，不同级别的沙箱对这些资源访问的限制也可以不一样。所有的Java程序运行都可以指定沙箱，可以定制安全策略。
 
 
 .class文件经过类加载器到达运行时数据区，在运行时数据区进行下一步处理。
@@ -4794,8 +4889,7 @@ java虚拟机是线程私有的，它的生命周期和线程相同。
 操作数栈是虚拟机栈中的一个重要部分，它用于存储方法执行过程中的中间结果和操作数。
 在方法的执行过程中，许多操作都需要在操作数栈中进行，例如算术运算、方法调用、对象创建等。
 操作数栈中的每个元素都有一个值和一个类型，这些元素可以是原始类型（例如int、char等）或引用类型（例如对象、数组等）。
-在方法执行过程中，一些操作（例如算术运算、方法调用等）会向操作数栈中压入新的元素，
-而其他操作（例如取值、赋值等）则会从操作数栈中弹出元素。
+在方法执行过程中，一些操作（例如算术运算、方法调用等）会向操作数栈中压入新的元素，而其他操作（例如取值、赋值等）则会从操作数栈中弹出元素。
 当一个方法调用另一个方法时，被调用的方法会在自己的栈帧中创建一个新的操作数栈。
 被调用方法的执行结果会被压入到调用方法的操作数栈中，以供后续使用。
 
@@ -10473,6 +10567,201 @@ Hive的底层原理：
 （3）优化器（Query Optimizer）：对逻辑执行计划进行优化。
 （4）执行器（Execution）：把逻辑执行计划转换成可以运行的物理计划。对于 Hive 来说，就是 MR/Spark。
 
+Scala：
+Scala是一种多范式的编程语言，它集成了面向对象编程和函数式编程的特性，运行在Java虚拟机（JVM）上，并兼容Java程序。下面我们将用更专业的语言对Scala进行详细阐述。具有函数式编程，面向对象编程等特点。
+
+1. 语言特性
+Scala的语言设计旨在提供简洁、优雅且类型安全的代码。它支持模式匹配、隐式转换、高阶函数、不可变集合等特性，使得开发者能够编写出更加表达力强且易于维护的代码。
+此外，Scala的case类提供了代数数据类型（ADT）的实现，这对于领域特定语言（DSL）的构建特别有用。
+
+2. 函数式编程
+Scala强调函数式编程，支持不可变数据、高阶函数和尾递归优化等。这使得Scala在处理并行和并发编程时具有优势，因为函数式编程范式天然地支持无共享状态的并发执行。此外，Scala的集合库提供了丰富的函数式操作，使得数据处理变得简单而高效。
+
+3. 面向对象编程
+尽管Scala以函数式编程为特色，但它同样支持传统的面向对象编程特性，如类、继承、封装和多态等。Scala的类系统比Java更加灵活，支持特质（traits）这一特性，可以实现类似于多重继承的效果，同时避免了多重继承带来的复杂性。
+
+4. 与Java的互操作性
+Scala运行在JVM上，因此可以与Java代码无缝集成。Scala代码可以调用Java库，反之亦然。这种互操作性使得Scala能够充分利用Java生态系统的丰富资源，同时也为Java开发者提供了一种更加现代和灵活的编程选择。
+
+5. 并发和并行编程
+Scala提供了强大的并发和并行编程支持，包括Actor模型、Futures和Promises等机制。这些特性使得Scala在处理大规模并发任务时表现出色，特别是在构建高性能的分布式系统时具有显著优势。
+
+6. 类型系统
+Scala的类型系统非常强大且灵活，支持泛型、类型参数化、类型推断和类型别名等特性。这使得开发者能够编写出更加安全且易于理解的代码，同时减少了运行时错误的可能性。
+
+Scala的编译过程是运用了Java jvm生成单例模式，并用静态方法调用它。Scala底层运行在Java虚拟机（JVM）上，并且可以很好地与Java代码互操作。
+在Scala中创建单例模式并利用静态方法调用这个单例实例的过程与在Java中非常相似，但Scala提供了更简洁的语法。
+
+object MySingleton {  
+  def sayHello(): Unit = {  
+    println("Hello from MySingleton!")  
+  }  
+}  
+  
+object SingletonCaller {  
+  def main(args: Array[String]): Unit = {  
+    MySingleton.sayHello() // 调用单例对象的静态方法  
+  }  
+}
+
+在这个例子中，MySingleton 是一个单例对象，而不是一个类。在Scala中，使用 object 关键字来定义一个单例对象。Scala会自动为这个对象提供线程安全的懒加载实现，保证它在首次使用时才被创建，并且在整个应用程序生命周期中只有一个实例。
+sayHello 方法是一个成员方法，但它看起来就像是静态方法一样被调用，因为我们不需要创建 MySingleton 的实例来调用它。实际上，MySingleton 本身就是那个唯一的实例。
+SingletonCaller 是另一个单例对象，它包含一个 main 方法作为程序的入口点。在 main 方法中，我们直接调用 MySingleton.sayHello()来执行单例对象中的方法。
+
+这个过程在JVM上的工作原理如下：
+
+1.当Scala程序启动时，Scala运行时环境会初始化所有的单例对象。这包括为它们分配内存空间，并执行它们的构造器代码（如果有的话）。
+2.由于 MySingleton 是一个单例对象，Scala运行时环境会确保在整个JVM中只有一个 MySingleton 实例存在。
+3.当 SingletonCaller.main 方法被调用时，Scala运行时环境已经准备好了 MySingleton 实例，因此可以直接调用其上的 sayHello 方法。
+4.调用 MySingleton.sayHello() 时，实际上是在调用单例对象 MySingleton 的一个成员方法。Scala语法隐藏了创建和访问单例实例的细节，使得调用看起来像是静态方法调用一样简洁。
+5.JVM执行 sayHello 方法中的代码，打印出消息 "Hello from MySingleton!"。
+
+这个过程利用了Scala对单例对象的隐式支持和JVM的对象模型。Scala的单例对象语法糖让代码更简洁，而JVM则提供了实际的对象内存管理和方法执行机制。
+
+为什么说Scala是纯面向对象语言？
+Scala之所以被认为是纯面向对象语言，主要基于以下几个方面的原因：
+
+一切皆为对象：在Scala中，每一个值都是一个对象，无论是基本数据类型还是复杂的数据结构，都可以被当作对象来处理。
+这种设计使得Scala的编程模型更加统一和简洁，开发者可以用一致的方式来处理各种类型的数据。
+
+类和对象的中心地位：Scala中的类和对象是编程的基础。类是对象的模板，定义了对象的属性和方法；而对象是类的实例化，是实际运行的实体。
+Scala通过类和对象的概念，实现了代码的模块化和复用，提高了程序的可维护性和可扩展性。
+
+无基本数据类型：与Java等语言不同，Scala没有基本数据类型（如int、float等）。在Scala中，所有的数据类型，包括所谓的“基本”数据类型，都是对象。
+这种设计使得Scala的面向对象特性更加纯粹，也更容易理解和使用。
+
+灵活的对象扩展机制：Scala提供了灵活的对象扩展机制，如子类化和基于混合的组合机制。这使得开发者可以方便地扩展对象的功能，
+实现多重继承的效果，同时避免了多重继承带来的复杂性。
+
+函数也是对象：Scala不仅是一种面向对象的语言，还融合了函数式编程的特点。在Scala中，函数也是对象，可以像其他对象一样被传递、赋值和调用。
+这种设计使得Scala在保持面向对象特性的同时，也具备了函数式编程的灵活性和高效性。
+
+
+Scala基本数据类型：
+
+数值类型（AnyVal）：
+整型：Scala中的整型用于存放整数值，如10、123、3456等。整型分为Byte、Short、Int、Long四类，每种类型都有固定的表示范围和字段长度，不受具体操作系统的影响，保证了Scala程序的可移植性。
+在Scala中，整型默认为Int型，如果需要声明Long型，需要在数字后面添加'l'或'L'。
+浮点型：Scala的浮点类型用于表示小数，如123.4f、7.8、0.12等。浮点型分为Float和Double两类，其中Float是单精度的，Double是双精度的。在需要高精度小数时，建议使用Double类型。
+字符类型（Char）：字符类型可以表示单个字符。
+其他数值类型：Scala还包括如Unit等数值类型，Unit对应于Java中的void，表示方法没有返回值。
+引用类型（AnyRef）：
+字符串类型：Scala中的StringOps是对Java中String的增强，提供了更多的字符串操作功能。
+其他引用类型：Scala还包括如数组、自定义类等引用类型。
+此外，Scala的数据类型还有一些特殊的规则和特性：
+
+隐式转换：Scala中仍然遵守低精度的值类型向高精度的值类型自动转换（隐式转换）的规则，例如char类型可以自动转换为Int类型。
+字面量：Scala中的字面量包括整型字面量、浮点型字面量、布尔型字面量和符号字面量等，它们分别用于表示不同类型的值。
+
+在Scala中表示空有三种：
+Unit类型：表示返回值为空，类似Java里的void。
+Null类型：实例值Null
+Nothing类型：Nothing 类型是一个特殊的底类型（bottom type），它表示不可能有值的类型，它是所有其他类型的子类型。
+
+Scala函数式编程：
+def sum ( x : Int, y : Int) : Int = {
+    x + y
+}
+def：定义函数的关键字
+sum：函数名
+x，y：参数名
+Int：参数类型
+外层Int：函数返回值类型
+
+函数至简原则：
+//return可以省略，Scala会使用两数体的最后一行代码作为返回
+def f1(name:string):string ={
+        name
+}
+
+//如果函数体只有一行代码，可以省略花括号
+def f2(name: string):string = name
+
+//返回值类型如果能够推断出来，那么可以省略(:和返回值类型一起省路)
+def f3(name :string) = name
+
+//Scala如果期望是无返回值类型，可以省略等号
+def f6(name: string){
+    println(name)
+}
+
+//如果函数无参，但是声明了参数列表，那么满用时，小括号，可加可不加
+def f7(): unit ={
+printin('atguigu")
+}
+f7
+
+Scala匿名函数：
+val fun=(name:String)=>{println(name)}
+fun("atguigu")
+
+//柯里化:函数柯里化是高阶函数的一种，高阶函数是指接收函数作为参数或返回函数的函数。柯里化提供了逐步传参的过程，使得函数的调用更加灵活和模块化。
+def addcurrying(a:Int)(b:Int):Int={
+    a + b 
+}
+
+Scala变量和常量:
+var 变量名：变量类型 = 初始值
+val 常量名：常量类型 = 初始值
+ 
+tips：1.声明变量时，类型可以省略
+      2.类型确定后，就不能修改。（Scala是强类型语言）
+      3.变量声明时，必须要有初始值
+      
+Scala字符串：
+通过+号拼接 
+val name: String ="I"
+val age:Int =18
+println(age +"岁的"+ name +"在学习Scala")
+
+printf用法：字符串，通过%传值
+printf("%d岁的%s在学习Scala"，age，name)
+
+通过$获取变量值
+println(s"${age}岁的S{name}在学习Scala")
+
+Scala处理文件：
+//从文件中读取数据
+Source.fromFile("src/main/resources/test.txt").foreach(print)
+
+//.将数据写入文件
+writer.write("hello scala from java writer")
+val writer = new PrintWriter(pew File( pathname= "src/main/resources/output.txt"))
+writer.close()
+
+Scala尾递归计算阶乘：
+在Scala中，你可以使用尾递归来优化阶乘的计算，以避免栈溢出的问题，尤其是当处理大整数时。
+尾递归是函数式编程语言中一种重要的递归形式，因为它可以确保在递归调用之后没有其他的计算需要执行，因此编译器可以优化它，使得递归调用类似于循环，避免了递归深度的限制。
+
+def factorialTailRec(n: BigInt, acc: BigInt = BigInt(1)): BigInt = {  
+  if (n <= 0) acc  
+  else factorialTailRec(n - 1, n * acc)  
+}  
+  
+// 使用示例  
+val result = factorialTailRec(BigInt(5)) // 计算5的阶乘  
+println(result) // 输出120
+
+Scala传名函数：
+在Scala中，传名参数（By-name Parameter）是一个特殊的参数传递机制，它允许你将一个函数或代码块作为参数传递，并且这个代码块在每次被引用时都会被重新计算。
+这与传值参数（By-value Parameter）不同，后者在传递给函数时只计算一次，并将结果传递给函数。
+
+def f1(): Int ={
+    printin("f1调用")
+    12
+}
+def f2(a:=>Int):Unit ={
+    println("a:" + a)
+    println("a:"+ a)
+}
+
+输出:
+a:23
+a:23
+f1调用
+a:12
+f1调用
+a:12
 
 Spark 批处理运算：
 Spark 是一个分布式数据快速分析项目。它的核心技术是弹性分布式数据集（Resilient Distributed Datasets），
