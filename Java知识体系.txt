@@ -2899,6 +2899,63 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
 JavaScript：（主要用于页面元素的动态处理）JavaScript诞生于1995年，它的出现主要是用于处理网页中的前端验证。
 所谓的前端验证，就是指检查用户输入的内容是否符合一定的规则。比如：用户名的长度，密码的长度，邮箱的格式等。
 
+    <!--方式一-->
+    <script>
+        function suprise(){
+        //弹窗提示
+        alert("hello·我是惊喜")
+        }
+    </script>
+
+    <!--方式二，外部引入-->
+    <script src="JS/buttom.js" type="text/javascript"></script>
+
+注意:
+·一个htm1中可以有多个script标签
+·一对script标签不能在引入外部is文件的同时定义内部脚本
+·script标签如果用于引入外部is文件,中间最好不要有任何字符。包括空格和换行。
+·script标签写成双标签，不要写成单标签。
+·引用JS函数的时候要加上括号
+
+JS的引用类型是弱引用类型，变量在声明时不指定类型，赋值时才确定类型。声明变量使用var。
+例：var i = 10
+
+JS中使用var声明变量的特点:
+1.弱类型变量,可以统一声明成var
+2.var声明的变量可以再次声明
+3.变量可以使用不同的数据类型多次赋值
+4.Js的语句可以以;结尾,也可以不用;结尾
+5.变量标识符严格区分大小写
+6.标识符的命名规则参照JAVA
+7.如果使用了 一个没有声明的变量,那么运行时会报uncaught ReferenceError:***is not defined
+8.如果一个变量只声明,没赋值,那么值是undefined
+
+JS中foreach的语法：
+for(var index in var){
+    console.log(index)
+}
+
+函数声明的语法
+1 function 函数名(){}
+2 var 函数名=function(){}
+
+和java相比有如下特点
+1 没有访问修饰符
+2 没有返回值类型也没有void 如果有值要返回,则直接return即可
+3 没有异常列表
+4 调用方法时,实参和形参可以在数量上不一致,在方法内部可以通过 arguments获得调用时的实参
+5 函数也可以作为参数传递给另一个方法
+
+JS创建对象：
+person =var"name":“李四”,
+age":10,
+eat":function(food){console.log(this.age+"岁"+this.name+"正在吃"+food)
+// 访问属性
+console.log(person.name
+console.log(person.age)
+// 调用方法
+person.eat("火锅”)
+
 DOM概述：
 当网页被加载时，浏览器会创建页面的文档对象模型（Document Object Model）。
 
