@@ -1864,7 +1864,7 @@ public class BufferedReaderTest02 {
 
 DataInputStream:数据字节输入流。
 DataOutputStream写的文件，只能使用DataInputStream去读。并且读的时候你需要提前知道写入的顺序。
-读的顺序需要和写的顺序一致。才可以正常取出数据。。
+读的顺序需要和写的顺序一致。才可以正常取出数据。
 
 
 序列化：将对象写入到IO流中，说的简单一点就是将内存模型的对象变成字节数字，可以进行存储和传输。
@@ -2453,8 +2453,37 @@ Operating system load balancing manages CPU resources within a single machine, a
 Each type of load balancing serves a unique purpose and addresses specific performance and scalability challenges.
 
 Tomcat:
-Tomcat（Apache Tomcat）是一个流行的开源Java应用服务器，用于托管和运行Java Web应用程序。Tomcat的系统架构主要包括以下关键组件和层次：
+Tomcat（Apache Tomcat）是一个流行的开源Java应用服务器，用于托管和运行Java Web应用程序。
 
+在Tomcat中，webapps目录是专门用来存放Web应用程序的。这个目录结构允许Tomcat服务器识别并加载其中的Web应用程序，使得它们能够通过HTTP请求被访问。
+在webapps目录下，可以存放各种类型的文件来构成完整的Web应用程序。以下是可以在webapps目录中存放的一些文件类型：
+
+静态内容：
+HTML文件：构成Web页面结构的基本文件。
+CSS文件：用于定义Web页面的样式。
+JavaScript文件：用于添加页面交互和动态功能的客户端脚本。
+图片、音频、视频等媒体文件：作为Web页面的一部分被引用，提供多媒体内容。
+
+动态内容：
+JSP文件（Java Server Pages）：允许Java代码嵌入到HTML中，用于动态生成Web页面内容。
+Servlet类文件：编译后的Java类文件，用于处理请求并生成响应。Servlet通常放在WEB-INF/classes目录下，或者打包成JAR文件放在WEB-INF/lib目录下。
+
+配置文件：
+web.xml：Web应用程序的部署描述符，用于配置Servlet、过滤器、监听器以及初始化参数等。
+其他应用程序特定的配置文件：如数据库连接配置文件、日志配置文件等。
+
+库文件：
+JAR文件：Web应用程序所依赖的库和框架通常放在WEB-INF/lib目录下。这些JAR文件包含了应用程序运行所需的类库和依赖项。
+
+目录结构：
+META-INF：存放与JAR文件相关的元数据，如MANIFEST.MF文件。
+WEB-INF：一个特殊的目录，用于存放仅供服务器访问的资源，如classes目录（存放编译后的Java类文件）、lib目录（存放JAR库文件）以及任何应用程序内部使用的配置文件。
+
+在将文件添加到webapps目录时，Tomcat会按照其内部机制来加载和处理这些文件。当Tomcat服务器启动时，它会扫描webapps目录并自动部署其中的Web应用程序。
+每个Web应用程序通常对应webapps下的一个子目录，这个子目录的名称就是Web应用程序的上下文路径（Context Path）。
+
+
+Tomcat的系统架构主要包括以下关键组件和层次：
 1. Servlet容器：
    - Tomcat的核心部分是Servlet容器，它是一个Web服务器扩展，用于执行Java Servlet和JavaServer Pages（JSP）等Web组件。
    - Servlet容器负责接收HTTP请求、处理Servlet和JSP、生成HTTP响应，并将响应发送回客户端浏览器。
@@ -2956,8 +2985,82 @@ console.log(person.age)
 // 调用方法
 person.eat("火锅”)
 
+JS事件：
+在JavaScript中，事件是用户或浏览器本身的某种行为，通常是由用户对页面的某些动作引起的，如单击某个链接或按钮、在文本框中输入文本、按下键盘上的某个按键、移动鼠标等。
+当这些事件发生时，可以使用JavaScript中的事件处理程序（也称为事件监听器）来检测并执行特定的代码。
+
+以下是一些常见的JavaScript事件：
+
+点击事件：
+onclick: 当用户点击某个元素时触发。
+ondblclick: 当用户双击某个元素时触发。
+
+焦点事件：
+onblur: 当元素失去焦点时触发（例如，用户点击了页面上的另一个元素）。
+onfocus: 当元素获得焦点时触发（例如，用户点击了输入框）。
+
+加载事件：
+onload: 当页面或某个资源（如图像）完成加载时触发。
+
+鼠标事件：
+onmousedown: 当鼠标按钮被按下时触发。
+onmouseup: 当鼠标按钮被释放时触发。
+onmousemove: 当鼠标在元素内部移动时触发。
+onmouseover: 当鼠标指针移入某个元素上方时触发。
+onmouseout: 当鼠标指针移出某个元素时触发。
+
+键盘事件：
+onkeydown: 当某个键盘按键被按下时触发。
+onkeyup: 当某个键盘按键被释放时触发。
+onkeypress: 当某个键盘按键被按下并释放时触发。
+
+选择和改变事件：
+onchange: 当表单元素（如<input>、<textarea>或<select>）的内容发生变化时触发。
+onselect: 当文本被用户选中时触发。
+
+表单事件：
+onsubmit: 当表单的提交按钮被点击，或用户尝试提交表单时触发。
+onreset: 当表单的重置按钮被点击时触发，或者表单通过代码重置时触发。
+
+拖拽事件：
+ondragstart: 当用户开始拖拽某个元素时触发。
+ondragover: 当被拖拽的元素在目标元素上移动时触发。
+ondrop: 当拖拽的元素在目标位置放下时触发。
+
+触摸事件（针对移动设备）：
+ontouchstart: 当用户开始触摸某个元素时触发。
+ontouchmove: 当用户在某个元素上移动手指时触发。
+ontouchend: 当用户停止触摸某个元素时触发。
+
+滚动事件：
+onscroll: 当用户滚动页面或某个元素时触发。
+
+窗口大小变化事件：
+onresize: 当浏览器窗口的大小变化时触发。
+
+这只是JavaScript中事件的一小部分，实际上还有更多的事件类型，它们可以用于实现各种交互效果和响应用户动作。在编写JavaScript代码时，可以根据需要监听和处理这些事件。
+
+BOM：
+BOM编程涉及到浏览器对象模型（Browser Object Model）的概念，它使JavaScript有能力与浏览器进行交互。
+BOM提供了一系列独立于内容的对象，允许开发者通过JavaScript操作浏览器窗口和框架等浏览器相关的对象。
+BOM的核心对象是window，它是浏览器的顶级对象，具有双重角色：一方面，它是JS访问浏览器窗口的一个接口；
+另一方面，它是一个全局对象，定义在全局作用域中的变量、函数都会变成window对象的属性和方法。
+
+BOM（Browser Object Model，浏览器对象模型）的Windows API 提供了一系列函数和方法，用于操作和控制浏览器窗口及其组件。以下是一些常用的BOM Windows API：
+
+window.alert()：显示一个带有指定消息和OK按钮的警告框。
+window.confirm()：显示一个带有指定消息以及确定和取消按钮的对话框，并返回用户的选择（true或false）。
+window.prompt()：显示一个对话框，提示用户输入一些文本（可带一个默认值），并返回用户输入的文本。
+window.open()：打开一个新的浏览器窗口或查找一个已命名的窗口，并返回代表该窗口的Window对象。
+window.close()：关闭当前窗口。
+window.moveTo() 和 window.resizeTo()：移动和改变当前窗口的位置和大小。
+window.scrollTo() 和 window.scrollBy()：滚动当前窗口到指定位置或滚动特定距离。
+window.focus() 和 window.blur()：将焦点设置到当前窗口或使当前窗口失去焦点。
+window.innerWidth 和 window.innerHeight：获取浏览器窗口的视口（viewport）宽度和高度（不包括工具栏和滚动条）。
+window.location：包含有关当前URL的信息，并提供了一些方法和属性，用于获取或设置URL，以及重新加载页面。
+
 DOM概述：
-当网页被加载时，浏览器会创建页面的文档对象模型（Document Object Model）。
+D0M(Document obiect Model)编程就是使用document对象的API完成对网页HTML文档进行动态修改,以实现,网页数据和样式动态变化效果的编程。
 
 通过DOM对象模型，JavaScript 获得创建动态 HTML ：
 
@@ -2970,6 +3073,74 @@ JavaScript 能对页面中所有已有的 HTML 事件作出反应
 JavaScript 能在页面中创建新的 HTML 事件
 换言之：HTML DOM 是关于如何获取、更改、添加或删除 HTML 元素的标准。
 
+DOM编程获取元素：
+<div id="div01">
+<input type="text" class="a" id="username name= aaa"/>
+<input type="text" class="b" id="password" name="aaa"/>
+<input type="text" class="a" id="email"/>
+<input type="text" class="b" id="address"/>
+</div>
+
+<input type="text" class="a"/><br>
+<input type="button" value="根据id获取指定元素" onclick="fun1()" id="btn01"/>
+<input type="button" value="根据标签名获取多个元素"onclick="fun2()" id="btn02"/>
+<input type="button" value="根据name属性值获取多个元素"onclick="fun3()"id="btn03"/>
+<input type="button" value="根据class属性值获得多个元素" onclick="fun4()" id="btn04"/>
+<input type="button" value="根据父元素获取子元素" onclick="fun5()" id="btn05"/>
+<input type="button" value="根据子元素获取父元素" onclick="fun6()" id="btn06"/>
+<input type="button" value="根据子元素获取兄弟元素" onclick="fun7()" id="btn07"/>
+
+function fun1(){
+//1 获得document
+//2 通过document获得元素
+var el1 =document.getElementById("username")//根据元素的id值获取页面上唯一的一个元素
+console.log(el1)
+}
+function fun2(){
+    var els =document.getElementsByTagName("input")//根据元素的标签名获取多个同名元素
+    for(var i=0 ;i<els.length;i++){
+        console.log(els[i])
+    }
+}
+
+function fun3(){
+    var els =document.getElementsByName("aaa")// 根据元素的name属性值获得多个元素
+    console.log(els)
+    for(var i =0;i< els.length;i++){
+        console.log(els[i])
+    }
+}
+
+function fun4(){
+    var els =document.getElementsByClassName("a")//根据元素的class属性值获得多个元素
+    for(var i =0;i< els.length;i++){
+        console.log(els[i])
+    }
+}
+
+function fun5(){
+    // 先获取父元素
+    var div01= document.getElementById("div01")// 获取所有子元素
+    var cs=div01.children // 通过父元素获取全部的子元素
+    for(var i =0;i< cs.length;i++){
+    console.log(cs[i])
+    }
+    console.log(div01.firstElementChild)// 通过父元素获取第一个子元素
+    console.log(div01.lastElementchild)// 通过父元素获取最后一个子元素
+}
+
+function fun6(){
+    // 获取子元素
+    var pinput =document.getElementById("password")
+    console.log(pinput.parentElement)//通过子元素获取父元素
+}
+
+function fun7(){
+    // 获取子元素
+    var pinput =document.getElementById("password")
+    console.log(pinput.previousElementsibling)// 获取前面的第一个元素
+    console.log(pinput.nextElementsibling)//获取后面的第一个元素
+}
 
 Json：
 JavaScript Object Notation（JavaScript 对象标记法），它是一种存储和交换数据的语法。
@@ -3002,20 +3173,22 @@ Josn 的值不可以是以下数据类型之一：
 日期
 undefined
 
+Json字符串转换为JS对象：
+JSON.parse()
+
+JS对象转换为JSON字符串：
+JSON.stringify()
 
 Json与Java对象转换-Json转换库：
 GSON:
 GSON是Google提供的用于在Java对象和Json数据之间进行相互转换的库，其包含的Json解析方法主要有：
-
 toJson()：将Java对象转化为Json字符串。
 fromJson()：将JSON字符串转化为Java对象。
-
 
 将Java对象转化为Json字符串：
 Gson g = new Gson();
 book b = new book("100","金苹果","种植苹果的故事");
 String s = g.toJson(b);
-
 
 将Json字符串转化为Java对象：
 
@@ -3033,6 +3206,7 @@ System.out.println(hm.get("id"));
 HashMap data = g.fromJson("{\"id\":\"100\",\"name\":\"金苹果\",\"info\":\"种植苹果的故事\",\"page\":[\"远赴人间惊鸿晏\",\"一度人间盛世颜\",\"致hdd\"]}", HashMap.class);
 List list = (List) data.get("page");
 System.out.println(list.get(1));
+
 
 JWT:
 JSON Web Tokens（JWT）是一种用于在网络应用中传递信息的开放标准（RFC 7519），它以紧凑且自包含的方式表示数据，
@@ -9419,8 +9593,15 @@ MVC架构将网络交互层和数据交互层区分开，实现了业务读取�
 虽然集群通常用于构建分布式系统的基础架构，但分布式系统更广泛，可以跨越多个地理位置，涉及多个应用程序和服务之间的协同工作。集群则更侧重于提供高可用性和性能，通常在相对较小的范围内操作。
 
 因此，分布式系统可以包含多个集群，但它们不是同一概念。集群是分布式系统的一部分，用于支持特定服务或应用程序的高可用性和负载均衡需求。
+简单的来说，分布式是指不同的业务分布在不同的地方。而集群指的是将几台服务器集中在一起，实现同一业务。
+分布式中每一个节点，都可以做集群。而集群不一定都是分布式的。
 
+微服务和分布式之间的关系：
+微服务是实现分布式系统的一种方式。微服务架构是一种云原生架构方法，它将单个应用拆分为众多松散耦合且可单独部署的小型组件或服务。
+这些服务拥有自己的技术栈，通过REST API、事件流和消息代理进行通信，并且按照业务能力进行组织。通过微服务架构，可以将大型应用拆分为多个小服务，
+每个服务都可以独立地部署、扩展和管理，从而实现分布式系统的特性。
 
+微服务之间的调用可以是RPC（远程过程调用）：
 RPC（Remote Procedure Call，远程过程调用）是一种用于在不同的计算机或进程之间进行通信和调用远程方法的协议和框架。
 下面是一个简化的RPC框架调用的过程：
 
