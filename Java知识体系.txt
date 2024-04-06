@@ -3541,6 +3541,106 @@ Session和Cookie的区别如下：
 </html>
 在该示例代码中，当用户第一次提交表单时，将表单的提交状态存储在Session中，同时将表单的提交按钮禁用。当表单处理完成后，将Session中的表单提交状态清除，并启用提交按钮。这样就可以防止用户多次点击提交按钮，解决表单重复提交问题。
 
+在会话管理中，域对象是指可以在不同的组件（如Servlet、JSP等）之间进行数据传递与共享的对象。这些对象在Web应用程序中起到了至关重要的作用，使得数据能够在不同的请求、响应以及页面之间流通。根据不同的作用范围，域对象可以分为以下几种：
+
+请求域对象（Request Scope）：
+生命周期：始于客户端的请求到达服务器，终于服务器对这次请求做出响应并返回给客户端。
+作用范围：只在一个请求的生命周期内有效。
+用途：主要用于存储与单个请求相关的数据，如从表单中获取的用户输入。
+
+会话域对象（Session Scope）：
+生命周期：始于用户第一次访问应用程序并创建会话，终于用户关闭浏览器或会话超时。
+作用范围：跨多个请求有效，只要用户会话还在，数据就保持可用。
+用途：常用于存储用户的个人信息、购物车内容等需要在多个页面间共享的数据。
+
+应用程序域对象（Application Scope）：
+生命周期：始于Web应用程序启动，终于Web应用程序关闭。
+作用范围：在整个Web应用程序中都有效，所有用户共享这些数据。
+用途：用于存储整个应用程序级别的信息，如配置参数、全局计数器等。
+
+页面域对象（Page Scope）：
+生命周期：始于JSP页面被请求，终于JSP页面执行完毕并将响应发送回客户端。
+作用范围：仅在当前JSP页面中有效。
+用途：主要用于存储与单个JSP页面相关的数据。
+
+
+如何从请求域（Request Scope）、会话域（Session Scope）、应用程序域（Application Scope）和页面域（Page Scope）中获取数据的示例：
+
+请求域对象（Request Scope）
+在Servlet中设置属性到请求域：
+
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
+    String data = "This is request scope data";  
+    request.setAttribute("requestData", data);  
+    // 转发请求到JSP页面  
+    RequestDispatcher dispatcher = request.getRequestDispatcher("result.jsp");  
+    dispatcher.forward(request, response);  
+}
+
+在JSP页面中获取请求域中的数据：
+
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>  
+<html>  
+<body>  
+    <p>Request Scope Data: ${requestScope.requestData}</p>  
+</body>  
+</html>
+
+或者使用脚本表达式：
+
+<p>Request Scope Data: <%= request.getAttribute("requestData") %></p>
+
+会话域对象（Session Scope）
+在Servlet中设置属性到会话域：
+
+
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
+    String data = "This is session scope data";  
+    HttpSession session = request.getSession();  
+    session.setAttribute("sessionData", data);  
+    // 转发请求到JSP页面  
+    RequestDispatcher dispatcher = request.getRequestDispatcher("result.jsp");  
+    dispatcher.forward(request, response);  
+}
+在JSP页面中获取会话域中的数据：
+
+
+<p>Session Scope Data: ${sessionScope.sessionData}</p>
+
+或者使用脚本表达式：
+
+<p>Session Scope Data: <%= session.getAttribute("sessionData") %></p>
+
+应用程序域对象（Application Scope）
+
+在Servlet中设置属性到应用程序域：
+
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
+    String data = "This is application scope data";  
+    ServletContext context = request.getServletContext();  
+    context.setAttribute("applicationData", data);  
+    // 转发请求到JSP页面  
+    RequestDispatcher dispatcher = request.getRequestDispatcher("result.jsp");  
+    dispatcher.forward(request, response);  
+}
+
+在JSP页面中获取应用程序域中的数据：
+
+<p>Application Scope Data: ${applicationScope.applicationData}</p>
+
+或者使用脚本表达式：
+<p>Application Scope Data: <%= getServletContext().getAttribute("applicationData") %></p>
+页面域对象（Page Scope）
+
+页面域实际上是在JSP页面中定义的局部变量，这些变量在JSP页面的生命周期内有效。它们不是通过Servlet设置的，而是在JSP页面中直接定义的。例如：
+
+<%  
+    String pageData = "This is page scope data";  
+%>  
+<p>Page Scope Data: <%= pageData %></p>
+注意，页面域中的变量实际上是在JSP页面被转换成Servlet时定义的局部变量，所以它们并不是真正的“域对象”。在Servlet中，没有直接的API可以设置或获取页面域数据，因为页面域仅在JSP页面执行期间存在。
+
 
 VUE：动态构建用户界面的渐进式JavaScript框架
 
@@ -3635,6 +3735,25 @@ public interface Servlet {
 }
 
 
+在静态资源中的Content-type是如何体现的？
+静态资源：
+静态资源通常包括 HTML、CSS、JavaScript、图片、视频等文件。这些文件在服务器上通常是以文件的形式存储，并且服务器（如 Apache、Nginx）在接收到对这些资源的请求时，会直接读取并返回这些文件的内容。
+
+对于静态资源，Content-Type 通常由服务器自动根据文件的扩展名来确定。例如，对于 .html 文件，Content-Type 通常是 text/html；
+对于 .css 文件，Content-Type 是 text/css；对于 .js 文件，Content-Type 是 application/javascript；对于图片文件，如 .jpg 或 .png，Content-Type 则分别是 image/jpeg 或 image/png。
+
+Servlet设置Content-type：
+Servlet资源：
+Servlet 是 Java Web 应用程序中的一部分，用于处理客户端的请求并生成动态内容。Servlet 资源不是以文件的形式存储在服务器上，而是作为 Java 类被加载和执行。
+当浏览器请求一个 Servlet 时，服务器（如 Tomcat）会加载并执行相应的 Java 类，然后返回生成的内容。
+由于 Servlet 生成的内容是动态的，因此 Content-Type 通常不是由文件的扩展名来确定，而是由 Servlet 代码本身来设置。
+
+在 Servlet 中，可以通过 response.setContentType(String type) 方法来设置 Content-Type。
+例如，如果 Servlet 生成的是 HTML 内容，那么可以调用 response.setContentType("text/html")；
+如果生成的是 JSON 数据，那么可以调用 response.setContentType("application/json")。
+
+使用注解@webServlet可以设置Servlet路径
+
 ServletRequset接口:
     Servlet容器对于接受到的每一个Http请求，都会创建一个ServletRequest对象，并把这个对象传递给Servlet的Sevice( )方法。其中，ServletRequest对象内封装了关于这个请求的许多详细信息。
 
@@ -3692,13 +3811,39 @@ ServletContext对象:
 ServletContext对象表示Servlet应用程序。每个Web应用程序都只有一个ServletContext对象。在将一个应用程序同时部署到多个容器的分布式环境中，每台Java虚拟机上的Web应用都会有一个ServletContext对象。
 有了ServletContext对象，就可以共享从应用程序中的所有资料处访问到的信息，并且可以动态注册Web对象。前者将对象保存在ServletContext中的一个内部Map中。保存在ServletContext中的对象被称作属性。
 
+在Servlet中，ServletContext对象表示整个Web应用程序的上下文，它提供了在Web应用程序的范围内共享信息的方法。ServletContext对象在Web应用程序启动时创建，并在Web应用程序关闭时销毁。
+
+你可以通过以下方式在Servlet中获取ServletContext对象的内容：
+
+通过getServletContext()方法：在Servlet类中，你可以直接调用getServletContext()方法来获取ServletContext对象。
+ServletContext context = getServletContext();
+
+获取初始化参数：你可以使用ServletContext对象的getInitParameter(String name)方法来获取在web.xml文件中定义的初始化参数。
+String paramValue = context.getInitParameter("paramName");
+
+获取资源：你可以使用ServletContext对象的getResourceAsStream(String path)或getResource(String path)方法来获取Web应用程序中的资源。
+InputStream inputStream = context.getResourceAsStream("/WEB-INF/config.properties");  
+URL resourceURL = context.getResource("/images/logo.png");
+
+获取属性：你可以使用ServletContext对象的getAttribute(String name)方法来获取之前通过setAttribute(String name, Object object)方法设置的属性。
+Object attribute = context.getAttribute("attributeName");
+
+获取上下文路径：你可以使用ServletContext对象的getContextPath()方法来获取Web应用程序的上下文路径。
+String contextPath = context.getContextPath();
+
+获取请求分发器：你可以使用ServletContext对象的getRequestDispatcher(String path)方法来获取一个请求分发器对象，用于将请求转发到另一个资源。
+RequestDispatcher dispatcher = context.getRequestDispatcher("/someServlet");
+
+请注意，ServletContext对象在整个Web应用程序中都是共享的，因此它通常用于存储需要在整个应用程序中访问的信息，如数据库连接、配置参数等。
+但是，由于它是全局的，所以应该避免在其中存储与特定用户或请求相关的信息。
 
 ServletConfig接口:
 当Servlet容器初始化Servlet时，Servlet容器会给Servlet的init( )方式传入一个ServletConfig对象。
 
 ServletConfig接口中定义的方法：
 public String getInitParameter(String name): 此方法用于获取在 web.xml 文件中为 servlet 配置的初始化参数。这个参数名是字符串类型，返回值也是字符串类型。如果找不到给定名称的参数，此方法将返回 null。
-public ServletContext getServletContext(): 此方法返回与该 servlet 关联的 ServletContext 对象。ServletContext 对象提供了对 Servlet 环境的访问，包括请求和响应对象、会话跟踪、初始化参数、上下文路径等等。
+public ServletContext getServletContext(): 此方法返回与该 servlet 关联的 ServletContext 对象。
+ServletContext 对象提供了对 Servlet 环境的访问，包括请求和响应对象、会话跟踪、初始化参数、上下文路径等等。
 public String getServletName(): 此方法返回 servlet 的名称，该名称在 web.xml 文件中为 servlet 定义。如果找不到 servlet 名称，此方法将返回 null。
 
 
@@ -3902,6 +4047,17 @@ public class ServletConfig {
     }
 }
 
+在Servlet中，HttpServletRequest和ServletRequest HttpServletResponse和ServletResponse是什么关系？
+ServletRequest 与 HttpServletRequest:
+>ServletRequest 是一个通用的请求接口，定义了在Web应用中处理HTTP请求时的通用方法。
+>HttpServletRequest 是 ServletRequest 的一个子接口，专门用于处理HTTP协议的请求。它提供了更多与HTTP协议相关的方法和属性，如获取请求头、查询参数、请求方法（GET、POST等）等。
+>当你编写一个Servlet时，你通常会直接处理 HttpServletRequest，因为它提供了更丰富的功能来处理HTTP请求。
+
+ServletResponse 与 HttpServletResponse:
+>ServletResponse 是一个通用的响应接口，定义了在Web应用中构建HTTP响应时的通用方法。
+>HttpServletResponse 是 ServletResponse 的一个子接口，专门用于构建HTTP协议的响应。它提供了更多与HTTP协议相关的方法和属性，如设置响应头、发送重定向、设置响应状态码等。
+>同样地，在编写Servlet时，你通常会直接处理 HttpServletResponse，因为它允许你更精细地控制HTTP响应的各个方面。
+
 
 关于转发和重定向的区别：
 
@@ -3958,15 +4114,224 @@ SEO友好度：好,后端的数据一步搞定,直接生成相对应的模板网
 或者在传入Servlet或Struts2的action前统一设置字符集，或者去除掉一些非法字符。
 过滤器处于客户端与Web资源（Servlet、JSP、HTML）之间，客户端与Web资源之间的请求和响应都要通过过滤器进行过滤。
 
+使用Servlet创建过滤器：
+在Java Web开发中，过滤器（Filter）是一个常用的组件，它能够对Web应用程序的请求和响应进行预处理和后处理。Servlet规范定义了过滤器API，使得开发人员可以创建自定义的过滤器来处理HTTP请求和响应。以下是一个简单的示例，说明如何使用Servlet创建一个过滤器：
+
+实现Filter接口
+首先，你需要创建一个类，该类实现了javax.servlet.Filter接口。这个接口定义了三个方法：init(), doFilter(), 和 destroy()。
+
+java
+import javax.servlet.*;  
+import javax.servlet.http.HttpServletRequest;  
+import javax.servlet.http.HttpServletResponse;  
+import java.io.IOException;  
+  
+public class MyFilter implements Filter {  
+  
+    @Override  
+    public void init(FilterConfig filterConfig) throws ServletException {  
+        // 初始化方法，在过滤器创建时调用一次  
+        System.out.println("MyFilter initialized.");  
+    }  
+  
+    @Override  
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)  
+            throws IOException, ServletException {  
+          
+        // 在请求处理前执行代码  
+        HttpServletRequest req = (HttpServletRequest) request;  
+        HttpServletResponse res = (HttpServletResponse) response;  
+          
+        System.out.println("MyFilter is filtering request for " + req.getRequestURI());  
+          
+        // 继续过滤器链，即调用下一个过滤器或目标资源  
+        chain.doFilter(request, response);  
+          
+        // 在请求处理后执行代码（如果需要的话）  
+        System.out.println("MyFilter has finished filtering request for " + req.getRequestURI());  
+    }  
+  
+    @Override  
+    public void destroy() {  
+        // 销毁方法，在过滤器销毁时调用一次  
+        System.out.println("MyFilter destroyed.");  
+    }  
+}
+在web.xml中配置过滤器
+然后，你需要在你的web.xml文件中配置过滤器，以告诉Web容器何时应用这个过滤器。
+
+<web-app ...>  
+    <!-- 其他配置 -->  
+      
+    <filter>  
+        <filter-name>MyFilter</filter-name>  
+        <filter-class>com.example.MyFilter</filter-class>  
+    </filter>  
+      
+    <filter-mapping>  
+        <filter-name>MyFilter</filter-name>  
+        <url-pattern>/*</url-pattern> <!-- 应用到所有请求 -->  
+    </filter-mapping>  
+      
+    <!-- 其他配置 -->  
+</web-app>
+
+<filter>元素定义了过滤器的名称和类，而<filter-mapping>元素定义了该过滤器应用到哪些URL模式上。/*意味着过滤器会应用到Web应用程序中的所有请求。
+
+使用注解：
+如果你的Servlet容器（如Tomcat 7及更高版本、Jetty等）支持Servlet 3.0或更高版本的注解，你可以使用@WebFilter注解来替代web.xml中的配置。
+
+
+import javax.servlet.annotation.WebFilter;  
+import javax.servlet.annotation.WebInitParam;  
+  
+@WebFilter(urlPatterns = "/*", initParams = {  
+    @WebInitParam(name = "param1", value = "value1")  
+})  
+public class MyFilter implements Filter {  
+    // ... 实现方法与之前相同 ...  
+}
+
+使用Spring Boot创建过滤器：
+在Spring Boot中创建过滤器（Filter）相对简单，因为Spring Boot提供了自动配置和简化配置的功能。
+可以通过实现javax.servlet.Filter接口或者通过Spring Boot的@WebFilter注解（如果Servlet API版本和Servlet容器支持的话）来创建过滤器。
+不过，更常见的做法是在Spring Boot中通过Java配置来定义过滤器。
+
+创建过滤器类
+首先，创建一个实现javax.servlet.Filter接口的类：
+
+import javax.servlet.*;  
+import javax.servlet.http.HttpServletRequest;  
+import java.io.IOException;  
+  
+public class MyCustomFilter implements Filter {  
+  
+    @Override  
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)  
+            throws IOException, ServletException {  
+          
+        HttpServletRequest request = (HttpServletRequest) servletRequest;  
+        System.out.println("MyCustomFilter is filtering request for " + request.getRequestURI());  
+          
+        // 继续过滤器链  
+        filterChain.doFilter(servletRequest, servletResponse);  
+          
+        System.out.println("MyCustomFilter has finished filtering request for " + request.getRequestURI());  
+    }  
+  
+    @Override  
+    public void init(FilterConfig filterConfig) throws ServletException {  
+        // 初始化方法  
+    }  
+  
+    @Override  
+    public void destroy() {  
+        // 销毁方法  
+    }  
+}
+
+注册过滤器：
+接下来，你需要在Spring Boot配置中注册这个过滤器。你可以使用@Configuration和@Bean注解来定义一个配置类，并在这个类中注册过滤器：
+
+import org.springframework.boot.web.servlet.FilterRegistrationBean;  
+import org.springframework.context.annotation.Bean;  
+import org.springframework.context.annotation.Configuration;  
+  
+@Configuration  
+public class FilterConfig {  
+  
+    @Bean  
+    public FilterRegistrationBean<MyCustomFilter> myCustomFilterRegistration() {  
+        FilterRegistrationBean<MyCustomFilter> registrationBean = new FilterRegistrationBean<>();  
+        registrationBean.setFilter(new MyCustomFilter());  
+        registrationBean.addUrlPatterns("/*"); // 应用到所有请求  
+        return registrationBean;  
+    }  
+}
+在上面的代码中，我们创建了一个FilterRegistrationBean，并将我们的MyCustomFilter实例设置到它里面。然后，我们添加了一个URL模式/*，这表示该过滤器将应用于所有的请求。
+
+使用@Component注解（可选）
+如果你的过滤器类不需要任何特定的配置，你可以简单地将其标记为@Component，Spring Boot会自动发现并注册它：
+
+import javax.servlet.*;  
+import javax.servlet.annotation.WebFilter;  
+import javax.servlet.http.HttpServletRequest;  
+import java.io.IOException;  
+
+@Component  
+public class MyComponentFilter implements Filter {  
+    // ... 实现方法与之前相同 ...  
+}
+
+在这种情况下，不需要创建FilterRegistrationBean，因为Spring Boot会自动处理它。但是，如果需要更细粒度的控制（比如指定URL模式），那么使用FilterRegistrationBean是更好的选择。
+注：在Servlet中，过滤器执行的顺序按照配置的顺序运行
+
+什么是监听器（Listener)
+监听器（Listener）是一种运行在后台的程序，它主要用于监控某些事件在系统中的发生，并且根据这些事件执行特定的处理操作。
+在Web应用程序中，监听器可以观察ServletContext、HttpSession以及ServletRequest等对象的变化，以便在这些对象变化时进行相应的处理。
+
+使用Servlet创建一个监听器：
+
+首先，我们需要实现一个监听器接口。假设我们想要创建一个ServletContextListener，用于监听ServletContext的创建和销毁事件：
+
+import javax.servlet.ServletContextEvent;  
+import javax.servlet.ServletContextListener;  
+  
+public class MyServletContextListener implements ServletContextListener {  
+  
+    @Override  
+    public void contextInitialized(ServletContextEvent sce) {  
+        // ServletContext被创建时调用  
+        System.out.println("ServletContext 初始化");  
+        // 在这里可以执行初始化操作，比如加载配置文件等  
+    }  
+  
+    @Override  
+    public void contextDestroyed(ServletContextEvent sce) {  
+        // ServletContext被销毁时调用  
+        System.out.println("ServletContext 销毁");  
+        // 在这里可以执行清理操作，比如释放资源等  
+    }  
+}
+
+然后，我们需要在web.xml文件中配置这个监听器：
+
+xml
+<web-app ...>  
+    <!-- 其他配置 -->  
+      
+    <listener>  
+        <listener-class>com.example.MyServletContextListener</listener-class>  
+    </listener>  
+</web-app>
+
+如果你的项目使用的是Servlet 3.0或更高版本，你还可以使用注解来避免在web.xml中手动配置监听器。你只需要在监听器类上使用@WebListener注解即可：
+
+
+import javax.servlet.annotation.WebListener;  
+import javax.servlet.ServletContextEvent;  
+import javax.servlet.ServletContextListener;  
+  
+@WebListener  
+public class MyServletContextListener implements ServletContextListener {  
+    // 实现与上面相同的contextInitialized和contextDestroyed方法  
+}
+使用@WebListener注解后，你就不需要在web.xml中手动添加<listener>配置了，Servlet容器会在启动时自动发现并注册这个监听器。
+
+注意：监听器类应该放在WEB-INF/classes目录或其子目录下，或者打包在WEB-INF/lib目录下的JAR文件中，以确保Servlet容器能够找到和加载它们。
+当Web应用程序启动或停止时，Servlet容器会自动调用监听器的相应方法。
+
+
 什么是拦截器（Interceptor）
 拦截器是一种面向方面/切面编程（AOP Aspect-Oriented Programming），而面向切面就是将多个模块的通用服务进行分离，
 如权限管理、日志服务，他们在多个模块中都会用到，就可以将其各自封装为一个可重用模块。
+
 而这些通用服务的具体实现是通过拦截器来完成，比如用户客户端访问一些保密模块都应先通过权限审查的拦截器来进行权限审查，
 确定用户是否具有该项操作的权限后方能向下执行。在面向切面编程的就是在你的service或者一个方法前调用一个方法，
 或者在方法后调用一个方法，比如动态代理就是拦截器的简单实现，在你调用方法前打印出字符串（或者做其它业务逻辑的操作），
 也可以在你调用方法后打印出字符串，甚至在你抛出异常的时候做业务逻辑的操作。
 
-二者区别
+拦截器与过滤器区别
 1、拦截器是基于java的反射机制的，而过滤器是基于函数回调（职责链）
 2、过滤器依赖与servlet容器，而拦截器不依赖与servlet容器
 3、拦截器只能对action请求起作用，而过滤器则可以对几乎所有的请求起作用
@@ -3998,7 +4363,8 @@ public class MyInterceptor implements HandlerInterceptor {
                            Object handler) throws Exception {
 		return true;
 		}
-		
+}
+
 需要再写一个自己的配置类：
 @Configuration
 public class MyConfiguration implements WebMvcConfigurer {
@@ -4899,10 +5265,104 @@ SpringMVC使用了前端控制器（Front Controller）设计模式，其中Disp
 它还提供了丰富的功能，如请求映射、数据绑定、数据验证、视图解析和国际化支持等，以简化Web应用程序的开发过程。
 通过使用SpringMVC，开发人员可以轻松地构建可维护和可扩展的Web应用程序，实现松耦合和高度可测试性。它还与其他Spring框架模块（如Spring IoC和Spring AOP）紧密集成，提供了全面的企业级开发解决方案。
 
+SpringMVC中所有的请求都会封装成ModelAndView
+
 Spring MVC的功能
 Spring MVC提供了一种轻度耦合的方式来开发web应用。
 Spring MVC是Spring的一个模块，是一个web框架。通过Dispatcher Servlet, ModelAndView 和 View Resolver，开发web应用变得很容易。
 解决的问题领域是网站应用程序或者服务开发——URL路由、Session、模板引擎、静态Web资源等等。
+
+在SpringMVC中设置配置文件：
+在Spring MVC中，配置文件通常是用来设置各种bean、定义URL映射、配置视图解析器、设置拦截器等。这些配置可以放在XML文件中，或者在现代的Spring Boot应用中，也可以使用Java配置类来替代XML配置。
+
+以下是使用XML配置文件配置Spring MVC的示例：
+
+创建Spring MVC配置文件：
+首先，你需要在你的项目资源目录下（通常是src/main/resources）创建一个XML配置文件，例如spring-mvc-servlet.xml。
+
+配置DispatcherServlet：
+DispatcherServlet是Spring MVC的核心组件，它负责接收HTTP请求，并将其分发给相应的控制器处理。
+
+<beans xmlns="http://www.springframework.org/schema/beans"  
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+       xsi:schemaLocation="http://www.springframework.org/schema/beans  
+       http://www.springframework.org/schema/beans/spring-beans.xsd  
+       http://www.springframework.org/schema/context  
+       http://www.springframework.org/schema/context/spring-context.xsd">  
+  
+    <!-- 配置DispatcherServlet -->  
+    <bean class="org.springframework.web.servlet.DispatcherServlet"  
+          id="dispatcherServlet">  
+        <property name="contextConfigLocation" value="/WEB-INF/spring-mvc-servlet.xml"/>  
+    </bean>  
+  
+    <!-- 配置Servlet映射 -->  
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">  
+        <property name="mappings">  
+            <props>  
+                <prop key="/hello.do">helloController</prop>  
+            </props>  
+        </property>  
+    </bean>  
+  
+    <!-- 配置控制器 -->  
+    <bean id="helloController" class="com.example.HelloController"/>  
+  
+    <!-- 配置视图解析器 -->  
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
+        <property name="prefix" value="/WEB-INF/views/"/>  
+        <property name="suffix" value=".jsp"/>  
+    </bean>  
+  
+    <!-- 其他配置，例如拦截器、消息转换器等 -->  
+  
+</beans>
+在web.xml中配置DispatcherServlet
+你还需要在web.xml中配置Servlet容器来加载并映射DispatcherServlet。
+
+
+<web-app ...>  
+    <servlet>  
+        <servlet-name>dispatcherServlet</servlet-name>  
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>  
+        <init-param>  
+            <param-name>contextConfigLocation</param-name>  
+            <param-value>/WEB-INF/spring-mvc-servlet.xml</param-value>  
+        </init-param>  
+        <load-on-startup>1</load-on-startup>  
+    </servlet>  
+  
+    <servlet-mapping>  
+        <servlet-name>dispatcherServlet</servlet-name>  
+        <url-pattern>*.do</url-pattern>  
+    </servlet-mapping>  
+</web-app>
+
+在现代的Spring Boot应用中，推荐使用Java配置类来代替XML配置，因为Java配置提供了类型安全、重构支持以及更简洁的配置方式。以下是Java配置类的简单示例：
+
+java
+import org.springframework.context.annotation.ComponentScan;  
+import org.springframework.context.annotation.Configuration;  
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;  
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;  
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;  
+import org.springframework.web.servlet.view.InternalResourceViewResolver;  
+  
+@Configuration  
+@EnableWebMvc  
+@ComponentScan(basePackages = "com.example")  
+public class WebConfig implements WebMvcConfigurer {  
+  
+    @Override  
+    public void configureViewResolvers(ViewResolverRegistry registry) {  
+        registry.jsp().prefix("/WEB-INF/views/").suffix(".jsp");  
+    }  
+  
+    // 其他配置方法，例如配置拦截器、消息转换器等  
+  
+}
+
+注：在Spring Boot应用中，通常不需要在web.xml中配置Servlet，因为Spring Boot会自动配置并注册DispatcherServlet。你只需要将Java配置类放在Spring Boot的主配置类所在的包或子包中，或者在主配置类上使用@Import注解来导入Java配置类。
 
 Spring MVC获取请求参数的过程：
 1、通过ServletAPI获取
@@ -8932,6 +9392,22 @@ B+树中间节点没有存储数据，只有叶节点存放数据，其余节点
 B树多用在内存里放不下，大部分数据存储在外存上时。因为B树层数少，因此可以确保每次操作，读取磁盘的次数尽可能的少。
 在数据较小，可以完全放到内存中时，红黑树的时间复杂度比B树低。
 反之，数据量较大，外存中占主要部分时，B树因其读磁盘次数少，而具有更快的速度。
+
+MySQL不等于（!= 或者<>）操作为什么会导致索引失效？
+MySQL中不等于（!= 或者<>）操作会导致索引失效的原因主要有以下几点：
+
+全表扫描的必要性：当MySQL使用不等于操作符时，它通常需要扫描整个表来查找不满足条件的记录。这是因为不等于操作不像等于操作那样具有明确的匹配值，MySQL无法直接定位到具体的索引位置。
+因此，为了找到所有不满足条件的记录，MySQL需要逐行扫描整个表，这就导致了索引失效。
+
+索引结构的限制：索引在MySQL中通常是以B+树等数据结构实现的，这些结构对于范围查询和精确匹配查询非常高效。
+然而，对于不等于操作，索引结构无法有效地定位到不满足条件的记录，因为索引是按照某种顺序排列的，而不等于操作可能跨越索引中的多个位置。
+
+优化器的选择：MySQL的查询优化器会根据查询条件和表的结构选择最合适的查询策略。当优化器认为全表扫描比使用索引更快时，它会选择不使用索引。
+对于不等于操作，由于需要扫描大量的记录，优化器可能会认为全表扫描更为高效，从而选择不使用索引。
+
+需要注意的是，虽然不等于操作通常会导致索引失效，但在某些特定情况下，如果索引列的选择性很高（即不同值的比例很高），或者查询中涉及到其他可以使用索引的条件，优化器可能会选择使用索引。
+然而，这种情况相对较少见，因此在编写查询语句时，应该尽量避免使用不等于操作符，尤其是在涉及到大量数据的查询中。
+此外，对于需要使用不等于操作的场景，可以考虑使用其他查询策略或优化方法，如使用NOT EXISTS、LEFT JOIN等替代不等于操作，或者使用覆盖索引来优化查询性能。
 
 MySQL事务机制：
 事务（Transaction），是指作为单个逻辑工作单元执行的一系列操作，要么完全地执行，要么完全地不执行。 
