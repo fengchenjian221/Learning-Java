@@ -3642,7 +3642,18 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 注意，页面域中的变量实际上是在JSP页面被转换成Servlet时定义的局部变量，所以它们并不是真正的“域对象”。在Servlet中，没有直接的API可以设置或获取页面域数据，因为页面域仅在JSP页面执行期间存在。
 
 
-VUE：动态构建用户界面的渐进式JavaScript框架
+VUE：
+Vue.js（通常简称为Vue）是一个用于构建用户界面的渐进式JavaScript框架。它旨在通过简洁的API实现响应的数据绑定和组合的视图组件。
+Vue被设计为可以自底向上逐层应用，其核心库只关注视图层，不仅易于上手，也便于与第三方库或已有项目整合。
+
+Vue的一些主要特点和概念：
+
+响应式数据绑定：Vue通过其内置的响应式系统，可以自动追踪JavaScript对象的变化，并在数据发生变化时更新DOM。这使得开发者无需手动操作DOM来更新视图，提高了开发效率和代码的可维护性。
+组件化开发：Vue允许开发者将界面拆分成独立的、可复用的组件。每个组件都包含了自己的HTML、CSS和JavaScript代码，并且可以与其他组件进行通信和交互。这种组件化的开发方式使得代码更加模块化和可维护。
+模板系统：Vue使用基于HTML的模板语法来描述组件的视图结构。模板可以绑定到Vue实例的数据上，当数据发生变化时，视图会自动更新。模板系统还支持条件渲染、列表渲染和自定义指令等高级功能。
+指令：Vue提供了一套内置指令（如v-if、v-for、v-bind等），用于在模板中操作DOM元素和绑定数据。这些指令可以简化常见的DOM操作，并使得模板代码更加清晰和易于理解。
+插件和生态系统：Vue拥有一个活跃的插件和工具生态系统，包括路由管理、状态管理、构建工具等。这些工具和插件可以帮助开发者构建更复杂、更强大的应用程序。
+轻量级和灵活性：Vue.js是一个轻量级的框架，核心库的大小相对较小，可以轻松地与其他库或现有项目集成。同时，Vue也提供了足够的灵活性，允许开发者根据项目的需求选择使用哪些功能或插件。
 
 Vue的特点：
 遵循MVVM模式
@@ -4376,6 +4387,80 @@ public class MyConfiguration implements WebMvcConfigurer {
 		  interceptor.addPathPatterns("/user/**");
 	 }
 }
+
+
+使用Spring MVC拦截器实现控制权限：
+首先，你需要创建一个实现了HandlerInterceptor接口的类。在这个类中，你可以重写preHandle方法来进行权限控制。
+
+java
+import javax.servlet.http.HttpServletRequest;  
+import javax.servlet.http.HttpServletResponse;  
+import org.springframework.web.servlet.HandlerInterceptor;  
+import org.springframework.web.servlet.ModelAndView;  
+  
+public class AuthInterceptor implements HandlerInterceptor {  
+  
+    @Override  
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {  
+        // 检查用户是否登录或者是否有权限访问  
+        String username = (String) request.getSession().getAttribute("username");  
+        if (username == null || !isUserAuthorized(username, request)) {  
+            // 如果用户未登录或未授权，重定向到登录页面  
+            response.sendRedirect(request.getContextPath() + "/login");  
+            return false; // 返回false表示请求处理到此为止，不再继续执行后续的Controller方法  
+        }  
+        return true; // 返回true表示请求可以继续执行  
+    }  
+  
+    private boolean isUserAuthorized(String username, HttpServletRequest request) {  
+        // 这里应该实现具体的权限检查逻辑  
+        // 例如，可以检查用户名是否匹配某个允许访问的列表  
+        return true; // 示例中默认返回true，表示所有用户都有权限  
+    }  
+  
+    @Override  
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {  
+        // 请求处理完成后调用，通常用于视图渲染前的处理  
+    }  
+  
+    @Override  
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {  
+        // 整个请求完成后调用，通常用于资源清理  
+    }  
+}
+然后，你需要在Spring MVC的配置中注册这个拦截器，并指定它应该拦截哪些URL。这可以通过Java配置或XML配置来完成。
+
+Java配置示例：
+import org.springframework.beans.factory.annotation.Autowired;  
+import org.springframework.context.annotation.Configuration;  
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;  
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;  
+  
+@Configuration  
+public class WebConfig implements WebMvcConfigurer {  
+  
+    @Autowired  
+    private AuthInterceptor authInterceptor;  
+  
+    @Override  
+    public void addInterceptors(InterceptorRegistry registry) {  
+        registry.addInterceptor(authInterceptor)  
+                .addPathPatterns("/secure/**") // 拦截所有以"/secure/"开头的URL  
+                .excludePathPatterns("/secure/login"); // 排除"/secure/login"这个URL，不需要权限检查  
+    }  
+}
+
+XML配置示例：
+
+<mvc:interceptors>  
+    <mvc:interceptor>  
+        <mvc:mapping path="/secure/**" />  
+        <mvc:exclude-mapping path="/secure/login" />  
+        <bean class="com.example.AuthInterceptor" />  
+    </mvc:interceptor>  
+</mvc:interceptors>
+在这个配置中，AuthInterceptor会被注册为一个拦截器，并配置为拦截所有以/secure/开头的URL，但排除/secure/login这个URL。
+
 
 SpringBoot配置嵌入式Servlet容器：
 1、找到接口ConfigurableEmbeddedServletContainer
@@ -5415,50 +5500,20 @@ defaultValue：不管required属性值为true或false，当value所指定的请�
 @CookieValue注解一共有三个属性：value、required、defaultValue，用法同@RequestParam
 
 6、通过POJO获取请求参数
-可以在控制器方法的形参位置设置一个实体类类型的形参，此时若浏览器传输的请求参数的参数名和实
-体类中的属性名一致，那么请求参数就会为此属性赋值
-
-Spring MVC的工作流程：
-用户通过视图层发送请求到服务器，在服务器中请求被Controller接收，
-Controller调用相应的Model层处理请求，处理完毕将结果返回到Controller，
-Controller再根据请求处理的结果找到相应的View视图，渲染数据后最终响应给浏览器。
-
-<form th:action="@{/testpojo}" method="post">
-用户名：<input type="text" name="username"><br>
-密码：<input type="password" name="password"><br>
-性别：<input type="radio" name="sex" value="男">男<input type="radio"
-name="sex" value="女">女<br>
-年龄：<input type="text" name="age"><br>
-邮箱：<input type="text" name="email"><br>
-<input type="submit">
-</form>
-@RequestMapping("/testpojo")
-public String testPOJO(User user){
-System.out.println(user);
-return "success";
-}
-//最终结果-->User{id=null, username='张三', password='123', age=23, sex='男',
-email='123@qq.com'}
+可以在控制器方法的形参位置设置一个实体类类型的形参，此时若浏览器传输的请求参数的参数名和实体类中的属性名一致，那么请求参数就会为此属性赋值
 
 7、解决获取请求参数的乱码问题
-解决获取请求参数的乱码问题，可以使用SpringMVC提供的编码过滤器CharacterEncodingFilter，但是
-必须在web.xml中进行注册
-注：
-SpringMVC中处理编码的过滤器一定要配置到其他过滤器之前，否则无效
+解决SpringMVC中的乱码问题通常涉及到对请求和响应的字符编码进行统一设置。通过配置过滤器、SpringMVC消息转换器或者在Controller中指定编码，可以有效地避免乱码问题的出现。同时，也需要确保客户端和数据库连接使用的字符集与服务器端设置一致。
 
-
-SpringMVC流程
-1、用户发送请求至前端控制器DispatcherServlet。DispatcherServlet类继承了HttpServlet，在Service的init方法调用时DispatcherServlet执行SpringMVC的初始化工作。
-2、DispatcherServlet收到请求调用HandlerMapping处理器映射器。
-3、处理器映射器找到具体的处理器(可以根据xml配置、注解进行查找)，生成处理器对象及处理器拦截器(如果有则生成)一并返回给DispatcherServlet。
-4、DispatcherServlet调用HandlerAdapter处理器适配器。
-5、HandlerAdapter经过适配调用具体的处理器(Controller，也叫后端控制器)。
-6、Controller执行完成返回ModelAndView。
-7、HandlerAdapter将controller执行结果ModelAndView返回给DispatcherServlet。
-8、DispatcherServlet将ModelAndView传给ViewReslover视图解析器。
-9、ViewReslover解析后返回具体View。
-10、DispatcherServlet根据View进行渲染视图（即将模型数据填充至视图中）。
-11、DispatcherServlet响应用户。
+Spring MVC的工作流程：
+1.客户端发送请求：当客户端（如浏览器）发起一个HTTP请求时，它会通过URL地址和请求方法（如GET、POST等）来向服务器发送请求。
+2.DispatcherServlet接收请求：在Spring MVC中，所有的请求都会先经过一个称为DispatcherServlet的中央控制器。当请求到达服务器后，Servlet容器会将请求交给DispatcherServlet进行处理。
+3.HandlerMapping寻找处理器：DispatcherServlet会调用HandlerMapping来确定请求对应的处理器（Handler）。HandlerMapping会根据请求的URI等信息，找到匹配的Controller。
+4.Controller处理请求：一旦确定了请求对应的处理器，DispatcherServlet就会将请求转发给目标Controller。Controller会执行相应的业务逻辑，并返回一个ModelAndView对象。这个对象包含了视图需要的数据以及要使用的视图名称。
+5.ModelAndView处理：DispatcherServlet接收到Controller返回的ModelAndView对象后，会进一步处理。它会提取Model中的数据，准备用于视图的渲染。
+6.视图解析：DispatcherServlet通过ViewResolver视图解析器找到对应的视图对象View。ViewResolver会根据ModelAndView对象中的视图名称，解析出具体的视图实现。
+7.视图渲染：视图对象View负责渲染模型数据，生成最终的响应内容。这通常涉及到将模型数据填充到视图的模板中，生成HTML、JSON或其他格式的响应。
+8.返回响应给客户端：视图渲染完成后，DispatcherServlet会将响应返回给客户端，客户端（如浏览器）会接收到这个响应并展示给用户。
 
 以下组件通常使用框架提供实现：
 
@@ -5508,9 +5563,132 @@ SpringMVC中处理编码的过滤器一定要配置到其他过滤器之前，�
 
 总结：
 SpringMVC本质上是对Java Web Servlet的封装，使得开发Java Web项目没有那么臃肿。
-Spring MVC是后端渲染式的后台开发框架，没有做到前后端分离，对前端开发人员也要求有Java Web的开发环境。
+SpringMVC是后端渲染式的后台开发框架，没有做到前后端分离，对前端开发人员也要求有Java Web的开发环境。
 前端人员作出的静态Html页面，也需要进行整合，改为Spring MVC里的View。
 	
+使用SpringMVC进行文件上传：
+在Spring MVC中，文件上传通常使用MultipartFile接口来实现。以下是一个简单的步骤，指导你如何在Spring MVC中实现文件上传功能：
+
+添加依赖
+确保你的pom.xml中包含了Spring MVC和Apache Commons FileUpload的依赖。
+
+<dependencies>  
+    <!-- Spring MVC -->  
+    <dependency>  
+        <groupId>org.springframework.boot</groupId>  
+        <artifactId>spring-boot-starter-web</artifactId>  
+    </dependency>  
+      
+    <!-- Apache Commons FileUpload -->  
+    <dependency>  
+        <groupId>commons-fileupload</groupId>  
+        <artifactId>commons-fileupload</artifactId>  
+        <version>1.4</version>  
+    </dependency>  
+</dependencies>
+
+配置Spring MVC
+在你的Spring MVC配置中，确保已经配置了MultipartResolver。如果你使用Spring Boot，它通常会为你自动配置。
+
+创建文件上传表单
+在HTML中，创建一个包含enctype="multipart/form-data"属性的表单，以便能够上传文件。
+
+<form method="POST" action="/upload" enctype="multipart/form-data">  
+    <input type="file" name="file" />  
+    <input type="submit" value="Upload" />  
+</form>
+
+处理文件上传的Controller
+在Spring MVC的Controller中，使用@RequestParam注解来获取上传的文件。
+
+java
+import org.springframework.http.HttpStatus;  
+import org.springframework.http.ResponseEntity;  
+import org.springframework.web.bind.annotation.PostMapping;  
+import org.springframework.web.bind.annotation.RequestParam;  
+import org.springframework.web.bind.annotation.RestController;  
+import org.springframework.web.multipart.MultipartFile;  
+  
+import java.io.File;  
+import java.io.IOException;  
+  
+@RestController  
+public class FileUploadController {  
+  
+    private static final String UPLOADED_FOLDER = "/tmp/";  
+  
+    @PostMapping("/upload")  
+    public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file) {  
+        if (file.isEmpty()) {  
+            return new ResponseEntity<>("Please select a file to upload.", HttpStatus.BAD_REQUEST);  
+        }  
+  
+        try {  
+            byte[] bytes = file.getBytes();  
+            File dest = new File(UPLOADED_FOLDER + file.getOriginalFilename());  
+            dest.createNewFile();  
+            java.nio.file.Files.write(dest.toPath(), bytes);  
+            return new ResponseEntity<>("File uploaded successfully!", HttpStatus.OK);  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        }  
+        return new ResponseEntity<>("Failed to upload file!", HttpStatus.INTERNAL_SERVER_ERROR);  
+    }  
+}
+在这个例子中，文件将被上传到服务器的/tmp/目录下。你可以根据需要更改这个路径。注意，这个路径应该是你的应用有写权限的目录。
+
+使用SpringMVC实现文件下载：
+import org.springframework.core.io.FileSystemResource;  
+import org.springframework.core.io.Resource;  
+import org.springframework.http.HttpHeaders;  
+import org.springframework.http.MediaType;  
+import org.springframework.http.ResponseEntity;  
+import org.springframework.web.bind.annotation.GetMapping;  
+import org.springframework.web.bind.annotation.PathVariable;  
+import org.springframework.web.bind.annotation.RestController;  
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;  
+  
+import java.io.IOException;  
+import java.nio.file.Files;  
+import java.nio.file.Path;  
+import java.nio.file.Paths;  
+  
+@RestController  
+public class FileDownloadController {  
+  
+    private static final String FILE_DIR = "/files/";  
+  
+    @GetMapping("/download/{filename:.+}")  
+    public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {  
+        Path filePath = Paths.get(FILE_DIR + filename);  
+  
+        Resource resource = null;  
+        try {  
+            if (Files.exists(filePath)) {  
+                resource = new FileSystemResource(filePath);  
+            } else {  
+                // 如果文件不存在，可以返回一个错误信息  
+                return ResponseEntity.notFound().build();  
+            }  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+            return ResponseEntity.internalServerError().build();  
+        }  
+  
+        // 设置响应头  
+        HttpHeaders headers = new HttpHeaders();  
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename());  
+        headers.add(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate");  
+        headers.add(HttpHeaders.PRAGMA, "no-cache");  
+        headers.add(HttpHeaders.EXPIRES, "0");  
+  
+        return ResponseEntity.ok()  
+                .headers(headers)  
+                .contentType(MediaType.parseMediaType("application/octet-stream"))  
+                .body(resource);  
+    }  
+}
+
 
 Java JVM：
 Java虚拟机(Jvm)是可运行Java代码的假想计算机。Java虚拟机包括一套字节码指令集、一组寄存器、一个栈、一个垃圾回收堆和一个存储方法域。
