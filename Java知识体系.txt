@@ -4597,6 +4597,7 @@ Spring Boot本身并不提供Spring框架的核心特性以及扩展功能，只
 同时它集成了大量常用的第三方库配置(例如Jackson, JDBC, Mongo, Redis, Mail等等)，
 Spring Boot应用中这些第三方库几乎可以零配置的开箱即用(out-of-the-box)，
 大部分的Spring Boot应用都只需要非常少量的配置代码，开发者能够更加专注于业务逻辑。
+
 Spring Boot只是承载者，辅助你简化项目搭建过程的。如果承载的是WEB项目，使用Spring MVC作为MVC框架，
 那么工作流程和SpringMVC是完全一样的，因为这部分工作是Spring MVC做的而不是Spring Boot。
 对使用者来说，换用Spring Boot以后，项目初始化方法变了，配置文件变了，另外就是不需要单独安装Tomcat这类容器服务器了，
@@ -4627,6 +4628,76 @@ Spring Boot 支持使用 application.properties 或 application.yml 文件来定
 Spring 是一个“引擎”；
 Spring MVC 是基于Spring的一个 MVC 框架 ；
 Spring Boot 是基于Spring的条件注册的一套快速开发整合包。
+
+
+SpringBoot的启动方法：
+import org.springframework.boot.SpringApplication;  
+import org.springframework.boot.autoconfigure.SpringBootApplication;  
+  
+@SpringBootApplication  
+public class Application {  
+  
+    public static void main(String[] args) {  
+        SpringApplication.run(Application.class, args);  
+    }  
+  
+}
+
+在这个例子中：
+Application类是一个普通的Java类，它包含了main方法，这是Java应用程序的入口点。
+@SpringBootApplication注解告诉Spring Boot这是一个Spring Boot应用程序，并且它会自动配置应用程序。
+SpringApplication.run(Application.class, args);启动了Spring Boot应用程序。它会加载应用程序上下文，启动嵌入式的Servlet容器（如果配置了的话），然后运行应用程序。
+当你运行这个main方法时，Spring Boot会自动配置你的应用程序，并且启动嵌入式的Servlet容器（如Tomcat）来监听HTTP请求。
+
+SpringBoot的自动配置：
+Spring Boot的自动配置是其核心功能之一，它极大地简化了Spring应用程序的初始搭建和配置过程。
+自动配置的核心思想是根据项目中的依赖和类路径下的特定类，自动创建和配置Spring容器中的bean，从而省去了手动配置的大量工作。
+
+以下是Spring Boot自动配置的主要原理和实现方式：
+>条件化配置：Spring Boot通过条件注解（如@ConditionalOnClass、@ConditionalOnMissingBean等）来决定是否加载某个自动配置类或bean。
+这些条件可以是类路径下是否存在某个类、是否存在某个bean等。只有当满足特定条件时，相关的自动配置才会生效。
+
+>自动配置类：自动配置类通过@Configuration注解标识，它们包含了Spring容器需要自动创建的bean的定义。这些bean的创建和配置会根据条件化注解的条件来确定。
+自动配置类通常存放在spring-boot-autoconfigure模块的jar包中。
+
+>META-INF/spring.factories文件：Spring Boot通过在类路径下的META-INF/spring.factories文件中定义自动配置类，告诉Spring Boot哪些配置类需要被加载。
+这个文件是一个属性文件，其中包含了自动配置类的全限定名。
+
+>属性绑定：Spring Boot还允许开发者在application.properties或application.yml文件中定义外部化配置，这些配置会被自动绑定到相关的bean上。
+这大大简化了配置的复杂性，使得开发者能够更专注于业务逻辑的实现。
+
+>Starter依赖：Spring Boot提供了一系列的“Starter”依赖，这些依赖包含了构建某个特定类型应用程序所需的所有基本依赖和自动配置。
+例如，spring-boot-starter-web包含了构建Web应用程序所需的Spring MVC和嵌入式Servlet容器等依赖和自动配置。
+
+
+问：@SpringBootApplication注解是如何完成自动配置功能的？
+@SpringBootApplication注解是SpringBoot中的一个复合注解，它包含了@Configuration、@EnableAutoConfiguration和@ComponentScan三个关键注解。
+这个注解的作用是启用SpringBoot的自动配置功能，并告诉Spring Boot如何扫描和加载应用程序的组件。
+
+下面我们来详细解析@SpringBootApplication注解是如何完成自动配置功能的：
+
+@Configuration：
+这个注解用于告诉Spring这是一个配置类，类似于XML配置文件中的<beans>标签。在这个类中，开发者可以使用@Bean注解来定义和初始化Spring容器管理的bean。
+
+@EnableAutoConfiguration：
+这个注解是自动配置的关键所在。当使用@EnableAutoConfiguration注解时，Spring Boot会根据项目中引入的依赖和类路径下的特定类，自动配置应用程序所需的bean。
+
+条件注解：Spring Boot使用条件注解（如@ConditionalOnClass、@ConditionalOnMissingBean等）来决定是否创建和配置某个bean。这些条件可以是类路径上是否存在某个类、是否存在某个bean等。
+自动配置类：Spring Boot提供了许多自动配置类，这些类包含了一些预定义的bean，并且会根据项目的条件进行创建和配置。
+META-INF/spring.factories文件：自动配置类通过META-INF/spring.factories文件进行注册。Spring Boot在启动时，会扫描这个文件，并加载其中定义的自动配置类。
+
+@ComponentScan：
+这个注解用于告诉Spring Boot哪些包下的类需要被扫描并注册为Spring容器管理的bean。默认情况下，@SpringBootApplication注解会扫描启动类所在的包及其子包。
+
+综合这三个注解，@SpringBootApplication完成了以下功能：
+
+通过@Configuration定义了配置类。
+通过@EnableAutoConfiguration启用了自动配置功能，根据项目的依赖和条件自动创建和配置bean。
+通过@ComponentScan扫描并注册应用程序的组件。
+
+当开发者在Spring Boot应用程序的主类上使用@SpringBootApplication注解时，Spring Boot会自动完成上述所有步骤，从而简化了应用程序的配置和初始化过程。
+开发者只需要关注业务逻辑的实现，而不需要花费大量时间在繁琐的配置上。
+
 
 SpringBoot中定制Web扩展配置：WebMvcConfigurerAdapter接口
 这是一个接口，里边声明了很多的方法，例如拦截器，视图解析器，格式转化器。
@@ -5094,15 +5165,166 @@ Cglib代理也叫作子类代理，他是通过在内存中构建一个子类，
 动态代理与CGLib动态代理都是实现Spring AOP的基础。如果加入容器的目标对象有实现接口,用动态代理，如果目标对象没有实现接口,用Cglib代理。
 
 动态代理的运用：Spring
-Spring框架：Spring→SpringMVC→SpringBoot 
-Spring 框架就像一个家族，有众多衍生产品例如 boot、security、jpa等等。但他们的基础都是Spring 的 ioc和 aop ioc 提供了依赖注入的容器 aop ，解决了面向横切面的编程，然后在此两者的基础上实现了其他延伸产品的高级功能。Spring MVC是基于 Servlet 的一个 MVC 框架 主要解决 WEB 开发的问题，因为 Spring 的配置非常复杂，各种XML、 JavaConfig、hin处理起来比较繁琐。于是为了简化开发者的使用，从而创造性地推出了Spring boot，约定优于配置，简化了spring的配置流程。
-Spring的工作原理其实是，Spring在启动时读取bean配置信息，这里bean配置信息包括xml文件、Java类#Configuration、注解#AutoWired，
-存放到Bean注册表，并根据Bean注册表实例化Bean，实际上就是实例化Bean的实现类，然后将Bean实例放到Spring容器中。
+
+Java Spring：
+Spring 框架就像一个家族，有众多衍生产品例如 boot、security、jpa等等。但他们的基础都是Spring 的 ioc和 aop ioc 提供了依赖注入的容器 aop ，解决了面向横切面的编程，然后在此两者的基础上实现了其他延伸产品的高级功能。
+Spring MVC是基于 Servlet 的一个 MVC 框架 主要解决 WEB 开发的问题，因为 Spring 的配置非常复杂，各种XML、 JavaConfig、hin处理起来比较繁琐。于是为了简化开发者的使用，从而创造性地推出了Spring boot，约定优于配置，简化了spring的配置流程。
+Spring的工作原理其实是，Spring在启动时读取bean配置信息，这里bean配置信息包括xml文件、Java类#Configuration、注解#AutoWired，存放到Bean注册表，并根据Bean注册表实例化Bean，实际上就是实例化Bean的实现类，然后将Bean实例放到Spring容器中。
 
 Spring的IOC是通过反射来实现的：
 在Spring中，通过IOC可以将实现类、参数信息等配置在其对应的配置文件中，当需要更改实现类或参数信息时，只需要修改配置文件即可。
-Spring的IOC实现原理利用的就是Java的反射机制，Spring的工厂类会帮我们完成配置文件的读取、利用反射机制注入对象等工作，
-我们可以通过bean的名称获取对应的对象。
+Spring的IOC实现原理利用的就是Java的反射机制，Spring的工厂类会帮我们完成配置文件的读取、利用反射机制注入对象等工作，我们可以通过bean的名称获取对应的对象。
+
+使用XML配置获取Bean的方式：
+在Spring框架中，XML配置文件是一种传统的配置方式，用于定义和管理应用程序中的Bean。通过XML配置文件，我们可以定义Bean的属性、构造函数参数、依赖关系以及其他相关配置。
+以下是使用XML配置文件在Spring中获取Bean的详细步骤：
+
+创建XML配置文件
+首先，需要创建一个XML配置文件，通常命名为applicationContext.xml或beans.xml，并将其放在类路径下（如src/main/resources目录）。
+
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+       xsi:schemaLocation="http://www.springframework.org/schema/beans  
+       http://www.springframework.org/schema/beans/spring-beans.xsd">  
+  
+    <!-- Bean定义 -->  
+    <bean id="myBean" class="com.example.MyBeanClass">  
+        <property name="propertyName" value="propertyValue" />  
+        <property name="anotherBean" ref="anotherBeanId" />  
+    </bean>
+</beans>
+
+加载XML配置文件
+在Java代码中，需要加载XML配置文件来创建Spring IoC容器。通常使用ClassPathXmlApplicationContext或FileSystemXmlApplicationContext类来加载配置文件。
+
+import org.springframework.context.ApplicationContext;  
+import org.springframework.context.support.ClassPathXmlApplicationContext;  
+  
+public class MyApp {  
+    public static void main(String[] args) {  
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");  
+          
+        // 获取Bean  
+        MyBeanClass myBean = (MyBeanClass) context.getBean("myBean");  
+          
+        // 使用Bean  
+        myBean.doSomething();  
+    }  
+}
+
+在上面的示例中，ClassPathXmlApplicationContext用于加载名为applicationContext.xml的XML配置文件，并创建Spring IoC容器。
+然后，通过调用context.getBean("myBean")方法，我们获取了id为myBean的Bean的实例，并将其转型为MyBeanClass类型。最后，我们可以调用Bean的方法来进行业务逻辑处理。
+
+注意：XML配置方式虽然直观且易于理解，但在大型项目中可能会显得繁琐和难以维护。
+因此，许多现代Spring项目倾向于使用基于Java的配置（如使用@Configuration和@Bean注解），这样可以更好地利用Java的类型安全性和IDE的支持。
+不过，XML配置仍然是一个有效且被广泛使用的选择，特别是对于那些更喜欢XML格式或者需要在没有Java源代码访问权限的情况下进行配置的场景。
+
+
+使用注解管理Bean的方式：
+在Spring框架中，注解（Annotation）提供了一种声明式的方式来管理Bean，而不是传统的基于XML的配置方式。通过使用注解，你可以更简洁、更直接地在Java代码中定义和管理Bean。
+
+以下是在Spring中使用注解管理Bean的一些关键步骤：
+
+启用注解支持：
+要在Spring中启用注解支持，你需要在Spring配置文件中添加<context:annotation-config/>标签，或者在Java配置中使用@Configuration和@EnableAnnotationConfiguration注解（如果你使用的是较新版本的Spring，通常只需添加@Configuration注解）。
+
+<!-- 在XML配置中启用注解 -->  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+       xmlns:context="http://www.springframework.org/schema/context"  
+       xsi:schemaLocation="http://www.springframework.org/schema/beans  
+       http://www.springframework.org/schema/beans/spring-beans.xsd  
+       http://www.springframework.org/schema/context  
+       http://www.springframework.org/schema/context/spring-context.xsd">  
+  
+    <context:annotation-config/>  
+  
+    <!-- 其他bean定义 -->  
+</beans>
+
+或者，在Java配置中：
+
+@Configuration  
+public class AppConfig {  
+    // ... 其他配置 ...  
+}
+
+
+使用@Component及其衍生注解：
+Spring提供了几个注解来标记组件类，使其作为Bean被Spring容器管理。这些注解包括@Component、@Service、@Repository和@Controller。它们都是@Component的特化版本，用于表示不同类型的组件。
+
+@Component：通用组件，可以标记任何Spring管理的组件。
+@Service：用于标记业务逻辑组件。
+@Repository：用于标记数据访问组件，如DAO。
+@Controller：用于标记Web层的组件（在Spring MVC中）。
+
+示例：
+@Service  
+public class MyService {  
+    // ... 服务实现 ...  
+}
+
+自动装配：
+Spring的@Autowired注解用于自动装配bean之间的依赖关系。Spring容器会自动查找匹配的bean并注入到相应的字段或方法中。
+
+示例：
+@Service  
+public class MyService {  
+    private final MyRepository myRepository;  
+  
+    @Autowired  
+    public MyService(MyRepository myRepository) {  
+        this.myRepository = myRepository;  
+    }  
+}
+
+使用@Qualifier解决歧义：
+当存在多个相同类型的bean时，可以使用@Qualifier注解来指定要注入的bean的名称。
+
+示例：
+@Autowired  
+@Qualifier("specificBeanName")  
+private MyBean myBean;
+
+使用@Scope定义作用域：
+@Scope注解用于定义bean的作用域。默认的作用域是singleton，但也可以设置为prototype、request、session等。
+
+示例：
+@Service  
+@Scope("prototype")  
+public class MyPrototypeService {  
+    // ... 服务实现 ...  
+}
+使用@Resource和@Inject：
+除了@Autowired，你还可以使用JSR-250的@Resource注解或JSR-330的@Inject注解来进行依赖注入。这些注解提供了与@Autowired类似的功能，但具有一些不同的特性和用法。
+
+7. 自定义注解和Bean定义：
+你还可以创建自定义的注解，并使用@Bean方法在Java配置类中定义bean。这提供了一种更灵活的方式来定义和注册bean。
+
+8. 使用@ComponentScan扫描组件：
+@ComponentScan注解用于指定Spring应该扫描哪个包以查找带有@Component、@Service、@Repository和@Controller注解的类，并将它们注册为bean。你可以将其添加到配置类上。
+
+9. 使用Java配置类替代XML：
+除了使用注解标记组件类，你还可以使用Java配置类完全替代XML配置文件。这通过@Configuration类和使用@Bean方法来实现。这种方法提供了更类型安全和更强大的配置能力。
+
+
+问：Spring里的注解@AutoWired和@Resource注解有什么区别
+Spring框架中的@Autowired和@Resource注解都是用于依赖注入的，但它们之间存在一些重要的区别：
+
+>来源不同：@Autowired是Spring框架提供的注解，主要用于实现Spring框架中的依赖注入功能。而@Resource是Java EE规范中的注解，它是JSR-250规范的一部分，因此在Java EE和Spring中都可以使用。
+查找顺序不同：当Spring容器进行依赖注入时，@Autowired首先会尝试按类型（byType）查找匹配的bean，如果找到多个同类型的bean，则会根据bean的名称（name）或@Qualifier注解来进一步确定。
+而@Resource的查找顺序则相反，它首先会按名称（byName）查找，如果找不到匹配的bean，则会根据类型查找。
+
+>支持的参数不同：@Autowired只有一个可选参数required，表示是否自动装配。如果设置为false，那么在找不到匹配的bean时，不会抛出异常。
+而@Resource可以设置更多的参数，包括name、type、authenticationType、mappedName、shareable和lookup等，提供了更丰富的配置选项。
+
+>依赖注入的用法支持不同：@Autowired支持构造方法注入、属性注入和Setter方法注入。而@Resource只支持属性注入和Setter方法注入，不支持构造方法注入。
+>IDEA编译器的提示不同：在IntelliJ IDEA等集成开发环境中，当使用@Autowired注解注入Mapper对象时，可能会收到关于找不到bean的警告或错误提示。而使用@Resource注解时，通常不会出现此类问题。
+
+总结来说，@Autowired和@Resource都是Spring中用于实现依赖注入的注解，但它们在来源、查找顺序、支持的参数、用法支持和IDE提示等方面存在区别。
+在选择使用哪个注解时，可以根据项目的具体需求和上下文环境进行考虑。
+
 
 Spring AOP（Aspect-Oriented Programming）是面向切面编程的一种实现技术，主要用于实现程序功能的统一维护。
 Spring AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
@@ -5148,7 +5370,7 @@ public Obiect recordLog(ProceedingdoinPoint joinPoint) throws Throwable {
 //获取请求头中的iwt令牌，解析令牌
 String jwt=request.getHeader(name: "token");
 Claims claims=JwtUtils.parseuWT(jwt);
-Integer operateUser =(Integer)claims.qet("id");
+Integer operateUser =(Integer)claims.get("id");
 //操作时间
 LocalDateTime operateTime = LocalDateTime.now();
 //操作类名
@@ -5173,176 +5395,6 @@ return result;
 }
 3.在需要的方法上添加注解
 
-
-Spring IOC举例————IOC操作Bean管理（基于XML方式）
-1、基于 xml 方式创建对象
-（1）在 spring 配置文件中，使用 bean 标签，标签里面添加对应属性，就可以实现对象创建
-（2）在 bean 标签有很多属性，介绍常用的属性
-* id 属性：唯一标识
-* class 属性：类全路径（包类路径）
-（3）创建对象时候，默认也是执行无参数构造方法完成对象创建
-<bean id = "user" class = "Spring.User"></bean>
-
-2、基于 xml 方式注入属性
-（1）DI：依赖注入，就是注入属性
-
-3、第一种注入方式：使用 set 方法进行注入
-（1）创建类，定义属性和对应的 set 方法
-/**
-* 演示使用 set 方法进行注入属性
-*/
-public class Book {
- //创建属性
- private String bname;
- private String bauthor;
- //创建属性对应的 set 方法
- public void setBname(String bname) {
- this.bname = bname;
- }
- public void setBauthor(String bauthor) {
- this.bauthor = bauthor;
- }
-}
-（2）在 spring 配置文件配置对象创建，配置属性注入
-<!--2 set 方法注入属性-->
-<bean id="book" class="com.atguigu.spring5.Book">
- <!--使用 property 完成属性注入
- name：类里面属性名称
- value：向属性注入的值
- -->
- <property name="bname" value="易筋经"></property>
- <property name="bauthor" value="达摩老祖"></property>
-</bean>
-4、第二种注入方式：使用有参数构造进行注入
-（1）创建类，定义属性，创建属性对应有参数构造方法
-public class Orders {
- //属性
- private String oname;
- private String address;
- //有参数构造
- public Orders(String oname,String address) {
- this.oname = oname;
- this.address = address;
- }
-}
-（2）在 spring 配置文件中进行配置
-<!--3 有参数构造注入属性-->
-<bean id="orders" class="com.atguigu.spring5.Orders">
- <constructor-arg name="oname" value="电脑"></constructor-arg>
- <constructor-arg name="address" value="China"></constructor-arg>
-</bean>
-
-Spring AOP举例
-1、创建类，在类里面定义方法
-public class User {
- public void add() {
- System.out.println("add.......");
- }
-}
-2、创建增强类（编写增强逻辑）
-（1）在增强类里面，创建方法，让不同方法代表不同通知类型
-//增强的类
-public class UserProxy {
- public void before() {//前置通知
- System.out.println("before......");
- }
-}
-
-3、进行通知的配置
-（1）在 spring 配置文件中，开启注解扫描
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" 
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
- xmlns:context="http://www.springframework.org/schema/context" 
- xmlns:aop="http://www.springframework.org/schema/aop" 
- xsi:schemaLocation="http://www.springframework.org/schema/beans 
-http://www.springframework.org/schema/beans/spring-beans.xsd 
- http://www.springframework.org/schema/context 
-http://www.springframework.org/schema/context/spring-context.xsd 
- http://www.springframework.org/schema/aop 
-http://www.springframework.org/schema/aop/spring-aop.xsd">
- <!-- 开启注解扫描 -->
- <context:component-scan basepackage="com.atguigu.spring5.aopanno"></context:component-scan>
-
- （2）使用注解创建 User 和 UserProxy 对象
-//被增强的类
-@Component
-public class User{
-//代码部分
-}
-
-//增强的类
-@Component
-public class UserProxy{
-//代码部分
-}
-
-（3）在增强类上面添加注解 @Aspect
-//增强的类
-@Component
-@Aspect //生成代理对象
-public class UserProxy {
-
-（4）在 spring 配置文件中开启生成代理对象
-<!-- 开启 Aspect 生成代理对象-->
-<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
-
-4、配置不同类型的通知
-（1）在增强类的里面，在作为通知方法上面添加通知类型注解，使用切入点表达式配置
-//增强的类
-@Component
-@Aspect //生成代理对象
-public class UserProxy {
- //前置通知
- //@Before 注解表示作为前置通知
- @Before(value = "execution(* com.atguigu.spring5.aopanno.User.add(..))")
- public void before() {
- System.out.println("before.........");
- }
- //后置通知（返回通知）
- @AfterReturning(value = "execution(* 
-com.atguigu.spring5.aopanno.User.add(..))")
- public void afterReturning() {
- System.out.println("afterReturning.........");
- }
- //最终通知
- @After(value = "execution(* com.atguigu.spring5.aopanno.User.add(..))")
- public void after() {
- System.out.println("after.........");
- }
- //异常通知
- @AfterThrowing(value = "execution(* 
-com.atguigu.spring5.aopanno.User.add(..))")
- public void afterThrowing() {
- System.out.println("afterThrowing.........");
- }
- //环绕通知
- @Around(value = "execution(* com.atguigu.spring5.aopanno.User.add(..))")
- public void around(ProceedingJoinPoint proceedingJoinPoint) throws 
-Throwable {
- System.out.println("环绕之前.........");
- //被增强的方法执行
- proceedingJoinPoint.proceed();
- System.out.println("环绕之后.........");
- }
-}
-5、相同的切入点抽取
-//相同切入点抽取
-@Pointcut(value = "execution(* com.atguigu.spring5.aopanno.User.add(..))")
-public void pointdemo() {
-}
-//前置通知
-//@Before 注解表示作为前置通知
-@Before(value = "pointdemo()")
-public void before() {
- System.out.println("before.........");
-}
-6、有多个增强类多同一个方法进行增强，设置增强类优先级
-（1）在增强类上面添加注解 @Order(数字类型值)，数字类型值越小优先级越高
-@Component
-@Aspect
-@Order(1)
-public class PersonProxy
 
 SpringMVC：
 SpringMVC是一个基于Java的Web应用开发框架，用于构建灵活、可扩展的Web应用程序。它是Spring框架的一部分，提供了一种模型-视图-控制器（MVC）的架构模式，用于将应用程序的不同方面分离开来。
@@ -6122,9 +6174,26 @@ CMS收集器有3个明显的缺点：1.对CPU资源非常敏感、2.无法处理
 Java程序通过设计模式、数据结构与算法等技术组成框架
 
 设计模式：
-设计模式的七大原则
+设计模式（Design Patterns）是在软件设计中针对特定问题的最佳解决方案。它们是在软件开发过程中，对常见问题的反复出现的解决方案的总结与抽象。
+这些模式描述了在特定上下文中，针对某类问题的一组相互协作的类、接口和通信机制，用于解决某一类通用设计问题。
+设计模式是经验的总结，是软件开发人员在长期开发过程中，针对某一类问题的解决方案的抽象和提炼。
+使用设计模式可以帮助我们提高代码的可重用性、可维护性和可扩展性，同时降低系统的复杂度，提高软件开发的效率和质量。
+
+设计模式的目的是提供一套可复用的设计问题的解决方案，提高代码的可维护性、可重用性和可读性。具体来说，设计模式有以下几个主要目的：
+1.代码重用：设计模式提供了一种抽象化和标准化的方式，使开发者能够针对常见的设计问题重用已有的解决方案，而无需每次都从头开始设计。
+2.使代码易于理解：设计模式为软件设计提供了通用的术语和视觉表示，使得其他开发者能够更容易地理解代码的结构和意图。
+3.提高软件的可维护性：通过使用设计模式，代码的结构更加清晰，各部分之间的耦合度降低，使得软件更易于维护和扩展。
+4.促进团队协作：团队成员之间共享对设计模式的理解和经验，可以促进团队之间的沟通和协作，提高开发效率。
+5.系统灵活性：设计模式有助于构建一个灵活且可扩展的系统，能够应对不断变化的需求。
+
+
+设计模式的七大原则：
 开闭原则：对扩展开放、对修改关闭。
+
 单一指责原则：一个类只做一件事。
+该原则强调一个类或者一个模块应该只有一个引起变化的原因，也就是说，它应该只负责一项职责。
+当一个类或模块承担过多的职责时，它的可维护性和可读性都会受到影响，因为任何一个职责的变化都可能导致整个类或模块需要重新设计或修改。
+
 依赖倒转原则：类似于ioc，采用接口编程。
 迪米特原则：高内聚，低耦合。
 接口隔离原则：应该使用多个接口，而不是用单一的总接口。
