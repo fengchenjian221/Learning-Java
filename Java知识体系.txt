@@ -11094,6 +11094,70 @@ public class MyService {
     }  
 }
 
+注意：
+1.在默认情况下，OpenFeign的连接超时时间是10秒，而读取超时时间是60秒。这些超时时间的设置可以在源码feign.Request.Options#Options()方法中找到。
+2.OpenFeign 的重试机制允许在发生网络故障或服务端错误时，自动重新发起请求。OpenFeign 的重试机制基于 Retryer 接口实现，该接口定义了重试的策略。默认情况下，OpenFeign 可能不会启用重试机制，需要开发者手动开启并配置。
+
+2.1创建一个自定义的Retryer类
+import feign.Retryer;  
+import java.util.concurrent.atomic.AtomicInteger;  
+  
+public class CustomRetryer extends Retryer.Default {  
+  
+    private final int maxAttempts;  
+    private final long period;  
+    private final TimeUnit unit;  
+  
+    public CustomRetryer(int maxAttempts, long period, TimeUnit unit) {  
+        super();  
+        this.maxAttempts = maxAttempts;  
+        this.period = period;  
+        this.unit = unit;  
+    }  
+  
+    @Override  
+    public void continueOrPropagate(RetryableException e) {  
+        AtomicInteger attempt = this.attempt.get();  
+        if (attempt.get() < maxAttempts) {  
+            try {  
+                unit.sleep(period);  
+                attempt.incrementAndGet();  
+            } catch (InterruptedException ignored) {  
+                Thread.currentThread().interrupt();  
+                throw new RuntimeException(e);  
+            }  
+            continueWith(e);  
+        } else {  
+            throw e;  
+        }  
+    }  
+}
+
+2.2 配置 Feign 客户端使用自定义 Retryer
+import feign.Retryer;  
+import org.springframework.context.annotation.Bean;  
+import org.springframework.context.annotation.Configuration;  
+  
+@Configuration  
+public class FeignConfig {  
+  
+    @Bean  
+    public Retryer feignRetryer() {  
+        return new CustomRetryer(3, 1000, TimeUnit.MILLISECONDS); // 重试3次，每次间隔1秒  
+    }  
+  
+    @Bean  
+    public MyFeignClient myFeignClient(Decoder decoder, Encoder encoder, Client client, Retryer retryer) {  
+        return Feign.builder()  
+                .encoder(encoder)  
+                .decoder(decoder)  
+                .client(client)  
+                .retryer(retryer) // 使用自定义的 Retryer  
+                .target(MyFeignClient.class, "http://example.com");  
+    }  
+}
+
+
 
 3.Ribbon（负载均衡）2024.1（Ribbon已弃用）
 Ribbon是一个客户端的负载均衡器，他提供对大量的HTTP和TCP客户端的访问控制
@@ -11214,7 +11278,7 @@ public class MyServiceClient {
 综上所述，客户端负载均衡和服务端负载均衡在实现位置、设备配置、效果优势等方面存在明显的区别。选择哪种负载均衡方式取决于具体的业务需求和网络环境。
 
 
-4.Hystrix（服务熔断）
+4.Hystrix（服务熔断）2024.1（Hystrix已弃用）
 Hystrix提供两个命令，分别是HystrixCommand、HystrixObservableCommand，通常是在Spring中通过注解和AOP来实现对象的构造
 熔断：简单来说，就是我们生活中的“保险丝”。如果熔断器打开，就会执行短路，直接进行降级；如果熔断器关闭，就会进入隔离逻辑。
 默认触发熔断器的条件为：最近一个时间窗口（默认为10秒），总请求次数大于等于circuitBreakerRequestVolume Threshold（默认为20次）
@@ -11245,8 +11309,184 @@ public class MyService {
     }
 }
 
+其他服务熔断：
 
-5.Zull（网关）
+Resilience4j：
+Resilience4j是一个轻量级的容错库，专为Java 8和函数式编程而设计，旨在帮助开发人员构建弹性和可靠的Java应用程序。它提供了诸如断路器、限流、重试和超时等功能，以保护应用程序免受故障和异常的影响。
+其核心概念是“函数式编程”，允许开发人员使用Java 8的函数式编程特性来定义和组合容错策略，这使得容错逻辑更加灵活、可读性更高，并且易于测试和维护。
+
+Resilience4j的熔断降级：
+当某个服务或组件出现故障或响应时间过长时，系统不再继续调用该服务或组件，而是快速失败，并执行一些降级逻辑，以确保系统的整体稳定性和可用性。这种机制可以避免由于某个服务或组件的故障导致的整个系统的崩溃。
+
+实现步骤：
+1.添加依赖：
+首先，你需要在项目的pom.xml文件中添加Resilience4j的熔断器依赖。例如：
+<dependency>  
+    <groupId>org.springframework.cloud</groupId>  
+    <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>  
+</dependency>
+
+2.修改接口代码，对外暴露接口还需要配置在OpenFeign上
+然后，你需要在需要熔断降级的服务接口上使用@CircuitBreaker注解。这个注解会告诉Resilience4j在该接口调用失败率达到指定阈值时触发熔断机制。例如：
+
+@Restcontroller
+public class OrderCircuitcontroller{
+
+    @Resource
+    private PayFeignApi payFeignApi;
+
+    @GetMapping(value=v"/feign/pay/circuit/{id}")
+    @CircuitBreaker(name ="cloud-payment-service", fallbackMethod = "mycircuitFallback") //服务熔断的注解，name为注册的微服务，fallbackMethod为熔断的兜底处理方法
+    public string mycircuitBreaker(@PathVariable("id")Integer id){
+        return payFeignApi.myCircuit(id);
+    }
+
+    //myCircuitFallback就是服务降级后的兜底处理方法
+    public string myCircuitFallback(Integer id,Throwable t){
+        //这里是容错处理逻辑。返回各用结果
+        return"mycircuitFal1back，系统繁忙，请稍后再试-----/(ToT)/~~"
+    };
+
+}
+
+
+3. 配置熔断策略：
+resilience4j:  
+  circuitbreaker:  
+    instances:  
+      myService:  
+        failureRateThreshold:50#设置50%的调用失败时打开断路器，超过失败请求百分比circuitBreaker 变为OPEN状态。
+        slidingWindowType:COUNT BASED #滑动窗的类型
+        slidingWindowsize:6 #滑动窗口的大小配置 COUNT_BASED表示6个请求，配置TIME_BASED表示6秒
+        minimumNumberofcalls:6 #断路器计算失败率或慢调用率之前所需的最小调用数(每个滑动窗口周期)。最少调用几次，才能计算失败率。
+        automaticTransitionFromopenToHalfopenEnabled:true # 是否启用自动从开启状态过波到半开状态，默认值为true。
+        waitDurationInopenstate:5s#从OPEN到HALF OPEN状态需要等待的时间
+        permittedNumberofcallsInHalfopenstate:2 #半开状态允许的最大请求数，默认值为10。在半开状态下,CircuitBreaker将允许最多permittedNumberOfCallsInHalfOpenstate个请求通过，如果有一个请求失败，CircuitBreaker将重新进入开启状态
+
+
+Resilience4j的信号量舱壁熔断隔离：
+信号量舱壁隔离是一种轻量级的隔离方法，它主要通过限制同时访问某一资源或服务的并发请求数来实现隔离。
+这种方法不需要额外的线程或线程池，因此资源消耗相对较小。当请求到达最大并发限制时，新的请求会被快速拒绝，而不是排队等待，这有助于迅速释放系统资源。
+这种隔离方式适用于那些不涉及远程调用或耗时操作的轻量级任务，以及对线程资源敏感的场景。
+
+实现步骤：
+1.添加依赖：
+首先，你需要在项目的pom.xml文件中添加Resilience4j的舱壁隔离依赖。例如：
+<dependency>  
+    <groupId>io.github.resilience4j</groupId>  
+    <artifactId>resilience4j-bulkhead</artifactId>  
+</dependency>
+
+
+2.修改接口代码，对外暴露接口还需要配置在OpenFeign上
+然后，你需要在需要熔断降级的服务接口上使用@CircuitBreaker注解。这个注解会告诉Resilience4j在该接口调用失败率达到指定阈值时触发熔断机制。例如：
+
+@Restcontroller
+public class OrderCircuitcontroller{
+
+@GetMapping(value ="/feign/pay/bulkhead/{id}")
+@Bulkhead(name ="cloud-payment-service",fallbackMethod = "myBulkheadFallback",type = Bulkhead.Type.SEMAPHORE)  //SEMAPHORE信号量，THREADPOOL线程池
+//信号量舱壁隔离更注重于共享资源的访问控制，而线程池隔离则通过为每个任务分配独立线程来实现任务之间的隔离
+
+public string myBulkhead(@PathVariable("id")Integer id){
+    return payFeignApi.myBulkhead(id);
+}
+public string myBulkheadFallback(Throwable t){
+    return"myBulkheadFal1back，隔板超出最大数量限制，系统繁忙，请稍后再试-----/(ToT)/~~";
+}
+
+}
+
+3.配置隔离策略
+resilience4j:
+    bulkhead:
+        configs:
+            default:
+                maxConcurrentcalls:2 #隔离允许并发线程执行的最大数量
+                maxwaitDuration:1s   #当达到并发调用数量时，新的线程的阻塞时间，我只愿意等待1秒，过时不候进舱壁兜底faLlback
+        instances:
+            cloud-payment-service:
+                baseConfig:default
+    timelimiter:
+        configs:
+            default:
+                timeout-duration:20s
+
+
+Resilience4j的限流器：
+Resilience4j的限流器会设定一个固定时间段（如每秒、每分钟或每小时）内允许的最大请求数。当有请求到达时，限流器会检查当前时间段内已经处理的请求数，并与设定的最大请求数进行比较。
+如果当前请求数尚未达到最大限制，限流器会允许请求继续处理；如果已经达到或超过最大限制，限流器则会根据配置的策略对请求进行处理，如拒绝请求、返回错误信息或将其放入队列等待处理。
+
+实现步骤：
+1.添加依赖（略）
+2.修改接口代码，对外暴露接口还需要配置在OpenFeign上
+@Restcontroller
+public class OrderCircuitcontroller{
+
+@GetMapping(value ="/feign/pay/retelimit/{id}")
+@Bulkhead(name ="cloud-payment-service",fallbackMethod = "myRelateLimitFallBack")  
+public string myBulkhead(@PathVariable("id")Integer id){
+    return payFeignApi.myRelateLimit(id);
+}
+
+public string myRelateLimitFallBack(Throwable t){
+    return"你被限流了，禁止访问-----/(ToT)/~~";
+}
+
+}
+
+3.配置限流策略
+resilience4j:
+    bulkhead:
+        configs:
+            default:
+                limitForPeriod:2#在次侧新周期内，允许执行的最人请求数
+                timeout-duration:1#线程等待权跟的默认等待时间
+                limitRefreshperiod:1s # 从流器每厢limitRefreshperiod则新一次，将允许处理的最大诗求数量质置为limitForperiod 
+        instances:
+            cloud-payment-service:
+                baseConfig:default
+
+
+5.MicroMeter（分布式链路追踪）
+分布式链路追踪（Distributed System Tracing，简称DST）是一种用于追踪和分析分布式系统中请求调用链路的技术。
+在分布式系统中，一个请求可能经过多个服务节点，涉及多个网络调用，因此追踪整个请求的处理过程对于排查问题、优化性能以及理解系统行为至关重要。
+
+链路追踪原理：
+>跟踪请求流转：当一个请求在分布式系统中被发起时，链路追踪系统会开始跟踪这个请求的流转路径。它会记录请求从起点开始，经过哪些服务节点，以及在这些节点上的处理情况。
+>引入Span概念：为了表达请求在分布式系统中的父子关系，链路追踪系统引入了Span的概念。每个Span代表了一个操作或一段工作单元，比如一个远程过程调用或者一段本地代码的执行。
+Span之间通过父子关系连接，形成了一个完整的调用链。
+>收集与传输数据：在请求流转的过程中，链路追踪系统会收集每个Span的信息，包括起始时间、结束时间、服务节点信息、调用状态等。这些信息会被发送到后端的分析系统或存储系统中。
+>数据分析与可视化：后端的分析系统会对收集到的Span数据进行处理和分析，生成调用链的拓扑图，展示各个服务节点的调用关系、耗时以及请求状态等。
+同时，它还可以提供性能可视化的功能，让用户可以直观地看到系统的运行情况。
+>故障定位与性能优化：通过链路追踪系统生成的调用链和性能数据，用户可以快速地定位到故障发生的节点，分析性能瓶颈，从而进行相应的优化。
+
+MicroMeter监控链路实现步骤：
+1.添加依赖（略）
+2.修改接口代码，对外暴露接口还需要配置在OpenFeign上
+@Restcontroller
+public class OrderMicroMetercontroller{
+
+    @Resource
+    private PayFeignApi payFeignApi；
+
+    @GetMapping(value ="/feign/microMeter/{id}")
+    public string myMicroMeter(@PathVariable("id")Integer id){
+        return payFeignApi.myMicroMeter(id);
+    }
+
+}
+
+3.配置yaml
+management:
+    zipkin:
+        tracing:
+            endpoint:http://localhost:9411/api/v2/spans
+    tracing:
+        sampling:
+            probability:1.0 #采样率默认为0.1(0.1就是10次只能有一次被记录下来)，值越大收集越及时。
+
+6.Zull（网关）
 网关相当于一个网络服务架构的入口，所有网络请求必须通过网关转发到具体的服务。
 
 主要功能：统一管理微服务请求、负载均衡、动态路由、权限控制、监控、静态资源处理等
