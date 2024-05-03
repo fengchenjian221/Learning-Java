@@ -3373,6 +3373,50 @@ HashMap data = g.fromJson("{\"id\":\"100\",\"name\":\"金苹果\",\"info\":\"种
 List list = (List) data.get("page");
 System.out.println(list.get(1));
 
+FastJson：
+FastJson是阿里巴巴公司基于Java语言开发的高性能且功能完善的Json操作类库。
+Fastjson可以解析Json格式的字符串，支持将Java Bean序列化为Json字符串，也可以从Json字符串反序列化到JavaBean。
+
+
+将Java对象转化为Json字符串：
+book b = new book("1002","水浒传","讲述了一群讲义气的莽夫");
+String s = JSON.toJSONString(b);
+
+
+将Json字符串转化为Java对象：
+
+book b = new book("1002","水浒传","讲述了一群讲义气的莽夫");
+
+//1. 转换 {"id":"1002","info":"讲述了一群讲义气的莽夫","name":"水浒传"}   转换成对象
+book books = JSON.parseObject("{\"id\":\"1002\",\"info\":\"讲述了一群讲义气的莽夫\",\"name\":\"水浒传\"}", book.class);
+System.out.println(books.getName());
+
+//2. 转换成数组 ["人生本该自由","乘兴而去","尽兴而归"]
+List<String> strings = JSON.parseArray("[\"人生本该自由\",\"乘兴而去\",\"尽兴而归\"]", String.class);
+for(String s:strings){
+    System.out.println(s);
+}
+
+Json与JS对象之间的互相转换：
+Json字符串转换为JS对象：
+<script>
+	var str = '{"name": "兮动人","age":22}';
+	var obj = JSON.parse(str);
+	console.log(obj);
+</script>
+
+
+JS对象转换为Json字符串：
+<script>
+	var str = '{"name": "兮动人","age":22}';
+	var obj = JSON.parse(str);
+	console.log(obj);
+        
+	var jsonstr = JSON.stringify(obj);
+	console.log(jsonstr);
+</script>
+
+
 
 JWT:
 JSON Web Tokens（JWT）是一种用于在网络应用中传递信息的开放标准（RFC 7519），它以紧凑且自包含的方式表示数据，
@@ -3448,49 +3492,6 @@ public class JWTUtils {
     }
 
 }
-
-FastJson：
-FastJson是阿里巴巴公司基于Java语言开发的高性能且功能完善的Json操作类库。
-Fastjson可以解析Json格式的字符串，支持将Java Bean序列化为Json字符串，也可以从Json字符串反序列化到JavaBean。
-
-
-将Java对象转化为Json字符串：
-book b = new book("1002","水浒传","讲述了一群讲义气的莽夫");
-String s = JSON.toJSONString(b);
-
-
-将Json字符串转化为Java对象：
-
-book b = new book("1002","水浒传","讲述了一群讲义气的莽夫");
-
-//1. 转换 {"id":"1002","info":"讲述了一群讲义气的莽夫","name":"水浒传"}   转换成对象
-book books = JSON.parseObject("{\"id\":\"1002\",\"info\":\"讲述了一群讲义气的莽夫\",\"name\":\"水浒传\"}", book.class);
-System.out.println(books.getName());
-
-//2. 转换成数组 ["人生本该自由","乘兴而去","尽兴而归"]
-List<String> strings = JSON.parseArray("[\"人生本该自由\",\"乘兴而去\",\"尽兴而归\"]", String.class);
-for(String s:strings){
-    System.out.println(s);
-}
-
-Json与JS对象之间的互相转换：
-Json字符串转换为JS对象：
-<script>
-	var str = '{"name": "兮动人","age":22}';
-	var obj = JSON.parse(str);
-	console.log(obj);
-</script>
-
-
-JS对象转换为Json字符串：
-<script>
-	var str = '{"name": "兮动人","age":22}';
-	var obj = JSON.parse(str);
-	console.log(obj);
-        
-	var jsonstr = JSON.stringify(obj);
-	console.log(jsonstr);
-</script>
 
 
 AJAX：
@@ -3739,6 +3740,21 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 %>  
 <p>Page Scope Data: <%= pageData %></p>
 注意，页面域中的变量实际上是在JSP页面被转换成Servlet时定义的局部变量，所以它们并不是真正的“域对象”。在Servlet中，没有直接的API可以设置或获取页面域数据，因为页面域仅在JSP页面执行期间存在。
+
+Node.js:
+Node.js是一个基于Chrome V8引擎的JavaScript运行环境，由Ryan Dahl在2009年5月发布。它使用了一个事件驱动、非阻塞式I/O模型，使得JavaScript能够在服务端运行，与PHP、Python、Perl、Ruby等服务端语言平起平坐。
+
+Node.js的主要特性和优势包括：
+
+服务器端开发：Node.js允许开发者在服务器端构建高性能的网络应用程序，如Web服务器、API服务器等。
+非阻塞异步I/O：Node.js采用了非阻塞型I/O机制，这意味着在执行I/O操作时，如访问数据库，不会阻塞后续代码的执行，从而提高了程序的执行效率。
+事件驱动：Node.js采用事件驱动的架构，当新的请求到来时，请求会被压入一个事件队列中，通过一个循环来检测队列中的事件状态变化，并执行相应的事件处理代码。
+实时应用和数据流：由于Node.js的事件驱动特性和高效的I/O处理方式，它非常适合构建实时聊天应用、在线游戏、协作工具等需要实时数据传输和处理的应用。
+统一的语言：使用Node.js，开发者可以使用JavaScript在前后端开发中分享代码，这有助于简化团队开发和维护的复杂性，提高开发效率。
+强大的包管理器：Node.js附带了npm（Node Package Manager），它是全球最大的开源软件库之一，提供了大量的模块和框架，可以帮助开发者快速搭建各种类型的应用。
+轻量级和高可伸缩性：Node.js的设计非常轻巧，消耗的系统资源较少，适合构建高可伸缩的应用程序。它具有良好的水平扩展性，可以通过添加更多的服务器节点来横向扩展应用。
+
+然而，Node.js也存在一些缺点，例如不适合CPU密集型应用、只支持单核CPU、可靠性较低、开源组件库质量参差不齐、debug不方便等。
 
 
 VUE：
