@@ -11081,7 +11081,97 @@ Nacos还支持集群管理功能，可以管理多个应用节点，包括它们
 Nacos提供了一个简洁易用的UI控制台，开发者可以通过这个界面方便地管理所有的服务和应用的配置。这使得操作更为直观和便捷，提高了开发效率。
 
 
+将Spring Cloud Nacos作为注册中心：
+配置Nacos
+在application.properties或application.yml文件中，配置Nacos服务器的地址和端口。例如：
 
+application.yml配置：
+
+spring:  
+  cloud:  
+    nacos:  
+      discovery:  
+        server-addr: 127.0.0.1:8848 # Nacos服务器地址  
+        namespace: public # 命名空间，默认为public  
+        cluster-name: DEFAULT # 集群名称，默认为DEFAULT
+启用Nacos Discovery
+在你的Spring Boot主类或配置类上，添加@EnableDiscoveryClient注解以启用服务发现。
+
+@SpringBootApplication  
+@EnableDiscoveryClient  
+public class YourApplication {  
+  
+    public static void main(String[] args) {  
+        SpringApplication.run(YourApplication.class, args);  
+    }  
+}
+
+
+现在，当你启动你的Spring Boot应用时，它会自动注册到Nacos服务器。你可以通过Nacos的Web控制台查看已注册的服务列表。
+
+
+
+将Spring Cloud Nacos作为配置中心：
+配置bootstrap.properties或bootstrap.yml
+在Spring Cloud中，配置中心相关的配置通常放在bootstrap.properties或bootstrap.yml文件中，因为这些文件比application.properties或application.yml更早被加载。
+
+bootstrap.yml的配置可以如下所示：
+
+spring:  
+  cloud:  
+    nacos:  
+      config:  
+        server-addr: 127.0.0.1:8848 # Nacos服务器地址  
+        namespace: public # 命名空间，默认为public  
+        data-id: your-data-id # 数据ID，用于唯一标识配置  
+        group: DEFAULT_GROUP # 分组，默认为DEFAULT_GROUP  
+        file-extension: yaml # 配置文件的格式，如yaml、properties等
+其中，data-id是你在Nacos中创建的配置数据的唯一标识，group是分组，file-extension是配置文件的格式。
+
+在Nacos中创建配置
+登录Nacos的Web控制台，在配置管理菜单中创建或编辑配置。你需要设置数据ID、分组和配置格式，并在配置内容中输入你的配置信息。
+
+启动你的应用
+现在，当你启动你的Spring Boot应用时，它会从Nacos配置中心加载配置信息。你可以通过@Value或@ConfigurationProperties等注解在应用中注入这些配置。
+配置配置刷新注解@RefreshScope
+
+
+
+Nacos配置中心的命名空间：
+在Nacos中，命名空间是一个用于实现环境隔离的概念。每个命名空间都代表一个独立的环境，例如开发环境、测试环境和生产环境等。通过使用命名空间，我们可以将不同环境的配置和服务进行隔离，避免相互干扰。
+
+作用：
+隔离环境：在实际开发中，我们通常会遇到多个环境，如开发、测试和生产等。这些环境在配置和服务上可能存在差异。通过使用命名空间，我们可以将不同环境的配置和服务进行隔离，确保它们之间不会相互影响。
+这有助于我们在不同的环境中进行独立的开发和测试工作。
+
+分类管理：在大型系统中，我们可能会有多个模块或者团队共同开发和维护。通过使用命名空间，我们可以将不同模块或者团队的配置和服务进行分类管理，方便团队协作和维护。
+每个命名空间都可以有自己的配置和服务注册表，使得不同模块或团队之间的配置和服务信息更加清晰和易于管理。
+
+创建一个命名空间：
+spring:  
+  cloud:  
+    nacos:  
+      discovery:  
+        server-addr: 127.0.0.1:8848 # Nacos服务地址  
+        namespace: your-namespace-id # 命名空间ID  
+      config:  
+        server-addr: 127.0.0.1:8848 # Nacos服务地址  
+        namespace: your-namespace-id # 命名空间ID
+
+
+Nacos配置中心的配置分组：
+配置分组是Nacos中的一个功能，允许用户将不同的配置划分到不同的组中，以实现更灵活的配置管理和控制。
+
+作用：
+分类管理：在实际开发中，我们通常会有多个配置文件，如数据库配置、缓存配置、日志配置等。通过使用配置分组，我们可以将不同类型的配置文件进行分类管理，使得配置更加清晰、易于维护。
+环境隔离：不同的环境（如开发环境、测试环境、生产环境）可能需要不同的配置。通过使用配置分组，我们可以为不同的环境创建不同的配置组，并在启动服务时指定要使用的配置组，从而实现环境隔离。
+
+创建一个配置分组：
+1.填写配置信息：
+2.在“Data ID”字段中输入你的配置的唯一标识符。
+3.在“Group”字段中输入你想要创建的新分组的名称。例如，你可以输入“myNewGroup”。
+4.选择配置格式（如YAML、Properties等）。
+5.在“配置内容”字段中输入你的配置信息。
 
 
 2.Feign
@@ -11553,7 +11643,7 @@ spring:
         port:8500
         discovery:
             prefer-ip-address:true
-            service-name:${spring.application.name)
+            service-name:${spring.application.name}
         gateway:
             routes:
                 -id:pay routh1 #pay routh1 #路由的ID(类似mysql主键ID)，没有固定规则但要求唯一，建议配合服务名#匹配后提供服务的路由地址
