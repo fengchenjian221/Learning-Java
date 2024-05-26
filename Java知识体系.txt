@@ -1391,6 +1391,26 @@ class MyRunnable implements Runnable{
     }
 }
 
+实际工作过程中，Java创建多线程的方式大多数使用实现Runnable接口而不是继承Thread类的方式。
+原因：
+1. Java中的单继承特性
+Java不支持多重继承，即一个类只能继承一个父类。如果一个类已经继承了另一个类，那么它不能再继承Thread类。因此，通过实现Runnable接口来创建线程允许你的类可以继承其他类，这提高了类的灵活性和复用性。
+
+2. 更好的设计模式
+实现Runnable接口是将任务与线程分离的一种方式。这符合面向对象设计中的单一职责原则，即任务的逻辑（业务逻辑）和线程管理（线程的创建和启动）是分离的。
+通过实现Runnable接口，可以将业务逻辑封装在一个独立的类中，而线程管理由Thread类处理，这种方式更符合面向对象的设计思想。
+
+3. 共享资源
+使用Runnable接口可以更方便地共享资源和数据。多个线程可以共享一个实现了Runnable接口的实例，从而能够更方便地实现线程间的资源共享和数据共享。这在需要多个线程协同工作的场景下非常有用。
+
+4. 更灵活的线程池管理
+Java中的线程池（如ExecutorService）通常接受实现了Runnable接口的任务。使用线程池可以更有效地管理线程资源，避免频繁地创建和销毁线程带来的性能开销。
+而线程池中的线程复用机制可以显著提升应用的性能和稳定性。
+
+5. 简化代码
+实现Runnable接口的代码通常更简洁明了。通过实现Runnable接口，不需要考虑线程的生命周期管理，Thread类会自动处理线程的启动和结束，开发者只需专注于业务逻辑的实现。
+
+
 多线程的实现方式（三）
 实现Callable接口（ java.util.concurrent.FutureTask; /JUC包下的，属于java的并发包，老JDK中没有这个包。新特性。）
 1、自定义一个MyCallable类来实现Callable接口
@@ -1408,6 +1428,21 @@ package com.lmw.thread3;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+
+// 1.创建一个实现callable接口的实现类
+class Number implements Callable {
+    // 2.实现call方法，将此线程需要执行的操作写在call方法中
+    @Override
+    public Object call() throws Exception {
+        int sum = 0;
+        for (int i = 1; i <= 100; i++) {
+            if(i % 2 == 0) {
+                sum  = sum + i;
+            }
+        }
+        return sum;
+    }
+}
 
 public class ThreadCallableTest {
     public static void main(String[] args) {
@@ -1433,20 +1468,7 @@ public class ThreadCallableTest {
     }
 }
 
-// 1.创建一个实现callable接口的实现类
-class Number implements Callable {
-    // 2.实现call方法，将此线程需要执行的操作写在call方法中
-    @Override
-    public Object call() throws Exception {
-        int sum = 0;
-        for (int i = 1; i <= 100; i++) {
-            if(i % 2 == 0) {
-                sum  = sum + i;
-            }
-        }
-        return sum;
-    }
-}
+
 
 多线程的实现方式（四）
 创建线程池		
@@ -1461,6 +1483,25 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 ​
+class MyCallable implements Callable<Object> {
+    private int taskNum;
+​
+    MyCallable(int taskNum) {
+        this.taskNum = taskNum;
+    }
+​	@Override
+    public Object call() throws Exception {
+        System.out.println(">>> " + taskNum + " 线程任务启动");
+        Date startTime = new Date();
+        Thread.sleep(1000);
+        Date endTime = new Date();
+        long time = endTime.getTime() - startTime.getTime();
+        System.out.println(">>> " + taskNum + " 线程任务终止");
+        return taskNum + "线程任务返回运行结果, 当前任务耗时【" + time + "毫秒】";
+    }
+}
+
+
 public class ThreadDemo {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -1494,24 +1535,6 @@ public class ThreadDemo {
         System.out.println("---- 主程序结束运行 ----，程序运行耗时【" + (endTime.getTime() - startTime.getTime()) + "毫秒】");
     }
 }
-​
-class MyCallable implements Callable<Object> {
-    private int taskNum;
-​
-    MyCallable(int taskNum) {
-        this.taskNum = taskNum;
-    }
-​	@Override
-    public Object call() throws Exception {
-        System.out.println(">>> " + taskNum + " 线程任务启动");
-        Date startTime = new Date();
-        Thread.sleep(1000);
-        Date endTime = new Date();
-        long time = endTime.getTime() - startTime.getTime();
-        System.out.println(">>> " + taskNum + " 线程任务终止");
-        return taskNum + "线程任务返回运行结果, 当前任务耗时【" + time + "毫秒】";
-    }
-}
 
 
 Java synchronized 关键字：同步代码块，解决线程安全问题，解决多线程上下文冲突问题，保证线程原子性
@@ -1522,16 +1545,171 @@ synchronized(同步监视器){
     2.可以使用this关键字，也可以使用Object对象充当锁。
 	3.非静态的同步方法，同步监视器是this；静态的同步方法，同步监视器是当前类本身
 
+synchronized关键字工作原理：
+锁机制：
+当一个线程进入一个同步方法或同步代码块时，它必须先获得相应对象的锁。其他线程如果试图进入同一个对象的同步方法或代码块，则必须等待，直到持有锁的线程释放锁。
+锁是互斥的，即同一时间只能有一个线程持有锁。
+
+可见性：
+synchronized不仅确保了互斥性，还确保了可见性。当一个线程释放锁时，之前对共享变量的修改对接下来获取锁的线程是可见的。
+
+解决的问题：
+数据一致性：
+通过锁定共享资源，synchronized确保了线程对共享变量的修改是原子操作，防止出现数据不一致的问题。
+
+死锁问题：
+需要注意的是，不恰当的使用synchronized可能导致死锁问题。例如，如果两个线程互相等待对方释放锁，就会产生死锁。因此，在设计并发程序时，需要小心避免死锁。
+
+通过同步实例方法解决线程安全问题：
+public class SynchronizedExample {
+    private int count = 0;
+
+    public synchronized void increment() {
+        count++;
+    }
+
+    public synchronized int getCount() {
+        return count;
+    }
+
+    public static void main(String[] args) {
+        SynchronizedExample example = new SynchronizedExample();
+
+        Runnable task = () -> {
+            for (int i = 0; i < 1000; i++) {
+                example.increment();
+            }
+        };
+
+        Thread thread1 = new Thread(task);
+        Thread thread2 = new Thread(task);
+
+        thread1.start();
+        thread2.start();
+
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Final count: " + example.getCount());
+    }
+}
+
 lock方法解决线程安全问题：
-ReentrantLock lock = new ReentrantLock();
-lock.lock();
-lock.unlock();
+在Java中，除了synchronized关键字外，java.util.concurrent.locks包提供了更加灵活和强大的锁机制，比如ReentrantLock。
+ReentrantLock提供了与synchronized相同的互斥锁功能，并且提供了更多的高级特性，例如可重入、定时锁定和中断锁定等。
+
+定义共享资源类，并使用ReentrantLock进行同步
+public class Counter {
+    private int count = 0;
+    private final Lock lock = new ReentrantLock();
+
+    public void increment() {
+        lock.lock(); // 获取锁
+        try {
+            count++;
+        } finally {
+            lock.unlock(); // 确保在执行完后释放锁
+        }
+    }
+
+    public int getCount() {
+        lock.lock(); // 获取锁
+        try {
+            return count;
+        } finally {
+            lock.unlock(); // 确保在执行完后释放锁
+        }
+    }
+}
+
+创建线程
+public class LockExample {
+    public static void main(String[] args) {
+        Counter counter = new Counter();
+
+        Runnable task = () -> {
+            for (int i = 0; i < 1000; i++) {
+                counter.increment();
+            }
+        };
+
+        Thread thread1 = new Thread(task);
+        Thread thread2 = new Thread(task);
+
+        thread1.start();
+        thread2.start();
+
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Final count: " + counter.getCount());
+    }
+}
+
+ReentrantLock的创建：ReentrantLock对象通过new ReentrantLock()来创建，并作为Counter类的一个私有成员变量。
+锁的获取与释放：在需要保护的代码块前，使用lock.lock()获取锁，在代码块后使用lock.unlock()释放锁。为了确保无论代码块是否抛出异常，锁都能被正确释放，unlock()方法通常放在finally块中。
+try-finally结构：确保了即使在方法执行过程中发生异常，锁也会被正确释放，从而避免死锁情况。
+
 
 lock方法与synchronized关键字解决线程安全问题的区别：
-synchronized在执行完同步的代码块后，自动释放同步监视器
-lock需要手动的启动同步，也要手动的实现解锁
+synchronized：适用于简单的同步场景，且由于其简洁和JVM的优化，性能在简单同步下表现较好。
+Lock：适用于复杂的同步场景，提供了更高的灵活性和更多的控制能力，适合需要高级锁特性（如公平锁、轮询锁定、定时锁定和中断锁定）的情况。
 
-Java多线程实现线程通讯：sleep()   wait()
+1. 基本功能
+synchronized：
+内置语言特性，通过关键字实现同步。
+自动管理锁的获取和释放。
+Lock：
+类库特性，通过java.util.concurrent.locks.Lock接口实现同步。
+需要显式地获取和释放锁。
+
+2. 灵活性
+synchronized：
+只能锁住方法或代码块。
+锁的范围和粒度是固定的。
+Lock：
+可以在方法或代码块中自由地控制锁的获取和释放。
+提供了更灵活的锁机制，例如：尝试锁定、定时锁定和可中断锁定。
+
+3. 锁的特性
+synchronized：
+递归锁（Reentrant）：同一线程可以多次进入一个同步方法或代码块。
+公平性：无内置的公平性控制，锁是非公平的。
+Lock：
+递归锁（Reentrant）：ReentrantLock是递归锁，同一线程可以多次获取锁。
+公平性：可以通过构造函数参数设置公平锁或非公平锁（默认非公平）。
+ReentrantLock lock = new ReentrantLock(true); // 公平锁
+
+4. 性能
+synchronized：
+简单同步下性能较好，JVM对其进行了许多优化（如偏向锁、轻量级锁、锁粗化等）。
+Lock：
+在复杂同步场景下性能较好。
+提供了更好的线程调度和资源管理能力。
+
+5. 错误处理
+synchronized：
+编译器自动管理锁的获取和释放，较少发生因忘记释放锁而导致的问题。
+Lock：
+必须显式地在finally块中释放锁，容易因编程错误导致死锁。
+
+6. 其他特性
+synchronized：
+不支持锁的轮询、定时获取锁和中断获取锁。
+Lock：
+提供了尝试锁定（tryLock()）、定时锁定（tryLock(long time, TimeUnit unit)）和中断锁定（lockInterruptibly()）。
+
+
+
+Java多线程实现线程通讯的方法：sleep()   wait()
 sleep和wait的区别
 1、sleep是线程中的方法，但是wait是Object中的方法。
 2、sleep方法不会释放资源锁，但是wait会释放资源锁，而且会加入到等待队列中。
@@ -1539,8 +1717,8 @@ sleep和wait的区别
 4、sleep不需要被唤醒（休眠之后推出阻塞），但是wait需要（不指定时间需要被别人中断）。
 
 
-Java线程异步：
-Java 的线程异步是指在 Java 应用程序中，多个线程同时执行不同的任务，并且他们是独立的，互不影响，任意一个线程的完成不会影响其他线程的运行。
+Java异步线程：
+Java 的异步线程是指在 Java 应用程序中，多个线程同时执行不同的任务，并且他们是独立的，互不影响，任意一个线程的完成不会影响其他线程的运行。
 在Java 异步编程中，不同的线程可以在不需要阻塞等待的情况下并行执行，这样可以提高程序的执行效率。
 
 线程异步需要考虑原子性：
@@ -1548,7 +1726,7 @@ Java 的线程异步是指在 Java 应用程序中，多个线程同时执行不
 如果不考虑线程原子性，那么会有可能出现线程在执行过程中对数据的不一致性问题。
 因此，在异步编程中，为了保证数据的一致性，需要考虑线程的原子性。
 
-这可以通过以下几种方式来实现：
+原子性可以通过以下几种方式来实现：
 
 使用synchronized关键字：synchronized关键字可以保证同一时刻只有一个线程可以执行被synchronized修饰的方法或者代码块，因此可以保证原子性。
 使用Lock：Lock是Java提供的一种更加灵活的线程同步机制，它可以在方法或者代码块前后分别加锁和解锁，从而保证原子性。
@@ -1556,33 +1734,82 @@ Java 的线程异步是指在 Java 应用程序中，多个线程同时执行不
 使用CountDownLatch 和 CyclicBarrier：这两个工具类可以用来控制线程的执行顺序，从而保证多线程下的原子性。
 使用Semaphore：Semaphore是一种用来控制访问资源的数量的工具类，可以在保证原子性的同时，控制并发线程的数量。
 
+Java异步线程的实现方式：
+继承Thread类
+class MyThread extends Thread {
+    @Override
+    public void run() {
+        System.out.println("Thread is running");
+    }
+}
 
-Future 异步：
-@Test
-public void futureTest() throws Exception {
- 
-    System.out.println("main函数开始执行");
- 
-    ExecutorService executor = Executors.newFixedThreadPool(1);
-    Future<Integer> future = executor.submit(new Callable<Integer>() {
-        @Override
-        public Integer call() throws Exception {
- 
-            System.out.println("===task start===");
-            Thread.sleep(5000);
-            System.out.println("===task finish===");
-            return 3;
+public class Main {
+    public static void main(String[] args) {
+        MyThread thread = new MyThread();
+        thread.start(); // 启动线程
+    }
+}
+
+实现Runnable接口
+class MyRunnable implements Runnable {
+    @Override
+    public void run() {
+        System.out.println("Runnable is running");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Thread thread = new Thread(new MyRunnable());
+        thread.start(); // 启动线程
+    }
+}
+
+实现Callable接口并使用FutureTask
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
+class MyCallable implements Callable<String> {
+    @Override
+    public String call() throws Exception {
+        return "Callable result";
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        MyCallable callable = new MyCallable();
+        FutureTask<String> futureTask = new FutureTask<>(callable);
+        Thread thread = new Thread(futureTask);
+        thread.start(); // 启动线程
+
+        try {
+            String result = futureTask.get(); // 获取结果
+            System.out.println(result);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
-    });
-    //这里需要返回值时会阻塞主线程，如果不需要返回值使用是OK的。倒也还能接收
-    //Integer result=future.get();
-    System.out.println("main函数执行结束");
-    System.in.read();
- 
+    }
+}
+
+使用ExecutorService：
+ExecutorService提供了更高级的线程管理功能，可以管理线程池和异步任务。
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class Main {
+    public static void main(String[] args) {
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        executor.submit(() -> System.out.println("Task 1"));
+        executor.submit(() -> System.out.println("Task 2"));
+        executor.shutdown(); // 关闭线程池
+    }
 }
 
 
-CompletableFuture异步：
+使用CompletableFuture：
 CompletableFuture<Long> completableFuture = CompletableFuture.supplyAsync(() -> factorial(number));
 while (!completableFuture.isDone()) {
     System.out.println("CompletableFuture is not finished yet...");
@@ -1598,8 +1825,33 @@ public class StartApplication {
         SpringApplication.run(StartApplication.class, args);
     }
 }
-自定义线程池：
 
+使用ScheduledExecutorService：
+ScheduledExecutorService可以用于调度任务，在未来某个时间点执行任务或周期性地执行任务。
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+public class Main {
+    public static void main(String[] args) {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.schedule(() -> {
+            System.out.println("Scheduled task");
+        }, 5, TimeUnit.SECONDS);
+
+        scheduler.scheduleAtFixedRate(() -> {
+            System.out.println("Fixed rate task");
+        }, 0, 10, TimeUnit.SECONDS);
+
+        scheduler.scheduleWithFixedDelay(() -> {
+            System.out.println("Fixed delay task");
+        }, 0, 10, TimeUnit.SECONDS);
+    }
+}
+
+
+使用自定义线程池：
 @Configuration
 @Slf4j
 public class ThreadPoolConfiguration {
@@ -1613,55 +1865,197 @@ public class ThreadPoolConfiguration {
                 (r, executor) -> log.error("system pool is full! "));
     }
 }
-Guava异步：
-ExecutorService threadpool = Executors.newCachedThreadPool();
-ListeningExecutorService service = MoreExecutors.listeningDecorator(threadpool);
-ListenableFuture<Long> guavaFuture = (ListenableFuture<Long>) service.submit(()-> factorial(number));
-long result = guavaFuture.get();
+
+使用Guava：
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+
+public class Main {
+    public static void main(String[] args) {
+        ListeningExecutorService executor = MoreExecutors.newDirectExecutorService();
+
+        Callable<String> task = () -> {
+            Thread.sleep(2000); // 模拟耗时任务
+            return "Task result";
+        };
+
+        ListenableFuture<String> future = executor.submit(task);
+
+        Futures.addCallback(future, new FutureCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                System.out.println("Task result: " + result);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+            }
+        }, executor);
+    }
+}
+在这个示例中，使用了Futures.addCallback()方法注册了一个回调函数，当任务成功完成时调用onSuccess()方法，当任务失败时调用onFailure()方法。
+使用Guava的ListenableFuture和ListeningExecutorService接口可以更加方便地处理异步任务的结果，并且提供了更丰富的回调机制来处理任务的执行完成或失败情况。
+
 
 JUC：
-JUC是Java.util.concurrent工具包的简称，这是一个处理线程的工具包。它提供了许多在并发编程工程中常用的工具类，
-用于定义类似于线程的自定义子系统，包括线程池、异步IO、轻量级框架，还提供了多线程上下文的Collectiion的实现。
+Java并发包（Java Util Concurrent，简称JUC）是Java提供的一组用于并发编程的类和接口，旨在简化多线程编程并提高并发程序的性能和可靠性。
+JUC包位于java.util.concurrent和java.util.concurrent.atomic包中，提供了丰富的工具来处理线程同步、线程池、并发集合等。
 
- Executor  接口:
--  void execute(Runnable command) : 提交一个任务以异步执行。
+以下是对JUC的详细阐述：
+1. 线程池
+线程池是用于管理和复用线程资源的机制。通过线程池，可以避免频繁创建和销毁线程带来的开销，提高系统性能。
 
- ExecutorService  接口 (继承自 Executor)：
--  Future<?> submit(Runnable task) : 提交一个 Runnable 任务，并返回一个 Future 对象。
--  Future<T> submit(Callable<T> task) : 提交一个 Callable 任务，并返回一个 Future 对象。
--  void shutdown() : 优雅地关闭 ExecutorService。
--  List<Runnable> shutdownNow() : 立即关闭 ExecutorService 并返回尚未执行的任务列表。
-
- ThreadPoolExecutor  类 (ExecutorService 的一个实现)：
-- 除了继承的方法外，还有一些用于配置线程池的方法，如  setCorePoolSize 、 setMaximumPoolSize 、 setKeepAliveTime  等。
-
-Future 接口:
--  boolean cancel(boolean mayInterruptIfRunning) : 取消任务的执行。
--  boolean isDone() : 判断任务是否已完成。
--  boolean isCancelled() : 判断任务是否已被取消。
--  T get() : 等待任务执行完成并返回结果。
--  T get(long timeout, TimeUnit unit) : 等待指定时间后获取任务执行结果。
-
-Callable接口:
--  T call() : 执行任务并返回结果。
-
-CountDownLatch 类:
--  void countDown() : 减小计数器的值。
--  void await() : 阻塞当前线程，直到计数器减为0。
-
-CyclicBarrier 类:
--  int await() : 阻塞当前线程，直到所有参与者都到达栅栏点。
-
-Semaphore 类:
--  void acquire() : 获取一个许可。
--  void release() : 释放一个许可。
-
-Lock 接口:
--  void lock() : 获取锁。
--  void unlock() : 释放锁。
+Executor接口：定义了执行任务的基本方法。
+ExecutorService接口：扩展了Executor，提供了更多的方法来管理任务的提交和执行。
+Executors工厂类：提供了一些静态方法来创建不同类型的线程池，如固定线程池、缓存线程池、单线程池和定时任务线程池。
 
 
-操作系统并发区别于Java并发吗？Java并发是否用了操作系统并发
+ExecutorService executor = Executors.newFixedThreadPool(5);
+executor.submit(() -> {
+    // 任务代码
+});
+executor.shutdown();
+
+2. 并发集合
+JUC包提供了一些线程安全的集合类，用于在多线程环境下安全地操作集合。
+
+ConcurrentHashMap：一个高效的线程安全的哈希表。
+CopyOnWriteArrayList：适用于读多写少的场景，每次写操作都会复制整个底层数组。
+CopyOnWriteArraySet：基于CopyOnWriteArrayList实现的集合。
+ConcurrentLinkedQueue：一个基于链表的无界线程安全队列。
+BlockingQueue：支持阻塞操作的队列接口及其实现，如ArrayBlockingQueue、LinkedBlockingQueue等。
+
+ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
+map.put("key", 1);
+
+3. 同步工具类
+JUC提供了一些高级的同步工具类，用于控制线程之间的协作。
+
+CountDownLatch：允许一个或多个线程等待其他线程完成操作。
+CyclicBarrier：使一组线程相互等待，直到到达某个公共屏障点。
+Semaphore：控制访问共享资源的线程数量。
+Exchanger：两个线程可以在这个同步点交换数据。
+
+CountDownLatch latch = new CountDownLatch(3);
+for (int i = 0; i < 3; i++) {
+    new Thread(() -> {
+        // 执行任务
+        latch.countDown();
+    }).start();
+}
+latch.await();
+
+4. 锁和条件
+JUC包提供了更灵活和强大的锁机制，包括显式锁和条件对象。
+
+ReentrantLock：一个可重入的互斥锁，与synchronized相比，它提供了更多的功能，如尝试锁定、定时锁定和中断锁定。
+ReentrantReadWriteLock：读写锁，允许多个读线程同时访问，但写线程访问时独占。
+StampedLock：提供了更高效的读写锁机制。
+Condition接口：与Lock结合使用，允许线程在满足特定条件时被唤醒。
+
+ReentrantLock lock = new ReentrantLock();
+lock.lock();
+try {
+    // 临界区代码
+} finally {
+    lock.unlock();
+}
+
+5. 原子变量
+JUC包提供了一些类来支持原子操作，避免了使用锁。
+
+AtomicInteger、AtomicLong：提供了对整数和长整型的原子操作。
+AtomicReference：提供了对对象引用的原子操作。
+AtomicBoolean：提供了对布尔值的原子操作。
+
+AtomicInteger atomicInteger = new AtomicInteger(0);
+atomicInteger.incrementAndGet();
+
+6. Fork/Join框架
+用于并行执行任务的框架，特别适合分治算法。
+
+ForkJoinPool：执行ForkJoinTask的线程池。
+RecursiveTask：需要返回结果的任务。
+RecursiveAction：不需要返回结果的任务。
+
+ForkJoinPool pool = new ForkJoinPool();
+pool.invoke(new RecursiveTaskExample());
+
+
+
+Java中哪些集合类型是线程安全的，哪些集合类型是线程不安全的？如何区分？
+在Java中，集合类型可以分为线程安全和线程不安全的集合。以下是主要的线程安全和线程不安全的集合类型以及如何区分它们的方法：
+
+线程安全的集合类型
+1.Vector
+    - Vector 是一个同步的集合类，因此是线程安全的。
+    - 它的所有方法都是通过synchronized关键字实现的。
+
+2.Stack
+    - Stack是Vector的一个子类，因此也是线程安全的。
+
+3.Hashtable
+    - Hashtable是一个同步的键值对集合类，因此是线程安全的。
+    - 它的所有方法都通过synchronized关键字实现。
+
+4.Collections.synchronizedXXX方法返回的集合
+    - Collections类提供了一些静态方法，可以将非线程安全的集合包装成线程安全的集合。
+    - 例如：Collections.synchronizedList(new ArrayList<>())，Collections.synchronizedSet(new HashSet<>())，Collections.synchronizedMap(new HashMap<>())等。
+
+5.Concurrent包下的集合类
+    - java.util.concurrent包提供了一些线程安全的集合类，如：
+        - ConcurrentHashMap
+        - CopyOnWriteArrayList
+        - CopyOnWriteArraySet
+        - ConcurrentLinkedQueue
+        - ConcurrentSkipListMap
+        - ConcurrentSkipListSet
+
+线程不安全的集合类型
+1. ArrayList
+    - ArrayList 是非同步的集合类，因此是线程不安全的。
+
+2. LinkedList
+    - LinkedList 是非同步的集合类，因此是线程不安全的。
+
+3. HashSet
+    - HashSet 是非同步的集合类，因此是线程不安全的。
+
+4. TreeSet
+    - TreeSet 是非同步的集合类，因此是线程不安全的。
+
+5. HashMap
+    - HashMap 是非同步的集合类，因此是线程不安全的。
+
+6. TreeMap
+    - TreeMap 是非同步的集合类，因此是线程不安全的。
+
+如何区分线程安全和线程不安全的集合
+1. 查看API文档
+    - Java官方API文档会明确说明集合类是否是线程安全的。
+
+2. 查看源码
+    - 查看集合类的源码，线程安全的集合类通常使用synchronized关键字来同步方法或代码块。
+
+3. 集合类的包
+    - java.util.concurrent包下的集合类大多是线程安全的。
+
+4. 集合类的名称
+    - 一些集合类如Vector、Hashtable等，它们历史上就被设计为线程安全的。
+
+5. 使用工具类Collections
+    - Collections工具类提供了多种方法来创建线程安全的集合，如Collections.synchronizedList、Collections.synchronizedSet等。
+
+在实际开发中，如果需要使用线程安全的集合类型，建议优先考虑java.util.concurrent包下的集合类，因为它们在保证线程安全的同时，通常具有更好的性能和扩展性。
+
+
+操作系统并发区别于Java并发吗？Java并发是否用了操作系统并发？
 操作系统并发和Java并发是两个不同但相关的概念，它们在多线程编程中发挥不同的作用，但也有一些联系。
 
 1. 操作系统并发：
@@ -12565,7 +12959,7 @@ Container，container-launch-specification信息包含了能够让Container和Ap
 +----------------+      +----------------+      +----------------+      +----------------+      +----------------+      +----------------+
 ```
 
-### 详细说明：
+详细说明：
 
 1. 数据源层（Data Sources Layer）：
     - 数据源可以是应用日志、用户行为日志、交易系统数据、传感器数据等。
