@@ -10150,7 +10150,6 @@ SQL的基本数据类型由13个基本数据类型组成，它们是由 Microsof
 日期（Date）。
 
 此外，还有货币、文本、时间、位串、UI格式化类型等。
-       
 
 关于SQL语句在MySQL中执行过程详解
 一、SQL语句执行原理：
@@ -10419,18 +10418,34 @@ MySQL行级锁：行级锁，每次操作锁住对应的行数据。锁定粒度
 MySQL表级锁：表级锁，每次操作锁住整张表。锁定粒度大，发生锁冲突的概率最高，并发度最低。
 应用在MyISAM、InnoDB、BDB等存储引擎中。
 对于表级锁，主要分为以下三类：
-表锁
-元数据锁（meta data lock，MDL）
-意向锁
+表锁：通过LOCK TABLES语句手动锁定表，可以是读锁或写锁。
+    读锁（READ LOCK）：其他事务可以读取表，但不能写入。
+    LOCK TABLES my_table READ;
+    -- 执行读操作
+    UNLOCK TABLES;
+
+    写锁（WRITE LOCK）：其他事务既不能读取也不能写入。
+    LOCK TABLES my_table WRITE;
+    -- 执行写操作
+    UNLOCK TABLES;
+
+元数据锁（Meta Data Lock, MDL）：自动添加，用于保护表的结构和元数据的并发访问。MDL在执行诸如ALTER TABLE等操作时自动加上，不需要显式使用。
+意向锁（Intention Lock）
+意向锁用于表示事务计划在表中某些行上获取共享或排他锁。意向锁不会阻塞其他锁请求，但有助于提高锁管理的效率。
+意向共享锁（IS 锁）：事务计划在某些行上获取共享锁。
+意向排他锁（IX 锁）：事务计划在某些行上获取排他锁。
 
 共享锁（S锁）：
 添加共享锁之后，如果查询未命中索引，则不会使用行锁，会退变为表锁。
 所以在没有创建name索引时，修改徐勇数据时，会被阻塞；
 >当创建name索引后，由于查询命中索引，所以行锁将曹茜这条数据锁住，并不会影响表中其他数据的操作。此时修改徐勇这条数据能够成功。
 >由于行锁、表锁的原因，其他事务会处于等待状态。锁超时等待，默认为 50 s。
-我们可通过命令：show variables like ‘innodb_lock_wait_timeout’;来查看(CSDN原因，将引号修改为英文状态单引号)。
+我们可通过命令：show variables like 'innodb_lock_wait_timeout';
 锁超时时间也分会话/全局级别，我们可通过set session innodb_lock_wait_timeout = 20; 
 或 set global innodb_lock_wait_timeout = 20; 来进行修改设置。
+
+允许事务读取一行数据，但不允许修改。
+SELECT * FROM my_table WHERE id = 1 LOCK IN SHARE MODE;
 
 排他锁（X锁）：
 添加排他锁之后，如果 name 字段查询未命中索引，则不会使用行锁，会退变为表锁。
@@ -10440,6 +10455,9 @@ MySQL表级锁：表级锁，每次操作锁住整张表。锁定粒度大，发
 >此时查询数据是可以正常进行的。是因为 InnoDB 还有一个"一致性的非锁定读"的概念，
 就是说行锁未释放之前，其他事务读取该行数据读取的是它的快照数据，并不会与行锁冲突
 >由于行锁、表锁的原因，其他事务会处于等待状态。锁超时等待，默认为 50 s。
+
+允许事务读取和修改一行数据，其他事务不能读取和修改该行。
+SELECT * FROM my_table WHERE id = 1 FOR UPDATE;
 
 意向锁：
 1 意向共享锁（IS锁）
