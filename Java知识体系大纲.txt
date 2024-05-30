@@ -149,35 +149,129 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
  Java并发是否用了操作系统并发
 
 -集合
+ Collection接口
+ Map接口
+ ArrayList的源码分析/jdk 8中ArrayList的变化
+ LinkedList的源码分析
+ List常用方法
+ HashMap的底层实现原理
+
 -泛型
--序列化
--IO
--网络编程
+ 在集合中使用泛型
+ 自定义泛型接口
+ 泛型的通配符
+
+-IO（Flie类、IO流、网络编程、序列化与反序列化）
+ Java Flie类
+ Java IO流
+ 流的体系结构
+    抽象基类
+    节点流(或文件流)
+    缓冲流(处理流的一种)
+ 文件专属字符流FlieReader/文件专属字节流FileInputStream
+ 序列化/反序列化
+ 磁盘IO
+    磁盘类型
+    IO操作类型
+    IO性能指标
+    磁盘调度算法
+    缓存和预读
+    RAID技术
+    文件系统
+
+-网络编程 
+ 基础网络通信
+ 高级网络编程
+ Web编程
+ 其他网络编程技术
+
+-steam流
+ Stream流的主要特点
+ 常用的 Stream 函数
+    中间操作符
+    终端操作符
+
 -反射
+ 动态语言和静态语言概念
+ Java反射概述
+ 反射示例
+
 -动态代理
--jdk8.0以及以后新特性
+ Cglib代理
+
+-为什么Java不是纯面向对象语言？
 ④编译特点
--Javac
 -JVM
+ Javac
+ JVM的原理
+
 |（多线程编程、技术模式、设计模式、数据结构与算法）
 ↓（Java程序通过设计模式、数据模式与算法等技术组成框架）
-web开发后端知识体系：
+
+web开发后端知识体系(框架)：
 ①计算机网络知识与Java Web技术（含前端）
--网络编程
--Socket
--TCP/IP协议
--UDP
--HTTP协议/HTTPS协议
--Tomcat
--Nginx
--Netty
+Web前端技术：
 -HTML
+
 -JavaScript
+
 -Json
+
 -AJAX
+
 -Cookie
+
 -Session
+
 -VUE
+
+-NIO
+ Java NIO详解
+ 关系图
+
+Web网络编程基础：
+-网络编程
+ 网络七层架构的作用与协议
+ 一些网络编程概念
+ 实现InetAddress实例化
+
+-Socket编程
+ 代码实现
+
+-TCP/UDP   
+ 两台计算机之间使用套接字建立TCP连接时的步骤
+ Java实现TCP网络程序设计
+ Java实现UDP编程
+
+-URL
+ Java实现URL网络编程
+
+-HTTP协议/HTTPS协议
+ 关于C/S架构和B/S架构
+ 什么是HTTP协议？
+ 什么是HTTPS协议？
+ HTTP协议的特点和基本工作原理
+ HTTP请求报文格式
+ 发起HTTPS请求的过程
+ HTTP请求响应格式
+ 设置在后端程序中统一返回HTTP响应对象
+
+-CDN 
+ 关于CDN
+
+-网络负载均衡/关于不同的负载均衡
+ 
+-在实际生活中有哪些因素影响网络传输？
+
+-为什么Java比其他语言更适合开发Web应用程序？
+
+-Tomcat
+
+-Nginx
+
+-Netty
+
+Web后端技术：
 -Servlet
 ②数据库及持久层技术以及多种数据库的应用
 -MYSQL
