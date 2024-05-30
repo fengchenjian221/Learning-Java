@@ -2068,8 +2068,10 @@ Java中哪些集合类型是线程安全的，哪些集合类型是线程不安�
    - Java提供了丰富的多线程编程工具和库，包括 java.lang.Thread 类、同步机制（如 synchronized 关键字）、线程池、原子操作类、并发集合等。
    - Java并发是建立在操作系统并发之上的，它通过Java虚拟机（JVM）实现多线程调度和管理。
 
-虽然Java并发建立在操作系统并发之上，但它具有一些独立的特点和抽象，使得多线程编程更容易和可移植。例如，Java的线程模型抽象了底层的操作系统线程，使开发人员可以更轻松地创建和管理线程，而无需关心操作系统的细节。
-Java并发通常使用了操作系统提供的底层线程支持，但它也在其之上构建了更高级别的抽象，以便于开发人员处理并发编程。 Java的并发库和工具旨在提供更高级别的抽象，帮助开发人员解决常见的并发问题，如同步、锁、线程安全性等。
+虽然Java并发建立在操作系统并发之上，但它具有一些独立的特点和抽象，使得多线程编程更容易和可移植。
+例如，Java的线程模型抽象了底层的操作系统线程，使开发人员可以更轻松地创建和管理线程，而无需关心操作系统的细节。
+Java并发通常使用了操作系统提供的底层线程支持，但它也在其之上构建了更高级别的抽象，以便于开发人员处理并发编程。 
+Java的并发库和工具旨在提供更高级别的抽象，帮助开发人员解决常见的并发问题，如同步、锁、线程安全性等。
 这些工具和库在跨平台开发中尤其有用，因为它们隐藏了操作系统差异，使得Java程序在不同操作系统上的行为更加一致。
 
 总的来说，操作系统并发和Java并发是相关的，但它们在概念上和实现上存在差异。 Java并发建立在操作系统并发之上，提供了更高级别的抽象和工具，以便于开发人员编写多线程应用程序。
@@ -2219,7 +2221,7 @@ Java泛型：
 ① 接口中，静态成员也不能使用泛型；
 ② 泛型接口的类型，在继承接口或者实现接口时确定；
 ③ 没有指定类型，默认为Object。
-	
+
 泛型的通配符：?
 ① <?>：支持任意泛型
 ② <? extends A>：支持A类以及A类的子类，规定了泛型的上限
@@ -2227,9 +2229,12 @@ Java泛型：
 ④ 不能向List<?> 内添加除null之外的数据
 ⑤ 允许读取数据，读取数据的类型为Object
 
+
+
 Java IO（Flie类、IO流、网络编程、序列化与反序列化）:
-Java的IO是实现输入和输出的基础，可以方便的实现数据的输入和输出操作。在Java中把对于输入/输出操作是以流的方式进行操作的。java.io 包下提供了大量的供我们使用的操作【流】的方法和接口，用于进行各类数据的处理和传输。
-注意： Windows各个文件之间分隔符为：” \ “；Linux各个文件之间分割符为：” / “
+Java的IO是实现输入和输出的基础，可以方便的实现数据的输入和输出操作。在Java中把对于输入/输出操作是以流的方式进行操作的。
+java.io 包下提供了大量的供我们使用的操作【流】的方法和接口，用于进行各类数据的处理和传输。
+注意： Windows各个文件之间分隔符为：“ \ ”；Linux各个文件之间分割符为：“ / ”
 
 Java Flie类：Flie类是文件和目录路径名的抽象表示，主要用于文件和目录的创建、查找和删除等操作。
 Flie类构造方法：
@@ -2241,7 +2246,7 @@ Java IO流：通过IO可以完成硬盘文件的读和写   I:Input 往内存中
 在java中只要"类名"以 Stream 结尾的都是字节流。以"Reader/Writer"结尾的都是字符流。
 字符流不能处理图片文件，字节流不能处理文本文件
 
-流的体系结构
+流的体系结构：
 抽象基类
 InputStream
 OutputStream
@@ -2397,35 +2402,97 @@ public class ObjectInputStreamTest01 {
 使用场景：所有可在网络上传输的对象都必须是可序列化的，否则会出错；所有需要保存到磁盘的Java对象都必须是可序列化的。
 
 
-磁盘IO：
-磁盘I/O速度较慢，因为它需要等待物理磁盘的旋转和磁头的定位，同时还受到硬盘的物理限制。
-通常发生在文件系统层面，用于读写文件或数据块。
+磁盘IO（Input/Output，即输入/输出）是指计算机系统中数据在磁盘存储设备和内存之间的传输过程。磁盘IO性能对系统整体性能有重要影响，尤其在数据密集型应用中。
+以下是磁盘IO的几个关键方面：
 
-磁盘I/O的工作机制主要有以下三种方式：
+1. 磁盘类型
+   - 机械硬盘（HDD）：基于旋转磁盘和磁头的传统存储设备。读取/写入数据时，磁头需要移动到正确的位置，因而具有较高的寻道时间和旋转延迟。
+   - 固态硬盘（SSD）：使用闪存存储数据，没有机械部件，因而具有较低的访问时间和更高的读写速度。
 
-1.直接I/O方式。不经系统内核空间直接访问磁盘数据的方式（减少一次内核空间缓存到用户程序缓存的复制操作），
-通常是在一些数据库管理系统中实现，该管理系统明确知道需要缓存哪些数据，不需要哪些数据，这样就可以对数据进行预加载，
-提高数据的访问效率。但是当数据需要从磁盘中加载的时候，直接加载会非常缓慢。
-2.同步访问文件的方式。访问方式同标准访问文件的方式大体上是一样的，只是需要等到数据同步到磁盘上才能成功返回应用程序，
-性能较差，但安全性高。
-3.异步访问文件的方式。当发起访问数据的请求之后，线程就会继续执行其他的操作，直到请求数据返回。
+2. IO操作类型
+   - 顺序IO：数据按连续的块读写，通常性能较好，因为减少了磁头移动（对HDD而言）或内存地址跳转（对SSD而言）。
+   - 随机IO：数据读写是非连续的，需要频繁移动磁头或访问不同的内存地址，通常性能较低。
+
+3. IO性能指标
+   - 吞吐量（Throughput）：单位时间内能够完成的IO操作数量，通常以MB/s（兆字节每秒）或IOPS（每秒输入输出操作数）来衡量。
+   - 延迟（Latency）：完成单个IO操作所需的时间，通常以毫秒（ms）为单位。
+
+4. 磁盘调度算法
+   - 先来先服务（FCFS）：按请求到达的顺序处理。
+   - 最短寻道时间优先（SSTF）：优先处理离当前磁头位置最近的请求。
+   - 电梯算法（SCAN）：磁头像电梯一样在磁盘上移动，按一个方向处理完请求后再反向移动。
+
+5. 缓存和预读
+   - 磁盘缓存：存储设备自带的一小块高速缓存，用于临时存储频繁访问的数据，提高访问速度。
+   - 预读：操作系统或存储设备在实际需要数据之前预先读取数据到缓存，以减少等待时间。
+
+6. RAID技术
+   - RAID（独立磁盘冗余阵列）：通过将多个物理磁盘组合成一个逻辑磁盘来提高性能和数据可靠性。常见的RAID级别有RAID 0、RAID 1、RAID 5、RAID 6等，每种级别有不同的性能和冗余特性。
+
+7. 文件系统
+   - 文件系统在磁盘IO过程中也扮演重要角色，负责管理数据的存储和检索。常见的文件系统包括NTFS、EXT4、XFS等，不同的文件系统在性能和功能上有不同的特点。
+
+总结
+磁盘IO是指数据在磁盘存储设备和内存之间的传输，涉及磁盘类型、IO操作类型、性能指标、调度算法、缓存机制、RAID技术和文件系统等多个方面。优化磁盘IO性能对于提升系统整体性能具有重要意义。
 
 
+RandomAccessFile：
 RandomAccessFile是Java输入/输出流体系中功能最丰富的文件内容访问类，既可以读取文件内容，也可以向文件输出数据。
 
-RandomAccessFlie的使用：
+RandomAccessFlie的特点：
 1.RandomAccessFlie直接继承于java.lang.Object，实现了DataInput和DataOutput
 2.RandomAccessFlie既可以作为输入流，又可以作为输出流
-3.如果RandomAccessFlie作为一个输出流时，写出的文件如果不存在，则在执行过程中自动创建；
-如果文件存在，则会对原有文件内容进行覆盖。（默认情况下，从头覆盖）
+3.如果RandomAccessFlie作为一个输出流时，写出的文件如果不存在，则在执行过程中自动创建；如果文件存在，则会对原有文件内容进行覆盖。（默认情况下，从头覆盖）
 4.用seak方法可以实现在第N位后覆盖原文件
+
+示例代码：
+import java.io.RandomAccessFile;
+import java.io.IOException;
+
+public class RandomAccessFileExample {
+    public static void main(String[] args) {
+        try {
+            // 创建一个RandomAccessFile对象，以读写模式打开文件
+            RandomAccessFile raf = new RandomAccessFile("example.txt", "rw");
+
+            // 写入数据
+            raf.writeInt(100);
+            raf.writeDouble(3.14);
+            raf.writeUTF("Hello, World!");
+
+            // 移动文件指针到文件开始
+            raf.seek(0);
+
+            // 读取数据
+            int intValue = raf.readInt();
+            double doubleValue = raf.readDouble();
+            String stringValue = raf.readUTF();
+
+            // 打印读取的数据
+            System.out.println("Int value: " + intValue);
+            System.out.println("Double value: " + doubleValue);
+            System.out.println("String value: " + stringValue);
+
+            // 关闭文件
+            raf.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+注意事项
+同步问题：RandomAccessFile 不支持多线程同步。如果多个线程需要同时访问同一个 RandomAccessFile 对象，需要在外部实现同步机制。
+资源管理：使用 RandomAccessFile 时，必须在操作完成后调用 close() 方法关闭文件，以释放资源。
+文件指针：读写操作依赖文件指针的位置，进行操作前需要确保文件指针指向正确的位置。
+
 
 Java NIO：
 NIO 中的 N 可以理解为 Non-blocking，不单纯是 New，是解决高并发、I/O高性能的有效方式。
 Java NIO是Java1.4之后推出来的一套IO接口，NIO提供了一种完全不同的操作方式， NIO支持面向缓冲区的、基于通道的IO操作。
 新增了许多用于处理输入输出的类，这些类都被放在java.nio包及子包下，并且对原java.io包中的很多类进行改写，新增了满足NIO的功能。
 
-Java NIO： 同步非阻塞，服务器实现模式为一个线程处理多个请求(连接)，即客户端发送的连接请求都会注册到多路复用器上，多路复用器轮询到连接有I/O请求就进行处理。
+同步非阻塞，服务器实现模式为一个线程处理多个请求(连接)，即客户端发送的连接请求都会注册到多路复用器上，多路复用器轮询到连接有I/O请求就进行处理。
 一个线程中就可以调用多路复用接口（java中是select）阻塞同时监听来自多个客户端的IO请求，
 一旦有收到IO请求就调用对应函数处理，NIO擅长1个线程管理多条连接，节约系统资源。
 
@@ -2512,923 +2579,437 @@ public static void main(String[] args) throws  Exception{
             }
         }
  
-    }
-	
-	
-网络编程：网络编程是指编写运行在多个设备（计算机）的程序，这些设备都通过网络连接起来。程序之间可以通信，互相发送消息。
+ }
 
-网络七层架构的作用与协议：
-层		功能								协议
-应用层	提供应用程序之间的通信。		TFTP，HTTP，SNMP，FTP，SMTP，DNS，Telnet
-表示层	处理数据格式，数据加密和压缩等。	没有协议
-会话层	建立、管理、终止两主机的会话。		没有协议
-传输层	建立主机的端到端连接。			TCP，UDP
-网络层	路径选择。						ICMP，RIP，OSPF，BGP，IGMP，IP
-数据链路层	负责两个相邻结点之间的数据传输。		SLIP，CSLIP，PPP，ARP，RARP，MTU
-物理层	使原始的数据比特流能在物理媒介上传输。	ISO2110，IEEE802，IEEE802.2
-
-
-网络数据传输的过程可以被划分为应用层、传输层、网络层、链路层和物理层这五个层次，每个层次都有其特定的功能和协议。
-网络数据传输的过程，按照这五个层次来描述：
-
-1. 物理层（Physical Layer）：
-   - 物理层是网络协议的最底层，负责传输比特流，即0和1的电信号，通过物理媒体（如电缆、光纤或无线信号）进行传输。
-   - 在这一层，数据以二进制形式从发送方的物理介质传输到接收方。
-
-2. 链路层（Data Link Layer）：
-   - 链路层负责将物理层传输的比特流划分为帧（Frame），并添加地址信息，以便确定帧的源和目标。
-   - 这一层还包括错误检测和纠正，以确保数据的完整性和可靠性。
-   - 在局域网中，以太网协议是链路层的典型代表。
-
-3. 网络层（Network Layer）：
-   - 网络层负责将帧从源主机传输到目标主机，跨越不同的网络。
-   - 它使用路由协议来确定数据包的路径，使数据能够通过多个路由器（Router）进行中转。
-   - IP（Internet Protocol）是网络层的核心协议，它定义了数据包的格式和寻址机制。
-
-4. 传输层（Transport Layer）：
-   - 传输层负责端到端的通信，确保数据在源和目标之间可靠地传输。
-   - 常见的传输层协议包括TCP（Transmission Control Protocol）和UDP（User Datagram Protocol）。
-   - TCP提供可靠的、面向连接的通信，包括错误检测、重传机制等，而UDP提供无连接的、不可靠的通信，更适合实时应用。
-
-5. 应用层（Application Layer）：
-   - 应用层是最高层，它包含了各种应用程序，如Web浏览器、电子邮件客户端、文件传输工具等。
-   - 在这一层，数据被组织成消息、请求或响应，并与特定的应用程序协议相关联，如HTTP、SMTP、FTP等。
-   - 应用程序通过传输层与目标应用程序通信，完成数据的交换和处理。
-
-总的来说，网络数据传输的过程从物理层开始，逐层传递，最终到达应用层。每一层都具有不同的功能和责任，协同工作以确保数据在源和目标之间安全、可靠地传输。这个分层模型有助于实现网络的模块化、可扩展性和互操作性。
-
-
-
-IP：唯一的标识 Internet上的计算机（通信实体）
-IP分类：IPV4和IPV6；万维网和局域网
-域名：由于IP地址具有不方便记忆并且不能显示地址组织的名称和性质等缺点，人们设计出了域名，并通过网域名称系统（DNS，Domain Name System）来将域名和IP地址相互映射，
-使人更方便地访问互联网，而不用去记住能够被机器直接读取的IP地址数串
-本地回路地址：127.0.0.1 对应：localhost
-在Java中使用InetAddress类代表IP，实例化InetAddress的两个方法：
-getByName(String host) getLocalHost()
-两个常用方法：getHostName() / getHostAddress()
-端口号：正在计算机上运行的进程
-  要求：不同的进程有不同的端口号
-  范围：被规定为一个16位的整数0-65535
-端口号与IP地址的组合得出一个网络套接字:Socket
-
-TCP和UDP协议是TCP/IP协议的核心。 TCP 传输协议：TCP 协议是一TCP (Transmission Control Protocol)和UDP(User Datagram Protocol)协议属于传输层协议。
-其中TCP提供IP环境下的数据可靠传输，它提供的服务包括数据流传送、可靠性、有效流控、全双工操作和多路复用。通过面向连接、端到端和可靠的数据包发送。
-通俗说，它是事先为所发送的数据开辟出连接好的通道，然后再进行数据发送；而UDP则不为IP提供可靠性、流控或差错恢复功能。
-一般来说，TCP对应的是可靠性要求高的应用，而UDP对应的则是可靠性要求低、传输经济的应用。
-
-网络编程之实现InetAddress实例化：
-public class InetAddressTest {
-    public static void main(String[] args) {
- 
-        InetAddress inet1 = null;
-        try {
-            inet1 = InetAddress.getByName("192.168.10.14");
-            System.out.println(inet1);
- 
-            InetAddress inet2 = InetAddress.getByName("www.baidu.com");
-            System.out.println(inet2);
- 
-            InetAddress inet3 = InetAddress.getByName("127.0.0.1");
-            System.out.println(inet3);
- 
-            //获取本地ip
-            InetAddress inet4 = InetAddress.getLocalHost();
-            System.out.println(inet4);
- 
-            //getHostName()
-            System.out.println(inet2.getHostName());
-            //getHostAddress()
-            System.out.println(inet2.getHostAddress());
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
- 
-    }
-}
-
-网络编程之Socket编程：
-我们可以发现Socket就在应用程序的传输层和应用层之间，设计了一个Socket抽象层，传输层的底一层的服务提供给Socket抽象层，Socket抽象层再提供给应用层。
-套接字使用TCP提供了两台计算机之间的通信机制。 客户端程序创建一个套接字，并尝试连接服务器的套接字。
-当连接建立时，服务器会创建一个 Socket 对象。客户端和服务器现在可以通过对 Socket 对象的写入和读取来进行通信。
-java.net.Socket 类代表一个套接字，并且 java.net.ServerSocket 类为服务器程序提供了一种来监听客户端，并与他们建立连接的机制。
-IP和端口号通过Socket传输。
-
-以下步骤在两台计算机之间使用套接字建立TCP连接时会出现：
-
-服务器实例化一个 ServerSocket 对象，表示通过服务器上的端口通信。
-服务器调用 ServerSocket 类的 accept() 方法，该方法将一直等待，直到客户端连接到服务器上给定的端口。
-服务器正在等待时，一个客户端实例化一个 Socket 对象，指定服务器名称和端口号来请求连接。
-Socket 类的构造函数试图将客户端连接到指定的服务器和端口号。如果通信被建立，则在客户端创建一个 Socket 对象能够与服务器进行通信。
-在服务器端，accept() 方法返回服务器上一个新的 Socket 引用，该 Socket 连接到客户端的 Socket。
-
-Java实现TCP网络程序设计：
-服务器端类：
-package dreamfly.net.server;
-
-//读取客户端发来的数据，给客户端写出数据
-
+使用NIO实现微服务的高并发：
+服务器端代码：
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.util.Iterator;
+import java.util.Set;
 
-public class Server {
-
+public class NioServer {
     public static void main(String[] args) throws IOException {
+        Selector selector = Selector.open();
+        ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+        serverSocketChannel.bind(new InetSocketAddress(5000));
+        serverSocketChannel.configureBlocking(false);
+        serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
-        //1.开启服务器，参数是指开着的端口号
-        ServerSocket server = new ServerSocket(8899);
-        System.out.println("服务器已成功启动");
-        //2.接收客户端发来的连接
-        Socket socket = server.accept();
-        System.out.println("接收到客户端发来的请求");
-        //3.获取读取流
-        InputStream in = socket.getInputStream();
-        //4.读取数据
-//        int data = in.read();      //默认返回的是整数
-        for (int i = 0;i < 5;i++){
-            char data = (char)in.read();
-            System.out.print(data);
+        while (true) {
+            selector.select();
+            Set<SelectionKey> selectedKeys = selector.selectedKeys();
+            Iterator<SelectionKey> iter = selectedKeys.iterator();
+
+            while (iter.hasNext()) {
+                SelectionKey key = iter.next();
+
+                if (key.isAcceptable()) {
+                    register(selector, serverSocketChannel);
+                }
+
+                if (key.isReadable()) {
+                    answerWithEcho(key);
+                }
+
+                iter.remove();
+            }
         }
-        //5.给客户端写出数据
-        System.out.println();
-        OutputStream out = socket.getOutputStream();
-        out.write("world".getBytes());
-        System.out.println("服务器端成功发送数据");
-        out.close();
+    }
+
+    private static void register(Selector selector, ServerSocketChannel serverSocketChannel) throws IOException {
+        SocketChannel client = serverSocketChannel.accept();
+        client.configureBlocking(false);
+        client.register(selector, SelectionKey.OP_READ);
+    }
+
+    private static void answerWithEcho(SelectionKey key) throws IOException {
+        SocketChannel client = (SocketChannel) key.channel();
+        ByteBuffer buffer = ByteBuffer.allocate(256);
+        int bytesRead = client.read(buffer);
+        if (bytesRead == -1) {
+            client.close();
+            return;
+        }
+        buffer.flip();
+        client.write(buffer);
+        buffer.clear();
     }
 }
 
-客户端类：
-package dreamfly.net.client;
 
-//读取服务器端发来的数据，给服务器端写出数据
-
+客户端代码：
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 
-public class Client {
-
+public class NioClient {
     public static void main(String[] args) throws IOException {
-        //1.连接到指定的服务器(ip+port)
-        Socket socket = new Socket("127.0.0.1",8899);
-        System.out.println("已连接成功");
-        //2.获取写出流
-        OutputStream out = socket.getOutputStream();
-        //3.写出数据,字节流只能写出整数或字节数组
-        //将hello对应整数编程对应的字节数组，getBytes()将String转换为byte[]
-        out.write("hello".getBytes());
-        System.out.println("客户端成功发送数据");
-        InputStream in = socket.getInputStream();
-        for (int i = 0;i < 5;i++){
-            char data = (char)in.read();
-            System.out.print(data);
-        }
-        System.out.println();
-        System.out.println("成功接收服务器端数据");
-        out.close();
+        InetSocketAddress hostAddress = new InetSocketAddress("localhost", 5000);
+        SocketChannel client = SocketChannel.open(hostAddress);
+
+        String message = "Hello, Server!";
+        ByteBuffer buffer = ByteBuffer.allocate(256);
+        buffer.put(message.getBytes());
+        buffer.flip();
+        client.write(buffer);
+
+        buffer.clear();
+        client.read(buffer);
+        String response = new String(buffer.array()).trim();
+        
+        System.out.println("Server response: " + response);
+
+        client.close();
     }
 }
 
 
+网络编程：
+Java网络编程涵盖了从基础的TCP/UDP通信到高级的网络框架和Web编程。通过使用Java的标准库和各种第三方框架，开发者可以构建高效、可靠和可扩展的网络应用。
+无论是简单的客户端-服务器通信，还是复杂的分布式系统，Java都提供了强大的支持和工具。
 
-Java实现UDP编程：
-服务器端
-DatagramSocket serverSocket = new DatagramSocket(1234)；//设置监听端口，可以和TCP端口重复，及一个应用程序用TCP占用端口1234，另一个程序可以用UDP占用端口1234
+1. 基础网络通信
+1.1. TCP通信
+ServerSocket和Socket：
+ServerSocket用于创建服务器端，监听特定端口，接受客户端连接。
+Socket用于客户端连接服务器，并通过输入输出流进行数据传输。
+适用于需要可靠、有序数据传输的应用，如HTTP、FTP等。
 
-byte[] buff = new byte[1024];
+1.2. UDP通信
+DatagramSocket和DatagramPacket：
+DatagramSocket用于发送和接收数据包（DatagramPacket）。
+适用于不需要保证数据传输可靠性和顺序的应用，如实时视频、音频流。
 
-客户端
-DatagramPacket packet = new DatagramPacket(buff, buff.length);//设置接受长度为buff.leng的buff数据
+2. 高级网络编程
+2.1. Java NIO
+Selectors、Channels和Buffers：
+Java NIO提供了非阻塞I/O操作的支持，适用于高性能、高并发的服务器端编程。
+使用Selector管理多个通道（Channel），通过Buffer进行数据操作。
 
-serverSocket.receive(packet)；//收取UDP数据包
+2.2. 高性能网络框架
+Netty：
+Netty是一个异步事件驱动的网络应用框架，用于快速开发高性能、高可靠性的网络服务器和客户端。
+提供了更高层次的抽象，简化了基于NIO的网络编程。
 
-String word = new String( packet.getData(), packet.getOffset(), packet.getLength(),StandardCharsets.UTF_8 );//将收到的数据按UTF-8转换为String
+3. Web编程
+3.1. Servlet和JSP
+Servlet：用于处理HTTP请求和响应，构建动态Web内容。
+JSP（JavaServer Pages）：简化了Servlet的编写，可以嵌入Java代码生成动态内容。
+3.2. Spring Boot
+用于快速创建基于Spring的独立、生产级应用。支持内置的Tomcat、Jetty等容器。
+提供了强大的注解支持和自动配置功能。
 
-System.out.println("已经收到"+word);//在服务器做出提示
-                byte[] resultbuff = word.getBytes();
-                packet.setData(resultbuff);
-                serverSocket.send(packet);//发送数据给客户端做出回应
+4. 其他网络编程技术
+4.1. WebSockets
+用于在客户端和服务器之间建立双向通信，适用于实时应用，如在线聊天、游戏等。
+Java可以使用Jetty、Tomcat等支持WebSocket的容器实现WebSocket通信。
+4.2. RESTful Web服务
+使用JAX-RS（如Jersey）或Spring Boot创建RESTful Web服务，提供基于HTTP的API接口。
+4.3. RPC（远程过程调用）
+使用gRPC、Apache Thrift等框架实现跨语言的远程过程调用。
+
+Java Stream流：
+Stream流是一种顺序的元素集合，它支持类似于SQL语句的操作，如过滤、映射、排序等。通过使用Stream流，我们可以以声明式的方式对数据进行处理，而不需要关心具体的实现细节。
+
+Stream流的主要特点包括：
+Stream流不存储数据，而是通过管道传输数据。
+Stream流可以操作任何数据源，如集合、数组、I/O通道等。
+Stream流可以进行串行操作和并行操作。
+Java中的Stream流主要包含两种类型：中间操作和终端操作。中间操作用于对流进行一系列的转换和操作，而终端操作用于从流中获取结果。
+
+使用Stream流可以通过以下几个步骤进行：
+
+创建流：可以从集合、数组、I/O通道等数据源中创建Stream流。
+中间操作：对流进行一系列的转换和操作，如过滤、映射、排序等。
+终端操作：从流中获取结果，如聚合、收集、遍历等。
 
 
-URL：在WWW上，每一信息资源都有统一的且在网上的地址，该地址就叫URL（Uniform Resource Locator,统一资源定位器），它是WWW的统一资源定位标志，就是指网络地址。
-URL格式：协议 主机名 端口号 资源地址
+常用的 Stream 函数包括：
+中间操作符：通常对于Stream的中间操作，可以视为是源的查询，并且是懒惰式的设计，对于源数据进行的计算只有在需要时才会被执行，
+与数据库中视图的原理相似；Stream流的强大之处便是在于提供了丰富的中间操作，相比集合或数组这类容器，极大的简化源数据的计算复杂度
+一个流可以跟随零个或多个中间操作。其目的主要是打开流，做出某种程度的数据映射/过滤，然后返回一个新的流，交给下一个操作使用
 
-Java实现URL网络编程：
-public class UrlTest02 {
+1. filter(Predicate<T> predicate)：根据指定的条件过滤出符合条件的元素。
+userList.stream().filter(user -> user.getId() > 6).collect(Collectors.toList());
+2. map(Function<T, R> mapper)：将每个元素映射为另一个元素。
+userList.stream().map(user -> user.getName() + "用户").collect(Collectors.toList());
+3. flatMap(Function<T, Stream<R>> mapper)：将每个元素映射为一个 Stream，并将所有 Stream 的元素合并为一个 Stream。
+userList.stream().flatMap(user -> Arrays.stream(user.getCity().split(","))).forEach(System.out::println);
 
-    public static void main(String[] args) throws Exception {
+map：对流中每一个元素进行处理
+flatMap：流扁平化，让你把一个流中的“每个值”都换成另一个流，然后把所有的流连接起来成为一个流 
+本质区别：map是对一级元素进行操作，flatmap是对二级元素操作map返回一个值；flatmap返回一个流，多个值
 
-        HttpURLConnection urlConnection = null;
-        InputStream is = null;
-        FileOutputStream fos = null;
-        try {
-            URL url = new URL("http://localhost:8080/examples/beauty.jpg");
+4. distinct()：去除重复的元素。
+userList.stream().map(User::getCity).distinct().collect(Collectors.toList());
+5. sorted()：对元素进行排序。
+userList.stream().sorted(Comparator.comparing(User::getName).reversed()).collect(Collectors.toList()).forEach(System.out::println);
+6. limit(long maxSize)：限制 Stream 的大小。
+userList.stream().limit(5).collect(Collectors.toList()).forEach(System.out::println);
+7. skip(long n)：跳过前 n 个元素。
+userList.stream().skip(7).collect(Collectors.toList()).forEach(System.out::println);
+8. peek():对元素进行遍历处理
+//每个用户ID加1输出
+userList.stream().peek(user -> user.setId(user.getId()+1)).forEach(System.out::println);
 
-            urlConnection = (HttpURLConnection) url.openConnection();
+终端操作符：Stream流执行完终端操作之后，无法再执行其他动作，否则会报状态异常，提示该流已经被执行操作或者被关闭，
+想要再次执行操作必须重新创建Stream流。一个流有且只能有一个终端操作，当这个操作执行后，流就被关闭了，无法再被操作，
+因此一个流只能被遍历一次，若想在遍历需要通过源数据在生成流。
 
-            urlConnection.connect();
+9. forEach(Consumer<T> action)：对每个元素执行指定的操作。
+userList.stream().forEach(user -> System.out.println(user));
+userList.stream().filter(user -> "上海".equals(user.getCity())).forEach(System.out::println);
+10. collect(Collector<T, A, R> collector)：收集器，将流转换为其他形式。
+Set set = userList.stream().collect(Collectors.toSet());
+List list = userList.stream().collect(Collectors.toList());
+11. findFirst():返回第一个元素
+User firstUser = userList.stream().findFirst().get();
+User firstUser1 = userList.stream().filter(user -> "上海".equals(user.getCity())).findFirst().get();        
+12. findAny():返回当前流中的任意元素
+User findUser = userList.stream().findAny().get();
+User findUser1 = userList.stream().filter(user -> "上海".equals(user.getCity())).findAny().get();
+13. count():返回流中元素总数
+long count = userList.stream().filter(user -> user.getAge() > 20).count();		
+14. sum():求和
+int sum = userList.stream().mapToInt(User::getId).sum();
+15. max():最大值
+int max = userList.stream().max(Comparator.comparingInt(User::getId)).get().getId();
+16. min():最小值
+int min = userList.stream().min(Comparator.comparingInt(User::getId)).get().getId();
+17. anyMatch():检查是否至少匹配一个元素，返回boolean
+boolean matchAny = userList.stream().anyMatch(user -> "北京".equals(user.getCity()));
+18. allMatch():检查是否匹配所有元素，返回boolean
+boolean matchAll = userList.stream().allMatch(user -> "北京".equals(user.getCity()));
+19. noneMatch():检查是否没有匹配所有元素，返回boolean
+boolean nonaMatch = userList.stream().allMatch(user -> "云南".equals(user.getCity()));
+20.reduce():可以将流中元素反复结合起来，得到一个值
+Optional reduce = userList.stream().reduce((user, user2) -> {
+    return user;
+});
 
-            is = urlConnection.getInputStream();
-            fos = new FileOutputStream("day10\\beauty3.jpg");
 
-            byte[] buffer = new byte[1024];
-            int len;
-            while((len = is.read(buffer)) != -1){
-                fos.write(buffer,0,len);
-            }
+		
+通过使用这些函数，可以简化代码、提高效率，并且使代码更加易读和可维护。
 
-            System.out.println("下载完成");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            //关闭资源
-            if(is != null){
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(fos != null){
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(urlConnection != null){
-                urlConnection.disconnect();
-            }
-        }
+Java反射：
+反射是作为动态语言的关键，反射机制允许程序在执行期借助于Reflection API取得任何类的内部信息，并能直接操作任意对象的内部属性和方法。
+
+动态语言和静态语言概念：
+动态类型语言：动态类型语言是指在运行期间才去做数据类型检查的语言，也就是说，在用动态类型的语言编程时，永远也不用给任何变量指定数据类型（变量使用之前不需要类型声明），该语言会在你第一次赋值给变量时，在内部将数据类型记录下来。
+Python 和 Ruby 就是一种典型的动态类型语言，其他的各种脚本语言如 JavaScript 、Shell也属于动态类型语言。
+静态类型语言：静态类型语言与动态类型语言刚好相反，它的数据类型是在编译其间检查的，也就是说在写程序时要声明所有变量的数据类型，C/C++ 是静态类型语言的典型代表，其他的静态类型语言还有 C#、JAVA 、golang等。
+总结：静态类型和动态类型的本质区别在于：变量的数据类型确定的时机不同，前者在运行时根据变量值确定；后者在编译时根据声明类型确定。
+
+Java反射概述：
+>Java反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；
+对于任意一个对象，都能够调用它的任意一个方法和属性；
+这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。
+>要想解剖一个类,必须先要获取到该类的字节码文件对象。而解剖使用的就是Class类中的方法。
+所以先要获取到每一个字节码文件对应的Class类型的对象。
+>比如之前在没有使用反射的时候，我们这里有一个类，如果我们想要调用里面的属性、方法等，
+我们要先创建一个对象，才可以调用里面的属性等。
+>类似的，我们如果使用反射，想要使用一个类的成员变量，方法，构造器等，我们就要先获取一个Class对象，
+这个Class对象里面有类的成员变量，方法等信息，这样我们才可以进行相关的操作。
+>正因为反射是在运行时获取类的信息，所以用反射去获取类的注解时只能获取到运行时的注解。
+
+Class 类：反射的核心类，可以获取类的属性，方法等信息。
+Field 类：Java.lang.reflec 包中的类，表示类的成员变量，可以用来获取和设置类之中的属性值。
+Method 类： Java.lang.reflec 包中的类，表示类的方法，它可以用来获取类中的方法信息或 者执行方法。
+Constructor 类： Java.lang.reflec 包中的类，表示类的构造方法。
+
+getFields():获取当前运行时类及父类中声明为public访问权限的属性
+getDeclaredFields()：获取当前运行时类中声明的所有属性（不包括父类）
+getMethods():获取当前运行时类及其父类中声明为public的方法
+	
+Java反射示例：
+创建一个person类：
+public class Person {
+    private String name;
+    private int age;
+
+    public Person() {}
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void displayInfo() {
+        System.out.println("Name: " + name + ", Age: " + age);
     }
 }
 
-以上是TCP/IP协议，多用于C/S架构中客户端与服务器端之间的连接。
+编写一个反射来操作person类的示例程序：
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
-
-
-关于C/S架构和B/S架构：
-1.C/S架构即客户端/服务器架构，指的是需要安装客户端应用程序才能进行操作的架构模式；
-2.而B/S架构即浏览器/服务器架构，指的是无需安装客户端应用程序，通过浏览器进行操作的模式。
-
->在B/S架构中，用户通过浏览器访问Web服务器上的网页，数据传输使用HTTP或HTTPS协议进行。
-HTTPS协议是一种安全的HTTP协议，通过使用SSL/TLS证书来对数据进行加密，以保证数据传输的安全性和完整性。
-
->在C/S架构中，客户端和服务器之间通过TCP/IP协议进行通信。TCP/IP协议是一种传输层协议，用于在局域网中进行通信，
-它规定了如何在网络中传输数据，并且能够保证数据的可靠性、顺序性和完整性。
-
-总结：B/S架构多使用HTTP或HTTPS协议，而C/S架构则更倾向于使用TCP/IP协议。
-但是，这并不是绝对的，也取决于具体的应用和需求。
-例如，在某些需要保证数据安全性和完整性的应用场景中，C/S架构也可能会使用HTTPS协议。
-
-PS：在JavaEE开发中，几乎全都是B/S架构的开发。系统标准的三层架构在B/S中广泛运用，这种架构包括表现层、业务层、持久层。
-PS: 微信小程序的开发用的是C/S架构。
-
-
-什么是HTTP协议？
-HTTP协议（HyperText Transfer Protocol）是一种网络通信协议，它允许将超文本标记语言（HTML）文档从Web服务器传送到客户端的浏览器。
-HTTP协议的默认端口是80，它定义了Web客户端和Web服务器之间的通信规则，确保了数据的安全和正确传输。
-HTTP协议是无状态协议，即服务器不会保留之前客户端请求的任何信息。
-每个HTTP请求都是独立的，服务器不会记住之前的请求和响应，因此每个请求都需要包含所有必要的信息，包括身份验证、Cookie等。
-
-
-什么是HTTPS协议？
-HTTPS协议是超文本传输安全协议的英文翻译缩写，是以安全为目标的HTTP通道，下加入了SSL层。
-
-HTTPS协议是一个抽象标识符体系，句法类同http：体系，用于安全的HTTP数据传输，
-https：URL表明它使用了HTTP，但HTTPS存在不同于HTTP的默认端口及一个加密身份验证层。
-
-
-HTTP协议的特点和基本工作原理：
-
-1.HTTP协议支持客户/服务器模式。
-2.HTTP协议简单快速：客户向服务器请求服务时，只需传送请求方法和路径，请求方法常用的有GET、HEAD、POST，
-由于HTTP协议简单，使得HTTP服务器的程序规模小，因而通信速度很快。
-3.HTTP协议灵活：HTTP允许传输任意类型的数据对象，传输的类型由Content-Type加以标记。
-4.HTTP协议无连接：无连接的含义是限制每次连接只处理一个请求，服务器处理完客户的请求，
-并收到客户的应答后，即断开连接，采用这种方式可以节省传输时间。
-
-HTTP请求报文格式：
-HTTP请求报文格式是HTTP协议中用于从客户端向服务器发送请求的一种标准化格式。一个完整的HTTP请求报文通常由请求行、请求头部和请求体（可选）三部分组成。
-
-请求行：
-请求行包含HTTP请求方法、请求的URL和HTTP协议版本。HTTP请求方法常见的有GET、POST、PUT、DELETE等，用于指定对资源的不同操作。请求的URL指明了请求的具体目标资源。
-HTTP协议版本则标识了使用的HTTP协议标准，如HTTP/1.1。
-
-请求头部：
-请求头部包含了一系列的字段，每个字段由字段名和字段值组成，字段名和字段值之间用冒号分隔。请求头部提供了关于请求的各种元信息，
-如客户端的类型（User-Agent）、客户端能够处理的内容类型（Accept）、请求的源地址（Referer）、请求的目标主机（Host）等。这些元信息有助于服务器理解和处理请求。
-
-请求体：
-请求体是可选的，它包含了发送给服务器的数据。对于GET请求，通常不会有请求体，因为GET请求主要用于请求数据。而对于POST或PUT请求，请求体则包含了需要发送给服务器的数据，如表单数据、JSON数据等。
-在格式上，请求行和请求头部以回车符（CR）和换行符（LF）结尾，形成CRLF序列。请求头部与请求体之间通常会有一个空行，即只包含CRLF的行，用于分隔请求头部和请求体。
-
-下面是一个简单的HTTP GET请求报文的例子：
-
-GET /example HTTP/1.1  
-Host: www.example.com  
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36  
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9  
-Accept-Encoding: gzip, deflate  
-Accept-Language: en-US,en;q=0.9  
-Connection: keep-alive  
-  
-// 此处为请求体开始的位置，对于GET请求，通常没有请求体
-在这个例子中，GET /example HTTP/1.1是请求行，Host、User-Agent、Accept等是请求头部的字段，而请求体部分在这个GET请求中是缺失的。
-
-
-发起HTTPS请求的过程：
-
-1.客户端向服务器发起HTTPS请求，连接到服务器的443端口。
-2.服务器端有一个密钥对，即公钥和私钥，是用来进行非对称加密使用的，服务器端保存着私钥，不能将其泄露，公钥可以发送给任何人。
-3.服务器将自己的公钥发送给客户端。
-4.客户端收到服务器端的证书之后，会对证书进行检查，验证其合法性，如果发现发现证书有问题，那么HTTPS传输就无法继续。
-5.如果公钥合格，那么客户端会生成一个随机值，这个随机值就是用于进行对称加密的密钥，我们将该密钥称之为clientkey，即客户端密钥，这样在概念上和服务器端的密钥容易进行区分。
-6.然后用服务器的公钥对客户端密钥进行非对称加密，这样客户端密钥就变成密文了。
-7.HTTPS中的第一次HTTP请求结束。
-
-HTTP请求响应格式：
-HTTP请求响应格式是HTTP协议中服务器对客户端请求进行回应的一种标准化格式。一个完整的HTTP响应报文通常由状态行、响应头部和响应体三部分组成。
-
-状态行：
-状态行包含了HTTP协议版本号、状态码和状态描述。HTTP协议版本号用于标识所使用的HTTP协议标准，如HTTP/1.1。状态码是一个三位数字，用于表示请求的处理结果，
-如200表示请求成功，404表示资源未找到等。状态描述是对状态码的简短文字描述，用于提供关于响应状态的额外信息。
-
-响应头部：
-响应头部包含了一系列的字段，每个字段由字段名和字段值组成，字段名和字段值之间用冒号分隔。
-响应头部提供了关于响应的各种元信息，如内容类型（Content-Type）、内容长度（Content-Length）、服务器类型（Server）等。这些元信息有助于客户端理解和处理响应内容。
-
-响应体：
-响应体是服务器返回给客户端的实际数据内容。对于成功的请求，响应体通常包含了请求的资源；对于错误请求，响应体可能包含错误信息或描述。响应体的格式和内容取决于请求的资源类型和服务器的配置。
-
-在格式上，状态行、响应头部和响应体之间都以回车符（CR）和换行符（LF）结尾，形成CRLF序列。响应头部与响应体之间通常会有一个空行，即只包含CRLF的行，用于分隔响应头部和响应体。
-
-下面是一个简单的HTTP响应报文的例子：
-
-http
-HTTP/1.1 200 OK  
-Content-Type: text/html; charset=UTF-8  
-Content-Length: 1234  
-Server: Apache/2.4.41  
-  
-<!DOCTYPE html>  
-<html>  
-<head>  
-    <title>Example Page</title>  
-</head>  
-<body>  
-    <h1>Welcome to the Example Page!</h1>  
-    <!-- 页面内容 -->  
-</body>  
-</html>
-在这个例子中，HTTP/1.1 200 OK是状态行，Content-Type、Content-Length和Server是响应头部的字段，而响应体则包含了HTML页面的实际内容。
-
-
-设置在后端程序中统一返回响应对象：
-
-1.创建Http枚举类
-public enum HttpResponseStatus {  
-    OK(200, "OK"),  
-    CREATED(201, "Created"),  
-    ACCEPTED(202, "Accepted"),  
-    NO_CONTENT(204, "No Content"),  
-    BAD_REQUEST(400, "Bad Request"),  
-    UNAUTHORIZED(401, "Unauthorized"),  
-    FORBIDDEN(403, "Forbidden"),  
-    NOT_FOUND(404, "Not Found"),  
-    INTERNAL_SERVER_ERROR(500, "Internal Server Error");  
-  
-    private final int statusCode;  
-    private final String statusMessage;  
-  
-    HttpResponseStatus(int statusCode, String statusMessage) {  
-        this.statusCode = statusCode;  
-        this.statusMessage = statusMessage;  
-    }  
-  
-    public int getStatusCode() {  
-        return statusCode;  
-    }  
-  
-    public String getStatusMessage() {  
-        return statusMessage;  
-    }  
-  
-    // 根据状态码获取枚举项  
-    public static HttpResponseStatus getStatusByCode(int statusCode) {  
-        for (HttpResponseStatus status : HttpResponseStatus.values()) {  
-            if (status.getStatusCode() == statusCode) {  
-                return status;  
-            }  
-        }  
-        return null;  
-    }  
-}
-
-2.创建返回对象
-public class ResultData<T> {  
-    private int code; // HTTP状态码  
-    private String message; // 状态消息或错误信息  
-    private T data; // 返回的数据  
-    // 可以根据需要添加其他字段，如额外信息、时间戳等  
-  
-    private ResultData(int code, String message, T data) {  
-        this.code = code;  
-        this.message = message;  
-        this.data = data;  
-    }  
-  
-    // 静态方法，用于创建成功的响应对象  
-    public static <T> ResultData<T> success(T data) {  
-        return new ResultData<>(HttpResponseStatus.OK.getStatusCode(), HttpResponseStatus.OK.getStatusMessage(), data);  
-    }  
-  
-    // 静态方法，用于创建失败的响应对象  
-    public static <T> ResultData<T> fail(HttpResponseStatus status, String errorMessage) {  
-        return new ResultData<>(status.getStatusCode(), errorMessage, null);  
-    }  
-  
-    // 静态方法，根据状态码创建失败的响应对象  
-    public static <T> ResultData<T> failByCode(int statusCode, String errorMessage) {  
-        HttpResponseStatus status = HttpResponseStatus.getStatusByCode(statusCode);  
-        if (status != null) {  
-            return new ResultData<>(statusCode, status.getStatusMessage() + ": " + errorMessage, null);  
-        } else {  
-            return new ResultData<>(statusCode, "Unknown Error: " + errorMessage, null);  
-        }  
-    }  
-  
-    // Getter方法，用于获取响应的各个字段  
-    public int getCode() {  
-        return code;  
-    }  
-  
-    public String getMessage() {  
-        return message;  
-    }  
-  
-    public T getData() {  
-        return data;  
-    }  
-  
-    // toString方法，用于调试或日志记录  
-    @Override  
-    public String toString() {  
-        return "ResultData{" +  
-                "code=" + code +  
-                ", message='" + message + '\'' +  
-                ", data=" + data +  
-                '}';  
-    }  
-}
-
-
-使用Java发起https请求：
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-
-public class HttpClientExample {
+public class ReflectionExample {
     public static void main(String[] args) {
-        // 创建HttpClient实例
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-
-        // 创建HttpGet请求
-        HttpGet httpGet = new HttpGet("http://example.com");
-
         try {
-            // 发送HTTP请求并获取响应
-            CloseableHttpResponse response = httpClient.execute(httpGet);
+            // 获取 Person 类的 Class 对象
+            Class<?> personClass = Class.forName("Person");
 
-            // 从响应中获取HTTP实体
-            HttpEntity entity = response.getEntity();
+            // 获取构造函数并创建实例
+            Constructor<?> constructor = personClass.getConstructor(String.class, int.class);
+            Object personInstance = constructor.newInstance("John Doe", 30);
 
-            if (entity != null) {
-                // 将HTTP实体内容转换为字符串并输出
-                String result = EntityUtils.toString(entity);
-                System.out.println(result);
-            }
+            // 获取并调用 getName 方法
+            Method getNameMethod = personClass.getMethod("getName");
+            String name = (String) getNameMethod.invoke(personInstance);
+            System.out.println("Name: " + name);
+
+            // 获取并调用 setName 方法
+            Method setNameMethod = personClass.getMethod("setName", String.class);
+            setNameMethod.invoke(personInstance, "Jane Doe");
+
+            // 获取并调用 getAge 方法
+            Method getAgeMethod = personClass.getMethod("getAge");
+            int age = (int) getAgeMethod.invoke(personInstance);
+            System.out.println("Age: " + age);
+
+            // 获取并调用 setAge 方法
+            Method setAgeMethod = personClass.getMethod("setAge", int.class);
+            setAgeMethod.invoke(personInstance, 25);
+
+            // 获取并调用 displayInfo 方法
+            Method displayInfoMethod = personClass.getMethod("displayInfo");
+            displayInfoMethod.invoke(personInstance);
+
+            // 访问私有字段
+            Field nameField = personClass.getDeclaredField("name");
+            nameField.setAccessible(true); // 需要设置访问权限
+            nameField.set(personInstance, "Reflective John");
+
+            // 调用 displayInfo 方法显示更改后的信息
+            displayInfoMethod.invoke(personInstance);
+
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            // 关闭HttpClient实例
-            try {
-                httpClient.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 }
 
-HTTPS中反斜杠（/）通常用于表示路径（path）的一部分。路径是指URL中主机名和查询字符串之间的部分，用于指定请求的资源位置。
-其中，https中反斜杠指向的路径部分指定的是服务器的资源位置。当客户端向服务器发送请求时，服务器会根据路径部分来查找和提供相应的资源。
+Java动态代理：
+代理类在程序运行时创建的代理方式被成为动态代理。在静态代理中，代理类（RenterProxy）是自己已经定义好了的，在程序运行之前就已经编译完成。
+而动态代理是在运行时根据我们在Java代码中的“指示”动态生成的。Java运用了反射实现了动态代理。
+动态代理相较于静态代理的优势在于可以很方便的对代理类的所有函数进行统一管理，如果我们想在每个代理方法前都加一个方法，如果代理方法很多，我们需要在每个代理方法都要写一遍，很麻烦。而动态代理则不需要。
 
-关于CDN：
-什么是CDN？
-CDN工作机制是通过在现有的Internet中增加一层新的网站架构，将网站的内容发布到最接近用户的网络“边缘”，使用户可以就近取得所需内容，提高用户访问网站的响应速度。
-CDN以缓存网站中的静态数据为主，如CSS、JS、图片和静态页面等数据。用户从主站服务器请求到动态内容后，再从CDN上下载静态数据，
-从而加速网页数据内容的下载数据，如淘宝有90%以上的数据都是由CDN来提供。
-DNS服务器根据用户IP地址，将域名解析成相应节点的缓存服务器IP地址，实现用户就近访问。
-使用CDN服务的网站，只需将其域名解析权交给CDN的GSLB设备，将需要分发的内容注入CDN，就可以实现内容加速了。
+代码实现：创建RenterInvocationHandler类，这个类实现了InvocationHandler接口，并持有一个被代理类的对象，InvocationHandler中有一个invoke方法，所有执行代理对象的方法都会被替换成执行invoke方法。
+然后通过反射在invoke方法中执行代理类的方法。在代理过程中，在执行代理类的方法前或者后可以执行自己的操作，这就是spring aop的主要原理。
 
-关于网络负载均衡：
-什么是负载均衡？
-负载均衡建立在现有网络结构之上，它提供了一种廉价有效透明的方法扩展网络设备和服务器的带宽、增加吞吐量、
-加强网络数据处理能力、提高网络的灵活性和可用性。
-负载均衡（Load Balance）其意思就是分摊到多个操作单元上进行执行，
-例如Web服务器、FTP服务器、企业关键应用服务器和其它关键任务服务器等，从而共同完成工作任务。
+动态代理之Cglib代理：
+动态代理需要被代理类实现接口，如果被代理类没有实现接口，那么这么实现动态代理？这时候就需要用到CGLib了。这种代理方式就叫做CGlib代理。
+Cglib代理也叫作子类代理，他是通过在内存中构建一个子类，并在子类中采用方法拦截的技术拦截所有父类方法的调用，然后加入自己需要的操作。因为使用的是继承的方式，所以不能代理final 类
+动态代理与CGLib动态代理都是实现Spring AOP的基础。如果加入容器的目标对象有实现接口,用动态代理，如果目标对象没有实现接口,用Cglib代理。
 
-关于不同的负载均衡：
-阐述一下分布式系统负载均衡、集群负载均衡、操作系统负载均衡、链路负载均衡的不同点。
-分布式系统负载均衡、集群负载均衡、操作系统负载均衡和链路负载均衡是不同领域和层次的负载均衡技术，它们在应用场景、范围和实现方式上有不同点：
+创建目标类：
+public class PersonService {
+    public void sayHello() {
+        System.out.println("Hello, World!");
+    }
 
-1. **分布式系统负载均衡**：
-   - **应用领域：** 分布式系统负载均衡主要应用于分布式计算和分布式存储系统中，以确保各个节点上的任务或数据负载均衡。
-   - **范围：** 它是在分布式系统内部实现的负载均衡，通常不涉及跨越不同物理服务器的负载均衡。
-   - **实现方式：** 分布式系统负载均衡可以通过各种算法和策略来实现，如任务分配、数据分片等。
-
-2. **集群负载均衡**：
-   - **应用领域：** 集群负载均衡主要用于应用程序的高可用性和性能优化，通过将多个服务器组成集群，将负载均衡在这些服务器之间。
-   - **范围：** 集群负载均衡通常涉及跨越多台物理服务器的负载均衡，以实现应用程序的水平扩展。
-   - **实现方式：** 集群负载均衡可以通过硬件负载均衡器、软件负载均衡器（如Nginx、HAProxy）等来实现。
-
-3. **操作系统负载均衡**：
-   - **应用领域：** 操作系统负载均衡主要用于操作系统内核的进程和资源管理，以确保操作系统上运行的任务在CPU、内存、磁盘等资源上均衡分配。
-   - **范围：** 它是在单个操作系统内部实现的负载均衡，用于优化操作系统的性能和资源利用率。
-   - **实现方式：** 操作系统负载均衡通过调度算法、进程优先级、内存管理等机制来实现资源分配和任务调度。
-
-4. **链路负载均衡**：
-   - **应用领域：** 链路负载均衡主要应用于网络层，用于分发网络流量和请求到多个网络链接或路径上，以提高网络性能和可靠性。
-   - **范围：** 它涉及到物理网络层，以确保数据包在不同链路之间均衡分布，以避免某一链路过载或失效。
-   - **实现方式：** 链路负载均衡可以通过路由协议、硬件负载均衡器、软件路由器等来实现。
-
-综上所述，这些负载均衡技术在不同领域和层次中发挥作用。分布式系统负载均衡和集群负载均衡主要关注应用程序的分布和性能，
-操作系统负载均衡关注操作系统资源的管理，而链路负载均衡关注网络流量的分发和可靠性。
-它们在实现方式、应用场景和目标方面存在差异，但都旨在提高系统的性能、可用性和资源利用率。
-
-explain the difference between distributed system load balancing（分布式系统负载均衡）,cluster load balancing(集群负载均衡),operating system load balancing（操作系统负载均衡）,link load balancing （链路负载均衡）
-
-Load balancing is a technique used in computer systems to distribute workloads or network traffic across multiple resources (such as servers or network links) to ensure optimal performance, 
-minimize resource overload, and enhance system reliability. There are different types of load balancing, and here's an explanation of the differences between distributed system load balancing, 
-cluster load balancing, operating system load balancing, and link load balancing:
-
-Distributed System Load Balancing:
-
-Purpose: Distributed system load balancing involves distributing workloads across multiple servers or nodes within a distributed computing environment.
- The goal is to improve the overall system's performance, scalability, and fault tolerance.
-Use Case: It is commonly used in web applications, cloud computing, and large-scale distributed systems to evenly distribute user requests and processing tasks across multiple servers.
-Techniques: Distributed load balancers often use algorithms like Round Robin, Least Connections, or Weighted Round Robin to determine how to route incoming requests to available resources.
-
-Cluster Load Balancing:
-
-Purpose: Cluster load balancing is a subset of distributed system load balancing. It specifically applies to clusters or groups of servers or nodes that work together as a single entity to provide services.
-Use Case: Cluster load balancing is used in scenarios where high availability and fault tolerance are critical, such as in database clusters or application server clusters.
-Techniques: Techniques like virtual IP addresses and load balancing algorithms are used to evenly distribute traffic among the nodes within the cluster.
-
-Operating System Load Balancing:
-
-Purpose: Operating system load balancing focuses on distributing the processing load among the CPU cores or processors within a single machine or server.
-Use Case: It is relevant in multi-core or multi-processor systems where applications can benefit from parallelism and efficient resource utilization.
-Techniques: Modern operating systems often have built-in load balancing mechanisms that distribute tasks or threads across available CPU cores based on factors like CPU utilization and affinity policies.
-
-Link Load Balancing:
-
-Purpose: Link load balancing (or network load balancing) involves distributing network traffic across multiple network links or paths to optimize network performance, increase bandwidth, 
-and improve network reliability.
-Use Case: It is commonly used in environments with redundant network connections, such as data centers, to ensure uninterrupted network connectivity and efficient use of available bandwidth.
-Techniques: Network load balancers may use techniques like Equal-Cost Multipath (ECMP) routing or dynamic link aggregation (LACP) to balance traffic across multiple network links.
-
-In summary, load balancing techniques are used at various levels of computing infrastructure to achieve different objectives. 
-Distributed system load balancing is about distributing workloads across multiple servers or nodes in a distributed environment, 
-while cluster load balancing specifically applies to clusters of servers. 
-Operating system load balancing manages CPU resources within a single machine, and link load balancing optimizes network traffic distribution across multiple network links. 
-Each type of load balancing serves a unique purpose and addresses specific performance and scalability challenges.
-
-Tomcat:
-Tomcat（Apache Tomcat）是一个流行的开源Java应用服务器，用于托管和运行Java Web应用程序。
-
-在Tomcat中，webapps目录是专门用来存放Web应用程序的。这个目录结构允许Tomcat服务器识别并加载其中的Web应用程序，使得它们能够通过HTTP请求被访问。
-在webapps目录下，可以存放各种类型的文件来构成完整的Web应用程序。以下是可以在webapps目录中存放的一些文件类型：
-
-静态内容：
-HTML文件：构成Web页面结构的基本文件。
-CSS文件：用于定义Web页面的样式。
-JavaScript文件：用于添加页面交互和动态功能的客户端脚本。
-图片、音频、视频等媒体文件：作为Web页面的一部分被引用，提供多媒体内容。
-
-动态内容：
-JSP文件（Java Server Pages）：允许Java代码嵌入到HTML中，用于动态生成Web页面内容。
-Servlet类文件：编译后的Java类文件，用于处理请求并生成响应。Servlet通常放在WEB-INF/classes目录下，或者打包成JAR文件放在WEB-INF/lib目录下。
-
-配置文件：
-web.xml：Web应用程序的部署描述符，用于配置Servlet、过滤器、监听器以及初始化参数等。
-其他应用程序特定的配置文件：如数据库连接配置文件、日志配置文件等。
-
-库文件：
-JAR文件：Web应用程序所依赖的库和框架通常放在WEB-INF/lib目录下。这些JAR文件包含了应用程序运行所需的类库和依赖项。
-
-目录结构：
-META-INF：存放与JAR文件相关的元数据，如MANIFEST.MF文件。
-WEB-INF：一个特殊的目录，用于存放仅供服务器访问的资源，如classes目录（存放编译后的Java类文件）、lib目录（存放JAR库文件）以及任何应用程序内部使用的配置文件。
-
-在将文件添加到webapps目录时，Tomcat会按照其内部机制来加载和处理这些文件。当Tomcat服务器启动时，它会扫描webapps目录并自动部署其中的Web应用程序。
-每个Web应用程序通常对应webapps下的一个子目录，这个子目录的名称就是Web应用程序的上下文路径（Context Path）。
-
-
-Tomcat的系统架构主要包括以下关键组件和层次：
-1. Servlet容器：
-   - Tomcat的核心部分是Servlet容器，它是一个Web服务器扩展，用于执行Java Servlet和JavaServer Pages（JSP）等Web组件。
-   - Servlet容器负责接收HTTP请求、处理Servlet和JSP、生成HTTP响应，并将响应发送回客户端浏览器。
-   - Tomcat的Servlet容器遵循Java Servlet和JSP规范，并提供了Servlet的生命周期管理、多线程支持、会话管理等功能。
-
-2. 连接器（Connectors）：
-   - 连接器是Tomcat与客户端之间的通信接口。它们负责接受HTTP请求并将其传递给Servlet容器，然后将Servlet容器的响应发送回客户端。
-   - Tomcat支持多种连接器，包括HTTP连接器（用于处理HTTP请求）、AJP连接器（用于与Apache HTTP服务器集成）等。
-
-3. Catalina容器：
-   - Catalina是Tomcat的核心组件之一，负责Web应用程序的生命周期管理和请求分派。
-   - Catalina包括多个子容器，如Engine、Host和Context，它们用于组织和管理Web应用程序。
-   - Engine表示整个Tomcat引擎，Host表示一个虚拟主机，Context表示一个Web应用程序上下文。
-
-4. JSP引擎：
-   - Tomcat包括一个JSP引擎，用于编译和执行JavaServer Pages。当JSP页面首次被访问时，JSP引擎将其编译成Servlet，并在后续请求中执行该Servlet。
-   - JSP引擎支持JSP标签、自定义标签库（Tag Libraries）等JSP特性。
-
-5. 类加载器：
-   - Tomcat使用类加载器来加载Web应用程序的Java类。每个Web应用程序都有自己的类加载器，以隔离不同应用程序之间的类。
-   - Tomcat的类加载器体系结构支持共享库（shared library）和全局库（global library），使得可以在多个应用程序之间共享某些类。
-
-6. 管理工具：
-   - Tomcat提供了一组Web管理工具，用于监视和管理Tomcat服务器。这些工具包括Tomcat管理应用程序、Tomcat管理控制台、Manager应用程序等。
-   - 这些工具使管理员能够查看服务器状态、部署和管理Web应用程序、查看日志、配置数据源等。
-
-总的来说，Tomcat的系统架构是一个多层次的体系结构，其中包括Servlet容器、连接器、Catalina容器、JSP引擎、类加载器和管理工具等组件。
-这些组件协同工作，使Tomcat成为一个强大的Java应用服务器，用于托管和运行Web应用程序。 
-Tomcat的开源性质和广泛的社区支持使其成为Java Web应用程序开发和部署的流行选择。
-
-
-Nginx：
-NGINX是一个高性能的HTTP和反向代理web服务器，同时也提供了IMAP/POP3/SMTP服务。
-NGINX是由伊戈尔·赛索耶夫为俄罗斯访问量第二的Rambler.ru站点开发的，公开版本1.19.6发布于2020年12月15日。
-其将源代码以类BSD许可证的形式发布，因它的稳定性、丰富的功能集、简单的配置文件和低系统资源的消耗而闻名。
-
-Nginx（发音为"engine-x"）是一个高性能、可伸缩、开源的反向代理服务器和Web服务器，其系统架构具有以下关键组件和特点：
-
-1. Master Process（主进程）：
-   - Nginx的系统架构以主从进程模型为基础。主进程是第一个启动的Nginx进程，它负责管理其他子进程，处理配置文件加载、平滑升级、日志记录等任务。
-   - 主进程不处理实际的客户端请求，而是将请求分配给工作进程（worker process）。
-
-2. Worker Processes（工作进程）：
-   - Nginx可以配置多个工作进程，每个工作进程独立处理客户端请求。
-   - 工作进程是并发处理的核心，它们可以同时处理多个客户端请求，通过事件驱动方式来提供高性能的请求处理。
-   - 每个工作进程都是一个独立的进程，它们不共享内存，提高了稳定性和安全性。
-
-3. 事件驱动模型：
-   - Nginx采用了事件驱动的架构，使用高效的I/O多路复用机制，如epoll（在Linux上）或kqueue（在BSD上），以实现非阻塞的事件处理。
-   - 这意味着Nginx可以在单个工作进程中同时处理多个并发连接，而无需为每个连接创建一个新的线程或进程，从而降低了资源开销。
-
-4. 反向代理（Reverse Proxy）：
-   - Nginx经常用作反向代理服务器，接收来自客户端的请求，然后将请求代理到后端的应用服务器上，如Tomcat、Node.js或Ruby on Rails。
-   - 这使得Nginx能够负责负载均衡、SSL终止、请求缓存、静态文件服务等功能。
-
-//配置Nginx
-   server {
-    listen 80;
-    server_name example.com;  # 修改为您的域名或IP地址
-    location / {
-        proxy_pass http://localhost:8080;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
+    public void sayGoodbye() {
+        System.out.println("Goodbye, World!");
     }
 }
 
-5. HTTP和HTTPS支持：
-   - Nginx是一个全功能的HTTP服务器，支持HTTP/1.0、HTTP/1.1和HTTP/2协议。它能够处理HTTP请求和响应、URL重写、反向代理、gzip压缩等。
-   - Nginx还支持HTTPS，可以进行SSL/TLS终止、证书管理和安全连接。
+创建代理类：
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
 
-6. 模块化架构：
-   - Nginx采用模块化的设计，它允许通过第三方模块来扩展功能。管理员可以根据需要加载不同的模块，以适应特定的用例和需求。
-   - 核心模块处理基本功能，如HTTP请求和响应，而第三方模块可以添加缓存、安全性、负载均衡等功能。
+import java.lang.reflect.Method;
 
-7. 负载均衡：
-   - Nginx支持多种负载均衡算法，如轮询、IP哈希、最小连接数等，以将客户端请求分发到多个后端服务器上，实现高可用性和性能优化。
+public class CglibProxy implements MethodInterceptor {
 
-   http {
-    upstream backend {
-        server backend1.example.com;
-        server backend2.example.com;
-        server backend3.example.com;
+    private Object target;
+
+    public CglibProxy(Object target) {
+        this.target = target;
     }
 
-    # ...其他Nginx配置...
+    public Object getProxy() {
+        Enhancer enhancer = new Enhancer();
+        enhancer.setSuperclass(target.getClass());
+        enhancer.setCallback(this);
+        return enhancer.create();
+    }
 
-    server {
-        listen 80;
+    @Override
+    public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+        System.out.println("Before method: " + method.getName());
+        Object result = proxy.invokeSuper(obj, args);
+        System.out.println("After method: " + method.getName());
+        return result;
+    }
 
-        location / {
-            proxy_pass http://backend;
-        }
+    public static void main(String[] args) {
+        PersonService personService = new PersonService();
+        CglibProxy proxy = new CglibProxy(personService);
+        PersonService proxyPersonService = (PersonService) proxy.getProxy();
+        
+        proxyPersonService.sayHello();
+        proxyPersonService.sayGoodbye();
     }
 }
 
-负载均衡后的请求将会均匀的分发到backend中列出的三个服务器中。
+CglibProxy类：
+实现了MethodInterceptor接口，该接口定义了代理类的方法拦截器。
+构造函数CglibProxy(Object target)接受一个目标对象。
+getProxy()方法创建代理对象。
+intercept()方法在目标方法调用前后执行自定义逻辑。
 
-总的来说，Nginx的系统架构是一个高性能、事件驱动的主从进程模型，具有反向代理、负载均衡、HTTP和HTTPS支持、模块化设计等特点。
-这些特性使得Nginx成为一个非常受欢迎的Web服务器和反向代理服务器，适用于各种用例，从静态文件服务到高流量的Web应用程序。 
-Nginx的性能和可伸缩性使其在构建现代Web架构中广泛使用。
+Enhancer类：
+Cglib中的Enhancer类用于生成代理类。
+setSuperclass()方法设置目标类。
+setCallback()方法设置回调，即MethodInterceptor。
 
-项目中使用了nginx做反向代理，还需要网关做映射吗？
-在项目中，当使用Nginx作为反向代理时，是否还需要使用网关进行映射，取决于具体的项目需求和架构设计。以下是一些考虑因素：
+intercept()方法：
+在目标方法调用前后打印日志。
+使用proxy.invokeSuper(obj, args)调用目标类的原始方法。
 
-1.路由和映射需求：如果你的项目需要复杂的路由和映射规则，例如基于路径、请求头、请求方法等的动态路由，那么使用网关可能更加灵活和方便。
-Nginx虽然也支持路由和映射，但可能不如一些专门的网关工具（如Spring Cloud Gateway）那样灵活。
-2.微服务架构：如果你的项目采用微服务架构，并且希望实现服务间的路由、限流、熔断、重试等高级功能，那么使用网关可能是更好的选择。网关可以作为微服务架构中的核心组件，负责处理服务间的通信和协调。
-3.安全性考虑：Nginx本身已经提供了很多安全性功能，如SSL/TLS加密、访问控制等。但是，如果你需要更高级的安全性功能，如API认证、授权、审计等，那么使用网关可能更加合适。
-网关可以集成这些安全性功能，并提供更细粒度的控制。
-4.性能和扩展性：Nginx是一个高性能的反向代理服务器，可以处理大量的并发请求。但是，如果你的项目需要更高的性能和扩展性，例如支持分布式部署、自动扩展等，那么使用网关可能更加合适。
-网关通常可以基于云计算和容器化技术进行扩展和部署。
-
-综上所述，是否需要使用网关进行映射取决于你的项目需求和架构设计。如果你的项目需要复杂的路由和映射规则、微服务架构、高级安全性功能或更高的性能和扩展性，那么使用网关可能是更好的选择。
-否则，使用Nginx作为反向代理已经可以满足大多数项目的需求。
-
-
-
-Netty：
-Netty是一个由JBOSS提供的开源框架，用于快速开发高性能、高可靠性的网络应用程序。
-它简化和流线化了网络应用的编程开发过程，基于NIO（非阻塞IO）开发，使用异步事件驱动的方式处理网络请求。
-
-Netty的主要特点包括：
-异步事件驱动：Netty基于事件驱动编程模型，通过异步方式处理网络请求，避免了阻塞IO带来的性能问题。
-基于NIO：Netty基于Java的NIO（非阻塞IO）库开发，能够高效地处理大量并发连接。
-简化开发：Netty提供了一套丰富的API和工具类，使得开发者可以更加专注于业务逻辑的实现，而无需深入了解底层网络协议和IO处理的细节。
-可扩展性强：Netty的设计采用了模块化结构，各个模块之间耦合度低，可以根据需要灵活地扩展和定制。
-社区活跃：Netty拥有庞大的开发者社区，不断有新的功能和优化被加入到框架中，为开发者提供了强有力的支持。
-
-使用netty创建一个服务器：
-import io.netty.bootstrap.ServerBootstrap;  
-import io.netty.channel.ChannelFuture;  
-import io.netty.channel.ChannelInitializer;  
-import io.netty.channel.ChannelOption;  
-import io.netty.channel.EventLoopGroup;  
-import io.netty.channel.nio.NioEventLoopGroup;  
-import io.netty.channel.socket.SocketChannel;  
-import io.netty.channel.socket.nio.NioServerSocketChannel;  
-import io.netty.handler.logging.LogLevel;  
-import io.netty.handler.logging.LoggingHandler;  
-  
-public class ServerBootstrap {  
-    public static void main(String[] args) throws Exception {  
-        EventLoopGroup bossGroup = new NioEventLoopGroup(1);  
-        EventLoopGroup workerGroup = new NioEventLoopGroup();  
-        try {  
-            ServerBootstrap bootstrap = new ServerBootstrap();  
-            bootstrap.group(bossGroup, workerGroup)  
-                     .channel(NioServerSocketChannel.class)  
-                     .option(ChannelOption.SO_BACKLOG, 128)  
-                     .childOption(ChannelOption.SO_KEEPALIVE, true)  
-                     .handler(new LoggingHandler(LogLevel.INFO))  
-                     .childHandler(new ChannelInitializer<SocketChannel>() {  
-                         @Override  
-                         public void initChannel(SocketChannel ch) throws Exception {  
-                             ch.pipeline().addLast(new ServerHandler());  
-                         }  
-                     });  
-            ChannelFuture future = bootstrap.bind(8080).sync();  
-            future.channel().closeFuture().sync();  
-        } finally {  
-            bossGroup.shutdownGracefully();  
-            workerGroup.shutdownGracefully();  
-        }  
-    }  
-}
-
-使用netty创建客户端：
-使用netty创建客户端引导程序
-import io.netty.bootstrap.Bootstrap;  
-import io.netty.channel.ChannelFuture;  
-import io.netty.channel.ChannelInitializer;  
-import io.netty.channel.ChannelOption;  
-import io.netty.channel.EventLoopGroup;  
-import io.netty.channel.nio.NioEventLoopGroup;  
-import io.netty.channel.socket.SocketChannel;  
-import io.netty.channel.socket.nio.NioSocketChannel;  
-import io.netty.handler.logging.LogLevel;  
-import io.netty.handler.logging.LoggingHandler;  
-  
-public class ClientBootstrap {  
-    public static void main(String[] args) throws Exception {  
-        EventLoopGroup group = new NioEventLoopGroup();  
-        try {  
-            Bootstrap bootstrap = new Bootstrap();  
-            bootstrap.group(group)  
-                     .channel(NioSocketChannel.class)  
-                     .option(ChannelOption.SO_KEEPALIVE, true)  
-                     .handler(new LoggingHandler(LogLevel.INFO))  
-                     .childHandler(new ChannelInitializer<SocketChannel>() {  
-                         @Override  
-                         public void initChannel(SocketChannel ch) throws Exception {  
-                             ch.pipeline().addLast(new ClientHandler());  
-                         }  
-                     });  
-            ChannelFuture future = bootstrap.connect("localhost", 8080).sync();  
-            future.channel().closeFuture().sync();  
-        } finally {  
-            group.shutdownGracefully();  
-        }  
-    }  
-}
-
-创建客户端处理器
-import io.netty.buffer.ByteBuf;  
-import io.netty.channel.ChannelHandlerContext;  
-import io.netty.channel.ChannelInboundHandlerAdapter;  
-import io.netty.handler.codec.http.*;  
-import java.nio.charset.Charset;  
-  
-public class ClientHandler extends ChannelInboundHandlerAdapter {  
-    @Override  
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {  
-        if (msg instanceof FullHttpResponse) {  
-            FullHttpResponse response = (FullHttpResponse) msg;  
-            System.out.println(response.content().toString(Charset.forName("UTF-8")));  
-        } else {  
-            super.channelRead(ctx, msg);  
-        }  
-    }  
-    @Override public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {   
-        cause.printStackTrace();   
-        ctx.close();   
-    }   
-}
-
-关于网络传输的几个问题：
-在实际生活中有哪些因素影响网络传输？
-
-网络传输的性能和可靠性受到许多因素的影响，这些因素可以分为以下几类：
-
-1.带宽（Bandwidth）：带宽是网络连接的最大传输速率，通常以每秒比特数（bps）或兆比特数（Mbps）来衡量。
-更高的带宽意味着更快的数据传输速度。网络链路的带宽限制了数据传输的最大速度。
-
-2.延迟（Latency）：延迟是数据从发送端到接收端所需的时间，通常以毫秒（ms）为单位。
-延迟包括传播延迟（数据在物理媒体上传播的时间）和处理延迟（路由、交换和处理数据的时间）。较低的延迟通常意味着更快的响应时间。
-
-3.丢包率（Packet Loss）：丢包率表示在数据传输过程中丢失的数据包的百分比。丢包率可能由网络拥塞、网络错误或不稳定的连接引起。
-较高的丢包率会导致数据重传和性能下降。
-
-4.拥塞（Congestion）：网络拥塞发生在网络上的数据流量超过了网络链路的容量，导致数据包延迟、丢失和排队。
-拥塞可能由网络流量突增、恶意攻击或网络配置问题引起。
-
-5.路由路径（Routing Path）：数据包在网络中的路由路径也会影响传输性能。不同的路由路径可能具有不同的延迟和丢包率。优化的路由路径可以提高性能。
-
-6.网络设备和中间节点（Network Devices and Intermediate Nodes）：网络中的路由器、交换机和防火墙等设备以及它们的配置也会影响传输性能。
-设备的性能、带宽和负载均衡策略都会对网络传输产生影响。
-
-7.带宽共享（Bandwidth Sharing）：在共享网络环境中，多个用户或应用程序共享带宽。
-网络传输的性能可能受到其他用户或应用程序的使用情况影响，特别是在拥挤的时候。
-
-8.网络拓扑（Network Topology）：网络拓扑指网络中的设备和连接的物理和逻辑布局。
-不同的拓扑结构可能导致不同的性能特点，如星型、总线型、环型、网状型等。
-
-9.网络协议和编码（Network Protocols and Encoding）：使用的网络协议和数据编码方式也会影响传输性能。
-一些协议和编码方式可能会增加数据包头部大小或引入额外的开销。
-
-10.网络安全（Network Security）：安全策略、防火墙、加密和身份验证等安全机制可能会引入额外的延迟和处理时间，影响网络传输性能。
-
-11.地理位置和距离（Geographical Location and Distance）：物理距离和地理位置对网络延迟和带宽有影响。
-数据传输跨越较长的地理距离可能导致较高的延迟。
-
-12.网络流量管理（Traffic Management）：流量管理策略、QoS（Quality of Service）配置和流量限制也可以影响网络传输的性能。
-
-综上所述，网络传输性能受到多种因素的综合影响，包括带宽、延迟、丢包率、拥塞、路由路径、网络设备、带宽共享、网络拓扑、协议、安全性等。了解这些因素并采取相应的优化措施是确保网络传输在实际生活中高效和可靠的关键。
+输出如下：
+Before method: sayHello
+Hello, World!
+After method: sayHello
+Before method: sayGoodbye
+Goodbye, World!
+After method: sayGoodbye
 
 
-为什么Java比其他语言更适合开发Web应用程序？
-Java比其他语言更适合开发Web应用程序的原因如下：
-
-1.跨平台性。Java由于其跨平台的特点，可以在多种操作系统上运行，这使得Java在服务器端程序中占据了主导地位。
-2.面向对象。Java是一种面向对象编程语言，具有封装、继承和多态等特性，这使得Java在编程中更易于理解和维护。
-开源。Java拥有一个庞大的开源社区，提供了大量的开源框架和库，这使得Java在Web开发中具有更强的灵活性和可扩展性。
-3.J2EE技术。J2EE是Java在Web开发中的一种重要技术，它提供了一组标准的技术和API，如Servlet、JSP和EJB等，
-使得开发者可以轻松地构建出高性能、可扩展、可维护且安全的企业级应用程序。
-4.高度安全。Java具有某些内置的安全功能，例如密码学、高级身份验证和访问控制，这些功能在很大程度上促成了Java开发服务的蓬勃发展。
-5.可扩展性和多线程。Java是高度可扩展的，可以适应Web应用程序的需求，并为开发人员提供水平和垂直扩展的能力。
-此外，Java的NIO（非阻塞I/O）API促进了在软件的单个副本中创建尽可能多的线程，这极大地提高了应用程序的性能。
-
-为什么Java不是纯面向对象？
+为什么Java不是纯面向对象语言？
 Java 是一种广泛使用的编程语言，它确实具有许多面向对象的特性，如类、对象、继承、封装和多态等。然而，Java 并不是纯面向对象的语言，原因主要有以下几点：
 
-基本数据类型：Java 中有八种基本数据类型（如 int、float、char 等），这些基本数据类型不是对象。虽然 Java 为这些基本数据类型提供了对应的包装类（如 Integer、Float、Character 等），但在某些情况下，为了性能考虑，程序员仍然会直接使用基本数据类型。
-静态成员和方法：Java 中的静态成员（包括静态变量和静态方法）并不属于任何对象实例，而是属于类本身。静态成员和方法可以通过类名直接访问，而不需要创建类的实例。这种特性与面向对象的封装和实例化的概念不完全一致。
+基本数据类型：Java 中有八种基本数据类型（如 int、float、char 等），这些基本数据类型不是对象。虽然 Java 为这些基本数据类型提供了对应的包装类（如 Integer、Float、Character 等），
+但在某些情况下，为了性能考虑，程序员仍然会直接使用基本数据类型。
+
+静态成员和方法：Java 中的静态成员（包括静态变量和静态方法）并不属于任何对象实例，而是属于类本身。静态成员和方法可以通过类名直接访问，而不需要创建类的实例。
+这种特性与面向对象的封装和实例化的概念不完全一致。
+
 单例模式：单例模式是一种设计模式，它保证一个类仅有一个实例，并提供一个全局访问点。在某些情况下，为了实现单例模式，需要使用静态成员和方法。这同样与面向对象的多实例、多态等特性不完全吻合。
 原始类型数组：Java 中的数组实际上是原始类型，而不是对象。虽然数组可以包含对象，但数组本身并不是对象。这意味着数组没有继承自任何类，也没有实现任何接口。
 主类和主方法：Java 程序从主类（包含 main 方法的类）开始执行。这个主方法是静态的，它不属于任何对象实例。这也是 Java 与纯面向对象语言的一个不同之处。
@@ -3436,8 +3017,9 @@ Java 是一种广泛使用的编程语言，它确实具有许多面向对象的
 虽然 Java 不是纯面向对象的语言，但它的面向对象特性仍然非常强大和灵活。Java 通过类和对象的概念，以及封装、继承和多态等机制，为程序员提供了一种高效、可维护的方式来构建复杂的应用程序。
 同时，Java 也提供了一些非面向对象的特性，以满足特定场景下的需求。这种折衷使得 Java 在实际应用中既具有面向对象的优势，又具有一定的灵活性。
 
+
 J2EE应用程序开发技术：
-前端技术：
+Web前端技术：
 在线帮助文档 https://www.w3school.com.cn/
 HTML：(主要用于网页主体结构的搭建)
 HTML 指的是超文本标记语言: HyperText Markup Language
@@ -4000,7 +3582,6 @@ Ajax.post("users.json", "", function (response) {
 
 Cookie:
 Cookie 是一些数据，存储于你电脑上的文本文件中，当 web 服务器向浏览器发送 web 页面时，在连接关闭后，服务端不会记录用户的信息，Cookie 的作用就是用于解决 “如何记录客户端的用户信息”：
-
 当用户访问 web 页面时，它的名字可以记录在 cookie 中。在用户下一次访问该页面时，可以在 cookie 中读取用户访问记录。
 
 一个的Cookie创建，添加了过期时间和路径：
@@ -4419,6 +4000,1105 @@ export default {
 Get是不安全的，因为在传输过程，数据被放在请求的URL中，而如今现有的很多服务器、代理服务器或者用户代理都会将请求URL记录到日志文件中，然后放在某个地方，这样就可能会有一些隐私的信息被第三方看到。
 另外，用户也可以在浏览器上直接看到提交的数据，一些系统内部消息将会一同显示在用户面前。Post的所有操作对用户来说都是不可见的。
 
+Web网络编程基础：
+网络七层架构的作用与协议：
+层		功能								协议
+应用层	提供应用程序之间的通信。		TFTP，HTTP，SNMP，FTP，SMTP，DNS，Telnet
+表示层	处理数据格式，数据加密和压缩等。	没有协议
+会话层	建立、管理、终止两主机的会话。		没有协议
+传输层	建立主机的端到端连接。			TCP，UDP
+网络层	路径选择。						ICMP，RIP，OSPF，BGP，IGMP，IP
+数据链路层	负责两个相邻结点之间的数据传输。		SLIP，CSLIP，PPP，ARP，RARP，MTU
+物理层	使原始的数据比特流能在物理媒介上传输。	ISO2110，IEEE802，IEEE802.2
+
+
+网络数据传输的过程可以被划分为应用层、传输层、网络层、链路层和物理层这五个层次，每个层次都有其特定的功能和协议。
+网络数据传输的过程，按照这五个层次来描述：
+
+1. 物理层（Physical Layer）：
+   - 物理层是网络协议的最底层，负责传输比特流，即0和1的电信号，通过物理媒体（如电缆、光纤或无线信号）进行传输。
+   - 在这一层，数据以二进制形式从发送方的物理介质传输到接收方。
+
+2. 链路层（Data Link Layer）：
+   - 链路层负责将物理层传输的比特流划分为帧（Frame），并添加地址信息，以便确定帧的源和目标。
+   - 这一层还包括错误检测和纠正，以确保数据的完整性和可靠性。
+   - 在局域网中，以太网协议是链路层的典型代表。
+
+3. 网络层（Network Layer）：
+   - 网络层负责将帧从源主机传输到目标主机，跨越不同的网络。
+   - 它使用路由协议来确定数据包的路径，使数据能够通过多个路由器（Router）进行中转。
+   - IP（Internet Protocol）是网络层的核心协议，它定义了数据包的格式和寻址机制。
+
+4. 传输层（Transport Layer）：
+   - 传输层负责端到端的通信，确保数据在源和目标之间可靠地传输。
+   - 常见的传输层协议包括TCP（Transmission Control Protocol）和UDP（User Datagram Protocol）。
+   - TCP提供可靠的、面向连接的通信，包括错误检测、重传机制等，而UDP提供无连接的、不可靠的通信，更适合实时应用。
+
+5. 应用层（Application Layer）：
+   - 应用层是最高层，它包含了各种应用程序，如Web浏览器、电子邮件客户端、文件传输工具等。
+   - 在这一层，数据被组织成消息、请求或响应，并与特定的应用程序协议相关联，如HTTP、SMTP、FTP等。
+   - 应用程序通过传输层与目标应用程序通信，完成数据的交换和处理。
+
+总的来说，网络数据传输的过程从物理层开始，逐层传递，最终到达应用层。每一层都具有不同的功能和责任，协同工作以确保数据在源和目标之间安全、可靠地传输。这个分层模型有助于实现网络的模块化、可扩展性和互操作性。
+
+
+一些网络编程概念：
+IP：唯一的标识 Internet上的计算机（通信实体）
+IP分类：IPV4和IPV6；万维网和局域网
+域名：由于IP地址具有不方便记忆并且不能显示地址组织的名称和性质等缺点，人们设计出了域名，并通过网域名称系统（DNS，Domain Name System）来将域名和IP地址相互映射，
+使人更方便地访问互联网，而不用去记住能够被机器直接读取的IP地址数串
+本地回路地址：127.0.0.1 对应：localhost
+在Java中使用InetAddress类代表IP，实例化InetAddress的两个方法：
+getByName(String host) getLocalHost()
+两个常用方法：getHostName() / getHostAddress()
+端口号：正在计算机上运行的进程
+  要求：不同的进程有不同的端口号
+  范围：被规定为一个16位的整数0-65535
+端口号与IP地址的组合得出一个网络套接字:Socket
+
+TCP和UDP协议是TCP/IP协议的核心。 TCP 传输协议：TCP 协议是一TCP (Transmission Control Protocol)和UDP(User Datagram Protocol)协议属于传输层协议。
+其中TCP提供IP环境下的数据可靠传输，它提供的服务包括数据流传送、可靠性、有效流控、全双工操作和多路复用。通过面向连接、端到端和可靠的数据包发送。
+通俗说，它是事先为所发送的数据开辟出连接好的通道，然后再进行数据发送；而UDP则不为IP提供可靠性、流控或差错恢复功能。
+一般来说，TCP对应的是可靠性要求高的应用，而UDP对应的则是可靠性要求低、传输经济的应用。
+
+网络编程之实现InetAddress实例化：
+public class InetAddressTest {
+    public static void main(String[] args) {
+ 
+        InetAddress inet1 = null;
+        try {
+            inet1 = InetAddress.getByName("192.168.10.14");
+            System.out.println(inet1);
+ 
+            InetAddress inet2 = InetAddress.getByName("www.baidu.com");
+            System.out.println(inet2);
+ 
+            InetAddress inet3 = InetAddress.getByName("127.0.0.1");
+            System.out.println(inet3);
+ 
+            //获取本地ip
+            InetAddress inet4 = InetAddress.getLocalHost();
+            System.out.println(inet4);
+ 
+            //getHostName()
+            System.out.println(inet2.getHostName());
+            //getHostAddress()
+            System.out.println(inet2.getHostAddress());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+ 
+    }
+}
+
+网络编程之Socket编程：
+我们可以发现Socket就在应用程序的传输层和应用层之间，设计了一个Socket抽象层，传输层的底一层的服务提供给Socket抽象层，Socket抽象层再提供给应用层。
+套接字使用TCP提供了两台计算机之间的通信机制。 客户端程序创建一个套接字，并尝试连接服务器的套接字。
+当连接建立时，服务器会创建一个 Socket 对象。客户端和服务器现在可以通过对 Socket 对象的写入和读取来进行通信。
+java.net.Socket 类代表一个套接字，并且 java.net.ServerSocket 类为服务器程序提供了一种来监听客户端，并与他们建立连接的机制。
+IP和端口号通过Socket传输。
+
+服务器端：服务器端需要创建一个ServerSocket来监听特定的端口，并接受客户端连接。接受连接后，通过Socket与客户端进行通信。
+import java.io.*;
+import java.net.*;
+
+public class SocketServer {
+    public static void main(String[] args) {
+        int port = 5000; // 服务器监听的端口号
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
+            System.out.println("Server is listening on port " + port);
+            while (true) {
+                // 监听并接受客户端连接
+                Socket socket = serverSocket.accept();
+                System.out.println("New client connected");
+
+                // 创建新的线程处理客户端连接
+                new ServerThread(socket).start();
+            }
+        } catch (IOException ex) {
+            System.out.println("Server exception: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+}
+
+class ServerThread extends Thread {
+    private Socket socket;
+
+    public ServerThread(Socket socket) {
+        this.socket = socket;
+    }
+
+    public void run() {
+        try (InputStream input = socket.getInputStream();
+             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+             OutputStream output = socket.getOutputStream();
+             PrintWriter writer = new PrintWriter(output, true)) {
+
+            String text;
+            // 从客户端接收消息并回应
+            while ((text = reader.readLine()) != null) {
+                System.out.println("Message from client: " + text);
+                writer.println("Server: " + text);
+            }
+        } catch (IOException ex) {
+            System.out.println("Server exception: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+}
+ServerSocket 用于监听指定端口上的连接请求。
+accept() 方法阻塞，直到接收到客户端连接。
+每次接收到客户端连接后，启动一个新的线程 ServerThread 来处理该连接，以便服务器可以继续监听新的连接请求。
+在 ServerThread 中，通过输入输出流与客户端进行通信。
+
+
+客户端代码：客户端需要创建一个Socket并连接到服务器的IP地址和端口。通过Socket进行输入输出流的读写操作与服务器通信。
+import java.io.*;
+import java.net.*;
+
+public class SocketClient {
+    public static void main(String[] args) {
+        String hostname = "localhost";
+        int port = 5000;
+
+        try (Socket socket = new Socket(hostname, port)) {
+            OutputStream output = socket.getOutputStream();
+            PrintWriter writer = new PrintWriter(output, true);
+
+            InputStream input = socket.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+
+            // 发送消息到服务器
+            writer.println("Hello, Server");
+
+            // 从服务器接收消息
+            String response = reader.readLine();
+            System.out.println("Message from server: " + response);
+        } catch (UnknownHostException ex) {
+            System.out.println("Server not found: " + ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println("I/O error: " + ex.getMessage());
+        }
+    }
+}
+Socket 用于连接服务器的指定IP和端口。
+通过输出流发送消息到服务器，通过输入流接收服务器的响应。
+
+
+TCP/UDP:
+两台计算机之间使用套接字建立TCP连接时的步骤：
+
+1.服务器实例化一个 ServerSocket 对象，表示通过服务器上的端口通信。
+2.服务器调用 ServerSocket 类的 accept() 方法，该方法将一直等待，直到客户端连接到服务器上给定的端口。
+3.服务器正在等待时，一个客户端实例化一个 Socket 对象，指定服务器名称和端口号来请求连接。
+4.Socket 类的构造函数试图将客户端连接到指定的服务器和端口号。如果通信被建立，则在客户端创建一个 Socket 对象能够与服务器进行通信。
+5.在服务器端，accept() 方法返回服务器上一个新的 Socket 引用，该 Socket 连接到客户端的 Socket。
+
+Java实现TCP网络程序设计：
+服务器端类：
+package dreamfly.net.server;
+
+//读取客户端发来的数据，给客户端写出数据
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Server {
+
+    public static void main(String[] args) throws IOException {
+
+        //1.开启服务器，参数是指开着的端口号
+        ServerSocket server = new ServerSocket(8899);
+        System.out.println("服务器已成功启动");
+        //2.接收客户端发来的连接
+        Socket socket = server.accept();
+        System.out.println("接收到客户端发来的请求");
+        //3.获取读取流
+        InputStream in = socket.getInputStream();
+        //4.读取数据
+//        int data = in.read();      //默认返回的是整数
+        for (int i = 0;i < 5;i++){
+            char data = (char)in.read();
+            System.out.print(data);
+        }
+        //5.给客户端写出数据
+        System.out.println();
+        OutputStream out = socket.getOutputStream();
+        out.write("world".getBytes());
+        System.out.println("服务器端成功发送数据");
+        out.close();
+    }
+}
+
+客户端类：
+package dreamfly.net.client;
+
+//读取服务器端发来的数据，给服务器端写出数据
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+
+public class Client {
+
+    public static void main(String[] args) throws IOException {
+        //1.连接到指定的服务器(ip+port)
+        Socket socket = new Socket("127.0.0.1",8899);
+        System.out.println("已连接成功");
+        //2.获取写出流
+        OutputStream out = socket.getOutputStream();
+        //3.写出数据,字节流只能写出整数或字节数组
+        //将hello对应整数编程对应的字节数组，getBytes()将String转换为byte[]
+        out.write("hello".getBytes());
+        System.out.println("客户端成功发送数据");
+        InputStream in = socket.getInputStream();
+        for (int i = 0;i < 5;i++){
+            char data = (char)in.read();
+            System.out.print(data);
+        }
+        System.out.println();
+        System.out.println("成功接收服务器端数据");
+        out.close();
+    }
+}
+
+
+
+Java实现UDP编程：
+服务器端
+DatagramSocket serverSocket = new DatagramSocket(1234)；//设置监听端口，可以和TCP端口重复，及一个应用程序用TCP占用端口1234，另一个程序可以用UDP占用端口1234
+byte[] buff = new byte[1024];
+
+客户端
+DatagramPacket packet = new DatagramPacket(buff, buff.length);//设置接受长度为buff.leng的buff数据
+
+serverSocket.receive(packet)；//收取UDP数据包
+
+String word = new String( packet.getData(), packet.getOffset(), packet.getLength(),StandardCharsets.UTF_8 );//将收到的数据按UTF-8转换为String
+
+System.out.println("已经收到"+word);//在服务器做出提示
+                byte[] resultbuff = word.getBytes();
+                packet.setData(resultbuff);
+                serverSocket.send(packet);//发送数据给客户端做出回应
+
+
+实现UDP的时候如何确保数据不丢失？
+在使用UDP协议进行数据传输时，数据包可能会丢失，因为UDP是一个不可靠的协议。为了确保数据不丢失，可以在应用层实现一些机制来增强可靠性。以下是一些常见的技术：
+
+确认应答机制（ACK）：每次发送数据包后，接收方发送一个确认应答（ACK）回给发送方。如果发送方在一定时间内没有收到ACK，则重新发送该数据包。
+超时和重传：发送方在发送数据包后启动一个定时器，如果在定时器超时之前没有收到ACK，发送方会重传该数据包。
+序列号：为每个数据包分配一个序列号。接收方可以根据序列号检测丢失的数据包，并要求发送方重传。
+滑动窗口协议：允许发送方在等待ACK时继续发送多个数据包，这样可以提高传输效率。接收方通过滑动窗口确认已经接收的数据包。
+
+实现代码：
+服务器端代码：
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+import java.util.Set;
+
+public class ReliableUdpServer {
+    private static final int PORT = 5000;
+
+    public static void main(String[] args) {
+        try (DatagramSocket socket = new DatagramSocket(PORT)) {
+            byte[] buffer = new byte[1024];
+            Set<Integer> receivedSequences = new HashSet<>();
+
+            while (true) {
+                DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+                socket.receive(packet);
+
+                String message = new String(packet.getData(), 0, packet.getLength(), StandardCharsets.UTF_8);
+                String[] parts = message.split(":", 2);
+                int sequenceNumber = Integer.parseInt(parts[0]);
+                String data = parts[1];
+
+                System.out.println("Received packet: " + sequenceNumber + ", Data: " + data);
+
+                if (!receivedSequences.contains(sequenceNumber)) {
+                    receivedSequences.add(sequenceNumber);
+                    // Process the data
+                }
+
+                // Send ACK
+                String ackMessage = "ACK:" + sequenceNumber;
+                byte[] ackBytes = ackMessage.getBytes(StandardCharsets.UTF_8);
+                DatagramPacket ackPacket = new DatagramPacket(ackBytes, ackBytes.length, packet.getAddress(), packet.getPort());
+                socket.send(ackPacket);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+使用DatagramSocket接收数据包。
+将接收到的数据包的序列号存储在receivedSequences集合中，避免处理重复数据包。
+发送确认应答（ACK）回给客户端。
+
+客户端代码：
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.nio.charset.StandardCharsets;
+
+public class ReliableUdpClient {
+    private static final String SERVER_ADDRESS = "localhost";
+    private static final int SERVER_PORT = 5000;
+    private static final int TIMEOUT = 1000; // 1 second
+
+    public static void main(String[] args) {
+        try (DatagramSocket socket = new DatagramSocket()) {
+            socket.setSoTimeout(TIMEOUT);
+
+            InetAddress address = InetAddress.getByName(SERVER_ADDRESS);
+            int sequenceNumber = 0;
+
+            String data = "Hello, Server!";
+            String message = sequenceNumber + ":" + data;
+            byte[] buffer = message.getBytes(StandardCharsets.UTF_8);
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, SERVER_PORT);
+
+            boolean acknowledged = false;
+            while (!acknowledged) {
+                socket.send(packet);
+                System.out.println("Sent packet: " + sequenceNumber);
+
+                try {
+                    byte[] ackBuffer = new byte[1024];
+                    DatagramPacket ackPacket = new DatagramPacket(ackBuffer, ackBuffer.length);
+                    socket.receive(ackPacket);
+
+                    String ackMessage = new String(ackPacket.getData(), 0, ackPacket.getLength(), StandardCharsets.UTF_8);
+                    if (ackMessage.equals("ACK:" + sequenceNumber)) {
+                        acknowledged = true;
+                        System.out.println("Received ACK for packet: " + sequenceNumber);
+                    }
+                } catch (Exception e) {
+                    System.out.println("ACK not received, resending packet: " + sequenceNumber);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+使用DatagramSocket发送数据包。
+等待服务器的ACK响应，如果超时未收到ACK，则重传数据包。
+
+
+URL：在WWW上，每一信息资源都有统一的且在网上的地址，该地址就叫URL（Uniform Resource Locator,统一资源定位器），它是WWW的统一资源定位标志，就是指网络地址。
+URL格式：协议 主机名 端口号 资源地址
+
+Java实现URL网络编程：
+public class UrlTest02 {
+
+    public static void main(String[] args) throws Exception {
+
+        HttpURLConnection urlConnection = null;
+        InputStream is = null;
+        FileOutputStream fos = null;
+        try {
+            URL url = new URL("http://localhost:8080/examples/beauty.jpg");
+
+            urlConnection = (HttpURLConnection) url.openConnection();
+
+            urlConnection.connect();
+
+            is = urlConnection.getInputStream();
+            fos = new FileOutputStream("day10\\beauty3.jpg");
+
+            byte[] buffer = new byte[1024];
+            int len;
+            while((len = is.read(buffer)) != -1){
+                fos.write(buffer,0,len);
+            }
+
+            System.out.println("下载完成");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            //关闭资源
+            if(is != null){
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(fos != null){
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(urlConnection != null){
+                urlConnection.disconnect();
+            }
+        }
+    }
+}
+
+以上是TCP/IP协议，多用于C/S架构中客户端与服务器端之间的连接。
+
+
+
+HTTP协议：
+关于C/S架构和B/S架构：
+1.C/S架构即客户端/服务器架构，指的是需要安装客户端应用程序才能进行操作的架构模式；
+2.而B/S架构即浏览器/服务器架构，指的是无需安装客户端应用程序，通过浏览器进行操作的模式。
+
+>在B/S架构中，用户通过浏览器访问Web服务器上的网页，数据传输使用HTTP或HTTPS协议进行。
+HTTPS协议是一种安全的HTTP协议，通过使用SSL/TLS证书来对数据进行加密，以保证数据传输的安全性和完整性。
+
+>在C/S架构中，客户端和服务器之间通过TCP/IP协议进行通信。TCP/IP协议是一种传输层协议，用于在局域网中进行通信，
+它规定了如何在网络中传输数据，并且能够保证数据的可靠性、顺序性和完整性。
+
+总结：B/S架构多使用HTTP或HTTPS协议，而C/S架构则更倾向于使用TCP/IP协议。
+但是，这并不是绝对的，也取决于具体的应用和需求。
+例如，在某些需要保证数据安全性和完整性的应用场景中，C/S架构也可能会使用HTTPS协议。
+
+PS：在JavaEE开发中，几乎全都是B/S架构的开发。系统标准的三层架构在B/S中广泛运用，这种架构包括表现层、业务层、持久层。
+PS: 微信小程序的开发用的是C/S架构。
+
+
+什么是HTTP协议？
+HTTP协议（HyperText Transfer Protocol）是一种网络通信协议，它允许将超文本标记语言（HTML）文档从Web服务器传送到客户端的浏览器。
+HTTP协议的默认端口是80，它定义了Web客户端和Web服务器之间的通信规则，确保了数据的安全和正确传输。
+HTTP协议是无状态协议，即服务器不会保留之前客户端请求的任何信息。
+每个HTTP请求都是独立的，服务器不会记住之前的请求和响应，因此每个请求都需要包含所有必要的信息，包括身份验证、Cookie等。
+
+
+什么是HTTPS协议？
+HTTPS协议是超文本传输安全协议的英文翻译缩写，是以安全为目标的HTTP通道，下加入了SSL层。
+HTTPS协议是一个抽象标识符体系，句法类同http：体系，用于安全的HTTP数据传输，
+https：URL表明它使用了HTTP，但HTTPS存在不同于HTTP的默认端口及一个加密身份验证层。
+
+
+HTTP协议的特点和基本工作原理：
+1.HTTP协议支持客户/服务器模式。
+2.HTTP协议简单快速：客户向服务器请求服务时，只需传送请求方法和路径，请求方法常用的有GET、HEAD、POST，
+由于HTTP协议简单，使得HTTP服务器的程序规模小，因而通信速度很快。
+3.HTTP协议灵活：HTTP允许传输任意类型的数据对象，传输的类型由Content-Type加以标记。
+4.HTTP协议无连接：无连接的含义是限制每次连接只处理一个请求，服务器处理完客户的请求，
+并收到客户的应答后，即断开连接，采用这种方式可以节省传输时间。
+
+HTTP请求报文格式：
+HTTP请求报文格式是HTTP协议中用于从客户端向服务器发送请求的一种标准化格式。一个完整的HTTP请求报文通常由请求行、请求头部和请求体（可选）三部分组成。
+
+请求行：
+请求行包含HTTP请求方法、请求的URL和HTTP协议版本。HTTP请求方法常见的有GET、POST、PUT、DELETE等，用于指定对资源的不同操作。请求的URL指明了请求的具体目标资源。
+HTTP协议版本则标识了使用的HTTP协议标准，如HTTP/1.1。
+
+请求头部：
+请求头部包含了一系列的字段，每个字段由字段名和字段值组成，字段名和字段值之间用冒号分隔。请求头部提供了关于请求的各种元信息，
+如客户端的类型（User-Agent）、客户端能够处理的内容类型（Accept）、请求的源地址（Referer）、请求的目标主机（Host）等。这些元信息有助于服务器理解和处理请求。
+
+请求体：
+请求体是可选的，它包含了发送给服务器的数据。对于GET请求，通常不会有请求体，因为GET请求主要用于请求数据。而对于POST或PUT请求，请求体则包含了需要发送给服务器的数据，如表单数据、JSON数据等。
+在格式上，请求行和请求头部以回车符（CR）和换行符（LF）结尾，形成CRLF序列。请求头部与请求体之间通常会有一个空行，即只包含CRLF的行，用于分隔请求头部和请求体。
+
+下面是一个简单的HTTP GET请求报文的例子：
+
+GET /example HTTP/1.1  
+Host: www.example.com  
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36  
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9  
+Accept-Encoding: gzip, deflate  
+Accept-Language: en-US,en;q=0.9  
+Connection: keep-alive  
+  
+// 此处为请求体开始的位置，对于GET请求，通常没有请求体
+在这个例子中，GET /example HTTP/1.1是请求行，Host、User-Agent、Accept等是请求头部的字段，而请求体部分在这个GET请求中是缺失的。
+
+
+发起HTTPS请求的过程：
+
+1.客户端向服务器发起HTTPS请求，连接到服务器的443端口。
+2.服务器端有一个密钥对，即公钥和私钥，是用来进行非对称加密使用的，服务器端保存着私钥，不能将其泄露，公钥可以发送给任何人。
+3.服务器将自己的公钥发送给客户端。
+4.客户端收到服务器端的证书之后，会对证书进行检查，验证其合法性，如果发现发现证书有问题，那么HTTPS传输就无法继续。
+5.如果公钥合格，那么客户端会生成一个随机值，这个随机值就是用于进行对称加密的密钥，我们将该密钥称之为clientkey，即客户端密钥，这样在概念上和服务器端的密钥容易进行区分。
+6.然后用服务器的公钥对客户端密钥进行非对称加密，这样客户端密钥就变成密文了。
+7.HTTPS中的第一次HTTP请求结束。
+
+使用Java发起https请求：
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+public class HttpClientExample {
+    public static void main(String[] args) {
+        // 创建HttpClient实例
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+
+        // 创建HttpGet请求
+        HttpGet httpGet = new HttpGet("http://example.com");
+
+        try {
+            // 发送HTTP请求并获取响应
+            CloseableHttpResponse response = httpClient.execute(httpGet);
+
+            // 从响应中获取HTTP实体
+            HttpEntity entity = response.getEntity();
+
+            if (entity != null) {
+                // 将HTTP实体内容转换为字符串并输出
+                String result = EntityUtils.toString(entity);
+                System.out.println(result);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 关闭HttpClient实例
+            try {
+                httpClient.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+HTTPS中反斜杠（/）通常用于表示路径（path）的一部分。路径是指URL中主机名和查询字符串之间的部分，用于指定请求的资源位置。
+其中，https中反斜杠指向的路径部分指定的是服务器的资源位置。当客户端向服务器发送请求时，服务器会根据路径部分来查找和提供相应的资源。
+
+
+
+HTTP请求响应格式：
+HTTP请求响应格式是HTTP协议中服务器对客户端请求进行回应的一种标准化格式。一个完整的HTTP响应报文通常由状态行、响应头部和响应体三部分组成。
+
+状态行：
+状态行包含了HTTP协议版本号、状态码和状态描述。HTTP协议版本号用于标识所使用的HTTP协议标准，如HTTP/1.1。状态码是一个三位数字，用于表示请求的处理结果，
+如200表示请求成功，404表示资源未找到等。状态描述是对状态码的简短文字描述，用于提供关于响应状态的额外信息。
+
+响应头部：
+响应头部包含了一系列的字段，每个字段由字段名和字段值组成，字段名和字段值之间用冒号分隔。
+响应头部提供了关于响应的各种元信息，如内容类型（Content-Type）、内容长度（Content-Length）、服务器类型（Server）等。这些元信息有助于客户端理解和处理响应内容。
+
+响应体：
+响应体是服务器返回给客户端的实际数据内容。对于成功的请求，响应体通常包含了请求的资源；对于错误请求，响应体可能包含错误信息或描述。响应体的格式和内容取决于请求的资源类型和服务器的配置。
+在格式上，状态行、响应头部和响应体之间都以回车符（CR）和换行符（LF）结尾，形成CRLF序列。响应头部与响应体之间通常会有一个空行，即只包含CRLF的行，用于分隔响应头部和响应体。
+
+下面是一个简单的HTTP响应报文的例子：
+
+HTTP/1.1 200 OK  
+Content-Type: text/html; charset=UTF-8  
+Content-Length: 1234  
+Server: Apache/2.4.41  
+  
+<!DOCTYPE html>  
+<html>  
+<head>  
+    <title>Example Page</title>  
+</head>  
+<body>  
+    <h1>Welcome to the Example Page!</h1>  
+    <!-- 页面内容 -->  
+</body>  
+</html>
+在这个例子中，HTTP/1.1 200 OK是状态行，Content-Type、Content-Length和Server是响应头部的字段，而响应体则包含了HTML页面的实际内容。
+
+
+设置在后端程序中统一返回HTTP响应对象：
+
+1.创建Http枚举类
+public enum HttpResponseStatus {  
+    OK(200, "OK"),  
+    CREATED(201, "Created"),  
+    ACCEPTED(202, "Accepted"),  
+    NO_CONTENT(204, "No Content"),  
+    BAD_REQUEST(400, "Bad Request"),  
+    UNAUTHORIZED(401, "Unauthorized"),  
+    FORBIDDEN(403, "Forbidden"),  
+    NOT_FOUND(404, "Not Found"),  
+    INTERNAL_SERVER_ERROR(500, "Internal Server Error");  
+  
+    private final int statusCode;  
+    private final String statusMessage;  
+  
+    HttpResponseStatus(int statusCode, String statusMessage) {  
+        this.statusCode = statusCode;  
+        this.statusMessage = statusMessage;  
+    }  
+  
+    public int getStatusCode() {  
+        return statusCode;  
+    }  
+  
+    public String getStatusMessage() {  
+        return statusMessage;  
+    }  
+  
+    // 根据状态码获取枚举项  
+    public static HttpResponseStatus getStatusByCode(int statusCode) {  
+        for (HttpResponseStatus status : HttpResponseStatus.values()) {  
+            if (status.getStatusCode() == statusCode) {  
+                return status;  
+            }  
+        }  
+        return null;  
+    }  
+}
+
+2.创建返回对象
+public class ResultData<T> {  
+    private int code; // HTTP状态码  
+    private String message; // 状态消息或错误信息  
+    private T data; // 返回的数据  
+    // 可以根据需要添加其他字段，如额外信息、时间戳等  
+  
+    private ResultData(int code, String message, T data) {  
+        this.code = code;  
+        this.message = message;  
+        this.data = data;  
+    }  
+  
+    // 静态方法，用于创建成功的响应对象  
+    public static <T> ResultData<T> success(T data) {  
+        return new ResultData<>(HttpResponseStatus.OK.getStatusCode(), HttpResponseStatus.OK.getStatusMessage(), data);  
+    }  
+  
+    // 静态方法，用于创建失败的响应对象  
+    public static <T> ResultData<T> fail(HttpResponseStatus status, String errorMessage) {  
+        return new ResultData<>(status.getStatusCode(), errorMessage, null);  
+    }  
+  
+    // 静态方法，根据状态码创建失败的响应对象  
+    public static <T> ResultData<T> failByCode(int statusCode, String errorMessage) {  
+        HttpResponseStatus status = HttpResponseStatus.getStatusByCode(statusCode);  
+        if (status != null) {  
+            return new ResultData<>(statusCode, status.getStatusMessage() + ": " + errorMessage, null);  
+        } else {  
+            return new ResultData<>(statusCode, "Unknown Error: " + errorMessage, null);  
+        }  
+    }  
+  
+    // Getter方法，用于获取响应的各个字段  
+    public int getCode() {  
+        return code;  
+    }  
+  
+    public String getMessage() {  
+        return message;  
+    }  
+  
+    public T getData() {  
+        return data;  
+    }  
+  
+    // toString方法，用于调试或日志记录  
+    @Override  
+    public String toString() {  
+        return "ResultData{" +  
+                "code=" + code +  
+                ", message='" + message + '\'' +  
+                ", data=" + data +  
+                '}';  
+    }  
+}
+
+
+
+CDN：
+什么是CDN？
+CDN工作机制是通过在现有的Internet中增加一层新的网站架构，将网站的内容发布到最接近用户的网络“边缘”，使用户可以就近取得所需内容，提高用户访问网站的响应速度。
+CDN以缓存网站中的静态数据为主，如CSS、JS、图片和静态页面等数据。用户从主站服务器请求到动态内容后，再从CDN上下载静态数据，
+从而加速网页数据内容的下载数据，如淘宝有90%以上的数据都是由CDN来提供。
+DNS服务器根据用户IP地址，将域名解析成相应节点的缓存服务器IP地址，实现用户就近访问。
+使用CDN服务的网站，只需将其域名解析权交给CDN的GSLB设备，将需要分发的内容注入CDN，就可以实现内容加速了。
+
+关于网络负载均衡：
+什么是负载均衡？
+负载均衡建立在现有网络结构之上，它提供了一种廉价有效透明的方法扩展网络设备和服务器的带宽、增加吞吐量、加强网络数据处理能力、提高网络的灵活性和可用性。
+负载均衡（Load Balance）其意思就是分摊到多个操作单元上进行执行，例如Web服务器、FTP服务器、企业关键应用服务器和其它关键任务服务器等，从而共同完成工作任务。
+
+关于不同的负载均衡：
+阐述一下分布式系统负载均衡、集群负载均衡、操作系统负载均衡、链路负载均衡的不同点。
+分布式系统负载均衡、集群负载均衡、操作系统负载均衡和链路负载均衡是不同领域和层次的负载均衡技术，它们在应用场景、范围和实现方式上有不同点：
+
+1. 分布式系统负载均衡：
+   - 应用领域： 分布式系统负载均衡主要应用于分布式计算和分布式存储系统中，以确保各个节点上的任务或数据负载均衡。
+   - 范围： 它是在分布式系统内部实现的负载均衡，通常不涉及跨越不同物理服务器的负载均衡。
+   - 实现方式： 分布式系统负载均衡可以通过各种算法和策略来实现，如任务分配、数据分片等。
+
+2. 集群负载均衡：
+   - 应用领域：集群负载均衡主要用于应用程序的高可用性和性能优化，通过将多个服务器组成集群，将负载均衡在这些服务器之间。
+   - 范围：集群负载均衡通常涉及跨越多台物理服务器的负载均衡，以实现应用程序的水平扩展。
+   - 实现方式：集群负载均衡可以通过硬件负载均衡器、软件负载均衡器（如Nginx、HAProxy）等来实现。
+
+3. 操作系统负载均衡：
+   - 应用领域：操作系统负载均衡主要用于操作系统内核的进程和资源管理，以确保操作系统上运行的任务在CPU、内存、磁盘等资源上均衡分配。
+   - 范围：它是在单个操作系统内部实现的负载均衡，用于优化操作系统的性能和资源利用率。
+   - 实现方式：操作系统负载均衡通过调度算法、进程优先级、内存管理等机制来实现资源分配和任务调度。
+
+4. 链路负载均衡：
+   - 应用领域：链路负载均衡主要应用于网络层，用于分发网络流量和请求到多个网络链接或路径上，以提高网络性能和可靠性。
+   - 范围：它涉及到物理网络层，以确保数据包在不同链路之间均衡分布，以避免某一链路过载或失效。
+   - 实现方式：链路负载均衡可以通过路由协议、硬件负载均衡器、软件路由器等来实现。
+
+综上所述，这些负载均衡技术在不同领域和层次中发挥作用。分布式系统负载均衡和集群负载均衡主要关注应用程序的分布和性能，操作系统负载均衡关注操作系统资源的管理，而链路负载均衡关注网络流量的分发和可靠性。
+它们在实现方式、应用场景和目标方面存在差异，但都旨在提高系统的性能、可用性和资源利用率。
+
+explain the difference between distributed system load balancing（分布式系统负载均衡）,cluster load balancing(集群负载均衡),operating system load balancing（操作系统负载均衡）,link load balancing （链路负载均衡）
+
+Load balancing is a technique used in computer systems to distribute workloads or network traffic across multiple resources (such as servers or network links) to ensure optimal performance, 
+minimize resource overload, and enhance system reliability. There are different types of load balancing, and here's an explanation of the differences between distributed system load balancing, 
+cluster load balancing, operating system load balancing, and link load balancing:
+
+Distributed System Load Balancing:
+
+Purpose: Distributed system load balancing involves distributing workloads across multiple servers or nodes within a distributed computing environment.The goal is to improve the overall system's performance, scalability, and fault tolerance.
+Use Case: It is commonly used in web applications, cloud computing, and large-scale distributed systems to evenly distribute user requests and processing tasks across multiple servers.
+Techniques: Distributed load balancers often use algorithms like Round Robin, Least Connections, or Weighted Round Robin to determine how to route incoming requests to available resources.
+
+Cluster Load Balancing:
+
+Purpose: Cluster load balancing is a subset of distributed system load balancing. It specifically applies to clusters or groups of servers or nodes that work together as a single entity to provide services.
+Use Case: Cluster load balancing is used in scenarios where high availability and fault tolerance are critical, such as in database clusters or application server clusters.
+Techniques: Techniques like virtual IP addresses and load balancing algorithms are used to evenly distribute traffic among the nodes within the cluster.
+
+Operating System Load Balancing:
+
+Purpose: Operating system load balancing focuses on distributing the processing load among the CPU cores or processors within a single machine or server.
+Use Case: It is relevant in multi-core or multi-processor systems where applications can benefit from parallelism and efficient resource utilization.
+Techniques: Modern operating systems often have built-in load balancing mechanisms that distribute tasks or threads across available CPU cores based on factors like CPU utilization and affinity policies.
+
+Link Load Balancing:
+
+Purpose: Link load balancing (or network load balancing) involves distributing network traffic across multiple network links or paths to optimize network performance, increase bandwidth, and improve network reliability.
+Use Case: It is commonly used in environments with redundant network connections, such as data centers, to ensure uninterrupted network connectivity and efficient use of available bandwidth.
+Techniques: Network load balancers may use techniques like Equal-Cost Multipath (ECMP) routing or dynamic link aggregation (LACP) to balance traffic across multiple network links.
+
+In summary, load balancing techniques are used at various levels of computing infrastructure to achieve different objectives. 
+Distributed system load balancing is about distributing workloads across multiple servers or nodes in a distributed environment, while cluster load balancing specifically applies to clusters of servers. 
+Operating system load balancing manages CPU resources within a single machine, and link load balancing optimizes network traffic distribution across multiple network links. 
+Each type of load balancing serves a unique purpose and addresses specific performance and scalability challenges.
+
+
+Tomcat:
+Tomcat（Apache Tomcat）是一个流行的开源Java应用服务器，用于托管和运行Java Web应用程序。
+在Tomcat中，webapps目录是专门用来存放Web应用程序的。这个目录结构允许Tomcat服务器识别并加载其中的Web应用程序，使得它们能够通过HTTP请求被访问。
+在webapps目录下，可以存放各种类型的文件来构成完整的Web应用程序。
+
+以下是可以在webapps目录中存放的一些文件类型：
+静态内容：
+HTML文件：构成Web页面结构的基本文件。
+CSS文件：用于定义Web页面的样式。
+JavaScript文件：用于添加页面交互和动态功能的客户端脚本。
+图片、音频、视频等媒体文件：作为Web页面的一部分被引用，提供多媒体内容。
+
+动态内容：
+JSP文件（Java Server Pages）：允许Java代码嵌入到HTML中，用于动态生成Web页面内容。
+Servlet类文件：编译后的Java类文件，用于处理请求并生成响应。Servlet通常放在WEB-INF/classes目录下，或者打包成JAR文件放在WEB-INF/lib目录下。
+
+配置文件：
+web.xml：Web应用程序的部署描述符，用于配置Servlet、过滤器、监听器以及初始化参数等。
+其他应用程序特定的配置文件：如数据库连接配置文件、日志配置文件等。
+
+库文件：
+JAR文件：Web应用程序所依赖的库和框架通常放在WEB-INF/lib目录下。这些JAR文件包含了应用程序运行所需的类库和依赖项。
+
+目录结构：
+META-INF：存放与JAR文件相关的元数据，如MANIFEST.MF文件。
+WEB-INF：一个特殊的目录，用于存放仅供服务器访问的资源，如classes目录（存放编译后的Java类文件）、lib目录（存放JAR库文件）以及任何应用程序内部使用的配置文件。
+
+在将文件添加到webapps目录时，Tomcat会按照其内部机制来加载和处理这些文件。当Tomcat服务器启动时，它会扫描webapps目录并自动部署其中的Web应用程序。
+每个Web应用程序通常对应webapps下的一个子目录，这个子目录的名称就是Web应用程序的上下文路径（Context Path）。
+
+
+Tomcat的系统架构主要包括以下关键组件和层次：
+1. Servlet容器：
+   - Tomcat的核心部分是Servlet容器，它是一个Web服务器扩展，用于执行Java Servlet和JavaServer Pages（JSP）等Web组件。
+   - Servlet容器负责接收HTTP请求、处理Servlet和JSP、生成HTTP响应，并将响应发送回客户端浏览器。
+   - Tomcat的Servlet容器遵循Java Servlet和JSP规范，并提供了Servlet的生命周期管理、多线程支持、会话管理等功能。
+
+2. 连接器（Connectors）：
+   - 连接器是Tomcat与客户端之间的通信接口。它们负责接受HTTP请求并将其传递给Servlet容器，然后将Servlet容器的响应发送回客户端。
+   - Tomcat支持多种连接器，包括HTTP连接器（用于处理HTTP请求）、AJP连接器（用于与Apache HTTP服务器集成）等。
+
+3. Catalina容器：
+   - Catalina是Tomcat的核心组件之一，负责Web应用程序的生命周期管理和请求分派。
+   - Catalina包括多个子容器，如Engine、Host和Context，它们用于组织和管理Web应用程序。
+   - Engine表示整个Tomcat引擎，Host表示一个虚拟主机，Context表示一个Web应用程序上下文。
+
+4. JSP引擎：
+   - Tomcat包括一个JSP引擎，用于编译和执行JavaServer Pages。当JSP页面首次被访问时，JSP引擎将其编译成Servlet，并在后续请求中执行该Servlet。
+   - JSP引擎支持JSP标签、自定义标签库（Tag Libraries）等JSP特性。
+
+5. 类加载器：
+   - Tomcat使用类加载器来加载Web应用程序的Java类。每个Web应用程序都有自己的类加载器，以隔离不同应用程序之间的类。
+   - Tomcat的类加载器体系结构支持共享库（shared library）和全局库（global library），使得可以在多个应用程序之间共享某些类。
+
+6. 管理工具：
+   - Tomcat提供了一组Web管理工具，用于监视和管理Tomcat服务器。这些工具包括Tomcat管理应用程序、Tomcat管理控制台、Manager应用程序等。
+   - 这些工具使管理员能够查看服务器状态、部署和管理Web应用程序、查看日志、配置数据源等。
+
+总的来说，Tomcat的系统架构是一个多层次的体系结构，其中包括Servlet容器、连接器、Catalina容器、JSP引擎、类加载器和管理工具等组件。
+这些组件协同工作，使Tomcat成为一个强大的Java应用服务器，用于托管和运行Web应用程序。Tomcat的开源性质和广泛的社区支持使其成为Java Web应用程序开发和部署的流行选择。
+
+
+Nginx：
+NGINX是一个高性能的HTTP和反向代理web服务器，同时也提供了IMAP/POP3/SMTP服务。
+NGINX是由伊戈尔·赛索耶夫为俄罗斯访问量第二的Rambler.ru站点开发的，公开版本1.19.6发布于2020年12月15日。其将源代码以类BSD许可证的形式发布，因它的稳定性、丰富的功能集、简单的配置文件和低系统资源的消耗而闻名。
+
+Nginx（发音为"engine-x"）是一个高性能、可伸缩、开源的反向代理服务器和Web服务器，其系统架构具有以下关键组件和特点：
+
+1. Master Process（主进程）：
+   - Nginx的系统架构以主从进程模型为基础。主进程是第一个启动的Nginx进程，它负责管理其他子进程，处理配置文件加载、平滑升级、日志记录等任务。
+   - 主进程不处理实际的客户端请求，而是将请求分配给工作进程（worker process）。
+
+2. Worker Processes（工作进程）：
+   - Nginx可以配置多个工作进程，每个工作进程独立处理客户端请求。
+   - 工作进程是并发处理的核心，它们可以同时处理多个客户端请求，通过事件驱动方式来提供高性能的请求处理。
+   - 每个工作进程都是一个独立的进程，它们不共享内存，提高了稳定性和安全性。
+
+3. 事件驱动模型：
+   - Nginx采用了事件驱动的架构，使用高效的I/O多路复用机制，如epoll（在Linux上）或kqueue（在BSD上），以实现非阻塞的事件处理。
+   - 这意味着Nginx可以在单个工作进程中同时处理多个并发连接，而无需为每个连接创建一个新的线程或进程，从而降低了资源开销。
+
+4. 反向代理（Reverse Proxy）：
+   - Nginx经常用作反向代理服务器，接收来自客户端的请求，然后将请求代理到后端的应用服务器上，如Tomcat、Node.js或Ruby on Rails。
+   - 这使得Nginx能够负责负载均衡、SSL终止、请求缓存、静态文件服务等功能。
+
+//配置Nginx
+   server {
+    listen 80;
+    server_name example.com;  # 修改为您的域名或IP地址
+    location / {
+        proxy_pass http://localhost:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+
+5. HTTP和HTTPS支持：
+   - Nginx是一个全功能的HTTP服务器，支持HTTP/1.0、HTTP/1.1和HTTP/2协议。它能够处理HTTP请求和响应、URL重写、反向代理、gzip压缩等。
+   - Nginx还支持HTTPS，可以进行SSL/TLS终止、证书管理和安全连接。
+
+6. 模块化架构：
+   - Nginx采用模块化的设计，它允许通过第三方模块来扩展功能。管理员可以根据需要加载不同的模块，以适应特定的用例和需求。
+   - 核心模块处理基本功能，如HTTP请求和响应，而第三方模块可以添加缓存、安全性、负载均衡等功能。
+
+7. 负载均衡：
+   - Nginx支持多种负载均衡算法，如轮询、IP哈希、最小连接数等，以将客户端请求分发到多个后端服务器上，实现高可用性和性能优化。
+
+   http {
+    upstream backend {
+        server backend1.example.com;
+        server backend2.example.com;
+        server backend3.example.com;
+    }
+
+    # ...其他Nginx配置...
+
+    server {
+        listen 80;
+
+        location / {
+            proxy_pass http://backend;
+        }
+    }
+}
+
+负载均衡后的请求将会均匀的分发到backend中列出的三个服务器中。
+
+总的来说，Nginx的系统架构是一个高性能、事件驱动的主从进程模型，具有反向代理、负载均衡、HTTP和HTTPS支持、模块化设计等特点。
+这些特性使得Nginx成为一个非常受欢迎的Web服务器和反向代理服务器，适用于各种用例，从静态文件服务到高流量的Web应用程序。 
+Nginx的性能和可伸缩性使其在构建现代Web架构中广泛使用。
+
+项目中使用了nginx做反向代理，还需要网关做映射吗？
+在项目中，当使用Nginx作为反向代理时，是否还需要使用网关进行映射，取决于具体的项目需求和架构设计。以下是一些考虑因素：
+
+1.路由和映射需求：如果你的项目需要复杂的路由和映射规则，例如基于路径、请求头、请求方法等的动态路由，那么使用网关可能更加灵活和方便。
+Nginx虽然也支持路由和映射，但可能不如一些专门的网关工具（如Spring Cloud Gateway）那样灵活。
+2.微服务架构：如果你的项目采用微服务架构，并且希望实现服务间的路由、限流、熔断、重试等高级功能，那么使用网关可能是更好的选择。网关可以作为微服务架构中的核心组件，负责处理服务间的通信和协调。
+3.安全性考虑：Nginx本身已经提供了很多安全性功能，如SSL/TLS加密、访问控制等。但是，如果你需要更高级的安全性功能，如API认证、授权、审计等，那么使用网关可能更加合适。
+网关可以集成这些安全性功能，并提供更细粒度的控制。
+4.性能和扩展性：Nginx是一个高性能的反向代理服务器，可以处理大量的并发请求。但是，如果你的项目需要更高的性能和扩展性，例如支持分布式部署、自动扩展等，那么使用网关可能更加合适。
+网关通常可以基于云计算和容器化技术进行扩展和部署。
+
+综上所述，是否需要使用网关进行映射取决于你的项目需求和架构设计。如果你的项目需要复杂的路由和映射规则、微服务架构、高级安全性功能或更高的性能和扩展性，那么使用网关可能是更好的选择。
+否则，使用Nginx作为反向代理已经可以满足大多数项目的需求。
+
+
+
+Netty：
+Netty是一个由JBOSS提供的开源框架，用于快速开发高性能、高可靠性的网络应用程序。
+它简化和流线化了网络应用的编程开发过程，基于NIO（非阻塞IO）开发，使用异步事件驱动的方式处理网络请求。
+
+Netty的主要特点包括：
+异步事件驱动：Netty基于事件驱动编程模型，通过异步方式处理网络请求，避免了阻塞IO带来的性能问题。
+基于NIO：Netty基于Java的NIO（非阻塞IO）库开发，能够高效地处理大量并发连接。
+简化开发：Netty提供了一套丰富的API和工具类，使得开发者可以更加专注于业务逻辑的实现，而无需深入了解底层网络协议和IO处理的细节。
+可扩展性强：Netty的设计采用了模块化结构，各个模块之间耦合度低，可以根据需要灵活地扩展和定制。
+社区活跃：Netty拥有庞大的开发者社区，不断有新的功能和优化被加入到框架中，为开发者提供了强有力的支持。
+
+使用netty创建一个服务器：
+import io.netty.bootstrap.ServerBootstrap;  
+import io.netty.channel.ChannelFuture;  
+import io.netty.channel.ChannelInitializer;  
+import io.netty.channel.ChannelOption;  
+import io.netty.channel.EventLoopGroup;  
+import io.netty.channel.nio.NioEventLoopGroup;  
+import io.netty.channel.socket.SocketChannel;  
+import io.netty.channel.socket.nio.NioServerSocketChannel;  
+import io.netty.handler.logging.LogLevel;  
+import io.netty.handler.logging.LoggingHandler;  
+  
+public class ServerBootstrap {  
+    public static void main(String[] args) throws Exception {  
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1);  
+        EventLoopGroup workerGroup = new NioEventLoopGroup();  
+        try {  
+            ServerBootstrap bootstrap = new ServerBootstrap();  
+            bootstrap.group(bossGroup, workerGroup)  
+                     .channel(NioServerSocketChannel.class)  
+                     .option(ChannelOption.SO_BACKLOG, 128)  
+                     .childOption(ChannelOption.SO_KEEPALIVE, true)  
+                     .handler(new LoggingHandler(LogLevel.INFO))  
+                     .childHandler(new ChannelInitializer<SocketChannel>() {  
+                         @Override  
+                         public void initChannel(SocketChannel ch) throws Exception {  
+                             ch.pipeline().addLast(new ServerHandler());  
+                         }  
+                     });  
+            ChannelFuture future = bootstrap.bind(8080).sync();  
+            future.channel().closeFuture().sync();  
+        } finally {  
+            bossGroup.shutdownGracefully();  
+            workerGroup.shutdownGracefully();  
+        }  
+    }  
+}
+
+使用netty创建客户端：
+使用netty创建客户端引导程序
+import io.netty.bootstrap.Bootstrap;  
+import io.netty.channel.ChannelFuture;  
+import io.netty.channel.ChannelInitializer;  
+import io.netty.channel.ChannelOption;  
+import io.netty.channel.EventLoopGroup;  
+import io.netty.channel.nio.NioEventLoopGroup;  
+import io.netty.channel.socket.SocketChannel;  
+import io.netty.channel.socket.nio.NioSocketChannel;  
+import io.netty.handler.logging.LogLevel;  
+import io.netty.handler.logging.LoggingHandler;  
+  
+public class ClientBootstrap {  
+    public static void main(String[] args) throws Exception {  
+        EventLoopGroup group = new NioEventLoopGroup();  
+        try {  
+            Bootstrap bootstrap = new Bootstrap();  
+            bootstrap.group(group)  
+                     .channel(NioSocketChannel.class)  
+                     .option(ChannelOption.SO_KEEPALIVE, true)  
+                     .handler(new LoggingHandler(LogLevel.INFO))  
+                     .childHandler(new ChannelInitializer<SocketChannel>() {  
+                         @Override  
+                         public void initChannel(SocketChannel ch) throws Exception {  
+                             ch.pipeline().addLast(new ClientHandler());  
+                         }  
+                     });  
+            ChannelFuture future = bootstrap.connect("localhost", 8080).sync();  
+            future.channel().closeFuture().sync();  
+        } finally {  
+            group.shutdownGracefully();  
+        }  
+    }  
+}
+
+创建客户端处理器
+import io.netty.buffer.ByteBuf;  
+import io.netty.channel.ChannelHandlerContext;  
+import io.netty.channel.ChannelInboundHandlerAdapter;  
+import io.netty.handler.codec.http.*;  
+import java.nio.charset.Charset;  
+  
+public class ClientHandler extends ChannelInboundHandlerAdapter {  
+    @Override  
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {  
+        if (msg instanceof FullHttpResponse) {  
+            FullHttpResponse response = (FullHttpResponse) msg;  
+            System.out.println(response.content().toString(Charset.forName("UTF-8")));  
+        } else {  
+            super.channelRead(ctx, msg);  
+        }  
+    }  
+    @Override public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {   
+        cause.printStackTrace();   
+        ctx.close();   
+    }   
+}
+
+在实际生活中有哪些因素影响网络传输？
+网络传输的性能和可靠性受到许多因素的影响，这些因素可以分为以下几类：
+
+1.带宽（Bandwidth）：带宽是网络连接的最大传输速率，通常以每秒比特数（bps）或兆比特数（Mbps）来衡量。
+更高的带宽意味着更快的数据传输速度。网络链路的带宽限制了数据传输的最大速度。
+
+2.延迟（Latency）：延迟是数据从发送端到接收端所需的时间，通常以毫秒（ms）为单位。
+延迟包括传播延迟（数据在物理媒体上传播的时间）和处理延迟（路由、交换和处理数据的时间）。较低的延迟通常意味着更快的响应时间。
+
+3.丢包率（Packet Loss）：丢包率表示在数据传输过程中丢失的数据包的百分比。丢包率可能由网络拥塞、网络错误或不稳定的连接引起。
+较高的丢包率会导致数据重传和性能下降。
+
+4.拥塞（Congestion）：网络拥塞发生在网络上的数据流量超过了网络链路的容量，导致数据包延迟、丢失和排队。
+拥塞可能由网络流量突增、恶意攻击或网络配置问题引起。
+
+5.路由路径（Routing Path）：数据包在网络中的路由路径也会影响传输性能。不同的路由路径可能具有不同的延迟和丢包率。优化的路由路径可以提高性能。
+
+6.网络设备和中间节点（Network Devices and Intermediate Nodes）：网络中的路由器、交换机和防火墙等设备以及它们的配置也会影响传输性能。
+设备的性能、带宽和负载均衡策略都会对网络传输产生影响。
+
+7.带宽共享（Bandwidth Sharing）：在共享网络环境中，多个用户或应用程序共享带宽。
+网络传输的性能可能受到其他用户或应用程序的使用情况影响，特别是在拥挤的时候。
+
+8.网络拓扑（Network Topology）：网络拓扑指网络中的设备和连接的物理和逻辑布局。
+不同的拓扑结构可能导致不同的性能特点，如星型、总线型、环型、网状型等。
+
+9.网络协议和编码（Network Protocols and Encoding）：使用的网络协议和数据编码方式也会影响传输性能。
+一些协议和编码方式可能会增加数据包头部大小或引入额外的开销。
+
+10.网络安全（Network Security）：安全策略、防火墙、加密和身份验证等安全机制可能会引入额外的延迟和处理时间，影响网络传输性能。
+
+11.地理位置和距离（Geographical Location and Distance）：物理距离和地理位置对网络延迟和带宽有影响。
+数据传输跨越较长的地理距离可能导致较高的延迟。
+
+12.网络流量管理（Traffic Management）：流量管理策略、QoS（Quality of Service）配置和流量限制也可以影响网络传输的性能。
+
+综上所述，网络传输性能受到多种因素的综合影响，包括带宽、延迟、丢包率、拥塞、路由路径、网络设备、带宽共享、网络拓扑、协议、安全性等。
+了解这些因素并采取相应的优化措施是确保网络传输在实际生活中高效和可靠的关键。
+
+
+为什么Java比其他语言更适合开发Web应用程序？
+Java比其他语言更适合开发Web应用程序的原因如下：
+
+1.跨平台性。Java由于其跨平台的特点，可以在多种操作系统上运行，这使得Java在服务器端程序中占据了主导地位。
+2.面向对象。Java是一种面向对象编程语言，具有封装、继承和多态等特性，这使得Java在编程中更易于理解和维护。
+开源。Java拥有一个庞大的开源社区，提供了大量的开源框架和库，这使得Java在Web开发中具有更强的灵活性和可扩展性。
+3.J2EE技术。J2EE是Java在Web开发中的一种重要技术，它提供了一组标准的技术和API，如Servlet、JSP和EJB等，
+使得开发者可以轻松地构建出高性能、可扩展、可维护且安全的企业级应用程序。
+4.高度安全。Java具有某些内置的安全功能，例如密码学、高级身份验证和访问控制，这些功能在很大程度上促成了Java开发服务的蓬勃发展。
+5.可扩展性和多线程。Java是高度可扩展的，可以适应Web应用程序的需求，并为开发人员提供水平和垂直扩展的能力。
+此外，Java的NIO（非阻塞I/O）API促进了在软件的单个副本中创建尽可能多的线程，这极大地提高了应用程序的性能。
+
+
+Web后端技术：
 Servlet：
 Servlet（Server Applet）是Java Servlet的简称，称为小服务程序或服务连接器，用Java编写的服务器端程序，具有独立于平台和协议的特性，主要功能在于交互式地浏览和生成数据，生成动态Web内容。
 狭义的Servlet是指Java语言实现的一个接口，广义的Servlet是指任何实现了这个Servlet接口的类，一般情况下，人们将Servlet理解为后者。Servlet运行于支持Java的应用服务器中。
@@ -5010,7 +5690,6 @@ public class MyServletContextListener implements ServletContextListener {
 
 然后，我们需要在web.xml文件中配置这个监听器：
 
-xml
 <web-app ...>  
     <!-- 其他配置 -->  
       
@@ -5262,7 +5941,7 @@ Java WEB 中什么是前后端不分离？
 
 1.Spring Boot：Spring Boot是一个全栈的Java框架，它可以创建独立的、生产级别的Spring应用程序。
 Spring Boot可以构建Web应用，并且内置了Tomcat服务器，前端和后端代码都放在同一个应用中。
-2.**JavaServer Pages (JSP)**：JSP是一种Java技术，让你可以在HTML中嵌入Java代码。
+2.JavaServer Pages (JSP)：JSP是一种Java技术，让你可以在HTML中嵌入Java代码。
 JSP在服务器上运行，并动态生成HTML页面返回给客户端。这种方式下，前端和后端的代码是混在一起的。
 
 
@@ -5721,121 +6400,6 @@ spring实现业务对象管理，mybatis作为数据对象的持久化引擎。
 4、MyBatis 是一个基于Java的持久层框架
 
 
-  
-Java Stream：
-Stream流是一种顺序的元素集合，它支持类似于SQL语句的操作，如过滤、映射、排序等。通过使用Stream流，我们可以以声明式的方式对数据进行处理，而不需要关心具体的实现细节。
-
-Stream流的主要特点包括：
-Stream流不存储数据，而是通过管道传输数据。
-Stream流可以操作任何数据源，如集合、数组、I/O通道等。
-Stream流可以进行串行操作和并行操作。
-Java中的Stream流主要包含两种类型：中间操作和终端操作。中间操作用于对流进行一系列的转换和操作，而终端操作用于从流中获取结果。
-
-使用Stream流可以通过以下几个步骤进行：
-
-创建流：可以从集合、数组、I/O通道等数据源中创建Stream流。
-中间操作：对流进行一系列的转换和操作，如过滤、映射、排序等。
-终端操作：从流中获取结果，如聚合、收集、遍历等。
-
-
-常用的 Stream 函数包括：
-中间操作符：通常对于Stream的中间操作，可以视为是源的查询，并且是懒惰式的设计，对于源数据进行的计算只有在需要时才会被执行，
-与数据库中视图的原理相似；Stream流的强大之处便是在于提供了丰富的中间操作，相比集合或数组这类容器，极大的简化源数据的计算复杂度
-一个流可以跟随零个或多个中间操作。其目的主要是打开流，做出某种程度的数据映射/过滤，然后返回一个新的流，交给下一个操作使用
-
-1. filter(Predicate<T> predicate)：根据指定的条件过滤出符合条件的元素。
-userList.stream().filter(user -> user.getId() > 6).collect(Collectors.toList());
-2. map(Function<T, R> mapper)：将每个元素映射为另一个元素。
-userList.stream().map(user -> user.getName() + "用户").collect(Collectors.toList());
-3. flatMap(Function<T, Stream<R>> mapper)：将每个元素映射为一个 Stream，并将所有 Stream 的元素合并为一个 Stream。
-userList.stream().flatMap(user -> Arrays.stream(user.getCity().split(","))).forEach(System.out::println);
-
-map：对流中每一个元素进行处理
-flatMap：流扁平化，让你把一个流中的“每个值”都换成另一个流，然后把所有的流连接起来成为一个流 
-本质区别：map是对一级元素进行操作，flatmap是对二级元素操作map返回一个值；flatmap返回一个流，多个值
-
-4. distinct()：去除重复的元素。
-userList.stream().map(User::getCity).distinct().collect(Collectors.toList());
-5. sorted()：对元素进行排序。
-userList.stream().sorted(Comparator.comparing(User::getName).reversed()).collect(Collectors.toList()).forEach(System.out::println);
-6. limit(long maxSize)：限制 Stream 的大小。
-userList.stream().limit(5).collect(Collectors.toList()).forEach(System.out::println);
-7. skip(long n)：跳过前 n 个元素。
-userList.stream().skip(7).collect(Collectors.toList()).forEach(System.out::println);
-8. peek():对元素进行遍历处理
-//每个用户ID加1输出
-userList.stream().peek(user -> user.setId(user.getId()+1)).forEach(System.out::println);
-
----------------------终端操作符-----------------------------------------------------------------
-终端操作符：Stream流执行完终端操作之后，无法再执行其他动作，否则会报状态异常，提示该流已经被执行操作或者被关闭，
-想要再次执行操作必须重新创建Stream流。一个流有且只能有一个终端操作，当这个操作执行后，流就被关闭了，无法再被操作，
-因此一个流只能被遍历一次，若想在遍历需要通过源数据在生成流。
-
-9. forEach(Consumer<T> action)：对每个元素执行指定的操作。
-userList.stream().forEach(user -> System.out.println(user));
-userList.stream().filter(user -> "上海".equals(user.getCity())).forEach(System.out::println);
-10. collect(Collector<T, A, R> collector)：收集器，将流转换为其他形式。
-Set set = userList.stream().collect(Collectors.toSet());
-List list = userList.stream().collect(Collectors.toList());
-11. findFirst():返回第一个元素
-User firstUser = userList.stream().findFirst().get();
-User firstUser1 = userList.stream().filter(user -> "上海".equals(user.getCity())).findFirst().get();        
-12. findAny():返回当前流中的任意元素
-User findUser = userList.stream().findAny().get();
-User findUser1 = userList.stream().filter(user -> "上海".equals(user.getCity())).findAny().get();
-13. count():返回流中元素总数
-long count = userList.stream().filter(user -> user.getAge() > 20).count();		
-14. sum():求和
-int sum = userList.stream().mapToInt(User::getId).sum();
-15. max():最大值
-int max = userList.stream().max(Comparator.comparingInt(User::getId)).get().getId();
-16. min():最小值
-int min = userList.stream().min(Comparator.comparingInt(User::getId)).get().getId();
-17. anyMatch():检查是否至少匹配一个元素，返回boolean
-boolean matchAny = userList.stream().anyMatch(user -> "北京".equals(user.getCity()));
-18. allMatch():检查是否匹配所有元素，返回boolean
-boolean matchAll = userList.stream().allMatch(user -> "北京".equals(user.getCity()));
-19. noneMatch():检查是否没有匹配所有元素，返回boolean
-boolean nonaMatch = userList.stream().allMatch(user -> "云南".equals(user.getCity()));
-20.reduce():可以将流中元素反复结合起来，得到一个值
-Optional reduce = userList.stream().reduce((user, user2) -> {
-    return user;
-});
-
-
-		
-通过使用这些函数，可以简化代码、提高效率，并且使代码更加易读和可维护。
-
-Java反射：
-反射是作为动态语言的关键，反射机制允许程序在执行期借助于Reflection API取得任何类的内部信息，并能直接操作任意对象的内部属性和方法。
-
-动态语言和静态语言概念：
-动态类型语言：动态类型语言是指在运行期间才去做数据类型检查的语言，也就是说，在用动态类型的语言编程时，永远也不用给任何变量指定数据类型（变量使用之前不需要类型声明），该语言会在你第一次赋值给变量时，在内部将数据类型记录下来。
-Python 和 Ruby 就是一种典型的动态类型语言，其他的各种脚本语言如 JavaScript 、Shell也属于动态类型语言。
-静态类型语言：静态类型语言与动态类型语言刚好相反，它的数据类型是在编译其间检查的，也就是说在写程序时要声明所有变量的数据类型，C/C++ 是静态类型语言的典型代表，其他的静态类型语言还有 C#、JAVA 、golang等。
-总结：静态类型和动态类型的本质区别在于：变量的数据类型确定的时机不同，前者在运行时根据变量值确定；后者在编译时根据声明类型确定。
-
-Java反射概述：
->Java反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；
-对于任意一个对象，都能够调用它的任意一个方法和属性；
-这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。
->要想解剖一个类,必须先要获取到该类的字节码文件对象。而解剖使用的就是Class类中的方法。
-所以先要获取到每一个字节码文件对应的Class类型的对象。
->比如之前在没有使用反射的时候，我们这里有一个类，如果我们想要调用里面的属性、方法等，
-我们要先创建一个对象，才可以调用里面的属性等。
->类似的，我们如果使用反射，想要使用一个类的成员变量，方法，构造器等，我们就要先获取一个Class对象，
-这个Class对象里面有类的成员变量，方法等信息，这样我们才可以进行相关的操作。
->正因为反射是在运行时获取类的信息，所以用反射去获取类的注解时只能获取到运行时的注解。
-
-Class 类：反射的核心类，可以获取类的属性，方法等信息。
-Field 类：Java.lang.reflec 包中的类，表示类的成员变量，可以用来获取和设置类之中的属性值。
-Method 类： Java.lang.reflec 包中的类，表示类的方法，它可以用来获取类中的方法信息或 者执行方法。
-Constructor 类： Java.lang.reflec 包中的类，表示类的构造方法。
-
-getFields():获取当前运行时类及父类中声明为public访问权限的属性
-getDeclaredFields()：获取当前运行时类中声明的所有属性（不包括父类）
-getMethods():获取当前运行时类及其父类中声明为public的方法
-	
 
 注解、反射、动态代理→ Java Spring  
 JavaBean:JavaBean 是一种JAVA语言写成的可重用组件。为写成JavaBean，类必须是具体的和公共的，并且具有无参数的构造器。
@@ -5884,20 +6448,7 @@ Retention注解：
 
 5、Inherited 注解
 被@Inherited 修饰的注解 将具有继承性，如果某个类使用了被 @Inherited修饰的注解，则其子类将自动具有该注解
-	
-Java动态代理：
-代理类在程序运行时创建的代理方式被成为动态代理。在静态代理中，代理类（RenterProxy）是自己已经定义好了的，在程序运行之前就已经编译完成。
-而动态代理是在运行时根据我们在Java代码中的“指示”动态生成的。Java运用了反射实现了动态代理。
-动态代理相较于静态代理的优势在于可以很方便的对代理类的所有函数进行统一管理，如果我们想在每个代理方法前都加一个方法，如果代理方法很多，我们需要在每个代理方法都要写一遍，很麻烦。而动态代理则不需要。
-代码实现：创建RenterInvocationHandler类，这个类实现了InvocationHandler接口，并持有一个被代理类的对象，InvocationHandler中有一个invoke方法，所有执行代理对象的方法都会被替换成执行invoke方法。
-然后通过反射在invoke方法中执行代理类的方法。在代理过程中，在执行代理类的方法前或者后可以执行自己的操作，这就是spring aop的主要原理。
 
-动态代理之Cglib代理：
-动态代理需要被代理类实现接口，如果被代理类没有实现接口，那么这么实现动态代理？这时候就需要用到CGLib了。这种代理方式就叫做CGlib代理。
-Cglib代理也叫作子类代理，他是通过在内存中构建一个子类，并在子类中采用方法拦截的技术拦截所有父类方法的调用，然后加入自己需要的操作。因为使用的是继承的方式，所以不能代理final 类
-动态代理与CGLib动态代理都是实现Spring AOP的基础。如果加入容器的目标对象有实现接口,用动态代理，如果目标对象没有实现接口,用Cglib代理。
-
-动态代理的运用：Spring
 
 Java Spring：
 Spring 框架就像一个家族，有众多衍生产品例如 boot、security、jpa等等。但他们的基础都是Spring 的 ioc和 aop ioc 提供了依赖注入的容器 aop ，解决了面向横切面的编程，然后在此两者的基础上实现了其他延伸产品的高级功能。
