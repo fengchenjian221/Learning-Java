@@ -15077,6 +15077,26 @@ rdd.collect().foreach(println)
 // 关闭SparkContext
 sc.stop()
 
+2.从文件中创建RDD
+import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.sql.SparkSession
+
+// 创建SparkConf和SparkSession
+val conf = new SparkConf().setAppName("Read CSV File").setMaster("local[*]")
+val spark = SparkSession.builder.config(conf).getOrCreate()
+val sc = spark.sparkContext
+
+// 从CSV文件读取数据
+val filePath = "file:///path/to/local/file.csv"
+val df = spark.read.format("csv").option("header", "true").load(filePath)
+val rdd = df.rdd
+
+// 打印RDD的内容
+rdd.collect().foreach(println)
+
+// 关闭SparkSession
+spark.stop()
+
 RDD 容错机制Checkpoint
 持久化的局限：
 持久化/缓存可以把数据放在内存中，虽然是快速的，但是也是最不可靠的；
