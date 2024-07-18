@@ -4558,7 +4558,7 @@ TCP和UDP协议是TCP/IP协议的核心。 TCP 传输协议：TCP 协议是一TC
 通俗说，它是事先为所发送的数据开辟出连接好的通道，然后再进行数据发送；而UDP则不为IP提供可靠性、流控或差错恢复功能。
 一般来说，TCP对应的是可靠性要求高的应用，而UDP对应的则是可靠性要求低、传输经济的应用。
 
-网络编程之实现InetAddress实例化：
+网络编程之实现InetAddress实例化：InetAddress 是 Java 中表示 IP 地址的类。你可以使用它来获取本地主机或远程主机的 IP 地址，解析主机名等。
 public class InetAddressTest {
     public static void main(String[] args) {
  
@@ -15876,7 +15876,13 @@ save()
 foreach()
 
 Spark闭包检测：
+Spark闭包检查是Spark框架中一个重要的机制，主要用于确保在分布式计算环境中，闭包（Closure）内的对象可以被正确地序列化并传输到Executor节点上执行。闭包检查的主要目的是防止因为序列化失败而导致的任务执行错误。
+
+
 Spark的Kryo序列化：
+Spark Kryo序列化是Apache Spark框架中支持的一种高性能的Java序列化机制。Kryo是一个快速且高效的序列化框架，它通过使用自定义的序列化方式来避免Java标准序列化的一些性能问题，如序列化体积大、序列化速度慢等。
+在Spark中引入Kryo序列化框架的主要目的是为了提高Spark作业的性能，特别是在处理大规模数据时，序列化的性能对整个作业的性能影响非常大。
+
 
 Spark血缘分析：
 在Apache Spark中，血缘分析（Lineage Analysis）是指追踪和记录RDD（Resilient Distributed Dataset）之间的依赖关系和操作链的过程。
@@ -15909,6 +15915,7 @@ Union：每个输出分区依赖于两个输入分区（但这仍然是窄依赖
 GroupByKey：每个输出分区依赖于多个输入分区的数据。
 ReduceByKey：每个输出分区依赖于多个输入分区的数据。
 Join：需要将两个RDD的数据按照键进行重新分配。
+
 
 Spark DAG：
 DAG(Directed Acyclic Graph 有向无环图)：指的是数据转换执行的过程，有方向，无闭环(其实就是 RDD 执行的流程)；
@@ -16379,6 +16386,10 @@ reset：重置累加器。
 add：添加值到累加器。
 merge：合并两个累加器。
 value：返回累加器的值。
+
+
+Spark工程化代码方法：
+Controller Service DAO 
 
 Spark SQL:Spark SQL 是 Spark 用来操作结构化数据的组件。
 通过 Spark SQL，用户可以使用 SQL或者 Apache Hive 版本的 SQL 方言（HQL）来查询数据。
