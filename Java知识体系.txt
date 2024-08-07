@@ -498,7 +498,7 @@ int [][] arr = {{1,2,3},{4,5},{6,7,8}};
 String [][] arr2 = new String[5][3]; 
 String [][] arr2 = new String[5][];
 
-10、异常处理
+10、Java异常处理
 Java的异常处理是Java编程语言中用于处理运行时错误的一个重要机制。它允许程序员定义在程序中可能发生的异常情况，并在这些情况发生时提供相应的处理逻辑。
 Java的异常处理基于三个关键字：try、catch 和 finally，以及 throw 和 throws。
 
@@ -2913,6 +2913,57 @@ public class ReflectionExample {
     }
 }
 
+使用反射进行赋值：
+import java.lang.reflect.Field;
+
+public class ReflectionExample {
+    public static void copyFields(Object source, Object target) {
+        Class<?> sourceClass = source.getClass();
+        Class<?> targetClass = target.getClass();
+
+        // 获取源对象的所有字段
+        Field[] sourceFields = sourceClass.getDeclaredFields();
+
+        for (Field sourceField : sourceFields) {
+            try {
+                // 允许访问私有字段
+                sourceField.setAccessible(true);
+
+                // 获取源字段的值
+                Object value = sourceField.get(source);
+
+                // 在目标对象中找到相同名称的字段
+                Field targetField;
+                try {
+                    targetField = targetClass.getDeclaredField(sourceField.getName());
+                } catch (NoSuchFieldException e) {
+                    // 如果目标类中没有这个字段，继续下一个字段
+                    continue;
+                }
+
+                // 允许访问私有字段
+                targetField.setAccessible(true);
+
+                // 将值赋值到目标对象的字段中
+                targetField.set(target, value);
+
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Person person = new Person();
+        // 初始化 person 的字段
+
+        PersonName personName = new PersonName();
+        copyFields(person, personName);
+
+        // personName 对象现在拥有 person 对象的相同字段值
+    }
+}
+
 Java动态代理：
 代理类在程序运行时创建的代理方式被成为动态代理。在静态代理中，代理类（RenterProxy）是自己已经定义好了的，在程序运行之前就已经编译完成。
 而动态代理是在运行时根据我们在Java代码中的“指示”动态生成的。Java运用了反射实现了动态代理。
@@ -5029,6 +5080,20 @@ Connection: keep-alive
 6.然后用服务器的公钥对客户端密钥进行非对称加密，这样客户端密钥就变成密文了。
 7.HTTPS中的第一次HTTP请求结束。
 
+HTTPS请求中的TCP三次握手过程：
+
+第一次握手（SYN）
+客户端发送SYN包：客户端向服务器发送一个带有SYN标志的TCP报文段。这个报文段不包含应用层的数据，主要目的是告诉服务器客户端想要建立连接，并包含一个初始序列号（例如，seq=j）。
+进入SYN_SEND状态：客户端发送SYN包后，进入SYN_SEND状态，等待服务器的确认。
+
+第二次握手（SYN+ACK）
+服务器响应SYN+ACK包：服务器收到客户端的SYN包后，会发送一个带有SYN和ACK标志的TCP报文段作为响应。这个报文段不仅确认收到了客户端的SYN包（ACK=j+1），还包含服务器自己的初始序列号（例如，seq=k），表示服务器也愿意建立连接。
+进入SYN_RECV状态：服务器发送SYN+ACK包后，进入SYN_RECV状态，等待客户端的确认。
+
+第三次握手（ACK）
+客户端发送ACK包：客户端收到服务器的SYN+ACK包后，会发送一个带有ACK标志的TCP报文段作为最终确认。这个报文段的序列号应该是服务器SYN+ACK包中确认号的值加1（ack=k+1），表示客户端已经准备好接收数据。
+进入ESTABLISHED状态：这个ACK包发送完毕后，客户端和服务器都进入ESTABLISHED状态，表示TCP连接已经成功建立，双方可以开始传输数据了。
+
 使用Java发起https请求：
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -5074,10 +5139,66 @@ public class HttpClientExample {
 HTTPS中反斜杠（/）通常用于表示路径（path）的一部分。路径是指URL中主机名和查询字符串之间的部分，用于指定请求的资源位置。
 其中，https中反斜杠指向的路径部分指定的是服务器的资源位置。当客户端向服务器发送请求时，服务器会根据路径部分来查找和提供相应的资源。
 
+HTTP请求和HTTPS请求有什么区别：
+HTTP请求和HTTPS请求在多个方面存在显著的区别，主要包括安全性、连接方式、端口号、资源消耗、展示方式以及费用等方面。
 
-关于GET请求的安全性：
-Get是不安全的，因为在传输过程，数据被放在请求的URL中，而如今现有的很多服务器、代理服务器或者用户代理都会将请求URL记录到日志文件中，然后放在某个地方，这样就可能会有一些隐私的信息被第三方看到。
-另外，用户也可以在浏览器上直接看到提交的数据，一些系统内部消息将会一同显示在用户面前。Post的所有操作对用户来说都是不可见的。
+1. 安全性
+HTTP：HTTP（HyperText Transfer Protocol）是一个简单的请求-响应协议，它本身并不对数据进行加密。因此，HTTP传输的数据是明文的，容易被中间人截获或篡改，安全性较低。
+HTTPS：HTTPS（HyperText Transfer Protocol Secure）是HTTP的安全版本，它在HTTP的基础上加入了SSL/TLS（Secure Sockets Layer/Transport Layer Security）协议，对传输的数据进行加密。
+这使得HTTPS能够保护数据的机密性和完整性，防止数据在传输过程中被窃听或篡改，安全性更高。
+
+2. 连接方式
+HTTP：HTTP使用明文传输，即数据在传输过程中不经过加密处理，直接以明文形式发送。
+HTTPS：HTTPS则通过SSL/TLS协议对数据进行加密传输，确保数据在传输过程中的安全性。这种加密方式需要客户端和服务器之间进行SSL握手，以协商加密参数和共享密钥。
+
+3. 端口号
+HTTP：HTTP通常使用80端口进行通信。
+HTTPS：HTTPS则使用443端口进行通信。这是TCP/IP协议对网络通信进行管理的一种约定。
+
+4. 资源消耗
+HTTP：由于HTTP不使用加密和解密过程，因此在数据传输过程中消耗的资源相对较少。
+HTTPS：HTTPS需要对数据进行加密和解密处理，这会增加服务器的计算负担和网络带宽的消耗。因此，HTTPS在数据传输过程中会消耗更多的资源。
+
+5. 展示方式
+HTTP：由于HTTP不加密数据，一些现代浏览器可能会将HTTP站点标记为“不安全”，以提醒用户注意潜在的安全风险。
+HTTPS：HTTPS站点则会被浏览器加上“绿色安全锁”标记，以表明该站点使用了加密传输技术，用户数据得到了保护。如果网站配置了增强级SSL证书，地址栏还可能变为“绿色地址栏”，进一步增加用户的信任度。
+
+6. 费用
+HTTP：HTTP是免费的，不需要为使用HTTP协议而支付额外费用。
+HTTPS：HTTPS需要为网站购买和配置SSL证书，这会产生一定的费用。不过，随着网络安全意识的提高和HTTPS的普及，越来越多的网站开始使用HTTPS来保护用户数据，因此SSL证书的费用也逐渐降低。
+
+PS：443端口通常会被运营商重点关注，原因有以下几点：
+防止未备案网站的非法访问：在一些情况下，运营商会重点监听443端口，并检测握手报文中的域名信息。如果域名未备案，运营商可能会采取封禁措施，以防止非法或不安全的网站通过HTTPS协议提供服务。
+遵守政策规定：在特定时期，如重要会议或活动期间，为了维护网络安全和稳定，政府或相关部门可能会要求运营商对某些端口进行临时封禁，443端口也可能包括在内。
+
+
+HTTP请求中的GET请求和POST请求：
+GET请求和POST请求是HTTP协议中两种基本的请求方法，它们在Web开发中扮演着重要角色。
+
+GET请求
+定义与用途：
+GET请求是一个HTTP方法，通常用于从服务器请求数据。它是幂等的，即多次执行相同的GET请求应该返回相同的结果。
+GET请求常用于请求一个网页或资源，如搜索、排序和筛选等操作。
+
+特点：
+数据传递方式：GET请求通过URL传递参数，这些参数附加在URL后面，以“?”分隔URL和传输数据，以“&”连接多个参数。
+安全性：由于数据附加在URL中，GET请求的安全性较低，不适合传输敏感数据，因为数据会暴露在URL中，且可能被缓存和保留在历史记录中。
+数据大小限制：GET请求的URL长度有限制，通常为2048个字符（具体限制可能因浏览器和服务器而异），因此不适合传输大量数据。
+缓存性：GET请求可以被缓存，即浏览器可以存储响应的结果，以便在下次请求同一URL时直接使用缓存的内容。
+幂等性：GET请求是幂等的，即多次执行相同的GET请求应该返回相同的结果。
+
+POST请求
+定义与用途：
+POST请求是一个HTTP方法，用于向服务器提交数据或发送请求。它不是幂等的，即多次执行相同的POST请求可能会导致不同的结果，因为它通常用于修改或创建服务器上的资源。
+POST请求常用于提交表单数据、发送大量数据和执行敏感操作，如用户登录、数据更新等。
+
+特点：
+数据传递方式：POST请求将数据放在请求的消息体中发送，而不是作为URL的一部分。这样，数据对于用户来说不可见，增加了安全性。
+安全性：相比GET请求，POST请求的数据不会出现在URL中，因此相对更安全，适用于传输敏感数据。
+数据大小限制：POST请求没有URL长度的限制，因此可以传输更多的数据量，适用于需要发送大型数据、文件上传等场景。
+缓存性：POST请求通常不会被缓存，因为它们的响应结果可能会根据提交的数据而有所不同。
+非幂等性：POST请求不是幂等的，多次执行相同的POST请求可能会导致不同的结果，因为它可能会创建新的资源或更新现有资源。
+
 
 
 HTTP请求响应格式：
