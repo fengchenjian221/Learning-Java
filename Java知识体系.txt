@@ -6615,201 +6615,11 @@ JSP在服务器上运行，并动态生成HTML页面返回给客户端。这种�
 前后端不分离一般使用@RequestMapping，请求方式不用管。前后端不分离一般使用@RequestMapping，请求方式不用管。
 
 
-Spring Boot的功能及实现原理:
-众所周知Spring框架需要进行大量的配置，Spring Boot引入自动配置的概念，让项目设置变得很容易。
-Spring Boot本身并不提供Spring框架的核心特性以及扩展功能，只是用于快速、敏捷地开发新一代基于Spring框架的应用程序。
-也就是说，它并不是用来替代Spring的解决方案，而是和Spring框架紧密结合用于提升Spring开发者体验的工具。
-同时它集成了大量常用的第三方库配置(例如Jackson, JDBC, Mongo, Redis, Mail等等)，
-Spring Boot应用中这些第三方库几乎可以零配置的开箱即用(out-of-the-box)，
-大部分的Spring Boot应用都只需要非常少量的配置代码，开发者能够更加专注于业务逻辑。
-
-Spring Boot只是承载者，辅助你简化项目搭建过程的。如果承载的是WEB项目，使用Spring MVC作为MVC框架，
-那么工作流程和SpringMVC是完全一样的，因为这部分工作是Spring MVC做的而不是Spring Boot。
-对使用者来说，换用Spring Boot以后，项目初始化方法变了，配置文件变了，另外就是不需要单独安装Tomcat这类容器服务器了，
-maven打出jar包直接跑起来就是个网站，但你最核心的业务逻辑实现与业务流程实现没有任何变化。
-
-Spring Boot 使用了特定的机制和策略来将配置文件打包成快速启动的应用程序。
-
->自动配置：Spring Boot 通过自动配置机制，根据项目中的依赖关系和条件，自动地创建和配置应用程序所需的组件。
-这种机制大大简化了配置过程，减少了手动配置的工作量。
-
->默认配置：Spring Boot 提供了大量的默认配置，这些配置适用于大多数应用场景。通过使用默认配置，
-您可以轻松地启动应用程序，而无需编写过多的配置文件。
-
->自定义配置：如果默认配置不能满足您的需求，您可以根据需要自定义配置。
-Spring Boot 支持使用 application.properties 或 application.yml 文件来定义自定义配置。您可以在这些文件中设置自己的属性，以满足特定应用程序的需求。
-
->外部化配置：Spring Boot 支持将配置文件放置在项目外部，以便于在不同的环境中使用相同的配置。
-您可以将配置文件放在项目的根目录或 classpath 根目录之外的位置，然后在应用程序中通过设置配置文件的路径来加载它们。
-
->热重载配置：Spring Boot 支持配置文件的热重载，这意味着当您更改配置文件时，应用程序将自动重新加载配置，而无需重启整个应用程序。
-这使得开发过程更加高效，因为您无需等待应用程序重新启动就可以看到配置更改的效果。
-
->命令行参数：Spring Boot 还支持通过命令行参数来覆盖配置文件中的属性值。这使得您可以在启动应用程序时指定特定的属性值，
-以便进行测试或生产环境的差异化配置。
-
-
-所以，用最简练的语言概括就是：
-Spring 是一个“引擎”；
-Spring MVC 是基于Spring的一个 MVC 框架 ；
-Spring Boot 是基于Spring的条件注册的一套快速开发整合包。
-
-
-SpringBoot的启动方法：
-import org.springframework.boot.SpringApplication;  
-import org.springframework.boot.autoconfigure.SpringBootApplication;  
-  
-@SpringBootApplication  
-public class Application {  
-  
-    public static void main(String[] args) {  
-        SpringApplication.run(Application.class, args);  
-    }  
-  
-}
-
-在这个例子中：
-Application类是一个普通的Java类，它包含了main方法，这是Java应用程序的入口点。
-@SpringBootApplication注解告诉Spring Boot这是一个Spring Boot应用程序，并且它会自动配置应用程序。
-SpringApplication.run(Application.class, args);启动了Spring Boot应用程序。它会加载应用程序上下文，启动嵌入式的Servlet容器（如果配置了的话），然后运行应用程序。
-当你运行这个main方法时，Spring Boot会自动配置你的应用程序，并且启动嵌入式的Servlet容器（如Tomcat）来监听HTTP请求。
-
-
-
-用Spring Boot解释一下约定大于配置大于编码?
-"约定大于配置大于编码" 是一个设计原则，它强调了在设计软件时，应该优先考虑使用通用的、广泛接受的约定，其次是配置选项，最后才是直接编写代码。这个原则旨在提高软件的可维护性、可读性和可扩展性。在Spring Boot框架中，这个原则得到了很好的体现。
-
-约定
-在Spring Boot中，很多常见的配置和编码工作都通过约定来简化。例如：
-
-项目结构约定：Spring Boot约定了项目的标准结构，例如src/main/java用于存放Java源代码，src/main/resources用于存放配置文件等。
-端口号约定：默认情况下，Spring Boot应用会监听8080端口。除非有特别的需求，否则开发者无需手动配置端口。
-日志约定：Spring Boot使用Logback作为默认的日志框架，并提供了默认的日志配置。
-这些约定让开发者可以快速地开始一个新的Spring Boot项目，而无需花费太多时间在配置和编码上。
-
-配置
-当默认的约定不满足需求时，Spring Boot提供了丰富的配置选项。这些配置可以通过多种方式实现：
-
-application.properties 或 application.yml：这是Spring Boot中最常用的配置方式。开发者可以在这些文件中定义各种属性，如数据库连接信息、服务器端口等。
-环境变量：Spring Boot也支持通过环境变量来配置应用。
-命令行参数：在启动应用时，可以通过命令行参数来覆盖配置文件中的设置。
-通过这些配置选项，开发者可以灵活地调整应用的行为，而无需修改代码。
-
-编码
-当然，有些复杂的功能或定制化的需求可能无法通过约定或配置来实现，这时就需要编写代码了。Spring Boot提供了丰富的API和扩展点，使得开发者可以轻松地实现各种功能。
-但即使需要编码，Spring Boot也尽可能地通过注解、自动配置等方式简化了编码的复杂性。
-
-总结
-在Spring Boot中，"约定大于配置大于编码"原则的应用使得开发者可以更加高效地构建应用。通过遵循通用的约定和利用强大的配置功能，开发者可以快速地搭建起一个功能完善的应用，
-并在需要时通过编码来实现更高级的功能。这种设计方式不仅提高了开发效率，也增强了应用的可维护性和可读性。
-
-
-SpringBoot的自动配置：
-Spring Boot的自动配置是其核心功能之一，它极大地简化了Spring应用程序的初始搭建和配置过程。
-自动配置的核心思想是根据项目中的依赖和类路径下的特定类，自动创建和配置Spring容器中的bean，从而省去了手动配置的大量工作。
-
-以下是Spring Boot自动配置的主要原理和实现方式：
->条件化配置：Spring Boot通过条件注解（如@ConditionalOnClass、@ConditionalOnMissingBean等）来决定是否加载某个自动配置类或bean。
-这些条件可以是类路径下是否存在某个类、是否存在某个bean等。只有当满足特定条件时，相关的自动配置才会生效。
-
->自动配置类：自动配置类通过@Configuration注解标识，它们包含了Spring容器需要自动创建的bean的定义。这些bean的创建和配置会根据条件化注解的条件来确定。
-自动配置类通常存放在spring-boot-autoconfigure模块的jar包中。
-
->META-INF/spring.factories文件：Spring Boot通过在类路径下的META-INF/spring.factories文件中定义自动配置类，告诉Spring Boot哪些配置类需要被加载。
-这个文件是一个属性文件，其中包含了自动配置类的全限定名。
-
->属性绑定：Spring Boot还允许开发者在application.properties或application.yml文件中定义外部化配置，这些配置会被自动绑定到相关的bean上。
-这大大简化了配置的复杂性，使得开发者能够更专注于业务逻辑的实现。
-
->Starter依赖：Spring Boot提供了一系列的“Starter”依赖，这些依赖包含了构建某个特定类型应用程序所需的所有基本依赖和自动配置。
-例如，spring-boot-starter-web包含了构建Web应用程序所需的Spring MVC和嵌入式Servlet容器等依赖和自动配置。
-
-
-问：@SpringBootApplication注解是如何完成自动配置功能的？
-@SpringBootApplication注解是SpringBoot中的一个复合注解，它包含了@Configuration、@EnableAutoConfiguration和@ComponentScan三个关键注解。
-这个注解的作用是启用SpringBoot的自动配置功能，并告诉Spring Boot如何扫描和加载应用程序的组件。
-
-下面我们来详细解析@SpringBootApplication注解是如何完成自动配置功能的：
-
-@Configuration：
-这个注解用于告诉Spring这是一个配置类，类似于XML配置文件中的<beans>标签。在这个类中，开发者可以使用@Bean注解来定义和初始化Spring容器管理的bean。
-
-@EnableAutoConfiguration：
-这个注解是自动配置的关键所在。当使用@EnableAutoConfiguration注解时，Spring Boot会根据项目中引入的依赖和类路径下的特定类，自动配置应用程序所需的bean。
-
-条件注解：Spring Boot使用条件注解（如@ConditionalOnClass、@ConditionalOnMissingBean等）来决定是否创建和配置某个bean。这些条件可以是类路径上是否存在某个类、是否存在某个bean等。
-自动配置类：Spring Boot提供了许多自动配置类，这些类包含了一些预定义的bean，并且会根据项目的条件进行创建和配置。
-META-INF/spring.factories文件：自动配置类通过META-INF/spring.factories文件进行注册。Spring Boot在启动时，会扫描这个文件，并加载其中定义的自动配置类。
-
-@ComponentScan：
-这个注解用于告诉Spring Boot哪些包下的类需要被扫描并注册为Spring容器管理的bean。默认情况下，@SpringBootApplication注解会扫描启动类所在的包及其子包。
-
-综合这三个注解，@SpringBootApplication完成了以下功能：
-
-通过@Configuration定义了配置类。
-通过@EnableAutoConfiguration启用了自动配置功能，根据项目的依赖和条件自动创建和配置bean。
-通过@ComponentScan扫描并注册应用程序的组件。
-
-当开发者在Spring Boot应用程序的主类上使用@SpringBootApplication注解时，Spring Boot会自动完成上述所有步骤，从而简化了应用程序的配置和初始化过程。
-开发者只需要关注业务逻辑的实现，而不需要花费大量时间在繁琐的配置上。
-
-
-SpringBoot中定制Web扩展配置：WebMvcConfigurerAdapter接口
-这是一个接口，里边声明了很多的方法，例如拦截器，视图解析器，格式转化器。
-如果想在webmvc中添加自己的功能，只需要去WebMvcConfigurer看看想增加什么功能，然后按照源码去写。
-
-Spring与SpringBoot中一些常用注解：
-@SpringBootApplication：实现自动化装配，启动SpringBoot，包含@Configuration、@EnableAutoConfiguration、@ComponentScan通常用在主类上
-@Component：普通pojo注入spring容器
-@Service：Service注入Spring容器
-@Controller：Controller注入容器
-@Repository：Dao注入容器
-@ResponseBody：将java对象转为json格式的数据
-@RestController：该注解是@Controller和@ResponseBody的结合体，一般用于类，作用等于在类上面添加了@ResponseBody和@Controller
-@AutoWired：默认按类型装配，如果发现找到多个bean，则按照name方式比对，如果还有多个，则报出异常
-@Qualifier：spring的注解，按名字注入 一般当出现两个及以上bean时,不知道要注入哪个，结合@AutoWired使用
-@Resource：默认按名称注入例如@Resource(name = “zhaozhao”)则根据name属性注入找不到则报错，
-若无name属性则根据属性名称注入，如果匹配不成功则按照类型匹配匹配不成功则报错。
-@RequestMapping：@RequestMapping（url），通过该注解就可以通过配置的url进行访问，方式可以是get或post请求，两种方式均可
-@GetMapping：只是这个限定了只能是Get请求
-@PostMapping：只是这个限定了只能是Post请求
-@Value：用于获取bean的属性，一般用于读取配置文件的数据，作用在变量上 
-@ConfigurationProperties：用于注入Bean属性，然后再通过当前Bean获取注入值，作用在类上 
-@PropertySource：用于指定要读取的配置文件，可以和@Value或@ConfigurationProperties配合使用
-@Configuration：作用于类上表示这是一个配置类，可理解为用spring的时候xml里面的< beans>标签 
-@Bean：产生bean对象加入容器，作用于方法，可理解为用spring的时候xml里面的标签
-@RequestParam：获取查询参数。即url?name=这种形式
-@RequestBody：获取Body的参数，一般用于post获取参数 
-@PathVariable：获取路径参数。即url/{id}这种形式 
-@RequestHeader：获取请求头的信息 
-@CookieValue：获取Cookie的信息
-
-Spring Boot的启动类实现方式：
-1、程序从main方法开始运行
-2、使用SpringApplication.run()加载主程序类
-3、主程序类需要标注@SpringBootApplication
-4、@EnableAutoConfiguration是核心注解；
-5、@Import导入所有的自动配置场景
-6、@AutoConfigurationPackage定义默认的包扫描规则
-7、程序启动扫描加载主程序类所在的包以及下面所有子包的组件；
-
-Spring Boot使用的全局配置文件：
->application.properties
->application.yml
-
-配置文件放在src/main/resources目录或者类路径/config下
-.yml是YAML(YAML Aint Markup Language)编写的文件格式，YAML是一种直观的能够被电脑识别的的数据数据序列化格式，比json、xml等更适合做配置文件
-
-转载：https://www.zhihu.com/question/64671972/answer/223383505
-作者：zhonghd
-链接：https://www.jianshu.com/p/1d4d57a4db51
-来源：简书
--------------------------------------------------------------------------------
-
 
 后端技术：
 Servlet → Java spring → springMVC
 以前：J2EE应用框架 J2EE开发框架主要有Hibernate，Spring，Struts2，EXTJS，Json。
+现在：SpringBoot、SpringCloud
 
 Hibernate：
 Hibernate是一个开放源代码的对象关系映射框架，它对JDBC进行了非常轻量级的对象封装，
@@ -7093,7 +6903,7 @@ Retention注解：
 被@Inherited 修饰的注解 将具有继承性，如果某个类使用了被 @Inherited修饰的注解，则其子类将自动具有该注解
 
 
-Java Spring：
+Java Spring框架：
 Spring 框架就像一个家族，有众多衍生产品例如 boot、security、jpa等等。但他们的基础都是Spring 的 ioc和 aop ioc 提供了依赖注入的容器 aop ，解决了面向横切面的编程，然后在此两者的基础上实现了其他延伸产品的高级功能。
 Spring MVC是基于 Servlet 的一个 MVC 框架 主要解决 WEB 开发的问题，因为 Spring 的配置非常复杂，各种XML、 JavaConfig、hin处理起来比较繁琐。于是为了简化开发者的使用，从而创造性地推出了Spring boot，约定优于配置，简化了spring的配置流程。
 Spring的工作原理其实是，Spring在启动时读取bean配置信息，这里bean配置信息包括xml文件、Java类#Configuration、注解#AutoWired，存放到Bean注册表，并根据Bean注册表实例化Bean，实际上就是实例化Bean的实现类，然后将Bean实例放到Spring容器中。
@@ -7404,7 +7214,6 @@ DispatcherServlet是Spring MVC的核心组件，它负责接收HTTP请求，并�
 
 在现代的Spring Boot应用中，推荐使用Java配置类来代替XML配置，因为Java配置提供了类型安全、重构支持以及更简洁的配置方式。以下是Java配置类的简单示例：
 
-java
 import org.springframework.context.annotation.ComponentScan;  
 import org.springframework.context.annotation.Configuration;  
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;  
@@ -7495,7 +7304,6 @@ Spring MVC的工作流程：
 8.返回响应给客户端：视图渲染完成后，DispatcherServlet会将响应返回给客户端，客户端（如浏览器）会接收到这个响应并展示给用户。
 
 以下组件通常使用框架提供实现：
-
 DispatcherServlet：作为前端控制器，整个流程控制的中心，控制其它组件执行，统一调度，降低组件之间的耦合性，提高每个组件的扩展性。
 HandlerMapping：通过扩展处理器映射器实现不同的映射方式，例如：配置文件方式，实现接口方式，注解方式等。
 HandlAdapter：通过扩展处理器适配器，支持更多类型的处理器。
@@ -7545,129 +7353,300 @@ SpringMVC本质上是对Java Web Servlet的封装，使得开发Java Web项目�
 SpringMVC是后端渲染式的后台开发框架，没有做到前后端分离，对前端开发人员也要求有Java Web的开发环境。
 前端人员作出的静态Html页面，也需要进行整合，改为Spring MVC里的View。
 	
-使用SpringMVC进行文件上传：
-在Spring MVC中，文件上传通常使用MultipartFile接口来实现。以下是一个简单的步骤，指导你如何在Spring MVC中实现文件上传功能：
 
-添加依赖
-确保你的pom.xml中包含了Spring MVC和Apache Commons FileUpload的依赖。
 
-<dependencies>  
-    <!-- Spring MVC -->  
-    <dependency>  
-        <groupId>org.springframework.boot</groupId>  
-        <artifactId>spring-boot-starter-web</artifactId>  
-    </dependency>  
-      
-    <!-- Apache Commons FileUpload -->  
-    <dependency>  
-        <groupId>commons-fileupload</groupId>  
-        <artifactId>commons-fileupload</artifactId>  
-        <version>1.4</version>  
-    </dependency>  
-</dependencies>
+SpringBoot：
+Spring Boot 是由 Pivotal 团队提供的用于简化 Spring 应用开发的框架。它通过默认配置、自动化配置和内嵌服务器的支持，大幅减少了开发者配置和部署 Spring 应用的复杂度。
 
-配置Spring MVC
-在你的Spring MVC配置中，确保已经配置了MultipartResolver。如果你使用Spring Boot，它通常会为你自动配置。
+主要特点
+简化配置：Spring Boot 通过自动化配置减少了大量的 XML 配置和繁琐的 Java 配置。
+快速启动：通过内嵌的 Tomcat、Jetty 或 Undertow 等服务器，能够快速启动并运行 Spring 应用。
+生产准备：提供了内置的监控、度量和外部化配置等特性，适合生产环境使用。
+依赖管理：通过使用 Spring Boot Starter，可以方便地引入相关依赖包。
+自动化配置：根据项目中的依赖自动配置 Spring 应用。
 
-创建文件上传表单
-在HTML中，创建一个包含enctype="multipart/form-data"属性的表单，以便能够上传文件。
+核心组件
+Spring Boot Starter：一组方便的依赖描述符，帮助你快速开始。
+Spring Boot Auto Configuration：自动配置 Spring 应用。
+Spring Boot CLI：命令行工具，帮助你用 Groovy 快速开发 Spring Boot 应用。
+Spring Boot Actuator：提供了监控和管理功能，如健康检查、度量指标、信息、环境等。
 
-<form method="POST" action="/upload" enctype="multipart/form-data">  
-    <input type="file" name="file" />  
-    <input type="submit" value="Upload" />  
-</form>
+Spring Boot的功能及实现原理:
+Spring Boot通过自动配置简化了Spring框架的使用，它并没有提供Spring框架的新功能，而是极大地减少了项目配置的工作量。Spring Boot与Spring框架紧密集成，旨在提升开发者的开发体验。
+它集成了众多常用的第三方库（如Jackson、JDBC、Mongo、Redis、Mail等），这些库在Spring Boot项目中几乎可以做到开箱即用，无需过多配置。因此，开发者可以更加专注于业务逻辑的实现，而不是配置细节。
+对于Web项目，Spring Boot通常与Spring MVC结合使用，但工作流程和Spring MVC保持一致，因为业务逻辑处理是由Spring MVC负责的，而不是Spring Boot。
+使用Spring Boot后，项目的初始化、配置以及部署方式发生了变化。例如，不再需要单独安装Tomcat等容器服务器，只需通过Maven或Gradle等工具打包成jar包，就可以直接运行网站。然而，这些变化并不影响业务逻辑和流程的实现。
 
-处理文件上传的Controller
-在Spring MVC的Controller中，使用@RequestParam注解来获取上传的文件。
+SpringBoot的配置机制：
+>自动配置：Spring Boot 通过自动配置机制，根据项目中的依赖关系和条件，自动地创建和配置应用程序所需的组件。这种机制大大简化了配置过程，减少了手动配置的工作量。
+>默认配置：Spring Boot 提供了大量的默认配置，这些配置适用于大多数应用场景。通过使用默认配置，您可以轻松地启动应用程序，而无需编写过多的配置文件。
+>自定义配置：如果默认配置不能满足您的需求，您可以根据需要自定义配置。Spring Boot 支持使用 application.properties 或 application.yml 文件来定义自定义配置。您可以在这些文件中设置自己的属性，以满足特定应用程序的需求。
+>外部化配置：Spring Boot 支持将配置文件放置在项目外部，以便于在不同的环境中使用相同的配置。您可以将配置文件放在项目的根目录或 classpath 根目录之外的位置，然后在应用程序中通过设置配置文件的路径来加载它们。
+>热重载配置：Spring Boot 支持配置文件的热重载，这意味着当您更改配置文件时，应用程序将自动重新加载配置，而无需重启整个应用程序。这使得开发过程更加高效，因为您无需等待应用程序重新启动就可以看到配置更改的效果。
+>命令行参数：Spring Boot 还支持通过命令行参数来覆盖配置文件中的属性值。这使得您可以在启动应用程序时指定特定的属性值，以便进行测试或生产环境的差异化配置。
 
-java
-import org.springframework.http.HttpStatus;  
-import org.springframework.http.ResponseEntity;  
-import org.springframework.web.bind.annotation.PostMapping;  
-import org.springframework.web.bind.annotation.RequestParam;  
-import org.springframework.web.bind.annotation.RestController;  
-import org.springframework.web.multipart.MultipartFile;  
-  
-import java.io.File;  
-import java.io.IOException;  
-  
-@RestController  
-public class FileUploadController {  
-  
-    private static final String UPLOADED_FOLDER = "/tmp/";  
-  
-    @PostMapping("/upload")  
-    public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file) {  
-        if (file.isEmpty()) {  
-            return new ResponseEntity<>("Please select a file to upload.", HttpStatus.BAD_REQUEST);  
-        }  
-  
-        try {  
-            byte[] bytes = file.getBytes();  
-            File dest = new File(UPLOADED_FOLDER + file.getOriginalFilename());  
-            dest.createNewFile();  
-            java.nio.file.Files.write(dest.toPath(), bytes);  
-            return new ResponseEntity<>("File uploaded successfully!", HttpStatus.OK);  
-        } catch (IOException e) {  
-            e.printStackTrace();  
-        }  
-        return new ResponseEntity<>("Failed to upload file!", HttpStatus.INTERNAL_SERVER_ERROR);  
-    }  
+
+SpringBoot的启动方法：
+@SpringBootApplication 是 Spring Boot 应用的启动类上常用的注解，它结合了多个核心注解，简化了 Spring Boot 应用的配置。这个注解是由以下三个注解组合而成的：
+
+1. @SpringBootConfiguration
+2. @EnableAutoConfiguration
+3. @ComponentScan
+
+详细解析@SpringBootApplication：
+
+package org.springframework.boot.autoconfigure;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+
+import java.lang.annotation.*;
+
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@SpringBootConfiguration
+@EnableAutoConfiguration
+@ComponentScan(excludeFilters = {
+    @ComponentScan.Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
+    @ComponentScan.Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class)
+})
+public @interface SpringBootApplication {
+    // Additional attributes omitted for brevity
 }
-在这个例子中，文件将被上传到服务器的/tmp/目录下。你可以根据需要更改这个路径。注意，这个路径应该是你的应用有写权限的目录。
+```
 
-使用SpringMVC实现文件下载：
-import org.springframework.core.io.FileSystemResource;  
-import org.springframework.core.io.Resource;  
-import org.springframework.http.HttpHeaders;  
-import org.springframework.http.MediaType;  
-import org.springframework.http.ResponseEntity;  
-import org.springframework.web.bind.annotation.GetMapping;  
-import org.springframework.web.bind.annotation.PathVariable;  
-import org.springframework.web.bind.annotation.RestController;  
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;  
-  
-import java.io.IOException;  
-import java.nio.file.Files;  
-import java.nio.file.Path;  
-import java.nio.file.Paths;  
-  
-@RestController  
-public class FileDownloadController {  
-  
-    private static final String FILE_DIR = "/files/";  
-  
-    @GetMapping("/download/{filename:.+}")  
-    public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {  
-        Path filePath = Paths.get(FILE_DIR + filename);  
-  
-        Resource resource = null;  
-        try {  
-            if (Files.exists(filePath)) {  
-                resource = new FileSystemResource(filePath);  
-            } else {  
-                // 如果文件不存在，可以返回一个错误信息  
-                return ResponseEntity.notFound().build();  
-            }  
-        } catch (Exception e) {  
-            e.printStackTrace();  
-            return ResponseEntity.internalServerError().build();  
-        }  
-  
-        // 设置响应头  
-        HttpHeaders headers = new HttpHeaders();  
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename());  
-        headers.add(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate");  
-        headers.add(HttpHeaders.PRAGMA, "no-cache");  
-        headers.add(HttpHeaders.EXPIRES, "0");  
-  
-        return ResponseEntity.ok()  
-                .headers(headers)  
-                .contentType(MediaType.parseMediaType("application/octet-stream"))  
-                .body(resource);  
-    }  
+组成注解的详细解析
+
+1. @SpringBootConfiguration
+
+这个注解是 @Configuration的一个特化，表明这是一个 Spring 配置类。
+
+
+package org.springframework.boot;
+import org.springframework.context.annotation.Configuration;
+import java.lang.annotation.*;
+
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Configuration
+public @interface SpringBootConfiguration {
+}
+```
+
+@Configuration 本身是 Spring 的核心注解之一，表示一个类可以使用 Spring IoC 容器作为 bean 定义的来源。@SpringBootConfiguration 本质上是一个带有@Configuration 注解的类，这意味着它可以定义 Spring beans。
+
+2. @EnableAutoConfiguration
+
+@EnableAutoConfiguration 告诉 Spring Boot 根据应用程序的类路径设置、其他 bean 和各种属性配置自动配置 Spring 应用上下文。这是 Spring Boot 自动配置机制的核心注解。
+
+
+package org.springframework.boot.autoconfigure;
+
+import org.springframework.context.annotation.Import;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+
+import java.lang.annotation.*;
+
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@AutoConfigurationPackage
+@Import(AutoConfigurationImportSelector.class)
+public @interface EnableAutoConfiguration {
+    Class<?>[] exclude() default {};
+
+    String[] excludeName() default {};
+}
+```
+
+- @AutoConfigurationPackage：自动配置包，标记启动类所在包及其子包作为自动配置扫描包。
+- @Import(AutoConfigurationImportSelector.class)：导入 AutoConfigurationImportSelector，该类实现了自动配置的核心逻辑。
+
+3. @ComponentScan
+@ComponentScan 告诉 Spring 在启动类的包及其子包中查找其他组件、配置和服务，允许 Spring 自动扫描和注册这些组件。
+
+
+package org.springframework.context.annotation;
+
+import java.lang.annotation.*;
+
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Repeatable(ComponentScans.class)
+public @interface ComponentScan {
+    String[] value() default {};
+    String[] basePackages() default {};
+    Class<?>[] basePackageClasses() default {};
+    boolean lazyInit() default false;
+}
+```
+
+@ComponentScan 默认扫描启动类所在包及其子包中的所有组件（如 @Component、@Service、@Repository 和 @Controller 等），这意味着您通常会将启动类放在根包中，以便扫描整个项目的组件。
+
+
+
+Spring Boot 启动类：
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
 }
 
+在这个示例中，@SpringBootApplication 注解使得 DemoApplication 类成为 Spring Boot 应用的启动类。通过调用 SpringApplication.run(DemoApplication.class, args)，Spring Boot 框架将自动执行以下步骤：
+ 
+1. 创建 Spring 应用上下文（ApplicationContext）。
+2. 注册并启动所有@ComponentScan 扫描到的 bean。
+3. 根据 @EnableAutoConfiguration 注解自动配置 Spring 应用上下文。
+4. 执行任何 ApplicationRunner 或 CommandLineRunner bean。
+
+总结
+@SpringBootApplication 是一个复合注解，结合了 @SpringBootConfiguration、@EnableAutoConfiguration 和 @ComponentScan，简化了 Spring Boot 应用的配置。通过使用这个注解，开发者可以快速配置和启动一个 Spring Boot 应用，而无需编写大量的配置代码。
+
+
+用Spring Boot解释一下约定大于配置大于编码：
+"约定大于配置大于编码" 是一个设计原则，它强调了在设计软件时，应该优先考虑使用通用的、广泛接受的约定，其次是配置选项，最后才是直接编写代码。这个原则旨在提高软件的可维护性、可读性和可扩展性。在Spring Boot框架中，这个原则得到了很好的体现。
+
+约定
+在Spring Boot中，很多常见的配置和编码工作都通过约定来简化。例如：
+
+项目结构约定：Spring Boot约定了项目的标准结构，例如src/main/java用于存放Java源代码，src/main/resources用于存放配置文件等。
+端口号约定：默认情况下，Spring Boot应用会监听8080端口。除非有特别的需求，否则开发者无需手动配置端口。
+日志约定：Spring Boot使用Logback作为默认的日志框架，并提供了默认的日志配置。
+这些约定让开发者可以快速地开始一个新的Spring Boot项目，而无需花费太多时间在配置和编码上。
+
+配置
+当默认的约定不满足需求时，Spring Boot提供了丰富的配置选项。这些配置可以通过多种方式实现：
+
+application.properties 或 application.yml：这是Spring Boot中最常用的配置方式。开发者可以在这些文件中定义各种属性，如数据库连接信息、服务器端口等。
+环境变量：Spring Boot也支持通过环境变量来配置应用。
+命令行参数：在启动应用时，可以通过命令行参数来覆盖配置文件中的设置。
+通过这些配置选项，开发者可以灵活地调整应用的行为，而无需修改代码。
+
+编码
+当然，有些复杂的功能或定制化的需求可能无法通过约定或配置来实现，这时就需要编写代码了。Spring Boot提供了丰富的API和扩展点，使得开发者可以轻松地实现各种功能。
+但即使需要编码，Spring Boot也尽可能地通过注解、自动配置等方式简化了编码的复杂性。
+
+总结
+在Spring Boot中，"约定大于配置大于编码"原则的应用使得开发者可以更加高效地构建应用。通过遵循通用的约定和利用强大的配置功能，开发者可以快速地搭建起一个功能完善的应用，
+并在需要时通过编码来实现更高级的功能。这种设计方式不仅提高了开发效率，也增强了应用的可维护性和可读性。
+
+
+SpringBoot的自动配置：
+Spring Boot的自动配置是其核心功能之一，它极大地简化了Spring应用程序的初始搭建和配置过程。
+自动配置的核心思想是根据项目中的依赖和类路径下的特定类，自动创建和配置Spring容器中的bean，从而省去了手动配置的大量工作。
+
+以下是Spring Boot自动配置的主要原理和实现方式：
+>条件化配置：Spring Boot通过条件注解（如@ConditionalOnClass、@ConditionalOnMissingBean等）来决定是否加载某个自动配置类或bean。
+这些条件可以是类路径下是否存在某个类、是否存在某个bean等。只有当满足特定条件时，相关的自动配置才会生效。
+
+>自动配置类：自动配置类通过@Configuration注解标识，它们包含了Spring容器需要自动创建的bean的定义。这些bean的创建和配置会根据条件化注解的条件来确定。
+自动配置类通常存放在spring-boot-autoconfigure模块的jar包中。
+
+>META-INF/spring.factories文件：Spring Boot通过在类路径下的META-INF/spring.factories文件中定义自动配置类，告诉Spring Boot哪些配置类需要被加载。
+这个文件是一个属性文件，其中包含了自动配置类的全限定名。
+
+>属性绑定：Spring Boot还允许开发者在application.properties或application.yml文件中定义外部化配置，这些配置会被自动绑定到相关的bean上。
+这大大简化了配置的复杂性，使得开发者能够更专注于业务逻辑的实现。
+
+>Starter依赖：Spring Boot提供了一系列的“Starter”依赖，这些依赖包含了构建某个特定类型应用程序所需的所有基本依赖和自动配置。
+例如，spring-boot-starter-web包含了构建Web应用程序所需的Spring MVC和嵌入式Servlet容器等依赖和自动配置。
+
+
+问：@SpringBootApplication注解是如何完成自动配置功能的？
+@SpringBootApplication注解是SpringBoot中的一个复合注解，它包含了@Configuration、@EnableAutoConfiguration和@ComponentScan三个关键注解。
+这个注解的作用是启用SpringBoot的自动配置功能，并告诉Spring Boot如何扫描和加载应用程序的组件。
+
+下面我们来详细解析@SpringBootApplication注解是如何完成自动配置功能的：
+
+@Configuration：
+这个注解用于告诉Spring这是一个配置类，类似于XML配置文件中的<beans>标签。在这个类中，开发者可以使用@Bean注解来定义和初始化Spring容器管理的bean。
+
+@EnableAutoConfiguration：
+这个注解是自动配置的关键所在。当使用@EnableAutoConfiguration注解时，Spring Boot会根据项目中引入的依赖和类路径下的特定类，自动配置应用程序所需的bean。
+
+条件注解：Spring Boot使用条件注解（如@ConditionalOnClass、@ConditionalOnMissingBean等）来决定是否创建和配置某个bean。这些条件可以是类路径上是否存在某个类、是否存在某个bean等。
+自动配置类：Spring Boot提供了许多自动配置类，这些类包含了一些预定义的bean，并且会根据项目的条件进行创建和配置。
+META-INF/spring.factories文件：自动配置类通过META-INF/spring.factories文件进行注册。Spring Boot在启动时，会扫描这个文件，并加载其中定义的自动配置类。
+
+@ComponentScan：
+这个注解用于告诉Spring Boot哪些包下的类需要被扫描并注册为Spring容器管理的bean。默认情况下，@SpringBootApplication注解会扫描启动类所在的包及其子包。
+
+综合这三个注解，@SpringBootApplication完成了以下功能：
+
+通过@Configuration定义了配置类。
+通过@EnableAutoConfiguration启用了自动配置功能，根据项目的依赖和条件自动创建和配置bean。
+通过@ComponentScan扫描并注册应用程序的组件。
+
+当开发者在Spring Boot应用程序的主类上使用@SpringBootApplication注解时，Spring Boot会自动完成上述所有步骤，从而简化了应用程序的配置和初始化过程。
+开发者只需要关注业务逻辑的实现，而不需要花费大量时间在繁琐的配置上。
+
+
+SpringBoot中定制Web扩展配置：WebMvcConfigurerAdapter接口
+这是一个接口，里边声明了很多的方法，例如拦截器，视图解析器，格式转化器。
+如果想在webmvc中添加自己的功能，只需要去WebMvcConfigurer看看想增加什么功能，然后按照源码去写。
+
+Spring与SpringBoot中一些常用注解：
+@SpringBootApplication：实现自动化装配，启动SpringBoot，包含@Configuration、@EnableAutoConfiguration、@ComponentScan通常用在主类上
+@Component：普通pojo注入spring容器
+@Service：Service注入Spring容器
+@Controller：Controller注入容器
+@Repository：Dao注入容器
+@ResponseBody：将java对象转为json格式的数据
+@RestController：该注解是@Controller和@ResponseBody的结合体，一般用于类，作用等于在类上面添加了@ResponseBody和@Controller
+@AutoWired：默认按类型装配，如果发现找到多个bean，则按照name方式比对，如果还有多个，则报出异常
+@Qualifier：spring的注解，按名字注入 一般当出现两个及以上bean时,不知道要注入哪个，结合@AutoWired使用
+@Resource：默认按名称注入例如@Resource(name = “zhaozhao”)则根据name属性注入找不到则报错，
+若无name属性则根据属性名称注入，如果匹配不成功则按照类型匹配匹配不成功则报错。
+@RequestMapping：@RequestMapping（url），通过该注解就可以通过配置的url进行访问，方式可以是get或post请求，两种方式均可
+@GetMapping：只是这个限定了只能是Get请求
+@PostMapping：只是这个限定了只能是Post请求
+@Value：用于获取bean的属性，一般用于读取配置文件的数据，作用在变量上 
+@ConfigurationProperties：用于注入Bean属性，然后再通过当前Bean获取注入值，作用在类上 
+@PropertySource：用于指定要读取的配置文件，可以和@Value或@ConfigurationProperties配合使用
+@Configuration：作用于类上表示这是一个配置类，可理解为用spring的时候xml里面的< beans>标签 
+@Bean：产生bean对象加入容器，作用于方法，可理解为用spring的时候xml里面的标签
+@RequestParam：获取查询参数。即url?name=这种形式
+@RequestBody：获取Body的参数，一般用于post获取参数 
+@PathVariable：获取路径参数。即url/{id}这种形式 
+@RequestHeader：获取请求头的信息 
+@CookieValue：获取Cookie的信息
+
+Spring Boot的启动类实现方式：
+1、程序从main方法开始运行
+2、使用SpringApplication.run()加载主程序类
+3、主程序类需要标注@SpringBootApplication
+4、@EnableAutoConfiguration是核心注解；
+5、@Import导入所有的自动配置场景
+6、@AutoConfigurationPackage定义默认的包扫描规则
+7、程序启动扫描加载主程序类所在的包以及下面所有子包的组件；
+
+Spring Boot使用的全局配置文件：
+>application.properties
+>application.yml
+
+配置文件放在src/main/resources目录或者类路径/config下
+.yml是YAML(YAML Aint Markup Language)编写的文件格式，YAML是一种直观的能够被电脑识别的的数据数据序列化格式，比json、xml等更适合做配置文件
+
+转载：https://www.zhihu.com/question/64671972/answer/223383505
+作者：zhonghd
+链接：https://www.jianshu.com/p/1d4d57a4db51
+来源：简书
+-------------------------------------------------------------------------------
 
 
 Java程序通过设计模式、数据结构与算法等技术组成框架
