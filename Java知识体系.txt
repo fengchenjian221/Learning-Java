@@ -196,6 +196,13 @@ System.out.println(a); // 输出5
 如果比较的是基本数据类型：比较两个变量保存的数据是否相同（不一定类型要相同）
 如果比较的是引用数据类型：比较两个变量的地址值是否相同，是否指向同一个对象实体
 
+用==比较两个String类型的数据：
+在Java中，使用==操作符来比较两个String类型的对象时，并不会导致编译错误，因为==是Java的一个有效操作符，它可以用于比较基本数据类型（如int、char等）的值，也可以用于比较引用数据类型的引用值（即，它们是否指向内存中的同一位置）。
+然而，对于String类型的比较，使用==通常不是最佳实践，因为String是一个不可变类，并且Java虚拟机（JVM）为了优化字符串的使用，会在字符串常量池中缓存字符串字面量。
+这意味着，当你创建两个内容相同的字符串字面量时，JVM可能会让它们指向常量池中的同一个对象。但是，如果你通过new String("...")来创建字符串对象，或者字符串是通过其他非字面量的方式（如字符串连接、字符串函数返回值等）得到的，那么即使内容相同，这些字符串对象也可能位于内存中的不同位置。
+因此，当你使用==来比较两个String对象时，你实际上是在比较它们的引用是否相同，而不是它们的内容是否相同。这通常不是你想要的，特别是当你不确定这些字符串是否来自常量池，或者是否通过new关键字显式创建时。
+为了比较两个String对象的内容是否相同，应该使用equals()方法。equals()方法被重写（Override）在String类中，以比较两个字符串的内容是否完全一致。这是比较字符串内容的正确方式。
+
 equals(): 方法
 只能适用于引用数据类型
 Object类中equals（）的定义：Object类中定义的equals()和==的作用是相同的，比较两个对象的地址值
@@ -231,9 +238,7 @@ public boolean equals(Object anObject) {
 通常情况下，自定义的类需要重写equals()方法
 自定义类重写equals()方法的步骤一般如下：
 1、先用“==”判断是否相等。
-
 2、判断equals()方法的参数是否为null，如果为null，则返回false；因为当前对象不可能为null，如果为null，则不能调用其equals()方法，否则抛java.lang.NullPointerException异常。
-
 3、当参数不为null，则如果两个对象的运行时类（通过getClass()获取）不相等，返回false，否则继续判断。
 
 
@@ -1030,7 +1035,11 @@ Java 包装类：
 
 基本数据类型和包装类的转换：
 基本数据类型→包装类：调用包装类的构造器;自动装箱
+调用方法举例：Integer的valueOf(i)方法
+
 包装类→基本数据类型：调用包装类的xxxValue();自动拆箱
+调用方法举例：Integer的intValue()方法
+
 (自动装箱和自动拆箱是jdk5.0以后的特性)
 
 基本数据类型、包装类转换为String类型：
@@ -7610,8 +7619,7 @@ Spring与SpringBoot中一些常用注解：
 @RestController：该注解是@Controller和@ResponseBody的结合体，一般用于类，作用等于在类上面添加了@ResponseBody和@Controller
 @AutoWired：默认按类型装配，如果发现找到多个bean，则按照name方式比对，如果还有多个，则报出异常
 @Qualifier：spring的注解，按名字注入 一般当出现两个及以上bean时,不知道要注入哪个，结合@AutoWired使用
-@Resource：默认按名称注入例如@Resource(name = “zhaozhao”)则根据name属性注入找不到则报错，
-若无name属性则根据属性名称注入，如果匹配不成功则按照类型匹配匹配不成功则报错。
+@Resource：默认按名称注入例如@Resource(name = “zhaozhao”)则根据name属性注入找不到则报错，若无name属性则根据属性名称注入，如果匹配不成功则按照类型匹配匹配不成功则报错。
 @RequestMapping：@RequestMapping（url），通过该注解就可以通过配置的url进行访问，方式可以是get或post请求，两种方式均可
 @GetMapping：只是这个限定了只能是Get请求
 @PostMapping：只是这个限定了只能是Post请求
@@ -7642,12 +7650,6 @@ Spring Boot使用的全局配置文件：
 配置文件放在src/main/resources目录或者类路径/config下
 .yml是YAML(YAML Aint Markup Language)编写的文件格式，YAML是一种直观的能够被电脑识别的的数据数据序列化格式，比json、xml等更适合做配置文件
 
-转载：https://www.zhihu.com/question/64671972/answer/223383505
-作者：zhonghd
-链接：https://www.jianshu.com/p/1d4d57a4db51
-来源：简书
--------------------------------------------------------------------------------
-
 
 Java程序通过设计模式、数据结构与算法等技术组成框架
 
@@ -7666,26 +7668,459 @@ Java程序通过设计模式、数据结构与算法等技术组成框架
 
 
 设计模式的七大原则：
-开闭原则：对扩展开放、对修改关闭。
+开闭原则：
+软件实体（类、模块、函数等）应该对扩展开放，对修改关闭。
+对扩展开放：意味着软件实体应该允许在不修改原有代码的情况下，通过添加新功能来扩展其行为。
+对修改关闭：意味着一旦软件实体被开发并投入使用后，应该尽量避免对其进行修改，尤其是修改核心业务逻辑。
 
 单一指责原则：一个类只做一件事。
 该原则强调一个类或者一个模块应该只有一个引起变化的原因，也就是说，它应该只负责一项职责。
 当一个类或模块承担过多的职责时，它的可维护性和可读性都会受到影响，因为任何一个职责的变化都可能导致整个类或模块需要重新设计或修改。
 
-依赖倒转原则：类似于ioc，采用接口编程。
-迪米特原则：高内聚，低耦合。
-接口隔离原则：应该使用多个接口，而不是用单一的总接口。
-合成复用原则：尽量使用对象组合，而不是继承来达到复用目的。
-里氏替换原则：子类可以扩展父类的功能，但不能改变原有的功能。
+依赖倒置原则：
+高层模块不应该依赖低层模块，两者都应该依赖其抽象。
+抽象不应该依赖细节，细节应该依赖抽象。
+
+这意味着在软件设计中，我们应该尽量通过接口或抽象类去定义类的行为，而不是直接依赖于具体的实现类。这样，当具体实现发生变化时，只要它们仍然遵循接口或抽象类的约定，高层模块就不需要修改，从而提高了系统的灵活性和可维护性。
+
+依赖倒置原则在Java里要遵循以下规范：
+1. 依赖于抽象，而不是依赖于具体类
+高层模块（业务逻辑）不应该依赖于低层模块（具体实现），而应该依赖于抽象（接口或抽象类）。低层模块也应该依赖于这些抽象。
+
+示例代码：
+interface PaymentProcessor {
+    void processPayment(double amount);
+}
+
+class PayPalProcessor implements PaymentProcessor {
+    @Override
+    public void processPayment(double amount) {
+        // PayPal payment logic
+    }
+}
+
+class ShoppingCart {
+    private PaymentProcessor paymentProcessor;
+
+    public ShoppingCart(PaymentProcessor paymentProcessor) {
+        this.paymentProcessor = paymentProcessor;
+    }
+
+    public void checkout(double amount) {
+        paymentProcessor.processPayment(amount);
+    }
+}
+
+在这个例子中，ShoppingCart 依赖于 PaymentProcessor 接口，而不是 PayPalProcessor 具体类。
+
+2. 高层模块不应该直接创建低层模块的实例
+高层模块不应该直接实例化低层模块的对象。这可以通过依赖注入（Dependency Injection, DI）来实现，即通过构造函数、setter 方法，或依赖注入框架（如 Spring）传递依赖对象。
+
+示例代码：
+class ShoppingCart {
+    private PaymentProcessor paymentProcessor;
+
+    public ShoppingCart(PaymentProcessor paymentProcessor) {
+        this.paymentProcessor = paymentProcessor;
+    }
+}
+
+public static void main(String[] args) {
+    PaymentProcessor processor = new PayPalProcessor(); // 创建具体实现
+    ShoppingCart cart = new ShoppingCart(processor); // 注入依赖
+    cart.checkout(100.0);
+}
+
+这里，ShoppingCart 类并不直接创建 PayPalProcessor 对象，而是通过依赖注入来获得它。
+
+3. 遵循接口分离原则（ISP）
+接口应该尽可能小，避免臃肿。这样可以确保依赖于接口的类不会被迫实现它们不需要的方法。通过精简的接口，每个模块只依赖于它所需要的功能。
+
+示例代码：
+interface Printer {
+    void print(Document doc);
+}
+
+interface Scanner {
+    void scan(Document doc);
+}
+
+class MultiFunctionPrinter implements Printer, Scanner {
+    @Override
+    public void print(Document doc) {
+        // Print logic
+    }
+
+    @Override
+    public void scan(Document doc) {
+        // Scan logic
+    }
+}
+
+Printer 和 Scanner 是两个独立的接口，遵循了接口分离原则。
+
+4. 使用依赖注入框架
+在实际开发中，使用依赖注入框架（如 Spring、Guice）可以更容易地遵循依赖倒置原则。框架会自动管理对象的创建和依赖关系，使代码更加松耦合。
+
+示例代码：
+@Service
+public class ShoppingCartService {
+    private final PaymentProcessor paymentProcessor;
+
+    @Autowired
+    public ShoppingCartService(PaymentProcessor paymentProcessor) {
+        this.paymentProcessor = paymentProcessor;
+    }
+
+    public void checkout(double amount) {
+        paymentProcessor.processPayment(amount);
+    }
+}
+
+在这个示例中，ShoppingCartService 中的 PaymentProcessor 依赖通过 Spring 框架自动注入，减少了直接依赖具体实现的风险。
+
+5. 避免静态方法和静态依赖
+静态方法和依赖于静态类的设计会破坏依赖倒置原则，因为它们使高层模块依赖于具体实现，难以替换或测试。因此，尽量避免使用静态依赖。
+
+示例代码：
+class FileLogger {
+    public static void log(String message) {
+        // Log message to file
+    }
+}
+
+class BusinessService {
+    public void doBusinessLogic() {
+        FileLogger.log("Business logic executed."); // 违反依赖倒置原则
+    }
+}
+
+在这个示例中，BusinessService 依赖于 FileLogger 的静态方法，无法轻易替换或测试。
+
+迪米特原则：
+设计模式中的迪米特原则（Law of Demeter，简称LoD），又称为最少知识原则（Least Knowledge Principle，简称LKP），是面向对象设计中的一个重要原则。
+该原则的核心思想是尽量减少一个对象对另一个对象内部结构的了解，即一个对象应该对其他对象有最少的了解。这样做的目的是降低类之间的耦合度，提高模块的相对独立性，从而提高系统的可维护性和可扩展性。
+
+定义与解释
+迪米特原则要求一个类应该对自己需要耦合或调用的类知道得最少，被调用或耦合的类的内部是如何复杂都与我无关。换句话说，一个类只需要知道其他类提供的公共方法（public methods），而不需要知道这些方法的内部实现细节。
+
+核心观念
+类间解耦：迪米特原则强调类之间的低耦合，即减少类之间的直接依赖关系。
+只和朋友交流：这里的“朋友”指的是与当前对象有直接关联的对象，如成员变量、方法的输入输出参数等。一个对象应该只与它的“朋友”通信，而不应该与“陌生人”通信。
+
+
+实现方式
+减少公共方法和属性：在设计类时，应该尽量减少类的公共方法和属性，只暴露必要的接口给外部使用。
+使用中介类：如果两个类之间需要通信，但又不想直接建立依赖关系，可以通过引入中介类来实现间接通信。
+封装：通过封装将类的内部实现细节隐藏起来，只提供公共的接口供外部调用。
+
+
+优缺点
+优点：
+降低耦合度：减少了类之间的直接依赖关系，提高了系统的灵活性和可维护性。
+提高复用性：由于类之间的耦合度降低，类的复用性得到提高。
+提高扩展性：在需要添加新功能或修改现有功能时，可以更容易地进行扩展和维护。
+缺点：
+增加系统复杂度：过度使用迪米特原则可能会导致系统中出现大量的中介类，从而增加系统的复杂性和理解难度。
+降低通信效率：由于类之间的通信需要通过中介类进行转发，可能会降低系统的通信效率。
+
+示例代码：
+// Book 类，代表书籍  
+class Book {  
+    private String title;  
+  
+    public Book(String title) {  
+        this.title = title;  
+    }  
+  
+    public String getTitle() {  
+        return title;  
+    }  
+  
+    // 其他书籍相关的方法...  
+}  
+  
+// Library 类，代表图书馆（在这个示例中，我们主要用它来存储书籍）  
+class Library {  
+    private List<Book> books = new ArrayList<>();  
+  
+    public void addBook(Book book) {  
+        books.add(book);  
+    }  
+  
+    // 获取所有书籍的方法（实际中可能不会这么直接暴露，但为了示例）  
+    public List<Book> getBooks() {  
+        return books;  
+    }  
+  
+    // 其他图书馆管理的方法...  
+}  
+  
+// Librarian 类，图书管理员，作为中介类  
+class Librarian {  
+    private Library library;  
+  
+    public Librarian(Library library) {  
+        this.library = library;  
+    }  
+  
+    // 读者请求借书，图书管理员处理  
+    public Book borrowBook(String title) {  
+        for (Book book : library.getBooks()) {  
+            if (book.getTitle().equals(title)) {  
+                // 假设这里有一个借书逻辑，比如从列表中移除书籍  
+                // 但为了简化，我们只是返回书籍对象  
+                return book;  
+            }  
+        }  
+        return null; // 没有找到书籍  
+    }  
+  
+    // 其他图书管理的方法...  
+}  
+  
+// Reader 类，代表读者  
+class Reader {  
+    private Librarian librarian;  
+  
+    public Reader(Librarian librarian) {  
+        this.librarian = librarian;  
+    }  
+  
+    // 读者借书，通过图书管理员进行  
+    public void borrowBook(String title) {  
+        Book book = librarian.borrowBook(title);  
+        if (book != null) {  
+            System.out.println("Borrowed: " + book.getTitle());  
+        } else {  
+            System.out.println("Book not found.");  
+        }  
+    }  
+  
+    // 读者其他与书籍交互的方法...  
+}  
+  
+// 主类，用于演示  
+public class Demo {  
+    public static void main(String[] args) {  
+        Library library = new Library();  
+        library.addBook(new Book("Java Programming"));  
+        library.addBook(new Book("Design Patterns"));  
+  
+        Librarian librarian = new Librarian(library);  
+        Reader reader = new Reader(librarian);  
+  
+        reader.borrowBook("Java Programming");  
+        reader.borrowBook("Non-Existent Book");  
+    }  
+}
+在这个示例中，Reader类不需要直接知道Book类的内部结构，也不需要直接与Library类交互。相反，它通过Librarian类（图书管理员）来借书，这符合迪米特原则的要求。
+Librarian类作为中介，封装了与Library和Book的交互细节，从而降低了Reader与这些类之间的耦合度。
+
+
+接口隔离原则：
+接口隔离原则是一种面向对象设计原则，其核心思想是客户端不应该依赖它不需要的接口，或者说一个类对另一个类的依赖应该建立在最小的接口上。
+这一原则鼓励将庞大的接口拆分成更小的、更具体的接口，使得客户端（使用接口的类）只依赖于它实际需要的接口方法。这样做的好处包括降低客户端与接口之间的耦合度，提高系统的灵活性、可扩展性和可维护性。
+
+接口隔离原则的具体要求
+最小接口：一个类对另一个类的依赖应该建立在最小的接口上。
+细化接口：尽量细化接口，避免接口中的方法过多，接口中的方法应该尽量少（但也不是越少越好，要适度）。
+高聚合、低耦合：符合“高聚合、低耦合”的设计思想，使得类具有很好的可读性、可扩展性和可维护性。
+
+
+合成复用原则：
+设计模式中的合成复用原则（Composite/Aggregate Reuse Principle, CARP），又称为组合/聚合复用原则，是面向对象设计中的一个重要原则。其核心思想是尽量使用对象组合（Composition）或聚合（Aggregation）的方式，而不是使用继承（Inheritance）来达到复用的目的。这一原则有助于构建更加灵活、松耦合的系统，降低类与类之间的依赖关系，从而提高系统的可维护性和可扩展性。
+
+定义：尽量使用对象组合/聚合，而不是继承来达到复用的目的。这意味着在新的对象里通过关联关系（包括组合关系和聚合关系）来使用一些已有的对象，使之成为新对象的一部分；新对象通过委派调用已有对象的方法达到复用功能的目的。
+
+合成复用原则的优点
+降低耦合度：组合/聚合关系比继承关系更加灵活，降低了类与类之间的耦合度，一个类的变化对其他类造成的影响相对较少。
+提高系统的可扩展性：通过组合/聚合，可以很容易地添加新的功能或替换已有的功能，而不需要修改原有的类结构。
+增强复用性：组合/聚合复用允许在不破坏原有类结构的前提下，通过组合不同的对象来复用代码。
+
+合成复用原则的应用场景
+当两个类之间存在“Has-A”（有一个）关系时，应优先考虑使用组合或聚合。例如，一个班级（Class）有多个学生（Student），这里班级和学生之间就是组合关系。
+当需要复用已有类的功能，但又不想暴露其实现细节时，可以使用组合/聚合来隐藏实现细节，实现黑箱复用。
+在设计系统时，如果发现类之间的继承关系过于复杂，导致系统难以理解和维护，可以考虑使用组合/聚合来重构系统。
+
+示例说明
+假设有一个Vehicle（交通工具）类和一个Engine（发动机）类。如果我们想让Vehicle类具有发动机的功能，但不希望Vehicle直接继承自Engine（因为这样做会破坏类的封装性，并且可能导致Vehicle类继承到一些不需要的属性和方法），我们可以使用组合/聚合的方式来实现。
+
+// 发动机类  
+public class Engine {  
+    public void start() {  
+        System.out.println("发动机启动");  
+    }  
+}  
+  
+// 交通工具类，使用组合方式复用发动机功能  
+public class Vehicle {  
+    private Engine engine;  
+  
+    public Vehicle(Engine engine) {  
+        this.engine = engine;  
+    }  
+  
+    public void start() {  
+        engine.start(); // 委派调用发动机的方法  
+        System.out.println("交通工具启动");  
+    }  
+}  
+  
+// 使用示例  
+public class Main {  
+    public static void main(String[] args) {  
+        Engine engine = new Engine();  
+        Vehicle car = new Vehicle(engine);  
+        car.start(); // 输出：发动机启动，交通工具启动  
+    }  
+}
+在这个示例中，Vehicle类通过组合的方式复用了Engine类的功能，而没有使用继承。这样做的好处是Vehicle类不需要关心Engine类的具体实现细节，只需要知道如何使用它即可。
+同时，这也使得系统更加灵活和可扩展，例如我们可以很容易地替换Engine类的实现或添加新的功能到Vehicle类中。
+
+
+里氏替换原则：
+里氏替换原则是指任何基类（父类）可以出现的地方，子类一定可以出现。换言之，所有引用基类的地方必须能透明地使用其子类的对象。这一原则强调了子类对象对基类对象的可替换性，从而保证了程序的稳定性和可维护性。
+
+主要内容
+子类必须实现父类的抽象方法：当父类有抽象方法时，子类必须实现这些方法，以保证子类能够替代父类完成抽象方法所声明的功能。
+子类不得重写父类的非抽象方法：子类不应该改变父类已有的功能（即不应该重写父类的非抽象方法），以保持父类行为的稳定性和一致性。如果子类需要修改父类的行为，应该通过添加新的方法或重写父类的抽象方法来实现。
+子类中可以增加自己特有的方法：子类可以在继承父类的基础上，增加自己特有的属性和方法，以扩展父类的功能。这是面向对象多态性的体现，也是子类能够替代父类的重要原因之一。
+
+方法的输入参数和返回类型：
+当子类覆盖或实现父类的方法时，方法的输入参数（前置条件）可以比父类方法的输入参数更宽松。这意味着子类方法的参数类型可以是父类方法参数类型的父类或者相同类型，或者能够接受更广泛的输入类型。
+当子类的方法实现父类的抽象方法时，方法的返回结果（后置条件）要比父类方法的返回结果范围更严格。这意味着子类方法的返回类型应该是父类方法返回类型的子类或者相同类型，以确保子类方法返回的结果能够完全替代父类方法返回的结果。
+
+优点
+里氏替换原则的优点主要包括：
+提高代码的健壮性：通过确保子类能够完全替代父类，降低了程序出错的可能性，提高了代码的可靠性和稳定性。
+降低维护成本：遵循里氏替换原则的设计使得系统更加灵活和可扩展，降低了因修改父类而需要重新设计和测试子类的成本。
+促进良好的继承设计：里氏替换原则为良好的继承设计提供了一个明确的规范，有助于开发者在设计和实现类时遵循最佳实践。
+
+应用场景
+里氏替换原则广泛应用于面向对象的设计和开发中，特别是在构建复杂的软件系统和框架时。它要求开发者在设计和实现类时，要充分考虑子类对父类的可替换性，确保系统能够稳定、可靠地运行。
+
 
 Java的23种设计模式：
+设计模式的分类，根据目的来划分，主要可以分为三种类型：创建型模式、结构型模式和行为型模式。
+
+一、创建型模式
+目的：用于描述“怎样创建对象”，其主要特点是“将对象的创建与使用分离”。
+
+作用：这类模式主要解决的是对象的创建问题，通过某种方式隐藏对象创建的细节，使得程序的扩展性更好。
+
+具体模式：
+单例模式：确保一个类只有一个实例，并提供一个全局访问点。
+工厂方法模式：定义一个用于创建对象的接口，让子类决定实例化哪一个类。
+抽象工厂模式：提供一个创建一系列相关或相互依赖对象的接口，而无需指定它们具体的类。
+建造者模式：将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。
+原型模式：用原型实例指定创建对象的种类，并且通过拷贝这个原型来创建新的对象。
+
+二、结构型模式
+目的：用于描述如何将类或对象按某种布局组成更大的结构。
+
+作用：这类模式关注于如何通过不同的方式来组织类和对象，以形成更大的软件结构。
+
+具体模式：
+适配器模式：将一个类的接口转换成客户端所期待的另一种接口形式，使类之间的接口不兼容问题可以通过一个中间类来解决。
+桥接模式：将抽象部分与实现部分分离，使它们都可以独立地变化。
+装饰模式：动态地给一个对象添加一些额外的职责。就增加功能来说，装饰模式相比生成子类更为灵活。
+组合模式：将对象组合成树形结构以表示“部分-整体”的层次结构，组合模式使得用户对单个对象和组合对象的使用具有一致性。
+外观模式：为子系统中的一组接口提供一个一致的界面，外观模式定义了一个高层接口，这个接口使得这一子系统更加容易使用。
+享元模式：运用共享技术有效地支持大量细粒度的对象。
+代理模式：为其他对象提供一种代理以控制对这个对象的访问。
+
+三、行为型模式
+目的：用于描述类或对象之间怎样相互协作共同完成单个对象都无法单独完成的任务，以及怎样分配职责。
+
+作用：这类模式不仅描述对象和类的组织结构，还描述它们之间的通信方式。
+
+具体模式：
+模版方法模式：定义一个操作中的算法的骨架，而将一些步骤延迟到子类中。模版方法使得子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤。
+命令模式：将一个请求封装为一个对象，从而使你可用不同的请求对客户进行参数化；对请求排队或记录请求日志，以及支持可撤销的操作。
+迭代器模式：提供一种方法顺序访问一个聚合对象中各个元素，而又不需暴露该对象的内部表示。
+观察者模式：定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并被自动更新。
+中介者模式：用一个中介对象来封装一系列的对象交互，中介者使各对象不需要显式地相互引用，从而使其耦合松散，而且可以独立地改变它们之间的交互。
+备忘录模式：在不破坏封装性的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态。这样以后就可将该对象恢复到原先保存的状态。
+解释器模式：给定一个语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。
+状态模式：允许一个对象在其内部状态改变时改变它的行为。对象看起来似乎修改了它的类。
+策略模式：定义一系列的算法，把它们一个个封装起来，并且使它们可相互替换。本模式让算法的变化独立于使用算法的客户。
+职责链模式：为请求创建一个接收者对象的链。这条链上的对象每一个都对请求进行某些处理，并可以传递给链上的下一个对象；直到有一个对象处理这个请求为止。
+访问者模式：表示一个作用于某对象结构中的各元素的操作。它使你可以在不改变各元素的类的前提下定义作用于这些元素的新操作。
+
 
 1、创建型-工厂方法模式：
 工厂方法模式分为三种：
 
 （1）简单工厂模式：
 
-建立一个工厂类，并定义一个接口对实现了同一接口的产品类进行创建。
+简单工厂模式（Simple Factory Pattern）是一种创建型设计模式，它用于创建对象时不会对客户端暴露创建逻辑，并且是通过使用一个共同的接口来指向新创建的对象。
+简单工厂模式并不属于GoF（四人帮）的23种设计模式之一，但它经常被用作学习工厂方法模式和抽象工厂模式的基础。
+在简单工厂模式中，我们定义一个工厂类，它根据传入的参数决定实例化哪一个类。所有的产品类都继承自一个共同的父类或接口。
+以下是一个简单工厂模式的代码示例，我们将创建不同类型的日志记录器（如控制台日志记录器和文件日志记录器），它们都实现了日志记录的功能。
+
+首先，定义一个日志记录器的接口：
+public interface Logger {  
+    void log(String message);  
+}
+
+然后，实现两个具体的日志记录器类：
+public class ConsoleLogger implements Logger {  
+    @Override  
+    public void log(String message) {  
+        System.out.println("Console: " + message);  
+    }  
+}  
+  
+public class FileLogger implements Logger {  
+    @Override  
+    public void log(String message) {  
+        // 这里只是简单模拟，实际应写入文件  
+        System.out.println("File: " + message);  
+    }  
+}
+
+
+接下来，创建一个简单工厂类，用于根据传入的类型参数返回相应的日志记录器实例：
+public class LoggerFactory {  
+    // 使用getLogger方法获取Logger对象  
+    public static Logger getLogger(String type) {  
+        if (type == null) {  
+            return null;  
+        }  
+        if (type.equalsIgnoreCase("console")) {  
+            return new ConsoleLogger();  
+        } else if (type.equalsIgnoreCase("file")) {  
+            return new FileLogger();  
+        }  
+          
+        // 可以抛出一个异常或者返回一个默认类型的Logger  
+        throw new IllegalArgumentException("Invalid logger type: " + type);  
+    }  
+}
+
+
+最后，使用工厂类来获取日志记录器实例，并调用其log方法：
+public class FactoryPatternDemo {  
+    private static final String LOGGER_TYPE = "console";  
+  
+    public static void main(String[] args) {  
+        Logger logger = LoggerFactory.getLogger(LOGGER_TYPE);  
+  
+        if (logger != null) {  
+            logger.log("This is a debug message");  
+        }  
+  
+        // 尝试获取不同类型的Logger  
+        logger = LoggerFactory.getLogger("file");  
+        if (logger != null) {  
+            logger.log("This is an error message");  
+        }  
+    }  
+}
+在这个例子中，LoggerFactory类是一个简单工厂类，它根据传入的字符串类型（"console"或"file"）来决定实例化哪个日志记录器类。客户端代码通过调用LoggerFactory.getLogger()方法来获取Logger对象，而不需要知道具体日志记录器类的实现细节。
+这种方式简化了对象的创建过程，并使得系统更加灵活和可扩展。
+
 
 （2）工厂方法模式：
 
