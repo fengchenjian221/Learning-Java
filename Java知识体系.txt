@@ -2097,73 +2097,233 @@ Iterator iterator = coll.iterator();
 while(iterator.hasNext()){
 	System.out.println(iterator.next());
 };
-2.foreach()
+2.增强型for循环
 for (集合元素的类型 局部变量 ：集合对象)
 
 
 Java集合可分为Collection和Set两个体系：
-Collection接口：单列数据，定义了存取一组对象的方法的集合
-	
-	List：元素有序、可重复的集合 
-	>ArrayList:作为list接口的主要实现类；线程不安全的，效率高；底层使用Object[]elementData存储
-	>LinkedList：对于频繁的插入、删除操作，使用效率比ArrayList高；底层使用双向链表存储
-	>Vector：作为list接口的古老实现类；线程安全的，效率低；底层使用Object[]elementData存储
-	
-	Set：元素无序、不可重复的集合
-	>HashSet:作为Set接口的主要实现类；线程不安全的；可以存储null值（底层：数组+链表）
-	>LinkedHashSet：作为HashSet的一个子类；遍历其内部数据时，可以按照添加的顺序遍历
-	>TreeSet：只能添加同一类型的对象，可以按照添加对象的指定属性，进行排序（底层：红黑树）
+Collection接口：
+Collection 接口是 Java 集合框架（Java Collections Framework）中的一个根接口，它位于 java.util 包中。Collection 接口为各种具体的集合提供了统一的访问和操作方式，比如添加（add）、删除（remove）、遍历（通过迭代器 Iterator）等。
+Collection 接口是许多其他集合接口（如 List、Set 和 Queue）的父接口，这些接口提供了更具体的集合类型。例如，List 接口提供了基于索引的访问方法（如 get(int index) 和 set(int index, E element)），而 Set 接口则不允许集合中有重复的元素。
+由于 Collection 接口是根接口，因此它定义的方法是所有集合类型共有的基本操作。通过实现 Collection 接口，Java 集合框架为开发者提供了一种统一的方式来处理不同类型的集合，无论它们是列表、集合还是队列等。
+这种设计使得 Java 集合框架非常灵活和强大。
+
+
+List：元素有序、可重复的集合 
+>ArrayList:作为list接口的主要实现类；访问速度快，因为可以直接通过下标访问元素；
+插入和删除操作需要移动元素，因此相对较慢；线程不安全的，效率高；底层使用Object[]elementData存储
+
+ArrayList的源码分析：
+1.空参构造ArrayList()
+public class ArrayList<E> {
+    /**
+     * 默认初始容量
+     */
+    private static final int DEFAULT_CAPACITY = 10;
+    /**
+     * 空数组
+     */
+    private static final Object[] EMPTY_ELEMENTDATA = {};
+    /**
+     * 默认容量的空数组
+     */
+    private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
+    /**
+     * 集合真正存储数组元素的数组
+     */
+    transient Object[] elementData;
+    /**
+     * 集合的大小
+     */
+    private int size;
+    public ArrayList() {
+        this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
+    }
+}
+通过空参构造方法创建集合对象并未构造一个初始容量为十的空列表，仅仅 DEFAULTCAPACITY_EMPTY_ELEMENTDATA 的地址赋值给 elementData
+
+2.指定容量构造器ArrayList(int initialCapacity)：根据 ArrayList 构造方法参数创建指定长度的数组
+3.创建集合的方式创建构造器ArrayList(Collection<? extends E> c)：将集合构造中的集合对象转成数组,且将数组的地址赋值给elementData
+
+插入方法add():
+1.添加单个元素public boolean add(E e) ：
+public boolean add(E e) {
+    // 1. 检测是否需要扩容
+    ensureCapacityInternal(size + 1);
+    // 2. 将新元素插入序列尾部
+    elementData[size++] = e;
+    return true;
+}
+
+2.在指定索引处添加元素 public void add(int index, E element) ：
+与无参的add()方法相比，这个方法的区别主要在于：它不是简单地在数组末尾顺序添加元素，而是允许在指定位置插入元素。这一过程额外涉及了一个数组拷贝的操作。
+以数组[1,2,3,4,5]为例，若需在索引1的位置插入数字10，则首先会从索引1开始复制数组元素，将后续的数字（即2,3,4,5）都向后移动一位，得到[1,2,2,3,4,5]（这里仅为说明过程，实际操作中不会真的重复元素）。
+随后，将索引1位置的数字（原为2）替换为10，最终数组变为[1,10,2,3,4,5]。这一操作的时间复杂度为O(n)，因为最坏的情况下（如在索引0处插入），整个数组的所有元素都需要被移动一位。
+
+
+>LinkedList：对于频繁的插入、删除操作，使用效率比ArrayList高；插入和删除操作非常快，因为不需要移动元素；
+访问元素相对较慢，因为需要从头部或尾部开始遍历；
+底层使用双向链表存储
+
+LinkedList的源码分析：
+1.空参构造LinkedList
+public class LinkedList<E>{
+    transient int size = 0;
+
+    /**
+     * 创建一个指针，指向头节点
+     * 不变量: (first == null && last == null) ||
+     *            (first.prev == null && first.item != null)
+     */
+    transient Node<E> first;
+
+    /**
+     * 创建一个指针，指向尾节点
+     * 不变量: (first == null && last == null) ||
+     *            (last.next == null && last.item != null)
+     */
+    transient Node<E> last;
+
+    public LinkedList() {
+    }
+
+    private static class Node<E> {
+    E item;
+    Node<E> next;
+    Node<E> prev;
+
+    Node(Node<E> prev, E element, Node<E> next) {
+        this.item = element;
+        this.next = next;
+        this.prev = prev;
+    }
+    }
+
+
+}
+通过空参构造方法创建一个双向链表，使其长度初始化为0。Node是一个静态内部类，用于表示链表中的节点，item为存储内容，next存下一个节点地址，prev存上一个节点地址。
+
+2.使用集合创造LinkedList
+/**
+ * 这个方法或构造函数创建了一个新的列表（例如ArrayList、LinkedList等），并将指定的集合（Collection）中的所有元素按照该集合迭代器（Iterator）返回的顺序添加到这个新列表中。
+ *
+ * @param  c 集合里的元素会被替换到此列表里
+ * @throws NullPointerException 如果集合为空
+ */
+public LinkedList(Collection<? extends E> c) {
+    this();
+    addAll(c);
+}
+通过调用空参构造器的方法创建linkedlist，并通过addAll方法将集合中的全部元素添加到列表中
+
+插入方法add：
+1.添加单个元素public boolean add(E e) ：在链表的尾部插入元素
+public boolean add(E e) {
+    linkLast(e);
+    return true;
+}
+
+void linkLast(E e) {
+    final Node<E> l = last;
+    final Node<E> newNode = new Node<>(l, e, null);
+    last = newNode;
+    if (l == null)
+        first = newNode;
+    else
+        l.next = newNode;
+    size++;
+    modCount++;
+}
+
+2.添加多个元素
+public boolean addAll(int index, Collection<? extends E> c) {
+    checkPositionIndex(index);
+
+    Object[] a = c.toArray();
+    int numNew = a.length;
+    if (numNew == 0)
+        return false;
+
+    Node<E> pred, succ;
+    if (index == size) {
+        succ = null;
+        pred = last;
+    } else {
+        succ = node(index);
+        pred = succ.prev;
+    }
+
+    for (Object o : a) {
+        @SuppressWarnings("unchecked") E e = (E) o;
+        Node<E> newNode = new Node<>(pred, e, null);
+        if (pred == null)
+            first = newNode;
+        else
+            pred.next = newNode;
+        pred = newNode;
+    }
+
+    if (succ == null) {
+        last = pred;
+    } else {
+        pred.next = succ;
+        succ.prev = pred;
+    }
+
+    size += numNew;
+    modCount++;
+    return true;
+}
+
+private void checkPositionIndex(int index) {
+    if (!isPositionIndex(index))
+        throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+}
+
+private boolean isPositionIndex(int index) {
+    return index >= 0 && index <= size;
+}
+
+①检查索引是否在范围内，不在则抛出异常
+②然后将加入的内容转化成数组；创建两个node的对象pred，succ；前者代表加入内容的前一个节点，后者表示加入位置的地址，如果index == size也就是是从链表尾部加入，那么succ就是null；否则succ就是第index个节点而pred就是第index前的那个节点
+③遍历数组创建双链表
+
+>Vector：作为list接口的古老实现类；线程安全的，效率低；由于同步操作，Vector的性能比ArrayList差；底层使用Object[]elementData存储
+
+>Stack:Stack是Vector的一个子类，用于实现后进先出（LIFO）的堆栈；
+提供了额外的后进先出功能，如push(E item)、pop()、peek()等方法；
+Stack继承自Vector，因此它也继承了Vector的线程安全性，但同样存在性能问题；
+在实际应用中，推荐使用Deque接口的实现类（如ArrayDeque）来代替Stack，因为Deque提供了更丰富的操作，并且性能更好。
+
+>CopyOnWriteArrayList:一个线程安全的变体，适用于读多写少的并发场景；
+在写操作时（如add、set等），通过复制底层数组的方式来实现，因此写操作代价昂贵，但读操作非常快，且无需同步。
+
+
+Set：元素无序、不可重复的集合
+>HashSet:作为Set接口的主要实现类；线程不安全的；
+可以存储null值（底层：数组+链表）；
+HashSet不保留插入顺序，因为它是基于哈希表实现的，哈希表的元素是无序的。
+
+>LinkedHashSet：作为HashSet的一个子类；
+内部通过LinkedHashMap实现，它在保留HashSet特性的基础上，通过维护一个双向链表来记录元素的插入顺序；
+遍历其内部数据时，可以按照添加的顺序遍历；
+LinkedHashSet 是线程不安全的，如果在多线程环境中使用，需要考虑线程同步的问题，或者考虑使用线程安全的集合类如 ConcurrentLinkedHashSet。
+
+>TreeSet：只能添加同一类型的对象；
+基于红黑树（一种自平衡二叉查找树）实现，能够确保集合元素处于排序状态；
+不允许使用null元素
 
 Map接口：双列数据，存储的是键值对
 
-ArrayList的源码分析:
-jdk 7情况下
-ArrayList arrayList=new ArrayList();//底层建了长度是10的Object[]数组elementData
-list.add (123);//elementData[0] = new Integer(123);
-...
-list.add(11);//如果此次的添加导致底层元素数据数组容量不够，则扩容
-默认情况下，扩容为原来的容量的1.5倍，同时需要将原有数组中的数据复制到新的数组中
-结论:建议开发中使用带参的构造器:ArrayList arrayList=new ArrayList(int capacity)
-
-jdk 8中ArrayList的变化:
-ArrayList list = new ArrayList();//底层Object[] elementData始化为{}并没有创建长度为10的数组
-list.add(123);//第一次调用add()时，底层才创建了长度10的数组，并将数据123添加到elementData[0]
-...
-后续的添加和扩容操作与jdk 7 无异
 
 小结：jdk7中的ArrayList对象创建类似于单列模式的饿汉式；
 而jdk8中的ArrayList对象创建类似于单列模式的懒汉式，延迟了数组的创建，节省内存
 
-LinkedList的源码分析：
-LinkedLtst List = new LinkedList(); 内部明JNode类型的first和last属性，默认值为null 
-List.add(123);//将123封装到Node 中，创建了Node对象。
-其中，Node定义为:体现了LinkedList的双向链表的说法
-private static class Node<E> {
-	E item;
-	Node<E> next;
-	Node<E> prev;
-	Node(Node<E> prev， E element， Node<E> next) {
-	this.item = element;
-	this.next = next;
-	this.prev = prev;
-	}
-}
-
-总结:List常用方法
-增: add(object obj)
-删：remove(int index) / remove(Object obj)
-改：set(int index, Object ele)
-查：get(int index)
-插: add(int index, Object ele)
-长度: size()
-遍历: ①@Iterator送代器方式
-	②增强for循环
-	③普通的循环
 
 Set：
 1.无序性：存储的数据在底层数组中并非按照数组索引添加，而是根据数据的哈希值来决定
 2.不可重复性：保证添加的元素按照equals()判断时，不能返回true.即: 相同的元素只能添加一个
-	
+
 添加元素的过程(以Hashset 为例):
 我们向Hashset中添加元素a,首先调用元素a所在类的hashcode()方法，计算元素a的哈希值，此哈希值接着通过某种算法计算出在HashSet底层数组中的存放位置(即为: 索引位置)，
 判断数组此位置上是否已经有元素:
