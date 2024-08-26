@@ -1278,6 +1278,60 @@ public interface MyInterface {
 2.抽象类是多个子类的像类，是一种模板式设计；接口是一种形为规范，是一种辐射式设计。
 
 
+为什么Java不是纯面向对象语言？
+Java 是一种广泛使用的编程语言，它确实具有许多面向对象的特性，如类、对象、继承、封装和多态等。
+然而，Java 并不是纯面向对象的语言，原因主要有以下几点：
+
+1.基本数据类型：Java 中有八种基本数据类型（如 int、float、char 等），这些基本数据类型不是对象。
+虽然 Java 为这些基本数据类型提供了对应的包装类（如 Integer、Float、Character 等），但在某些情况下，为了性能考虑，程序员仍然会直接使用基本数据类型。
+
+2.静态成员和方法：Java 中的静态成员（包括静态变量和静态方法）并不属于任何对象实例，而是属于类本身。静态成员和方法可以通过类名直接访问，而不需要创建类的实例。这种特性与面向对象的封装和实例化的概念不完全一致。
+
+3.单例模式：单例模式是一种设计模式，它保证一个类仅有一个实例，并提供一个全局访问点。在某些情况下，为了实现单例模式，需要使用静态成员和方法。这同样与面向对象的多实例、多态等特性不完全吻合。
+4.原始类型数组：Java 中的数组实际上是原始类型，而不是对象。虽然数组可以包含对象，但数组本身并不是对象。这意味着数组没有继承自任何类，也没有实现任何接口。
+5.主类和主方法：Java 程序从主类（包含 main 方法的类）开始执行。这个主方法是静态的，它不属于任何对象实例。这也是 Java 与纯面向对象语言的一个不同之处。
+
+虽然 Java 不是纯面向对象的语言，但它的面向对象特性仍然非常强大和灵活。Java 通过类和对象的概念，以及封装、继承和多态等机制，为程序员提供了一种高效、可维护的方式来构建复杂的应用程序。
+同时，Java 也提供了一些非面向对象的特性，以满足特定场景下的需求。这种折衷使得 Java 在实际应用中既具有面向对象的优势，又具有一定的灵活性。
+
+
+
+面向对象和面向过程的区别？
+面向过程：是分析解决问题的步骤，然后用函数把这些步骤一步一步地实现，然后在使用的时候一一调用则可。性能较高，所以单片机、嵌入式开发等一般采用面向过程开发
+
+面向对象：是把构成问题的事务分解成各个对象，而建立对象的目的也不是为了完成一个个步骤，而是为了描述某个事物在解决整个问题的过程中所发生的行为。面向对象有封装、继承、多态的特性，所以易维护、易复用、易扩展。
+可以设计出低耦合的系统。 但是性能上来说，比面向过程要低。
+
+
+
+它们在编程思路、特点、优势以及应用场景等方面存在显著差异
+编程思路：
+面向对象编程：以对象为核心，将现实世界中的事物抽象为对象，通过对象之间的交互和协作来解决问题。它强调的是数据和功能的结合，以及对象之间的消息传递。
+面对过程编程：以过程为中心，将程序分解为一系列的步骤或函数，每个步骤或函数完成一个具体的任务。它强调的是程序功能的顺序执行和数据在程序中的流动。
+
+特点：
+面向对象编程：
+封装：将对象的属性和方法封装在一起，隐藏内部实现细节，只提供有限的接口供外部访问。
+继承：子类可以继承父类的属性和方法，实现代码的复用和扩展。
+多态：同一接口可以有多种不同的实现方式，提高了代码的灵活性和通用性。
+
+面对过程编程：
+功能分解：将复杂的问题分解成更小、更易于管理的子问题，通过定义一系列的函数或过程来实现。
+逐步抽象：将具体操作封装在函数内部，简化程序的复杂度。
+
+优势：
+面向对象编程：
+代码复用性高：通过封装和继承机制，可以实现代码的模块化和复用。
+扩展性好：支持通过继承和派生来实现代码的扩展。
+易于维护和调试：代码结构清晰，降低了开发和维护过程中的错误率。
+抽象和封装特性：使得代码更加灵活和易于理解。
+
+面对过程编程：
+结构清晰：程序流程一目了然，便于跟踪程序执行的过程和调试。
+适合简单问题：在处理简单直观的问题时，易于理解和实施。
+
+
+
 
 Java高级应用：
 异步、多线程、集合、泛型、序列化、IO、网络编程、反射、动态代理、jdk8.0以及以后新特性
@@ -2104,10 +2158,8 @@ for (集合元素的类型 局部变量 ：集合对象)
 Java集合可分为Collection和Set两个体系：
 Collection接口：
 Collection 接口是 Java 集合框架（Java Collections Framework）中的一个根接口，它位于 java.util 包中。Collection 接口为各种具体的集合提供了统一的访问和操作方式，比如添加（add）、删除（remove）、遍历（通过迭代器 Iterator）等。
-Collection 接口是许多其他集合接口（如 List、Set 和 Queue）的父接口，这些接口提供了更具体的集合类型。例如，List 接口提供了基于索引的访问方法（如 get(int index) 和 set(int index, E element)），而 Set 接口则不允许集合中有重复的元素。
-由于 Collection 接口是根接口，因此它定义的方法是所有集合类型共有的基本操作。通过实现 Collection 接口，Java 集合框架为开发者提供了一种统一的方式来处理不同类型的集合，无论它们是列表、集合还是队列等。
-这种设计使得 Java 集合框架非常灵活和强大。
-
+Collection 接口是其他集合接口父类，Collection接口有三种子类型，分别是List、Set 和 Queue。
+List：表示一个有序的元素集合，可以包含重复的元素。Set：表示一个不包含重复元素的集合。Queue：表示一组先进先出（FIFO）的元素。
 
 List：元素有序、可重复的集合 
 >ArrayList:作为list接口的主要实现类；访问速度快，因为可以直接通过下标访问元素；
@@ -2153,6 +2205,39 @@ public boolean add(E e) {
     // 2. 将新元素插入序列尾部
     elementData[size++] = e;
     return true;
+}
+
+private void ensureCapacityInternal(int minCapacity) {
+    ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));
+}
+
+//通过max方法比较默认容量和传入的容量minCapacity，返回一个最大的数字作为容量
+private static int calculateCapacity(Object[] elementData, int minCapacity) {
+    if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
+        return Math.max(DEFAULT_CAPACITY, minCapacity);
+    }
+    return minCapacity;
+}
+
+//如果最小容量大于elementData的长度，进行扩容
+private void ensureExplicitCapacity(int minCapacity) {
+    modCount++;
+    // overflow-conscious code
+    if (minCapacity - elementData.length > 0)
+        grow(minCapacity);
+}
+
+//
+private void grow(int minCapacity) {
+    // overflow-conscious code
+    int oldCapacity = elementData.length;
+    int newCapacity = oldCapacity + (oldCapacity >> 1);
+    if (newCapacity - minCapacity < 0)
+        newCapacity = minCapacity;
+    if (newCapacity - MAX_ARRAY_SIZE > 0)
+        newCapacity = hugeCapacity(minCapacity);
+    // minCapacity is usually close to size, so this is a win:
+    elementData = Arrays.copyOf(elementData, newCapacity);
 }
 
 2.在指定索引处添加元素 public void add(int index, E element) ：
@@ -2304,17 +2389,59 @@ Set：元素无序、不可重复的集合
 可以存储null值（底层：数组+链表）；
 HashSet不保留插入顺序，因为它是基于哈希表实现的，哈希表的元素是无序的。
 
+HashSet的源码解析：
+public class HashSet<E>{
+    static final long serialVersionUID = -5024744406713321676L;
+
+    private transient HashMap<E,Object> map;
+
+    // 在底层映射中，与对象关联的哑值（或占位值）
+    private static final Object PRESENT = new Object();
+
+    /**
+     * 构造一个新的空的集合时，背后使用的HashMap实例拥有默认的初始容量（16）和加载因子（0.75）
+     */
+    public HashSet() {
+        map = new HashMap<>();
+    }
+}    
+HashSet底层创建了一个HashMap，默认的初始容量（16）、加载因子（0.75）。HashSet的增删查改都是在HashMap上进行的。
+
 >LinkedHashSet：作为HashSet的一个子类；
 内部通过LinkedHashMap实现，它在保留HashSet特性的基础上，通过维护一个双向链表来记录元素的插入顺序；
 遍历其内部数据时，可以按照添加的顺序遍历；
 LinkedHashSet 是线程不安全的，如果在多线程环境中使用，需要考虑线程同步的问题，或者考虑使用线程安全的集合类如 ConcurrentLinkedHashSet。
 
+LinkedHashSet的源码解析：
+public class LinkedHashSet<E> extends HashSet<E> implements Set<E>, Cloneable, java.io.Serializable {
+    public LinkedHashSet() {
+        super(16, .75f, true);
+    }
+}
+LinkedHashSet底层创建了一个HashSet，默认初始容量为16，加载因子为0.75。
+
+
 >TreeSet：只能添加同一类型的对象；
 基于红黑树（一种自平衡二叉查找树）实现，能够确保集合元素处于排序状态；
 不允许使用null元素
 
-Map接口：双列数据，存储的是键值对
+TreeSet的源码解析：
+public class TreeSet<E>{
+        private transient NavigableMap<E,Object> m;
 
+    // 在底层映射中，与对象关联的哑值（或占位值）
+    private static final Object PRESENT = new Object();
+
+
+    public TreeSet() {
+        this(new TreeMap<E,Object>());
+    }
+}
+TreeSet底层创建了一个TreeMap
+
+Map接口：双列数据，存储的是键值对。Map接口不继承Collection接口。在Java集合框架中，Map接口和Collection接口是两个并行的根接口，它们之间没有继承关系。
+>HashMap
+>TreeMap
 
 小结：jdk7中的ArrayList对象创建类似于单列模式的饿汉式；
 而jdk8中的ArrayList对象创建类似于单列模式的懒汉式，延迟了数组的创建，节省内存
@@ -3384,24 +3511,6 @@ Goodbye, World!
 After method: sayGoodbye
 
 
-为什么Java不是纯面向对象语言？
-Java 是一种广泛使用的编程语言，它确实具有许多面向对象的特性，如类、对象、继承、封装和多态等。
-然而，Java 并不是纯面向对象的语言，原因主要有以下几点：
-
-基本数据类型：Java 中有八种基本数据类型（如 int、float、char 等），这些基本数据类型不是对象。虽然 Java 为这些基本数据类型提供了对应的包装类（如 Integer、Float、Character 等），
-但在某些情况下，为了性能考虑，程序员仍然会直接使用基本数据类型。
-
-静态成员和方法：Java 中的静态成员（包括静态变量和静态方法）并不属于任何对象实例，而是属于类本身。静态成员和方法可以通过类名直接访问，而不需要创建类的实例。
-这种特性与面向对象的封装和实例化的概念不完全一致。
-
-单例模式：单例模式是一种设计模式，它保证一个类仅有一个实例，并提供一个全局访问点。在某些情况下，为了实现单例模式，需要使用静态成员和方法。这同样与面向对象的多实例、多态等特性不完全吻合。
-原始类型数组：Java 中的数组实际上是原始类型，而不是对象。虽然数组可以包含对象，但数组本身并不是对象。这意味着数组没有继承自任何类，也没有实现任何接口。
-主类和主方法：Java 程序从主类（包含 main 方法的类）开始执行。这个主方法是静态的，它不属于任何对象实例。这也是 Java 与纯面向对象语言的一个不同之处。
-
-虽然 Java 不是纯面向对象的语言，但它的面向对象特性仍然非常强大和灵活。Java 通过类和对象的概念，以及封装、继承和多态等机制，为程序员提供了一种高效、可维护的方式来构建复杂的应用程序。
-同时，Java 也提供了一些非面向对象的特性，以满足特定场景下的需求。这种折衷使得 Java 在实际应用中既具有面向对象的优势，又具有一定的灵活性。
-
-
 Java编译特点：
 Java的编译特点主要体现在其跨平台性、解释执行、即时编译、编译和解释的结合、安全性、可移植性和动态加载等方面。这些特点使得Java成为一种功能强大、安全可靠、易于学习和开发的编程语言，适用于各种应用场景。
 
@@ -3588,6 +3697,38 @@ PS：在计算机系统里，什么是进程，什么是线程？
 进程是系统资源分配的独立实体，且每个进程都有独立的地址空间。一个进程可以拥有多个线程，每个线程使用其所属进程的栈空间。
 线程是CPU独立运行和独立调度的基本单位，它负责当前进程中程序的执行。
 线程之间的通信是线程直接读写进程数据段（如全局变量）来进行通信，需要进程同步和互斥的手段的辅助，以保证数据的一致性。
+
+以微信为例，微信是一个进程，在微信中处理网络通信的是一个线程。
+
+
+如何实现进程间通信？
+进程间通信（Inter-Process Communication, IPC）是操作系统中多个进程之间交换数据或信号的一些技术或方法。实现进程间通信的方式多种多样，具体取决于操作系统和应用程序的需求。以下是一些常见的进程间通信方式：
+
+管道（Pipes）：
+匿名管道：通常用于父子进程之间的通信。它是单向的，数据只能从一个进程流向另一个进程。
+命名管道（FIFO）：允许无亲缘关系的进程之间进行通信。命名管道在文件系统中有一个名字，任何进程都可以通过打开这个文件来写入或读取数据。
+
+消息队列（Message Queues）：
+消息队列是消息的链接列表，存放在内核中并由消息队列标识符标识。它允许一个或多个进程向它写入或从中读取消息。消息队列与管道类似，但消息队列的消息是不连续的，具有独立的格式，并且拥有独立的读/写权限和属性。
+
+共享内存（Shared Memory）：
+共享内存允许两个或多个进程共享一个给定的存储区。因为数据不需要在客户机和服务器之间复制，所以这是最快的一种IPC方式。但是，它要求程序员能够处理同步和互斥问题。
+
+信号量（Semaphores）：
+信号量主要用于控制多个进程对共享资源的访问。它本质上是一个计数器，用于限制对某个特定资源的访问数量。信号量可以用来实现进程间的同步和互斥。
+
+套接字（Sockets）：
+套接字是一种更通用的进程间通信机制，它可用于不同机器上的进程间通信。套接字提供了端到端的通信服务，允许进程通过网络发送和接收数据。套接字不仅支持TCP/IP协议，还支持其他协议。
+
+信号（Signals）：
+信号是软件中断，提供了一种处理异步事件的方法。一个进程可以向另一个进程发送信号，接收信号的进程可以执行相应的信号处理函数。但是，信号传递的信息量有限，主要用于通知接收进程某个事件已经发生。
+
+文件映射（Memory-Mapped Files）：
+文件映射允许进程将文件或文件的一部分映射到进程的地址空间。这样，进程就可以像访问内存一样访问文件内容，从而实现进程间的数据共享。
+
+总结：在实现进程间通信时，需要根据具体的应用场景和需求选择最合适的通信方式。例如，对于需要高速数据交换的场景，共享内存可能是最好的选择；而对于需要跨网络进行通信的场景，套接字则是不可或缺的。
+
+
 
 在JVM中，每个线程是独立：程序计数器、栈、本地栈。线程间共享：堆、堆外内存（永久代或元空间、代码缓存）。
 
@@ -6058,7 +6199,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 
 
 为什么Java比其他语言更适合开发Web应用程序？
-Java比其他语言更适合开发Web应用程序的原因如下：
+
 1.跨平台性。Java由于其跨平台的特点，可以在多种操作系统上运行，这使得Java在服务器端程序中占据了主导地位。
 2.面向对象。Java是一种面向对象编程语言，具有封装、继承和多态等特性，这使得Java在编程中更易于理解和维护。开源。Java拥有一个庞大的开源社区，提供了大量的开源框架和库，这使得Java在Web开发中具有更强的灵活性和可扩展性。
 3.J2EE技术。J2EE是Java在Web开发中的一种重要技术，它提供了一组标准的技术和API，如Servlet、JSP和EJB等，使得开发者可以轻松地构建出高性能、可扩展、可维护且安全的企业级应用程序。
@@ -8904,8 +9045,7 @@ public enum Singleton {
 访问类：使用具体原型类中的 clone() 方法来复制新的对象。
 
 
- 在 Java 中，原型模式的核心是就是原型类 Prototype，Prototype 类需要具备以下两个条件：
-
+在 Java 中，原型模式的核心是就是原型类 Prototype，Prototype 类需要具备以下两个条件：
 实现 Cloneable 接口：
 重写 Object 类中的 clone() 方法，用于返回对象的拷贝；
 Object 类中的 clone() 方法默认是浅拷贝，如果想要深拷贝对象，则需要在 clone() 方法中自定义自己的复制逻辑。
@@ -8976,7 +9116,7 @@ public class Student implements Serializable {
         使用原型模式进行创建对象不仅简化对象的创建步骤，还比 new 方式创建对象的性能要好的多，
 		因为 Object 类的 clone() 方法是一个本地方法，直接操作内存中的二进制流，特别是复制大对象时，性能的差别非常明显；
 
-		@Data
+@Data
 public class Clazz implements Cloneable, Serializable {
     private String name;
     private Student student;
@@ -9007,8 +9147,7 @@ public class Clazz implements Cloneable, Serializable {
         System.out.println(clazz3); // Clazz(name=高三一班, student=Student(name=王五, sex=男, age=18))
     }
 
-可以看到，当修改了stu3的姓名时，stu1的姓名并没有被修改了，这说明stu3和stu1已经是不同的对象了，
-说明Clazz中的Student也被克隆了，不再指向原有对象地址，这就是深克隆。
+可以看到，当修改了stu3的姓名时，stu1的姓名并没有被修改了，这说明stu3和stu1已经是不同的对象了，说明Clazz中的Student也被克隆了，不再指向原有对象地址，这就是深克隆。
 这里需要注意的是，Clazz类和Student类都需要实现Serializable接口，否则会抛出NotSerializableException异常。
 
 
