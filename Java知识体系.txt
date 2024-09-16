@@ -1954,21 +1954,251 @@ Thread.interrupt()方法用于中断目标线程。当调用一个线程的inter
 
 
 Java多线程的挂起方法：
+使用Thread.sleep(long millis)方法：
+这是最直接的方式来让当前线程暂停执行指定的毫秒数。需要注意的是，sleep方法会让当前线程进入TIMED_WAITING状态，但它不会释放锁（如果当前线程持有锁的话）。
+
+try {  
+    Thread.sleep(1000); // 暂停当前线程1秒  
+} catch (InterruptedException e) {  
+    e.printStackTrace();  
+}
+
+使用Object.wait()方法：
+当一个线程调用某个对象的wait()方法时，它会释放对象的锁并进入WAITING状态，直到其他线程调用了同一个对象的notify()或notifyAll()方法。需要注意的是，wait()方法必须在同步块或同步方法中调用，否则会抛出IllegalMonitorStateException。
+
+synchronized (someObject) {  
+    someObject.wait(); // 等待其他线程唤醒  
+}
 
 Java多线程的join方法：
+Java中的Thread类提供了一个join()方法，它允许一个线程等待另一个线程完成其执行。当在某个线程中调用另一个线程的join()方法时，当前线程会暂停执行，直到被join()方法调用的那个线程执行完毕。这是一种线程同步的方式，用于确保线程之间的执行顺序。
+public final void join() throws InterruptedException
+
+示例代码：
+public class JoinExample {  
+    public static void main(String[] args) {  
+        Thread thread1 = new Thread(() -> {  
+            System.out.println("线程1开始执行");  
+            try {  
+                // 模拟耗时操作  
+                Thread.sleep(2000);  
+            } catch (InterruptedException e) {  
+                e.printStackTrace();  
+            }  
+            System.out.println("线程1执行完毕");  
+        });  
+  
+        Thread thread2 = new Thread(() -> {  
+            try {  
+                // 等待线程1执行完毕  
+                thread1.join();  
+            } catch (InterruptedException e) {  
+                e.printStackTrace();  
+            }  
+            System.out.println("线程2在线程1之后执行");  
+        });  
+  
+        thread1.start();  
+        thread2.start();  
+    }  
+}
+
+在这个示例中，thread1首先开始执行，并打印出“线程1开始执行”。然后，它进入了一个sleep()调用，模拟了一个耗时的操作。与此同时，thread2也开始了执行，但它在尝试执行任何操作之前，首先调用了thread1.join()。
+这导致thread2暂停执行，并等待thread1完成其sleep()调用并打印出“线程1执行完毕”。一旦thread1执行完毕，thread2就会继续执行，并打印出“线程2在线程1之后执行”。
+
+注意事项
+1.调用join()方法的线程会阻塞，直到目标线程执行完毕。因此，如果目标线程是一个无限循环的线程，那么调用join()的线程将会永远等待下去。
+2.join()方法会抛出InterruptedException，如果当前线程在等待过程中被中断，那么它会清除中断状态并抛出此异常。因此，在调用join()时，通常应该将其放在try-catch块中，或者至少检查中断状态并适当地处理它。
+3.join()方法是线程同步的一种手段，但它并不提供像锁（如ReentrantLock）那样的灵活性和功能。在需要更复杂的同步机制时，应该考虑使用其他同步工具。
 
 Java多线程的yield方法：
+Java中的Thread类提供了一个yield()方法，这是一个静态的线程调度提示，用于建议当前正在执行的线程将CPU资源让给同一个处理器上的其他线程（如果有的话）。
+然而，需要注意的是，yield()方法是一个提示（hint），而不是一个强制性的命令。它仅仅是告诉JVM，当前线程愿意放弃当前的CPU时间片，但JVM可以忽略这个提示。
+
+示例代码：
+public class YieldExample {  
+    public static void main(String[] args) {  
+        Thread thread1 = new Thread(() -> {  
+            for (int i = 0; i < 10; i++) {  
+                System.out.println("线程1: " + i);  
+                // 尝试让出CPU时间片  
+                Thread.yield();  
+            }  
+        });  
+  
+        Thread thread2 = new Thread(() -> {  
+            for (int i = 0; i < 10; i++) {  
+                System.out.println("线程2: " + i);  
+                // 尝试让出CPU时间片  
+                Thread.yield();  
+            }  
+        });  
+  
+        thread1.start();  
+        thread2.start();  
+    }  
+}
+
+在这个示例中，thread1和thread2都会打印出0到9的数字，并在每次迭代中调用Thread.yield()。然而，由于yield()的非强制性，这两个线程的执行顺序和输出可能会因JVM的调度策略和当前系统的负载而有所不同。因此，你不应该依赖yield()方法来控制线程的执行顺序或同步。
 
 Java多线程的volatile方法：
+在Java中，volatile 关键字是一个轻量级的同步机制，它用于确保变量的可见性和有序性，但并不保证原子性。volatile 关键字主要用于修饰变量，而不是方法。然而，理解volatile如何工作以及它如何影响多线程编程是很重要的，尽管它不能直接应用于方法。
+
+可见性
+在多线程环境中，每个线程可能在自己的工作内存（如CPU缓存）中持有变量的副本。这可能导致一个线程修改了某个变量的值，但这个修改对其他线程是不可见的，因为它们可能还在使用旧的变量值。
+使用volatile修饰变量可以确保，当一个线程修改了volatile变量的值后，这个新值会立即对其他线程可见。这是通过禁止指令重排序和确保每次读取volatile变量时都从主内存中读取最新值来实现的。
+
+有序性
+Java虚拟机（JVM）和处理器可能会对指令进行重排序以提高性能。然而，这种重排序可能会导致多线程程序出现意外的行为。volatile变量可以禁止指令重排序，确保程序按照预期的顺序执行。
+这主要涉及到volatile变量前后的读写操作，而不是整个方法的执行顺序。
+
+原子性
+尽管volatile提供了可见性和有序性的保证，但它并不保证原子性。原子性意味着操作是不可分割的，即操作要么完全执行，要么完全不执行。例如，对于volatile int count = 0;，count++操作（count = count + 1;）就不是原子的，因为它包含读取、计算和写入三个步骤。如果多个线程同时执行这个操作，可能会导致结果不正确。
+
+使用场景
+状态标记：volatile变量常用于作为状态标记，如控制循环的布尔变量。
+单例模式的双重检查锁定（Double-Checked Locking）：在Java 5及以后的版本中，可以使用volatile来确保单例对象的初始化是线程安全的。
+内存屏障：在某些情况下，volatile变量可以用作内存屏障，防止指令重排序。
 
 Java多线程的线程组：
+在Java中，线程组（ThreadGroup）是一个可以包含线程和其他线程组的容器。它是Java早期版本中用于组织和管理线程的一种方式，但随着时间的推移，Java并发API的进化（如java.util.concurrent包中的类和接口），线程组的使用已经变得不那么常见了。
+然而，了解线程组的基本概念和用法对于理解Java并发编程的历史和某些遗留代码仍然是有帮助的。
+
+线程组的基本特性
+包含关系：线程组可以包含线程和其他线程组，形成一个树状结构。每个线程都属于某个线程组，且这个关系在线程的生命周期内是不变的。
+资源管理：线程组可以用于资源的统一管理，比如监控组中所有线程的状态，或者当组中的某个线程出现问题时，能够方便地中断或停止组中所有的线程。
+未捕获异常的处理：如果线程组中某个线程发生了未捕获的异常，且该线程没有设置自己的UncaughtExceptionHandler，那么这个异常会沿着线程组的层次结构向上传播，直到找到一个合适的处理器或者到达最顶层的线程组（即根线程组）。
+
+线程组的常用方法
+int activeCount(): 返回线程组中当前活跃的线程数。
+void interrupt(): 中断线程组中的所有线程。需要注意的是，这个操作并不能保证能够中断所有线程，因为线程可能无法响应中断。
+Thread[] enumerate(): 返回一个包含线程组中所有线程的数组。这个方法存在不同的重载版本，允许调用者指定是否包含子线程组中的线程。
+void addUncaughtExceptionHandler(UncaughtExceptionHandler eh): 为线程组设置未捕获异常的处理器。这个处理器将用于处理组中那些没有设置自己异常处理器的线程的未捕获异常。
+
+线程组的局限性
+尽管线程组提供了线程组织和管理的一种机制，但它也存在一些局限性：
+不可变性：一旦线程被创建并加入到某个线程组，它就不能改变其所属的线程组。
+资源管理的不便：线程组并没有提供细粒度的资源管理方法，比如限制线程组的总资源使用量或线程数。
+现代并发工具的替代：随着Java并发包（java.util.concurrent）的引入，现代Java应用程序更倾向于使用ExecutorService、Future、CountDownLatch、CyclicBarrier等并发工具来管理线程和任务，这些工具提供了更强大、更灵活的并发控制能力。
+
+示例代码：
+public class ThreadGroupExample {  
+    public static void main(String[] args) {  
+        // 创建一个名为"MyGroup"的线程组  
+        ThreadGroup myGroup = new ThreadGroup("MyGroup");  
+  
+        // 创建并启动两个线程，将它们添加到"MyGroup"线程组中  
+        Thread thread1 = new Thread(myGroup, new Runnable() {  
+            @Override  
+            public void run() {  
+                System.out.println(Thread.currentThread().getName() + " 属于 " + Thread.currentThread().getThreadGroup().getName());  
+            }  
+        }, "Thread-1");  
+        thread1.start();  
+  
+        Thread thread2 = new Thread(myGroup, new Runnable() {  
+            @Override  
+            public void run() {  
+                System.out.println(Thread.currentThread().getName() + " 属于 " + Thread.currentThread().getThreadGroup().getName());  
+            }  
+        }, "Thread-2");  
+        thread2.start();  
+  
+        // 输出线程组中活跃线程的数量  
+        System.out.println("线程组 'MyGroup' 中活跃线程的数量: " + myGroup.activeCount());  
+    }  
+}
+
 
 Java多线程的守护线程：
+Java多线程中的守护线程（Daemon Thread）是一种特殊的线程类型，它在程序运行过程中在后台执行，主要任务是为其他线程（主要是用户线程）提供服务和支持。
+
+一、定义与特点
+定义：守护线程是在后台运行的线程，它的主要目的是为其他线程（特别是用户线程）提供服务。
+特点：
+随主线程结束而结束：当所有的非守护线程（即用户线程）都执行完毕后，守护线程会随之被终止，不会阻止Java虚拟机（JVM）的退出。
+优先级较低：守护线程的优先级通常较低，以避免抢占过多CPU资源。
+不能执行finally块：如果守护线程被终止，其中的finally块不会被执行。
+不能持有关键资源：守护线程不能持有程序运行的关键资源，因为它们可能在所有用户线程结束时被强制退出，这可能导致数据不一致或资源泄漏。
+不能用于执行必须完成的任务：由于守护线程可能被随时中断，因此不适合执行必须完成的任务，如文件写入等。
+
+二、创建与设置
+创建：守护线程的创建与普通线程的创建方式相同，可以使用Thread类或其子类，但需要通过特定的方法将其设置为守护线程。
+设置：通过调用线程的setDaemon(true)方法将线程设置为守护线程。注意，这个设置必须在线程启动之前进行，否则将抛出IllegalThreadStateException异常。
+
+三、使用场景
+守护线程通常用于执行一些后台任务，这些任务对于应用程序的运行不是必须的，但可以提供额外的功能和服务。
+常见的使用场景包括：
+日志记录：守护线程可以定期或实时地将程序运行日志输出到文件或控制台，帮助开发者监控程序运行状态。
+系统监控：守护线程可以监控系统资源的使用情况，如CPU、内存等，以便在资源不足时及时采取措施。
+内存清理：虽然Java有垃圾回收机制，但守护线程可以执行一些额外的内存清理任务，以优化内存使用。
+服务监听：在服务器应用中，守护线程可以用于监听某个端口，等待客户端的连接请求。
+定时任务：一些定时任务可以作为守护线程执行，如定时备份数据库、定时清理临时文件等。
+
+四、注意事项
+使用守护线程时需要谨慎，确保其行为不会影响到程序的正确性和稳定性。
+守护线程不能捕获和处理异常，一旦出现异常，守护线程会自动结束。
+守护线程无法使用join()方法等待其他线程的结束，因为守护线程会在所有非守护线程结束后自动结束。
+综上所述，Java多线程中的守护线程是一种特殊的线程类型，它在后台运行并为其他线程提供服务。了解守护线程的定义、特点、创建与设置方法以及使用场景对于编写高效、稳定的Java多线程程序具有重要意义。
+
+public class DaemonThreadExample {  
+  
+    public static void main(String[] args) {  
+        // 创建一个线程  
+        Thread daemonThread = new Thread(() -> {  
+            while (true) {  
+                try {  
+                    // 模拟守护线程正在执行的任务  
+                    System.out.println("守护线程正在运行: " + System.currentTimeMillis());  
+                    // 为了演示效果，每次打印后休眠1秒  
+                    Thread.sleep(1000);  
+                } catch (InterruptedException e) {  
+                    e.printStackTrace();  
+                }  
+            }  
+        });  
+  
+        // 将线程设置为守护线程  
+        daemonThread.setDaemon(true);  
+  
+        // 启动线程  
+        daemonThread.start();  
+  
+        try {  
+            // 主线程休眠5秒  
+            System.out.println("主线程休眠5秒后结束...");  
+            Thread.sleep(5000);  
+            System.out.println("主线程结束，由于守护线程的存在，JVM将在守护线程结束时退出。但由于守护线程的特性，这不会发生，因为主线程已经退出。");  
+        } catch (InterruptedException e) {  
+            e.printStackTrace();  
+        }  
+  
+        // 注意：这里不需要显式地停止守护线程  
+        // JVM会在只剩下守护线程时自动退出  
+    }  
+}
 
 Java多线程的几种锁：
 有四种锁类型：偏向锁、轻量级锁、自旋锁、重量级锁。
+加锁顺序：偏向锁→轻量级锁→自旋锁→重量级锁。
 
 为什么重量级锁消耗资源？
+1. 线程状态切换（最主要的原因）
+重量级锁在锁被占用时，会导致线程在用户态与内核态之间频繁切换。当一个线程尝试获取已被其他线程持有的重量级锁时，它会被操作系统阻塞，并从运行状态转换为阻塞状态。
+这种状态的切换需要消耗CPU资源，并且可能导致线程的挂起和唤醒，进一步增加系统资源的消耗。
+
+2. 上下文切换
+上下文切换是指CPU从一个线程切换到另一个线程时，需要保存当前线程的执行状态（包括CPU寄存器、程序计数器等），并加载新线程的执行状态。由于重量级锁可能导致线程频繁地被阻塞和唤醒，因此会增加上下文切换的次数，进而消耗更多的CPU资源。
+
+3. 操作系统介入
+重量级锁的实现通常依赖于操作系统的互斥量（Mutex Lock）或其他同步机制。当一个线程需要获取重量级锁时，它必须向操作系统发送请求，由操作系统来管理锁的分配和释放。这种依赖操作系统的介入增加了系统的复杂性和资源消耗。
+
+4. 锁竞争
+在高并发场景下，多个线程可能同时尝试获取同一个重量级锁，导致锁竞争。锁竞争不仅会增加线程被阻塞和唤醒的次数，还会增加上下文切换的次数，从而进一步消耗系统资源。
+
+5. 系统调用开销
+每次线程尝试获取或释放重量级锁时，都可能涉及到系统调用。系统调用是用户态程序与内核态程序之间的接口，它需要消耗一定的时间和资源来完成。因此，重量级锁的使用会增加系统调用的次数和开销。
+
 
 i++为什么不是原子性操作？
 i++不是原子性操作，这主要是因为i++的操作过程包含了多个步骤，这些步骤在执行过程中可能被其他线程或操作中断，从而导致数据不一致性。
@@ -4994,7 +5224,6 @@ book b = new book("100","金苹果","种植苹果的故事");
 String s = g.toJson(b);
 
 将Json字符串转化为Java对象：
-
 Gson g = new Gson();
 //2. 转换 {"id":"100","name":"金苹果","info":"种植苹果的故事","page":["远赴人间惊鸿晏","一度人间盛世颜","致hdd"]}
 //2.1  返回book类型
@@ -5055,10 +5284,8 @@ JS对象转换为Json字符串：
 
 
 AJAX(Asynchronous JavaScript and XML)：
-传统的web交互是用户触发一个http请求服务器，然后服务器收到之后，在做出响应到用户，并且返回一个新的页面，
-每当服务器处理客户端提交的请求时，客户都只能空闲等待，并且哪怕只是一次很小的交互、只需从服务器端得到很简单的一个数据，都要返回一个完整的HTML页，而用户每次都要浪费时间和带宽去重新读取整个页面。
+传统的web交互是用户触发一个http请求服务器，然后服务器收到之后，在做出响应到用户，并且返回一个新的页面，每当服务器处理客户端提交的请求时，客户都只能空闲等待，并且哪怕只是一次很小的交互、只需从服务器端得到很简单的一个数据，都要返回一个完整的HTML页，而用户每次都要浪费时间和带宽去重新读取整个页面。
 这个做法浪费了许多带宽，由于每次应用的交互都需要向服务器发送请求，应用的响应时间就依赖于服务器的响应时间，这导致了用户界面的响应比本地应用慢得多。
-
 AJAX 的出现,刚好解决了传统方法的缺陷，AJAX 是一种用于创建快速动态网页的技术，通过在后台与服务器进行少量数据交换，AJAX 可以使网页实现异步更新，这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。
 
 AJAX的XMLHttpRequest对象：
@@ -16992,8 +17219,7 @@ println(smallerValue) // 输出: 3
 
 
 大数据Spark：
-Spark 是一个分布式数据快速分析项目。它的核心技术是弹性分布式数据集（Resilient Distributed Datasets），
-提供了比 MapReduce 丰富的模型，可以快速在内存中对数据集进行多次迭代，来支持复杂的数据挖掘算法和图形计算算法。
+Spark 是一个分布式数据快速分析项目。它的核心技术是弹性分布式数据集（Resilient Distributed Datasets），提供了比 MapReduce 丰富的模型，可以快速在内存中对数据集进行多次迭代，来支持复杂的数据挖掘算法和图形计算算法。
 Spark底层是由Hadoop实现，但是和Hadoop有明显不同。
 
 Spark和MapReduce对比:
@@ -18113,7 +18339,7 @@ mappedData.count()
 val filteredData = mappedData.filter(_._2 % 4 == 0)
 filteredData.collect().foreach(println)
 
-在这个例子中，我们设置了检查点目录，并对 mappedData RDD 进行了检查点操作。随后，通过行动操作 count() 触发检查点，使 RDD 的数据被写入持久存储。在之后的计算中，Spark 可以直接从检查点数据重建 RDD。
+在这个例子中，我们设置了检查点目录，并对 mappedData RDD 进行了检查点操作。随后，通过行动操作 count() 触发检查点，使 RDD 的数据被写入持久存储。在之后的计算中，Spark可以直接从检查点数据重建 RDD。
 
 持久化和 Checkpoint 的区别：
 目的：
@@ -18175,7 +18401,6 @@ Spark I/O的主要组件和功能
      
 
 数据写入（Output）
-
 1. 文件系统：
    - HDFS：将数据写入HDFS，便于分布式存储和后续处理。  
      rdd.saveAsTextFile("hdfs://path/to/output")
@@ -18375,7 +18600,7 @@ counts.saveAsTextFile("hdfs://...")  // 行动：保存结果
 保存结果：最终行动操作
 
 Spark 累加器：
-累加器（Accumulator）是 Spark 提供的一种变量，用于在集群的所有节点上进行聚合操作。累加器主要用于在转换操作中对数值进行累加，且只支持“添加”操作。常见的使用场景包括统计计数和聚合信息。
+累加器（Accumulator）是Spark提供的一种变量，用于在集群的所有节点上进行聚合操作。累加器主要用于在转换操作中对数值进行累加，且只支持“添加”操作。常见的使用场景包括统计计数和聚合信息。
 
 Spark 提供了几种内置的累加器类型，例如：
 LongAccumulator：用于累加 Long 类型的值。
@@ -18513,7 +18738,6 @@ Spark Streaming 的特点：
 易整合到 Spark 体系：流式处理与批处理和交互式查询相结合。
 
 Spark Streaming常用语句：
-
 输出操作：writeStream.format("parquet")或writeStream.format("kafka")等输出操作。
 定义输出路径：.option("path", "path/to/destination/dir")或.option("kafka.bootstrap.servers", "host1:port1,host2:port2")
 等参数定义输出路径等参数。
@@ -18521,10 +18745,8 @@ Spark Streaming常用语句：
 启动流计算：使用start()操作来执行查询语句。
 
 Spark Streaming工作流程：
-① Spark Streaming 中，会有一个接收器组件 Receiver，作为一个长期运行的 task 跑在一个 Executor 上，
-Receiver 接收外部的数据流形成 input DStream。
-② DStream 会被按照时间间隔划分成一批一批的 RDD，当批处理间隔缩短到秒级时，便可以用于处理实时数据流
-（时间间隔的大小可以由参数指定，一般设在 500 毫秒到几秒之间）。
+① Spark Streaming 中，会有一个接收器组件 Receiver，作为一个长期运行的 task 跑在一个 Executor 上，Receiver 接收外部的数据流形成 input DStream。
+② DStream 会被按照时间间隔划分成一批一批的 RDD，当批处理间隔缩短到秒级时，便可以用于处理实时数据流（时间间隔的大小可以由参数指定，一般设在 500 毫秒到几秒之间）。
 ③ 对 DStream 进行操作就是对 RDD 进行操作，计算处理的结果可以传给外部系统。
 ④ 接受到实时数据后，给数据分批次，然后传给 Spark Engine 处理最后生成该批次的结果。
 
@@ -18563,11 +18785,9 @@ trigger interval：触发间隔，如果不指定，默认会尽可能快速地�
 checkpointLocation：一般是 hdfs 上的目录。注意：Socket 不支持数据恢复，如果设置了，第二次启动会报错，Kafka 支持。
 
 Spark MLlib:
-MLlib 是 Spark 提供的一个机器学习算法库。MLlib 不仅提供了模型评估、数据导入等额外的功能，
-还提供了一些更底层的机器学习原语。
+MLlib 是 Spark 提供的一个机器学习算法库。MLlib 不仅提供了模型评估、数据导入等额外的功能，还提供了一些更底层的机器学习原语。
 
-Spark GraphX:GraphX 是 Spark 面向图计算提供的框架与算法库。
-Spark 计算框架为了能够进行高并发和高吞吐的数据处理，封装了三大数据结构，用于处理不同的应用场景。
+Spark GraphX:GraphX 是 Spark 面向图计算提供的框架与算法库。Spark 计算框架为了能够进行高并发和高吞吐的数据处理，封装了三大数据结构，用于处理不同的应用场景。
 
 Spark运行流程：
 1.SparkContext 向资源管理器注册并向资源管理器申请运行 Executor
@@ -18583,8 +18803,7 @@ Spark运行流程：
 
 
 Flink 大数据批处理运算+流式运算：
-Apache Flink 是一个开源的、分布式的大数据处理框架，可以处理批量数据和实时数据处理。
-它被设计成快速、可扩展和可靠，并提供统一的批量和流数据处理编程模型。
+Apache Flink 是一个开源的、分布式的大数据处理框架，可以处理批量数据和实时数据处理。它被设计成快速、可扩展和可靠，并提供统一的批量和流数据处理编程模型。
 
 Flink 的一些关键特性包括：
 低延迟处理：Flink 提供了实时数据流的低延迟处理，适用于实时分析、欺诈检测和网络监测等场景。
@@ -18687,14 +18906,12 @@ Flink 中就是这么划分边界的，本文会详细讲解。
 这种就需要将五分钟内浏览新闻的用户信息与 hive 中的地区维表进行关联，然后在进行相关计算。
 
 Flink的Window API提供了以下几种窗口函数：
-
 Tumbling Windows：这种窗口函数将数据分成固定大小的窗口。每个窗口内的数据是一组数据。
 Sliding Windows：这种窗口函数将数据分成固定大小的窗口，并且窗口可以滑动。每个窗口内的数据也是一组数据。
 Session Windows：这种窗口函数将数据分成会话窗口。每个会话窗口内的数据是一组数据。会话窗口是根据时间或数据之间的距离来定义的。
 Global Windows：这种窗口函数将数据分成一个全局窗口。每个全局窗口内的数据是一组数据。全局窗口的大小取决于数据的数量。
 
 此外，Flink还提供了以下几种窗口函数的方法：
-
 countWindow(size)：将数据分成指定大小的窗口，每个窗口内的数据是一组数据。
 timeWindow(size, slide)：将数据按照时间分成指定大小和滑动间隔的窗口，每个窗口内的数据是一组数据。
 sessionWindow(size, slide)：将数据按照时间分成指定大小和滑动间隔的会话窗口，每个会话窗口内的数据是一组数据。
