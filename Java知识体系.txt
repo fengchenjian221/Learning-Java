@@ -1700,6 +1700,52 @@ synchronized不仅确保了互斥性，还确保了可见性。当一个线程�
 数据一致性：
 通过锁定共享资源，synchronized确保了线程对共享变量的修改是原子操作，防止出现数据不一致的问题。
 
+synchronized修饰方法：
+在Java中，synchronized 关键字用于修饰方法时，它可以确保在同一时间内只有一个线程可以执行该方法。这种机制是Java并发控制的一种重要方式，用于防止多个线程同时访问共享资源时可能引起的数据不一致或线程安全问题。
+
+修饰实例方法：
+当synchronized 修饰一个实例方法时，它实际上是对调用该方法的对象实例加锁。这意味着，如果一个线程正在执行某个对象的某个synchronized 实例方法，那么其他线程不能同时执行该对象的其他任何synchronized 实例方法。
+但是，这些线程可以访问该对象的非synchronized 方法或该类的其他对象的synchronized 方法（如果它们锁定的是不同的对象实例）。
+
+public class Counter {  
+    private int count = 0;  
+  
+    // 同步实例方法  
+    public synchronized void increment() {  
+        count++;  
+    }  
+  
+    public synchronized int getCount() {  
+        return count;  
+    }  
+}
+在上面的例子中，increment 和 getCount 方法都是同步的，它们都锁定了调用它们的Counter对象实例。如果两个线程尝试同时访问同一个Counter实例的这两个方法之一，那么它们将被迫串行执行。
+
+修饰静态方法：
+当synchronized 修饰一个静态方法时，它锁定的是调用该方法的类的Class对象，而不是类的某个特定实例。因此，如果一个线程正在执行某个类的某个synchronized 静态方法，那么其他线程不能同时执行该类的任何其他synchronized 静态方法。
+但是，这些线程仍然可以访问该类的非synchronized 方法或该类的实例的synchronized 实例方法（因为实例方法的锁是实例级别的，与静态方法的锁不同）。
+
+public class StaticCounter {  
+    private static int count = 0;  
+  
+    // 同步静态方法  
+    public static synchronized void increment() {  
+        count++;  
+    }  
+  
+    public static synchronized int getCount() {  
+        return count;  
+    }  
+}
+在上面的例子中，increment 和 getCount 方法都是静态同步的，它们都锁定了StaticCounter类的Class对象。如果两个线程尝试同时调用这些静态方法中的任何一个，那么它们将被迫串行执行。
+
+总结
+当synchronized 修饰实例方法时，它锁定的是调用该方法的对象实例。
+当synchronized 修饰静态方法时，它锁定的是调用该方法的类的Class对象。
+无论是实例方法还是静态方法，synchronized 都确保了同一时间只有一个线程可以执行该方法，从而避免了多线程环境下的数据不一致和线程安全问题。
+需要注意的是，过度使用synchronized 可能会导致性能下降，因为它会引入线程间的竞争和等待，因此应该谨慎使用，并在必要时考虑使用其他并发控制机制，如java.util.concurrent 包中的工具类。
+
+
 死锁问题：
 需要注意的是，不恰当的使用synchronized可能导致死锁问题。例如，如果两个线程互相等待对方释放锁，就会产生死锁。因此，在设计并发程序时，需要小心避免死锁。
 
@@ -2534,6 +2580,107 @@ shutdownNow(): 尝试停止所有正在执行的活动任务，停止处理正�
 及时关闭线程池：确保在不再需要时关闭线程池，以释放资源。
 正确处理异常：确保任务执行过程中抛出的异常被妥善处理，避免影响线程池的正常工作。
 
+
+Java多线程中的CAS（无锁）：
+Java多线程中的CAS（Compare-And-Swap）是一种用于实现无锁编程的技术。CAS操作包含三个操作数：内存位置（V）、预期原值（A）和新值（B）。如果内存位置的值与预期原值相匹配，那么处理器会自动将该位置值更新为新值，整个操作是原子的。这意味着，CAS操作在执行期间不会被线程调度机制中断，从而保证了操作的原子性。
+
+CAS的应用场景
+CAS操作主要用于实现线程安全的操作，尤其是在多线程环境下对共享变量的修改。它常用于实现自旋锁、原子变量（如AtomicInteger、AtomicLong等）以及并发集合等。
+
+CAS的优缺点
+优点
+非阻塞算法：CAS操作是一种非阻塞算法，它不会造成线程挂起或阻塞，因此不会引起线程上下文切换，适用于读多写少的场景。
+细粒度锁定：CAS能够实现对共享资源的细粒度锁定，提高了程序的并发性能。
+缺点
+ABA问题：如果两个线程同时修改一个变量，一个线程将变量从A改为B，然后又改回A，此时另一个线程执行CAS操作发现变量仍然是A，就认为没有变化，实际上变量已经被修改过了。
+循环时间长开销大：如果CAS操作一直不成功，会一直处于自旋状态，这会消耗CPU资源。
+只能保证一个共享变量的原子操作：CAS操作通常只涉及到一个共享变量的修改，对于复杂场景（如多个共享变量）需要其他机制来辅助实现。
+
+Java中的CAS实现
+Java中提供了java.util.concurrent.atomic包，里面包含了多个使用CAS操作的原子类，如AtomicInteger、AtomicLong、AtomicReference等。这些类提供了丰富的原子操作，如getAndIncrement()、compareAndSet(expectedValue, updateValue)等。
+
+示例代码
+以下是一个使用AtomicInteger的示例，展示了如何利用CAS实现线程安全的自增操作：
+
+import java.util.concurrent.atomic.AtomicInteger;  
+  
+public class CASExample {  
+    private static AtomicInteger count = new AtomicInteger(0);  
+  
+    public static void main(String[] args) {  
+        for (int i = 0; i < 1000; i++) {  
+            new Thread(() -> {  
+                count.incrementAndGet(); // 底层使用CAS实现  
+            }).start();  
+        }  
+  
+        // 等待所有线程执行完毕  
+        while (Thread.activeCount() > 2) {  
+            Thread.yield();  
+        }  
+  
+        System.out.println("Final count: " + count.get()); // 输出应该是1000  
+    }  
+}
+在这个例子中，incrementAndGet()方法内部使用了CAS操作来确保对count变量的自增操作是线程安全的。
+
+
+Java多线程的ThreadLocal：
+ThreadLocal 是 Java 中一个非常有用的类，它提供了一种线程局部变量的能力。这意味着每个使用该变量的线程都会有一个该变量值的独立副本，这些副本之间互不影响，从而避免了多线程环境下的数据共享问题。ThreadLocal 非常适合用于那些需要保持线程隔离性的场景，比如每个线程需要有自己的数据库连接、用户会话信息等。
+
+基本原理
+ThreadLocal 内部维护了一个以 Thread 对象为键，以线程局部变量为值的 HashMap（实际上，在 JDK 8 及以后版本中，ThreadLocal 的实现已经不再是简单的 HashMap，而是使用了更高效的 ThreadLocalMap 和 Entry 数组来存储数据，以减少哈希冲突和提高性能）。
+当线程访问某个 ThreadLocal 变量时，ThreadLocal 会通过当前线程作为键来查找对应的值。如果找到了，就返回该值；如果没有找到，就根据 ThreadLocal 的初始值设置规则来返回初始值（如果设置了初始值的话）。
+
+主要方法
+void set(T value): 设置当前线程的线程局部变量的值。
+T get(): 返回当前线程所对应的线程局部变量的值。
+void remove(): 移除当前线程所对应的线程局部变量的值。
+protected T initialValue(): 返回该线程局部变量的初始值，该方法是一个受保护的方法，可以被子类覆盖以返回特定的初始值。默认情况下，返回 null。
+
+使用场景
+数据库连接管理：每个线程都可以有自己的数据库连接，避免了数据库连接在多线程环境下的共享和同步问题。
+用户会话管理：在 Web 应用中，每个用户请求都会由不同的线程处理，使用 ThreadLocal 可以为每个线程保存用户的会话信息，从而避免会话信息的混乱。
+事务管理：在需要事务支持的应用中，可以使用 ThreadLocal 来保存每个线程的事务上下文信息。
+
+注意事项
+内存泄漏：由于 ThreadLocal 的生命周期与线程的生命周期相同，如果线程长时间运行，并且 ThreadLocal 变量被设置为非 null 后一直没有被清理（即没有调用 remove() 方法），那么这些 ThreadLocal 变量就会一直存在，从而导致内存泄漏。因此，在使用完 ThreadLocal 变量后，应该显式地调用 remove() 方法来清理。
+性能问题：虽然 ThreadLocal 提供了线程隔离的能力，但是过多的 ThreadLocal 变量会增加内存的使用量，并且由于 ThreadLocalMap 的实现方式（基于数组和线性探测法解决哈希冲突），在极端情况下可能会导致性能下降。
+
+示例代码
+public class ThreadLocalExample {  
+  
+    private static final ThreadLocal<Integer> threadLocal = new ThreadLocal<Integer>() {  
+        @Override  
+        protected Integer initialValue() {  
+            return 0;  
+        }  
+    };  
+  
+    public static void main(String[] args) throws InterruptedException {  
+        Thread thread1 = new Thread(() -> {  
+            System.out.println(Thread.currentThread().getName() + " 初始值: " + threadLocal.get());  
+            threadLocal.set(1);  
+            System.out.println(Thread.currentThread().getName() + " 修改后的值: " + threadLocal.get());  
+        });  
+  
+        Thread thread2 = new Thread(() -> {  
+            System.out.println(Thread.currentThread().getName() + " 初始值: " + threadLocal.get());  
+            threadLocal.set(2);  
+            System.out.println(Thread.currentThread().getName() + " 修改后的值: " + threadLocal.get());  
+        });  
+  
+        thread1.start();  
+        thread2.start();  
+  
+        thread1.join();  
+        thread2.join();  
+  
+        // 注意：这里不会打印出任何值，因为threadLocal是线程隔离的  
+        // System.out.println(threadLocal.get()); // 可能会是null，取决于JVM的实现  
+    }  
+}
+在这个示例中，thread1 和 thread2 分别设置了它们自己的 ThreadLocal 变量的值，并且这些值之间互不影响。
 
 JUC：
 Java并发包（Java Util Concurrent，简称JUC）是Java提供的一组用于并发编程的类和接口，旨在简化多线程编程并提高并发程序的性能和可靠性。
@@ -3724,7 +3871,7 @@ Java可以使用Jetty、Tomcat等支持WebSocket的容器实现WebSocket通信�
 4.3. RPC（远程过程调用）
 使用gRPC、Apache Thrift等框架实现跨语言的远程过程调用。
 
-Java Stream流：
+Java Stream流（函数式编程）：
 Stream流是一种顺序的元素集合，它支持类似于SQL语句的操作，如过滤、映射、排序等。通过使用Stream流，我们可以以声明式的方式对数据进行处理，而不需要关心具体的实现细节。
 
 Stream流的主要特点包括：
