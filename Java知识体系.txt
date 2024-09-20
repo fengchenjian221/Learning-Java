@@ -2454,19 +2454,49 @@ public class Main {
 
 
 使用自定义线程池：
-@Configuration
-@Slf4j
-public class ThreadPoolConfiguration {
+在Java中，ExecutorService 接口是执行提交给它的 Runnable 任务的对象的方法，这些任务可以异步地执行。ThreadPoolExecutor 类是 ExecutorService 接口的一个具体实现，它允许你通过调整多个参数来灵活地配置线程池。
+ThreadPoolExecutor 的构造方法有多种重载形式，但最常用和灵活的构造方法包含以下七个参数：
 
-    @Bean(name = "defaultThreadPoolExecutor", destroyMethod = "shutdown")
-    public ThreadPoolExecutor systemCheckPoolExecutorService() {
+corePoolSize（核心线程数）：线程池中的核心线程数，即使这些线程处于空闲状态，它们也不会被销毁，除非设置了 allowCoreThreadTimeOut 为 true。
+maximumPoolSize（最大线程数）：线程池中允许的最大线程数。当工作队列满了之后，如果线程数小于最大线程数，则会继续创建线程。
+keepAliveTime（存活时间）：当线程数大于核心线程数时，这是多余空闲线程在终止前等待新任务的最长时间。
+unit（时间单位）：keepAliveTime 参数的时间单位，例如 TimeUnit.SECONDS。
+workQueue（工作队列）：用于在执行任务之前保存任务的队列。这个队列仅保存由 execute 方法提交的 Runnable 任务。
+threadFactory（线程工厂）：用于创建新线程的工厂。通过自定义线程工厂，你可以设置线程名、优先级、守护状态等。
+handler（拒绝策略）：当工作队列和线程池都达到饱和状态时（即工作队列已满且线程数达到最大线程数），线程池会拒绝新的任务。RejectedExecutionHandler 提供了几种处理策略，如抛出异常、直接忽略新任务、使用调用者线程处理任务或将任务放入一个等待队列中。
 
-        return new ThreadPoolExecutor(3, 10, 60, TimeUnit.SECONDS,
-                new LinkedBlockingQueue<Runnable>(10000),
-                new ThreadFactoryBuilder().setNameFormat("default-executor-%d").build(),
-                (r, executor) -> log.error("system pool is full! "));
-    }
+一个使用这些参数的 ThreadPoolExecutor 构造方法示例如下：
+import java.util.concurrent.*;  
+  
+public class ThreadPoolExample {  
+    public static void main(String[] args) {  
+        int corePoolSize = 5;  
+        int maximumPoolSize = 10;  
+        long keepAliveTime = 1L;  
+        TimeUnit unit = TimeUnit.SECONDS;  
+        BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<>(100);  
+        ThreadFactory threadFactory = Executors.defaultThreadFactory();  
+        RejectedExecutionHandler handler = new ThreadPoolExecutor.AbortPolicy();  
+  
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(  
+                corePoolSize,   
+                maximumPoolSize,   
+                keepAliveTime,   
+                unit,   
+                workQueue,   
+                threadFactory,   
+                handler);  
+  
+        // 使用executor提交任务  
+        executor.execute(() -> {  
+            // 你的任务逻辑  
+        });  
+  
+        // 优雅关闭线程池  
+        executor.shutdown();  
+    }  
 }
+这个示例展示了如何配置一个 ThreadPoolExecutor 实例，包括核心线程数、最大线程数、存活时间、工作队列、线程工厂和拒绝策略。
 
 使用Guava：
 import com.google.common.util.concurrent.Futures;
@@ -2582,7 +2612,8 @@ shutdownNow(): 尝试停止所有正在执行的活动任务，停止处理正�
 
 
 Java多线程中的CAS（无锁）：
-Java多线程中的CAS（Compare-And-Swap）是一种用于实现无锁编程的技术。CAS操作包含三个操作数：内存位置（V）、预期原值（A）和新值（B）。如果内存位置的值与预期原值相匹配，那么处理器会自动将该位置值更新为新值，整个操作是原子的。这意味着，CAS操作在执行期间不会被线程调度机制中断，从而保证了操作的原子性。
+Java多线程中的CAS（Compare-And-Swap）是一种用于实现无锁编程的技术。CAS操作包含三个操作数：内存位置（V）、预期原值（A）和新值（B）。
+如果内存位置的值与预期原值相匹配，那么处理器会自动将该位置值更新为新值，整个操作是原子的。这意味着，CAS操作在执行期间不会被线程调度机制中断，从而保证了操作的原子性。
 
 CAS的应用场景
 CAS操作主要用于实现线程安全的操作，尤其是在多线程环境下对共享变量的修改。它常用于实现自旋锁、原子变量（如AtomicInteger、AtomicLong等）以及并发集合等。
@@ -13929,8 +13960,7 @@ ${}使用字符串拼接的方式拼接sql，若为字符串类型或日期类�
 
 MyBatis的缓存：
 1、MyBatis的一级缓存
-一级缓存是SqlSession级别的，通过同一个SqlSession查询的数据会被缓存，下次查询相同的数据，
-就会从缓存中直接获取，不会从数据库重新访问
+一级缓存是SqlSession级别的，通过同一个SqlSession查询的数据会被缓存，下次查询相同的数据，就会从缓存中直接获取，不会从数据库重新访问
 
 使一级缓存失效的四种情况：
 1) 不同的SqlSession对应不同的一级缓存
@@ -13939,8 +13969,7 @@ MyBatis的缓存：
 4) 同一个SqlSession两次查询期间手动清空了缓存
 
 2、MyBatis的二级缓存
-二级缓存是SqlSessionFactory级别，通过同一个SqlSessionFactory创建的SqlSession查询的结果会被缓存；
-此后若再次执行相同的查询语句，结果就会从缓存中获取。
+二级缓存是SqlSessionFactory级别，通过同一个SqlSessionFactory创建的SqlSession查询的结果会被缓存；此后若再次执行相同的查询语句，结果就会从缓存中获取。
 
 二级缓存开启的条件：
 a>在核心配置文件中，设置全局配置属性cacheEnabled="true"，默认为true，不需要设置
@@ -13956,6 +13985,39 @@ c>二级缓存必须在SqlSession关闭或提交之后有效
 d>查询的数据所转换的实体类类型必须实现序列化的接口
 使二级缓存失效的情况：
 两次查询之间执行了任意的增删改，会使一级和二级缓存同时失效
+
+Mybatis的源码解析：
+
+SqlSessionFactory
+作用：SqlSessionFactory 是 MyBatis 的核心接口，用于创建 SqlSession 对象。SqlSession 对象完全包含了执行 SQL 命令所需的所有方法。
+实现：通常通过 SqlSessionFactoryBuilder 来构建 SqlSessionFactory 实例。
+
+SqlSession
+作用：SqlSession 是 MyBatis 的核心接口，用于执行持久化操作。
+方法：提供了执行 SQL 命令、获取映射器实例和管理事务的方法。
+
+Mapper
+作用：Mapper 接口是 MyBatis 中的一个重要概念，它是开发者定义的接口，MyBatis 会自动生成这个接口的实现，并通过这个实现来执行 SQL 语句。
+实现：Mapper 接口的实现是通过动态代理来完成的，MyBatis 会在运行时动态地创建 Mapper 接口的代理对象。
+
+
+获得Mapper动态代理之后，执行SQL的顺序：
+1.获得Mapper动态代理
+2.获得MapperMethod对象
+3.根据SQL指令跳转执行语句
+4.查询前的缓存处理
+5.执行数据库查询操作
+6.针对ResultSet结果集转换为实体类
+
+MyBatis 的工作流程大致可以分为以下几个步骤：
+1.读取配置文件：MyBatis 在启动时会读取全局配置文件和映射器文件，并将配置信息解析成 Java 对象存储在内存中。
+2.创建 SqlSessionFactory：通过 SqlSessionFactoryBuilder 根据配置信息创建 SqlSessionFactory 实例。
+3.创建 SqlSession：通过 SqlSessionFactory 创建 SqlSession 实例，SqlSession 提供了执行 SQL 命令的所有方法。
+4.执行 SQL 命令：
+使用 SqlSession 的方法执行 SQL 命令。
+如果执行的是 Mapper 接口中的方法，MyBatis 会通过动态代理机制调用对应的 Mapper SQL 语句。
+5.处理结果：将 SQL 执行的结果映射成 Java 对象并返回。
+
 
 Mybatis的逆向工程：
 MyBatis Generator是一个用于生成MyBatis的Java数据访问层代码和SQL映射文件的逆向工程工具。你可以通过配置MyBatis Generator来自动生成数据库表的实体类、Mapper接口以及SQL映射文件。
@@ -14078,37 +14140,6 @@ mpg.setPackageInfo(pc);
 // 执行生成
 mpg.execute();
 
-Mybatis的源码解析：
-
-SqlSessionFactory
-作用：SqlSessionFactory 是 MyBatis 的核心接口，用于创建 SqlSession 对象。SqlSession 对象完全包含了执行 SQL 命令所需的所有方法。
-实现：通常通过 SqlSessionFactoryBuilder 来构建 SqlSessionFactory 实例。
-
-SqlSession
-作用：SqlSession 是 MyBatis 的核心接口，用于执行持久化操作。
-方法：提供了执行 SQL 命令、获取映射器实例和管理事务的方法。
-
-Mapper
-作用：Mapper 接口是 MyBatis 中的一个重要概念，它是开发者定义的接口，MyBatis 会自动生成这个接口的实现，并通过这个实现来执行 SQL 语句。
-实现：Mapper 接口的实现是通过动态代理来完成的，MyBatis 会在运行时动态地创建 Mapper 接口的代理对象。
-
-
-获得Mapper动态代理之后，执行SQL的顺序：
-1.获得Mapper动态代理
-2.获得MapperMethod对象
-3.根据SQL指令跳转执行语句
-4.查询前的缓存处理
-5.执行数据库查询操作
-6.针对ResultSet结果集转换为实体类
-
-MyBatis 的工作流程大致可以分为以下几个步骤：
-1.读取配置文件：MyBatis 在启动时会读取全局配置文件和映射器文件，并将配置信息解析成 Java 对象存储在内存中。
-2.创建 SqlSessionFactory：通过 SqlSessionFactoryBuilder 根据配置信息创建 SqlSessionFactory 实例。
-3.创建 SqlSession：通过 SqlSessionFactory 创建 SqlSession 实例，SqlSession 提供了执行 SQL 命令的所有方法。
-4.执行 SQL 命令：
-使用 SqlSession 的方法执行 SQL 命令。
-如果执行的是 Mapper 接口中的方法，MyBatis 会通过动态代理机制调用对应的 Mapper SQL 语句。
-5.处理结果：将 SQL 执行的结果映射成 Java 对象并返回。
 
 列式存储数据库：
 列存储不同于传统的关系型数据库，其数据在表中是按行存储的，列方式所带来的重要好处之一就是，由于查询中的选择规则是通过列来定义的，因此整个数据库是自动索引化的。
