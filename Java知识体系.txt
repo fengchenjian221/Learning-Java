@@ -9061,6 +9061,56 @@ public class DemoApplication {
 @SpringBootApplication 是一个复合注解，结合了 @SpringBootConfiguration、@EnableAutoConfiguration 和 @ComponentScan，简化了 Spring Boot 应用的配置。通过使用这个注解，开发者可以快速配置和启动一个 Spring Boot 应用，而无需编写大量的配置代码。
 
 
+Spring Boot是如何启动的？
+SpringBoot的启动过程是一个复杂但有序的过程，从run方法开始，经历多个步骤来初始化应用程序上下文、创建Bean工厂对象、刷新上下文等，最终启动应用程序。
+以下是对SpringBoot启动过程的详细分析：
+一、SpringBoot的run方法
+run方法是SpringBoot启动的入口点。当执行SpringApplication.run(DemoApplication.class, args);时，会触发一系列初始化操作。
+
+二、创建和初始化SpringApplication
+在run方法执行之前，会首先创建并初始化一个SpringApplication对象。这个对象负责协调整个启动过程。
+
+三、run方法的执行流程
+1.创建秒表计时器：StopWatch stopWatch = new StopWatch();用于记录启动过程中的时间消耗。
+
+2.配置Headless属性：将应用程序设置为headless模式，这是为了在没有显示器、鼠标或键盘的服务器上运行时提供必要的配置。
+
+3.获取运行时监听器：从META-INF/spring.factories文件中找到所有SpringApplicationRunListener的监听器，并启动它们。这些监听器用于监听应用程序启动过程中的各种事件。
+
+4.准备环境：创建一个ConfigurableEnvironment对象，用于读取环境配置，如application.yml或application.properties文件。
+>加载配置源参数和命令行属性。
+>配置当前active的配置文件。
+
+5.发布监听事件：通知所有监听器当前环境已准备完成。
+
+6.创建容器：创建一个ApplicationContext对象，这是Spring的核心容器，用于管理Bean的生命周期和依赖注入。
+
+7.准备容器：
+将环境变量设置到容器中。
+对ApplicationContext进行后置处理，设置一些必要的属性，如beanNameGenerator、resourceLoader、classLoader和conversionService。
+应用所有的ApplicationContextInitializer，对容器进行初始化扩展。
+通知监听器容器已准备完成。
+
+8.注册Bean：在容器中注册一些必要的Bean，如springApplicationArguments和springBootBanner。
+
+9.刷新容器：调用refreshContext(context)方法，这是启动过程的核心部分。它负责完成组件的扫描、创建、加载等任务。
+>创建容器中的所有组件。
+>实例化并初始化所有的Bean。
+>创建并启动Tomcat服务器（如果使用的是Servlet容器）。
+
+10.发布事件：通知所有监听器项目已启动。
+
+11.调用Runner：获取容器中的ApplicationRunner和CommandLineRunner，并调用它们的run方法。这些Runner通常用于执行一些启动后的任务。
+
+12.异常处理：如果在启动过程中出现异常，会调用监听器的failed方法，并抛出异常。
+
+四、启动完成
+当所有步骤都执行完毕后，SpringBoot应用程序就成功启动了。此时，可以通过访问配置的端口和上下文路径来访问应用程序提供的服务。
+
+综上所述，SpringBoot的启动过程是一个涉及多个步骤和组件的复杂过程。从run方法开始，通过创建和初始化SpringApplication对象、准备环境、创建容器、准备容器、刷新容器等步骤，最终成功启动应用程序。
+
+
+
 用Spring Boot解释一下约定大于配置大于编码：
 "约定大于配置大于编码" 是一个设计原则，它强调了在设计软件时，应该优先考虑使用通用的、广泛接受的约定，其次是配置选项，最后才是直接编写代码。这个原则旨在提高软件的可维护性、可读性和可扩展性。在Spring Boot框架中，这个原则得到了很好的体现。
 
@@ -9257,8 +9307,29 @@ Spring Boot使用的全局配置文件：
 .yml是YAML(YAML Aint Markup Language)编写的文件格式，YAML是一种直观的能够被电脑识别的的数据数据序列化格式，比json、xml等更适合做配置文件
 
 
-Java程序通过设计模式、数据结构与算法等技术组成框架
+总结一下SpringBoot核心功能：
+1.可独立运行的SpringBoot项目：
+SpringBoot项目可以打包为可执行的jar包，通过java -jar命令直接运行，无需部署到外部服务器。
 
+2.内嵌的Servlet容器：
+SpringBoot提供了内嵌的Servlet容器选项，如Tomcat、Jetty或Undertow，使得项目无需以war包形式部署，进一步简化了部署流程。
+
+3.简化的Maven配置：
+SpringBoot提供了推荐的基础POM文件，通过继承该POM文件，项目可以极大地简化Maven配置，避免手动添加大量依赖和插件。
+
+4.自动配置Spring：
+SpringBoot能够根据项目依赖自动配置Spring框架，减少了繁琐的配置工作。它基于“约定优于配置”的理念，提供了默认配置，同时允许开发者根据需要进行自定义配置。
+
+5.提供生产就绪功能（非代码生成就绪功能）：
+SpringBoot提供了丰富的生产就绪功能，如性能指标、应用信息、应用健康检查等，通过集成Actuator模块，开发者可以轻松地监控和管理应用程序。
+但需要注意的是，这里的功能是生产就绪的，而不是代码生成就绪的，SpringBoot本身并不提供代码自动生成以准备生产环境的功能。
+
+6.无代码生成和XML配置：
+SpringBoot完全不需要任何XML配置即可实现Spring的所有配置，同时也不会生成额外的代码。它鼓励使用注解和Java配置来替代传统的XML配置，使得配置更加灵活和易于管理。
+
+
+
+Java程序通过设计模式、数据结构与算法等技术组成框架
 设计模式：
 设计模式（Design Patterns）是在软件设计中针对特定问题的最佳解决方案。它们是在软件开发过程中，对常见问题的反复出现的解决方案的总结与抽象。
 这些模式描述了在特定上下文中，针对某类问题的一组相互协作的类、接口和通信机制，用于解决某一类通用设计问题。
