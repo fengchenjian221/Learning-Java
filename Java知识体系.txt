@@ -8808,7 +8808,7 @@ SpringMVC中处理编码的过滤器一定要配置到其他过滤器之前，�
 SpringMVC本质上是对Java Web Servlet的封装，使得开发Java Web项目没有那么臃肿。
 SpringMVC是后端渲染式的后台开发框架，没有做到前后端分离，对前端开发人员也要求有Java Web的开发环境。
 前端人员作出的静态Html页面，也需要进行整合，改为Spring MVC里的View。
-	
+
 
 
 SpringBoot：
@@ -8842,9 +8842,96 @@ SpringBoot的配置机制：
 >命令行参数：Spring Boot 还支持通过命令行参数来覆盖配置文件中的属性值。这使得您可以在启动应用程序时指定特定的属性值，以便进行测试或生产环境的差异化配置。
 
 
-SpringBoot的启动方法：
-@SpringBootApplication 是 Spring Boot 应用的启动类上常用的注解，它结合了多个核心注解，简化了 Spring Boot 应用的配置。这个注解是由以下三个注解组合而成的：
+Springboot如何读取application.properties或application.yml中的配置?
+在Spring Boot中，读取application.properties或application.yml中的配置是非常直接和简单的。Spring Boot提供了多种方式来访问这些配置文件中的属性。以下是一些常用的方法：
 
+1. 使用@Value注解
+你可以直接在类的字段上使用@Value注解来注入配置文件中的属性值。这适用于简单的配置值。
+
+java
+import org.springframework.beans.factory.annotation.Value;  
+import org.springframework.stereotype.Component;  
+  
+@Component  
+public class MyBean {  
+  
+    @Value("${my.property}")  
+    private String myProperty;  
+  
+    // Getter and Setter  
+    public String getMyProperty() {  
+        return myProperty;  
+    }  
+  
+    public void setMyProperty(String myProperty) {  
+        this.myProperty = myProperty;  
+    }  
+}
+在application.properties中：
+my.property=someValue
+
+或者在application.yml中：
+my:  
+  property: someValue
+2. 使用@ConfigurationProperties注解
+对于更复杂的配置，你可以使用@ConfigurationProperties注解。这个注解允许你将配置文件中的属性绑定到一个POJO（Plain Old Java Object）上。
+
+首先，定义一个配置类：
+import org.springframework.boot.context.properties.ConfigurationProperties;  
+import org.springframework.stereotype.Component;  
+  
+@Component  
+@ConfigurationProperties(prefix = "my")  
+public class MyProperties {  
+  
+    private String property;  
+  
+    // Getter and Setter  
+    public String getProperty() {  
+        return property;  
+    }  
+  
+    public void setProperty(String property) {  
+        this.property = property;  
+    }  
+}
+然后，在application.properties或application.yml中配置属性，如上所示。
+
+注意：确保你的Spring Boot应用启用了@EnableConfigurationProperties注解（这通常在@SpringBootApplication注解中自动包含）。
+
+3. 使用Environment抽象
+你还可以注入Environment抽象来访问配置文件中的所有属性。
+
+import org.springframework.beans.factory.annotation.Autowired;  
+import org.springframework.core.env.Environment;  
+import org.springframework.stereotype.Component;  
+  
+@Component  
+public class MyBean {  
+  
+    @Autowired  
+    private Environment env;  
+  
+    public void someMethod() {  
+        String myProperty = env.getProperty("my.property");  
+        // 使用myProperty  
+    }  
+}
+
+4. 使用@PropertySource注解
+虽然@PropertySource注解主要用于加载额外的属性文件，但它也可以与@Value或@ConfigurationProperties结合使用来指定配置文件的位置。不过，对于application.properties或application.yml这样的标准配置文件，通常不需要显式指定。
+
+注意事项
+确保你的配置文件（application.properties或application.yml）位于正确的位置（通常是src/main/resources目录下）。
+如果你有多个配置文件（例如，用于不同环境的配置文件），Spring Boot会根据spring.profiles.active属性来激活相应的配置文件。
+对于YAML文件，注意缩进和格式，因为YAML是敏感的。
+使用@ConfigurationProperties时，Spring Boot会自动进行类型转换和验证（如果你使用了JSR-303/JSR-349 Bean Validation API）。
+
+
+SpringBoot的启动方法：
+@SpringBootApplication 是 Spring Boot 应用的启动类上常用的注解，它结合了多个核心注解，简化了 Spring Boot 应用的配置。
+
+这个注解是由以下三个注解组合而成的：
 1. @SpringBootConfiguration
 2. @EnableAutoConfiguration
 3. @ComponentScan
@@ -9002,33 +9089,28 @@ application.properties 或 application.yml：这是Spring Boot中最常用的配
 并在需要时通过编码来实现更高级的功能。这种设计方式不仅提高了开发效率，也增强了应用的可维护性和可读性。
 
 
+
 SpringBoot的自动配置：
-Spring Boot的自动配置是其核心功能之一，它极大地简化了Spring应用程序的初始搭建和配置过程。
-自动配置的核心思想是根据项目中的依赖和类路径下的特定类，自动创建和配置Spring容器中的bean，从而省去了手动配置的大量工作。
+Spring Boot的自动配置是其核心功能之一，它极大地简化了Spring应用程序的初始搭建和配置过程。自动配置的核心思想是根据项目中的依赖和类路径下的特定类，自动创建和配置Spring容器中的bean，从而省去了手动配置的大量工作。
 
 以下是Spring Boot自动配置的主要原理和实现方式：
->条件化配置：Spring Boot通过条件注解（如@ConditionalOnClass、@ConditionalOnMissingBean等）来决定是否加载某个自动配置类或bean。
-这些条件可以是类路径下是否存在某个类、是否存在某个bean等。只有当满足特定条件时，相关的自动配置才会生效。
+>条件化配置：Spring Boot通过条件注解（如@ConditionalOnClass、@ConditionalOnMissingBean等）来决定是否加载某个自动配置类或bean。这些条件可以是类路径下是否存在某个类、是否存在某个bean等。只有当满足特定条件时，相关的自动配置才会生效。
+>自动配置类：自动配置类通过@Configuration注解标识，它们包含了Spring容器需要自动创建的bean的定义。这些bean的创建和配置会根据条件化注解的条件来确定。自动配置类通常存放在spring-boot-autoconfigure模块的jar包中。
+>META-INF/spring.factories文件：Spring Boot通过在类路径下的META-INF/spring.factories文件中定义自动配置类，告诉Spring Boot哪些配置类需要被加载。这个文件是一个属性文件，其中包含了自动配置类的全限定名。
+>属性绑定：Spring Boot还允许开发者在application.properties或application.yml文件中定义外部化配置，这些配置会被自动绑定到相关的bean上。这大大简化了配置的复杂性，使得开发者能够更专注于业务逻辑的实现。
+>Starter依赖：Spring Boot提供了一系列的“Starter”依赖，这些依赖包含了构建某个特定类型应用程序所需的所有基本依赖和自动配置。例如，spring-boot-starter-web包含了构建Web应用程序所需的Spring MVC和嵌入式Servlet容器等依赖和自动配置。
 
->自动配置类：自动配置类通过@Configuration注解标识，它们包含了Spring容器需要自动创建的bean的定义。这些bean的创建和配置会根据条件化注解的条件来确定。
-自动配置类通常存放在spring-boot-autoconfigure模块的jar包中。
 
->META-INF/spring.factories文件：Spring Boot通过在类路径下的META-INF/spring.factories文件中定义自动配置类，告诉Spring Boot哪些配置类需要被加载。
-这个文件是一个属性文件，其中包含了自动配置类的全限定名。
+Spring与SpringBoot中一些常用注解：
 
->属性绑定：Spring Boot还允许开发者在application.properties或application.yml文件中定义外部化配置，这些配置会被自动绑定到相关的bean上。
-这大大简化了配置的复杂性，使得开发者能够更专注于业务逻辑的实现。
-
->Starter依赖：Spring Boot提供了一系列的“Starter”依赖，这些依赖包含了构建某个特定类型应用程序所需的所有基本依赖和自动配置。
-例如，spring-boot-starter-web包含了构建Web应用程序所需的Spring MVC和嵌入式Servlet容器等依赖和自动配置。
-
+基础注解：
+@SpringBootApplication：实现自动化装配，启动SpringBoot，包含@Configuration、@EnableAutoConfiguration、@ComponentScan通常用在主类上
 
 问：@SpringBootApplication注解是如何完成自动配置功能的？
 @SpringBootApplication注解是SpringBoot中的一个复合注解，它包含了@Configuration、@EnableAutoConfiguration和@ComponentScan三个关键注解。
 这个注解的作用是启用SpringBoot的自动配置功能，并告诉Spring Boot如何扫描和加载应用程序的组件。
 
-下面我们来详细解析@SpringBootApplication注解是如何完成自动配置功能的：
-
+详细解析@SpringBootApplication注解是如何完成自动配置功能的：
 @Configuration：
 这个注解用于告诉Spring这是一个配置类，类似于XML配置文件中的<beans>标签。在这个类中，开发者可以使用@Bean注解来定义和初始化Spring容器管理的bean。
 
@@ -9038,6 +9120,7 @@ Spring Boot的自动配置是其核心功能之一，它极大地简化了Spring
 条件注解：Spring Boot使用条件注解（如@ConditionalOnClass、@ConditionalOnMissingBean等）来决定是否创建和配置某个bean。这些条件可以是类路径上是否存在某个类、是否存在某个bean等。
 自动配置类：Spring Boot提供了许多自动配置类，这些类包含了一些预定义的bean，并且会根据项目的条件进行创建和配置。
 META-INF/spring.factories文件：自动配置类通过META-INF/spring.factories文件进行注册。Spring Boot在启动时，会扫描这个文件，并加载其中定义的自动配置类。
+
 
 @ComponentScan：
 这个注解用于告诉Spring Boot哪些包下的类需要被扫描并注册为Spring容器管理的bean。默认情况下，@SpringBootApplication注解会扫描启动类所在的包及其子包。
@@ -9051,35 +9134,111 @@ META-INF/spring.factories文件：自动配置类通过META-INF/spring.factories
 当开发者在Spring Boot应用程序的主类上使用@SpringBootApplication注解时，Spring Boot会自动完成上述所有步骤，从而简化了应用程序的配置和初始化过程。
 开发者只需要关注业务逻辑的实现，而不需要花费大量时间在繁琐的配置上。
 
-
-SpringBoot中定制Web扩展配置：WebMvcConfigurerAdapter接口
-这是一个接口，里边声明了很多的方法，例如拦截器，视图解析器，格式转化器。
-如果想在webmvc中添加自己的功能，只需要去WebMvcConfigurer看看想增加什么功能，然后按照源码去写。
-
-Spring与SpringBoot中一些常用注解：
-@SpringBootApplication：实现自动化装配，启动SpringBoot，包含@Configuration、@EnableAutoConfiguration、@ComponentScan通常用在主类上
 @Component：普通pojo注入spring容器
+
+示例代码：
+package com.example.demo.components;  
+  
+import org.springframework.stereotype.Component;  
+  
+@Component  
+public class HelloWorld {  
+    public String sayHello() {  
+        return "Hello, World!";  
+    }  
+}
+
+在这个例子中，HelloWorld 类被标记为 @Component，这意味着 Spring 容器会在启动时自动检测并注册这个类的实例。
+
+Spring 还提供了几个特定用途的注解，它们是 @Component 的特化版本，用于标识特定类型的组件：
 @Service：Service注入Spring容器
 @Controller：Controller注入容器
 @Repository：Dao注入容器
-@ResponseBody：将java对象转为json格式的数据
 @RestController：该注解是@Controller和@ResponseBody的结合体，一般用于类，作用等于在类上面添加了@ResponseBody和@Controller
-@AutoWired：默认按类型装配，如果发现找到多个bean，则按照name方式比对，如果还有多个，则报出异常
-@Qualifier：spring的注解，按名字注入 一般当出现两个及以上bean时,不知道要注入哪个，结合@AutoWired使用
-@Resource：默认按名称注入例如@Resource(name = “zhaozhao”)则根据name属性注入找不到则报错，若无name属性则根据属性名称注入，如果匹配不成功则按照类型匹配匹配不成功则报错。
+
+@Conditional：在配置类中的 bean 声明上添加条件，以决定这些 bean 是否应该被注册到 Spring 应用上下文中
+
+自定义条件
+要创建一个自定义条件，你需要实现 Condition 接口，并重写 matches 方法。以下是一个简单的例子，展示了如何根据某个特定的属性来决定是否创建一个 bean。
+
+condition接口：
+public interface Condition {    
+    boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata);  
+}
+ConditionContext 提供了关于当前 Spring 应用上下文的信息，比如环境属性、类加载器等。
+AnnotatedTypeMetadata 提供了关于当前注解元素的元数据，比如注解的属性值等。
+
+1.创建自定义条件类
+import org.springframework.context.annotation.Condition;  
+import org.springframework.context.annotation.ConditionContext;  
+import org.springframework.core.type.AnnotatedTypeMetadata;  
+  
+public class OnPropertyCondition implements Condition {  
+  
+    @Override  
+    public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {  
+        // 获取环境属性 "example.feature.enabled"  
+        String property = context.getEnvironment().getProperty("example.feature.enabled");  
+        // 如果属性为 "true"，则返回 true，否则返回 false  
+        return Boolean.parseBoolean(property);  
+    }  
+}
+
+2.在配置类中使用自定义条件
+import org.springframework.context.annotation.Bean;  
+import org.springframework.context.annotation.Conditional;  
+import org.springframework.context.annotation.Configuration;  
+  
+@Configuration  
+public class MyAppConfig {  
+  
+    @Bean  
+    @Conditional(OnPropertyCondition.class)  
+    public MyFeature myFeature() {  
+        return new MyFeature();  
+    }  
+}
+
+3.在 application.properties 中设置属性
+example.feature.enabled=true
+
+如果 application.properties 文件中设置了 example.feature.enabled=true，则 MyFeature 的 bean 会被创建并注册到 Spring 应用上下文中。如果设置为 false 或未设置，则 MyFeature 的 bean 不会被创建。
+
+
+Spring Boot 提供的其他条件注解
+Spring Boot 提供了一系列预定义的 @Conditional 注解，如：
+
+@ConditionalOnBean：当指定的 bean 存在于 Spring 应用上下文中时，条件满足。
+@ConditionalOnMissingBean：当指定的 bean 不存在于 Spring 应用上下文中时，条件满足。
+@ConditionalOnProperty：当指定的属性存在且具有特定值时，条件满足。
+@ConditionalOnClass：当指定的类在类路径上时，条件满足。
+@ConditionalOnMissingClass：当指定的类不在类路径上时，条件满足。
+@ConditionalOnExpression：当指定的 SpEL 表达式计算结果为 true 时，条件满足。
+
+
+
+用于web开发的注解：
 @RequestMapping：@RequestMapping（url），通过该注解就可以通过配置的url进行访问，方式可以是get或post请求，两种方式均可
 @GetMapping：只是这个限定了只能是Get请求
 @PostMapping：只是这个限定了只能是Post请求
+@ResponseBody：将java对象转为json格式的数据
+@RequestParam：获取查询参数。即url?name=这种形式
+@RequestBody：获取Body的参数，一般用于post获取参数
+@PathVariable：获取路径参数。即url/{id}这种形式 
+@RequestHeader：获取请求头的信息 
+@CookieValue：获取Cookie的信息
+
+用于自动注入的注解：
+@AutoWired：默认按类型装配，如果发现找到多个bean，则按照name方式比对，如果还有多个，则报出异常。
+@Resource：默认按名称注入例如@Resource(name = “zhaozhao”)则根据name属性注入找不到则报错，若无name属性则根据属性名称注入，如果匹配不成功则按照类型匹配匹配不成功则报错。
+@Qualifier：spring的注解，按名字注入 一般当出现两个及以上bean时,不知道要注入哪个，结合@AutoWired使用。
 @Value：用于获取bean的属性，一般用于读取配置文件的数据，作用在变量上 
 @ConfigurationProperties：用于注入Bean属性，然后再通过当前Bean获取注入值，作用在类上 
 @PropertySource：用于指定要读取的配置文件，可以和@Value或@ConfigurationProperties配合使用
 @Configuration：作用于类上表示这是一个配置类，可理解为用spring的时候xml里面的< beans>标签 
 @Bean：产生bean对象加入容器，作用于方法，可理解为用spring的时候xml里面的标签
-@RequestParam：获取查询参数。即url?name=这种形式
-@RequestBody：获取Body的参数，一般用于post获取参数 
-@PathVariable：获取路径参数。即url/{id}这种形式 
-@RequestHeader：获取请求头的信息 
-@CookieValue：获取Cookie的信息
+ 
+
 
 Spring Boot的启动类实现方式：
 1、程序从main方法开始运行
