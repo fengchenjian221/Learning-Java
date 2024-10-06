@@ -1894,11 +1894,154 @@ Lock：
 synchronized：
 不支持锁的轮询、定时获取锁和中断获取锁。
 Lock：
-提供了尝试锁定（tryLock()）、定时锁定（tryLock(long time, TimeUnit unit)）和中断锁定（lockInterruptibly()）。
+提供了尝试锁定（tryLock()）、定时锁定（tryLock(long time, TimeUnit unit)）和中断锁定（lockInterruptibly())。
 
 
-Java多线程实现线程通讯的方法：sleep()  wait()  
-sleep和wait的区别
+Java多线程实现线程通讯的方法： 
+在Java中，实现线程间通讯（即线程之间的数据交换和同步）有多种方法。以下是几种常见的方法：
+
+1. 使用 synchronized 和 wait/notify 机制
+synchronized 关键字用于定义同步代码块或同步方法，确保同一时间只有一个线程可以执行这些代码。wait() 方法使当前线程等待，直到其他线程调用 notify() 或 notifyAll() 方法来唤醒它。
+
+class SharedResource {  
+    private int value = 0;  
+    private final Object lock = new Object();  
+  
+    public void setValue(int value) {  
+        synchronized (lock) {  
+            this.value = value;  
+            lock.notifyAll(); // 通知所有等待的线程  
+        }  
+    }  
+  
+    public int getValue() throws InterruptedException {  
+        synchronized (lock) {  
+            while (value == 0) {  
+                lock.wait(); // 等待其他线程设置值  
+            }  
+            return value;  
+        }  
+    }  
+}
+
+2. 使用 ReentrantLock 和 Condition
+ReentrantLock 提供了比 synchronized 更加灵活的锁机制，而 Condition 提供了比 wait/notify 更加丰富的线程等待/通知机制。
+
+import java.util.concurrent.locks.Condition;  
+import java.util.concurrent.locks.Lock;  
+import java.util.concurrent.locks.ReentrantLock;  
+  
+class SharedResource {  
+    private int value = 0;  
+    private final Lock lock = new ReentrantLock();  
+    private final Condition condition = lock.newCondition();  
+  
+    public void setValue(int value) {  
+        lock.lock();  
+        try {  
+            this.value = value;  
+            condition.signalAll(); // 通知所有等待的线程  
+        } finally {  
+            lock.unlock();  
+        }  
+    }  
+  
+    public int getValue() throws InterruptedException {  
+        lock.lock();  
+        try {  
+            while (value == 0) {  
+                condition.await(); // 等待其他线程设置值  
+            }  
+            return value;  
+        } finally {  
+            lock.unlock();  
+        }  
+    }  
+}
+3. 使用 Semaphore
+Semaphore 是一个计数信号量，用于控制对共享资源的访问。
+
+java
+import java.util.concurrent.Semaphore;  
+  
+class SharedResource {  
+    private int value = 0;  
+    private final Semaphore semaphore = new Semaphore(0); // 初始化为0，表示没有资源可用  
+  
+    public void setValue(int value) {  
+        this.value = value;  
+        semaphore.release(); // 释放一个许可  
+    }  
+  
+    public int getValue() throws InterruptedException {  
+        semaphore.acquire(); // 请求一个许可，如果没有许可则阻塞  
+        return value;  
+    }  
+}
+
+4. 使用 CountDownLatch
+CountDownLatch 允许一个或多个线程等待其他线程完成一系列操作。
+
+import java.util.concurrent.CountDownLatch;  
+  
+class SharedResource {  
+    private int value = 0;  
+    private final CountDownLatch latch = new CountDownLatch(1);  
+  
+    public void setValue(int value) {  
+        this.value = value;  
+        latch.countDown(); // 减少计数  
+    }  
+  
+    public int getValue() throws InterruptedException {  
+        latch.await(); // 等待计数到达零  
+        return value;  
+    }  
+}
+
+5. 使用 CyclicBarrier
+CyclicBarrier 允许一组线程互相等待，直到所有线程都到达一个共同屏障点。
+
+
+import java.util.concurrent.BrokenBarrierException;  
+import java.util.concurrent.CyclicBarrier;  
+  
+class SharedResource {  
+    private int[] values;  
+    private final CyclicBarrier barrier = new CyclicBarrier(2, () -> {  
+        // 当所有线程都到达屏障点时，执行此操作  
+        System.out.println("All threads have reached the barrier.");  
+    });  
+  
+    public int setValue(int index, int value) throws InterruptedException, BrokenBarrierException {  
+        values = new int[2];  
+        values[index] = value;  
+        barrier.await(); // 等待其他线程  
+        return values[(index + 1) % 2];  
+    }  
+}
+
+6. 使用 BlockingQueue
+BlockingQueue 是一个支持两个附加操作的队列，这两个操作是：在尝试添加元素到队列中时，如果队列满，则线程被阻塞；在尝试从队列中取元素时，如果队列空，则线程被阻塞。
+
+import java.util.concurrent.ArrayBlockingQueue;  
+import java.util.concurrent.BlockingQueue;  
+  
+class SharedResource {  
+    private final BlockingQueue<Integer> queue = new ArrayBlockingQueue<>(1);  
+  
+    public void setValue(int value) throws InterruptedException {  
+        queue.put(value); // 如果队列满，则阻塞  
+    }  
+  
+    public int getValue() throws InterruptedException {  
+        return queue.take(); // 如果队列空，则阻塞  
+    }  
+}
+每种方法都有其适用的场景和优缺点，选择哪种方法取决于具体的需求和上下文。
+
+
+Java多线程中sleep和wait的区别：
 1、sleep是线程中的方法，但是wait是Object中的方法。
 2、sleep方法不会释放资源锁，但是wait会释放资源锁，而且会加入到等待队列中。
 3、sleep方法不依赖于同步器synchronized，但是wait需要依赖synchronized关键字。
@@ -2609,6 +2752,26 @@ shutdownNow(): 尝试停止所有正在执行的活动任务，停止处理正�
 合理设置线程数：过多或过少的线程数都可能影响性能。
 及时关闭线程池：确保在不再需要时关闭线程池，以释放资源。
 正确处理异常：确保任务执行过程中抛出的异常被妥善处理，避免影响线程池的正常工作。
+
+
+
+缓存和线程池在实际应用上有什么区别？
+缓存和线程池是两种用于提高系统性能和响应速度的技术，但它们的应用场景和目的有所不同。下面将分别说明何时使用缓存和线程池。
+
+何时使用缓存
+性能瓶颈时：当系统出现性能瓶颈，尤其是由于频繁的数据库查询或复杂计算导致的性能下降时，使用缓存可以显著提升系统性能。缓存可以存储常用数据或计算结果的副本，减少对原始数据源的访问次数。
+读多写少的数据访问模式：对于读操作远多于写操作的数据，使用缓存可以大幅减少数据库的访问压力，提高读取效率。因为缓存中的数据通常比从数据库或其他数据源中获取要快得多。
+数据时效性要求不高：如果数据的变化不是非常频繁，且对数据的时效性要求不是特别高，那么使用缓存是合适的。因为缓存中的数据可能不是最新的，但足以满足大多数应用场景的需求。
+避免重复计算：对于计算成本高昂且结果相对稳定的操作，使用缓存可以避免重复计算，从而提高系统效率。
+
+何时使用线程池
+高并发场景：在需要处理大量并发请求的场景中，使用线程池可以避免为每个请求单独创建线程所带来的开销。线程池可以预先创建并管理一定数量的线程，当有任务需要处理时，直接从线程池中取出空闲线程来执行任务，从而提高系统的并发处理能力。
+任务执行时间较长：对于执行时间较长的任务，使用线程池可以避免阻塞主线程或用户线程，使程序能够继续执行其他任务。线程池中的线程可以并行地执行任务，从而缩短整体执行时间。
+资源管理：线程池通过统一管理线程资源，可以避免创建过多线程导致的系统资源耗尽问题。线程池可以根据系统的实际负载动态调整线程数量，从而在保证系统性能的同时降低资源消耗。
+定时任务或周期性任务：线程池提供了定时任务执行的功能，可以周期性地执行任务或在指定的时间点执行任务。这对于需要按计划执行任务的场景非常有用，如定时检查、数据备份等。
+
+综上所述，缓存和线程池在提升系统性能和响应速度方面各有优势，应根据具体的应用场景和需求来选择合适的技术。在实际应用中，往往也会将缓存和线程池结合起来使用，以达到更好的性能优化效果。
+
 
 
 Java多线程中的CAS（无锁）：
@@ -4401,6 +4564,62 @@ Javac编译过程主要包括四个步骤：词法分析、语法分析、语义
 Java JVM：
 Java虚拟机(Jvm)是可运行Java代码的假想计算机。Java虚拟机包括一套字节码指令集、一组寄存器、一个栈、一个垃圾回收堆和一个存储方法域。
 JVM让Java成为跨平台语言，Java有JVM从软件层面屏蔽了底层硬件、指令层面的细节让他兼容各种系统。
+
+
+程序是如何在计算机系统底层运行的？
+程序在计算机系统底层的运行是一个复杂而精细的过程，它涉及从源代码的编写到最终程序在计算机上执行的多个阶段。以下是程序在计算机系统底层运行的基本流程：
+
+一、源代码的编写与预处理
+编辑与编写源代码：
+程序员使用文本编辑器或集成开发环境（IDE）等工具，根据特定的编程语言规则编写源代码。
+源代码是程序的基础，包含了程序的所有逻辑和数据结构。
+预处理（可选）：
+对于某些编程语言，如C和C++，源代码在编译之前会经过预处理阶段。
+预处理阶段主要处理以#开头的指令，如宏定义、条件编译和文件包含等。
+这些指令会被预处理器处理，生成一个修改后的源代码文件，供后续编译阶段使用。
+
+二、编译与汇编
+编译：
+编译是将源代码转换成机器语言代码的过程。
+编译器读取预处理后的源代码，进行词法分析、语法分析、语义分析、优化等步骤，最终生成汇编代码或中间代码。
+汇编代码是低级的机器指令，但仍然是文本形式；而中间代码则是一种介于源代码和机器代码之间的表示形式，便于后续的优化和转换。
+汇编：
+汇编阶段是将汇编代码或中间代码转换成机器代码的过程。
+汇编器读取汇编代码或中间代码，将其翻译成计算机可以直接执行的二进制指令，并保存在目标文件中。
+这些二进制指令是程序在计算机上运行的最终形式。
+
+三、链接
+链接：
+链接是将多个目标文件以及所需的库文件合并成一个可执行文件的过程。
+链接器负责解析目标文件中的符号引用，将各个目标文件中的函数和数据段组织起来，形成一个完整的可执行文件。
+链接过程分为静态链接和动态链接两种。静态链接在编译时完成，将库文件的内容直接复制到可执行文件中；而动态链接则在程序运行时进行，只将库文件的引用信息加入到可执行文件中，实际使用时再从系统中加载库文件。
+
+四、载入与运行
+载入：
+可执行文件和数据被载入内存中。
+加载器负责将可执行文件加载到计算机内存中，并准备程序的执行环境。
+运行：
+程序开始执行时，CPU按照程序计数器（PC）的指示，逐条执行内存中的指令。
+指令的执行涉及数据的读取、处理、存储以及输入输出操作等。
+CPU通过内存总线与内存交换数据，完成程序的执行。
+
+五、多线程与并发执行
+多线程：
+多线程技术允许计算机同时运行多个不同的线程，提高程序的并发性能。
+每个线程都有自己的执行路径和上下文环境，但共享进程的内存空间和系统资源。
+线程的执行由操作系统的线程调度器进行管理和调度。
+并发执行：
+并发执行是指多个线程或进程在同一时间段内交替执行的过程。
+通过并发执行，可以充分利用多核处理器的计算能力，提高程序的执行效率。
+
+六、缓存与虚拟内存
+缓存：
+CPU内部设置缓存，用于存储使用频繁的数据和指令，以减少对内存的访问次数，提高程序的执行速度。
+缓存分为多个层次，如L1缓存、L2缓存等，每个层次的访问速度不同，但容量有限。
+虚拟内存：
+当程序运行需要的空间大于内存容量时，操作系统会使用虚拟内存技术来扩展内存空间。
+虚拟内存将硬盘的一部分空间作为内存使用，当内存不足时，将部分数据写入硬盘中的虚拟内存区域，以释放内存空间供其他程序使用。
+
 
 Java虚拟机主要由以下几个部分组成：
 1.虚拟机栈。每个线程都在这个空间有一个私有的空间，每个线程会执行一个或多个方法，一个方法对应一个栈帧，栈帧包括局部变量表、操作数栈、动态链接、方法返回地址、附加信息等。
@@ -7180,6 +7399,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 5.可扩展性和多线程。Java是高度可扩展的，可以适应Web应用程序的需求，并为开发人员提供水平和垂直扩展的能力。此外，Java的NIO（非阻塞I/O）API促进了在软件的单个副本中创建尽可能多的线程，这极大地提高了应用程序的性能。
 
 
+
 Web后端技术：
 Servlet：
 Servlet（Server Applet）是Java Servlet的简称，称为小服务程序或服务连接器，用Java编写的服务器端程序，具有独立于平台和协议的特性，主要功能在于交互式地浏览和生成数据，生成动态Web内容。
@@ -8755,6 +8975,8 @@ return result;
 }
 3.在需要的方法上添加注解
 
+
+
 Spring AOP的实现原理：
 Spring AOP（Aspect Oriented Programming，面向切面编程）的实现原理主要基于动态代理和字节码操作。
 
@@ -8791,12 +9013,9 @@ SpringMVC使用了前端控制器（Front Controller）设计模式，其中Disp
 它还提供了丰富的功能，如请求映射、数据绑定、数据验证、视图解析和国际化支持等，以简化Web应用程序的开发过程。
 通过使用SpringMVC，开发人员可以轻松地构建可维护和可扩展的Web应用程序，实现松耦合和高度可测试性。它还与其他Spring框架模块（如Spring IoC和Spring AOP）紧密集成，提供了全面的企业级开发解决方案。
 
-SpringMVC中所有的请求都会封装成ModelAndView
 
 Spring MVC的功能
-Spring MVC提供了一种轻度耦合的方式来开发web应用。
-Spring MVC是Spring的一个模块，是一个web框架。通过Dispatcher Servlet, ModelAndView 和 View Resolver，开发web应用变得很容易。
-解决的问题领域是网站应用程序或者服务开发——URL路由、Session、模板引擎、静态Web资源等等。
+Spring MVC提供了一种轻度耦合的方式来开发web应用。Spring MVC是Spring的一个模块，是一个web框架。通过Dispatcher Servlet, ModelAndView 和 View Resolver，开发web应用变得很容易。解决的问题领域是网站应用程序或者服务开发——URL路由、Session、模板引擎、静态Web资源等等。
 
 在SpringMVC中设置配置文件：
 在Spring MVC中，配置文件通常是用来设置各种bean、定义URL映射、配置视图解析器、设置拦截器等。这些配置可以放在XML文件中，或者在现代的Spring Boot应用中，也可以使用Java配置类来替代XML配置。
@@ -9004,6 +9223,18 @@ SpringMVC中处理编码的过滤器一定要配置到其他过滤器之前，�
 SpringMVC本质上是对Java Web Servlet的封装，使得开发Java Web项目没有那么臃肿。
 SpringMVC是后端渲染式的后台开发框架，没有做到前后端分离，对前端开发人员也要求有Java Web的开发环境。
 前端人员作出的静态Html页面，也需要进行整合，改为Spring MVC里的View。
+
+
+Spring MVC的竞争力怎么样？Spring MVC与其他技术的比较：
+与Spring Boot的比较：
+Spring Boot是一个更轻量级的框架，更适合当前“微服务”的开发模式。
+Spring Boot提供了大量的自动配置和简化开发的功能，使得开发者能够更快地构建和部署应用程序。
+因此，在一些新项目或需要快速迭代的项目中，Spring Boot可能更受欢迎。
+
+与前后端分离技术的比较：
+前后端分离是当前Web开发的一个流行趋势，它使得前端和后端可以独立开发、部署和扩展。
+在这种模式下，后端主要提供RESTful API接口，而前端则使用各种前端框架（如React、Vue.js等）进行开发。
+虽然Spring MVC仍然可以支持RESTful API的开发，但在一些项目中，开发者可能会选择更轻量级或更专注于API开发的框架（如Spring WebFlux、Spring Data REST等）。
 
 
 
@@ -16286,15 +16517,14 @@ Partition tolerance：分区容错，即区间通信可能失败，在网络中�
 
 消息队列通信原理：
 消息队列是用于应用程序之间进行通信的中间件，通过将消息在不同的应用程序之间进行传递来实现应用程序之间的通信。
+
 消息队列的应用层协议连接互联网的方式如下：
+1.应用程序通过消息队列的API连接到消息队列服务器，例如RabbitMQ、ActiveMQ等。
+2.应用程序向消息队列发送消息，消息队列将消息存储在本地数据库或内存中。
+3.目标应用程序从消息队列中接收消息，并进行相应的处理。
+4.消息队列服务器将消息传递给目标应用程序的过程可以通过不同的协议实现，例如AMQP协议、MQTT协议等。
 
-应用程序通过消息队列的API连接到消息队列服务器，例如RabbitMQ、ActiveMQ等。
-应用程序向消息队列发送消息，消息队列将消息存储在本地数据库或内存中。
-目标应用程序从消息队列中接收消息，并进行相应的处理。
-消息队列服务器将消息传递给目标应用程序的过程可以通过不同的协议实现，例如AMQP协议、MQTT协议等。
-
-总之，消息队列的应用层协议连接互联网的方式是通过应用程序与消息队列服务器之间的API通信来实现的，
-而具体的实现方式则取决于使用的协议和应用场景。
+总之，消息队列的应用层协议连接互联网的方式是通过应用程序与消息队列服务器之间的API通信来实现的，而具体的实现方式则取决于使用的协议和应用场景。
 
 
 实现方式
@@ -16315,12 +16545,55 @@ Partition tolerance：分区容错，即区间通信可能失败，在网络中�
 消息通过网络进行传输，可以在不同的计算节点之间进行通信。这种实现方式提供了跨网络的分布式消息传递，但可能受限于网络延迟和可靠性。
 
 需要注意的是，不同的消息队列系统可能使用不同的底层实现方式，并且可以结合多种技术来实现不同的特性和性能。
-例如，一些消息队列系统可能会将内存和文件系统结合使用，以在内存中提供高性能的消息传递，并在需要持久性时将消息写入文件系统。
-选择适当的底层实现方式取决于应用程序的需求，包括性能、可靠性和持久性等方面的考虑。
+例如，一些消息队列系统可能会将内存和文件系统结合使用，以在内存中提供高性能的消息传递，并在需要持久性时将消息写入文件系统。选择适当的底层实现方式取决于应用程序的需求，包括性能、可靠性和持久性等方面的考虑。
+
 
 优缺点及适用场景
-优点：异步通信、解耦性高、支持可靠性消息传递、支持消息持久化、可扩展性好。
-缺点：引入中间件，增加了系统复杂性；消息顺序性可能受到影响；需要额外的管理和维护。
+优点：异步通信、解耦性高、流量削峰、支持可靠性消息传递、支持消息持久化、可扩展性好。
+缺点：引入中间件，增加了系统复杂性；消息顺序性可能受到影响；可用性降低，需要额外的管理和维护。
+
+消息队列的优缺点详细例子
+优点
+异步通信
+例子：在一个电商系统中，当用户下单后，系统需要通知库存系统减少库存、通知支付系统处理支付、通知物流系统准备发货。如果没有消息队列，这些操作需要同步完成，用户需要等待所有操作完成后才能看到结果。
+使用消息队列后，下单服务可以异步地将消息发送到队列，然后立即返回结果给用户，而各个系统可以异步地从队列中取出消息进行处理。
+优势：提高了系统的响应速度，优化了用户体验。
+
+解耦性高
+例子：在微服务架构中，订单服务和库存服务是两个独立的服务。订单服务生成订单后，通过消息队列通知库存服务更新库存。这样，订单服务不需要直接调用库存服务的接口，降低了服务间的耦合度。
+优势：系统更加灵活，易于扩展和维护。
+
+流量削峰
+例子：在电商大促期间，用户请求量激增，直接访问后端服务可能会导致服务崩溃。通过消息队列，可以将请求先缓存到队列中，后端服务可以按自己的处理能力逐步处理这些请求。
+优势：有效缓解高并发压力，保护后端服务。
+
+支持可靠性消息传递
+例子：银行转账系统中，消息队列可以确保转账请求被可靠地传递到目标系统。如果目标系统未能及时处理消息，消息队列可以提供重试机制，直到消息被成功处理。
+优势：提高了系统的可靠性，减少了数据丢失的风险。
+
+支持消息持久化
+例子：在物流系统中，订单信息需要被持久化存储，以便在后续的处理和查询中使用。消息队列可以将消息持久化到磁盘或数据库中，即使系统崩溃，消息也不会丢失。
+优势：增强了数据的可靠性和可恢复性。
+
+可扩展性好
+例子：随着业务的增长，系统需要处理更多的消息。消息队列可以通过增加节点来水平扩展，提高系统的处理能力。
+优势：系统易于扩展，能够适应业务增长的需求。
+
+缺点
+引入中间件，增加了系统复杂性
+例子：在引入消息队列之前，系统可能只需要直接调用其他服务的接口。引入消息队列后，需要配置和管理消息队列中间件，包括队列的创建、消息的发送和接收、错误处理等。
+劣势：增加了系统的复杂性和运维成本。
+
+消息顺序性可能受到影响
+例子：在支付系统中，用户可能连续发起多次支付请求。这些请求被发送到消息队列后，可能会因为队列的处理机制（如并发处理）而导致顺序被打乱。
+劣势：对于需要严格保证消息顺序的业务场景，可能会带来问题。
+
+可用性降低，需要额外的管理和维护
+例子：消息队列作为系统中的一个关键组件，其可用性直接影响到整个系统的稳定性。如果消息队列出现故障，可能会导致消息丢失或处理延迟。此外，还需要定期监控和维护消息队列的性能和健康状况。
+劣势：降低了系统的整体可用性，增加了运维工作量。
+
+
+
 适用场景：分布式系统解耦、异步任务处理、实时数据流处理、事件驱动架构。
 
 
