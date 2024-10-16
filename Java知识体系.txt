@@ -16492,6 +16492,56 @@ Java容器技术：
 支持微服务架构：容器可以作为微服务架构的基础设施，帮助开发人员快速构建、部署和管理复杂的分布式系统。
 目前，Docker是最常用的容器技术，它提供了一个开放的生态系统，可以方便地管理容器。
 
+容器（dockers）和虚拟机的区别是什么？
+容器（特别是Docker容器）与虚拟机在多个方面存在显著的区别，这些区别主要体现在架构层次、资源利用、性能、隔离性、部署灵活性以及应用场景上。以下是对这些区别的详细阐述：
+
+一、架构层次
+Docker容器：
+直接运行在宿主操作系统的内核上。
+容器共享宿主操作系统的内核，并且每个容器包含其应用程序和必要的库及依赖项。
+虚拟机：
+通过一个称为Hypervisor（虚拟机监控器）的软件层来实现。
+在宿主硬件之上创建多个虚拟硬件环境，每个虚拟机运行一个完整的操作系统（客操作系统）及其应用程序。
+
+二、资源利用与性能
+Docker容器：
+由于容器不需要启动一个完整的操作系统，它们的启动速度通常在秒级别。
+容器共享宿主操作系统的内核，资源开销相对较小，可以在单个宿主上运行更多的容器实例。
+没有虚拟化开销，性能接近于原生宿主操作系统。
+虚拟机：
+因为每个虚拟机都需要启动一个完整的操作系统，启动时间通常较长，可能需要数分钟。
+每个虚拟机包含完整的操作系统，其资源开销较大，因此在同一宿主上运行的虚拟机数量通常少于容器。
+需要通过Hypervisor进行硬件虚拟化，性能会有一定的开销，但现代Hypervisor技术已经显著减少了这种开销。
+
+三、隔离性
+Docker容器：
+通过名称空间和控制组（cgroups）实现进程、网络、文件系统等方面的隔离。
+隔离性相对较弱，但对于大多数应用场景已经足够。
+虚拟机：
+提供完全的硬件隔离。
+运行在不同虚拟机中的应用完全隔离，适合对隔离性要求非常高的场景。
+
+四、部署灵活性
+Docker容器：
+容器镜像体积较小，部署速度快，适合CI/CD流程和微服务架构。
+封装了应用程序及其依赖项，确保开发、测试和生产环境的一致性。
+容器镜像可以在不同的环境中运行，确保“构建一次，运行在任何地方”。
+虚拟机：
+虚拟机镜像（通常称为模板）较大，部署速度较慢。
+虽然虚拟机可以确保环境一致性，但由于其重量级特性，管理和维护成本较高。
+虚拟机镜像可以迁移到不同的虚拟化平台，但迁移过程相对复杂且成本较高。
+
+五、应用场景
+Docker容器：
+适合将应用程序分解为多个独立的、可伸缩的服务（微服务架构）。
+快速创建和销毁一致的开发和测试环境。
+与CI/CD工具集成，实现自动化构建、测试和部署。
+虚拟机：
+适合运行需要完全隔离和独立操作系统的传统应用。
+支持在同一宿主上运行不同操作系统（如Linux和Windows）。
+适合高隔离性需求的场景，如高安全性要求的环境。
+综上所述，Docker容器以其轻量级、高效性和快速部署的特点，特别适合现代微服务架构和DevOps实践；而虚拟机则以其高隔离性和多操作系统支持的特性，适合传统应用和高安全性需求的场景。在实际应用中，选择Docker还是虚拟机，应该根据具体的需求和场景来决定。
+
 
 CI/CD流水线：
 CI/CD是持续集成和持续交付或持续部署的软件开发流程模型。CI/CD旨在通过自动化和持续性的构建、测试、部署和交付过程，来提高软件开发和发布的效率和质量。
@@ -17481,7 +17531,6 @@ Nacos提供了一个简洁易用的UI控制台，开发者可以通过这个界�
 在application.properties或application.yml文件中，配置Nacos服务器的地址和端口。例如：
 
 application.yml配置：
-
 spring:  
   cloud:  
     nacos:  
@@ -17504,6 +17553,70 @@ public class YourApplication {
 
 
 现在，当你启动你的Spring Boot应用时，它会自动注册到Nacos服务器。你可以通过Nacos的Web控制台查看已注册的服务列表。
+
+
+将Spring Cloud Nacos作为配置中心：
+配置bootstrap.properties或bootstrap.yml
+在Spring Cloud中，配置中心相关的配置通常放在bootstrap.properties或bootstrap.yml文件中，因为这些文件比application.properties或application.yml更早被加载。
+
+bootstrap.yml的配置可以如下所示：
+
+spring:  
+  cloud:  
+    nacos:  
+      config:  
+        server-addr: 127.0.0.1:8848 # Nacos服务器地址  
+        namespace: public # 命名空间，默认为public  
+        data-id: your-data-id # 数据ID，用于唯一标识配置  
+        group: DEFAULT_GROUP # 分组，默认为DEFAULT_GROUP  
+        file-extension: yaml # 配置文件的格式，如yaml、properties等
+其中，data-id是你在Nacos中创建的配置数据的唯一标识，group是分组，file-extension是配置文件的格式。
+
+在Nacos中创建配置
+登录Nacos的Web控制台，在配置管理菜单中创建或编辑配置。你需要设置数据ID、分组和配置格式，并在配置内容中输入你的配置信息。
+
+启动你的应用
+现在，当你启动你的Spring Boot应用时，它会从Nacos配置中心加载配置信息。你可以通过@Value或@ConfigurationProperties等注解在应用中注入这些配置。
+配置配置刷新注解@RefreshScope
+
+
+Nacos配置中心的命名空间：
+在Nacos中，命名空间是一个用于实现环境隔离的概念。每个命名空间都代表一个独立的环境，例如开发环境、测试环境和生产环境等。通过使用命名空间，我们可以将不同环境的配置和服务进行隔离，避免相互干扰。
+
+作用：
+隔离环境：在实际开发中，我们通常会遇到多个环境，如开发、测试和生产等。这些环境在配置和服务上可能存在差异。通过使用命名空间，我们可以将不同环境的配置和服务进行隔离，确保它们之间不会相互影响。
+这有助于我们在不同的环境中进行独立的开发和测试工作。
+
+分类管理：在大型系统中，我们可能会有多个模块或者团队共同开发和维护。通过使用命名空间，我们可以将不同模块或者团队的配置和服务进行分类管理，方便团队协作和维护。
+每个命名空间都可以有自己的配置和服务注册表，使得不同模块或团队之间的配置和服务信息更加清晰和易于管理。
+
+创建一个命名空间：
+spring:  
+  cloud:  
+    nacos:  
+      discovery:  
+        server-addr: 127.0.0.1:8848 # Nacos服务地址  
+        namespace: your-namespace-id # 命名空间ID  
+      config:  
+        server-addr: 127.0.0.1:8848 # Nacos服务地址  
+        namespace: your-namespace-id # 命名空间ID
+
+
+
+Nacos配置中心的配置分组：
+配置分组是Nacos中的一个功能，允许用户将不同的配置划分到不同的组中，以实现更灵活的配置管理和控制。
+
+作用：
+分类管理：在实际开发中，我们通常会有多个配置文件，如数据库配置、缓存配置、日志配置等。通过使用配置分组，我们可以将不同类型的配置文件进行分类管理，使得配置更加清晰、易于维护。
+环境隔离：不同的环境（如开发环境、测试环境、生产环境）可能需要不同的配置。通过使用配置分组，我们可以为不同的环境创建不同的配置组，并在启动服务时指定要使用的配置组，从而实现环境隔离。
+
+创建一个配置分组：
+1.填写配置信息：
+2.在“Data ID”字段中输入你的配置的唯一标识符。
+3.在“Group”字段中输入你想要创建的新分组的名称。例如，你可以输入“myNewGroup”。
+4.选择配置格式（如YAML、Properties等）。
+5.在“配置内容”字段中输入你的配置信息。
+
 
 
 如何基于Spring Cloud Alibaba Nacos进行多个DataID的配置读取？
@@ -17551,71 +17664,6 @@ config2.yml中的config2.name
 config3.yml中的config3.name
 ext-config-common.properties中的common.property
 那么，我们可以按照上述配置示例在bootstrap.yml文件中进行配置，并在微服务中使用@Value注解或Environment对象来读取这些配置信息。
-
-
-
-
-将Spring Cloud Nacos作为配置中心：
-配置bootstrap.properties或bootstrap.yml
-在Spring Cloud中，配置中心相关的配置通常放在bootstrap.properties或bootstrap.yml文件中，因为这些文件比application.properties或application.yml更早被加载。
-
-bootstrap.yml的配置可以如下所示：
-
-spring:  
-  cloud:  
-    nacos:  
-      config:  
-        server-addr: 127.0.0.1:8848 # Nacos服务器地址  
-        namespace: public # 命名空间，默认为public  
-        data-id: your-data-id # 数据ID，用于唯一标识配置  
-        group: DEFAULT_GROUP # 分组，默认为DEFAULT_GROUP  
-        file-extension: yaml # 配置文件的格式，如yaml、properties等
-其中，data-id是你在Nacos中创建的配置数据的唯一标识，group是分组，file-extension是配置文件的格式。
-
-在Nacos中创建配置
-登录Nacos的Web控制台，在配置管理菜单中创建或编辑配置。你需要设置数据ID、分组和配置格式，并在配置内容中输入你的配置信息。
-
-启动你的应用
-现在，当你启动你的Spring Boot应用时，它会从Nacos配置中心加载配置信息。你可以通过@Value或@ConfigurationProperties等注解在应用中注入这些配置。
-配置配置刷新注解@RefreshScope
-
-
-
-Nacos配置中心的命名空间：
-在Nacos中，命名空间是一个用于实现环境隔离的概念。每个命名空间都代表一个独立的环境，例如开发环境、测试环境和生产环境等。通过使用命名空间，我们可以将不同环境的配置和服务进行隔离，避免相互干扰。
-
-作用：
-隔离环境：在实际开发中，我们通常会遇到多个环境，如开发、测试和生产等。这些环境在配置和服务上可能存在差异。通过使用命名空间，我们可以将不同环境的配置和服务进行隔离，确保它们之间不会相互影响。
-这有助于我们在不同的环境中进行独立的开发和测试工作。
-
-分类管理：在大型系统中，我们可能会有多个模块或者团队共同开发和维护。通过使用命名空间，我们可以将不同模块或者团队的配置和服务进行分类管理，方便团队协作和维护。
-每个命名空间都可以有自己的配置和服务注册表，使得不同模块或团队之间的配置和服务信息更加清晰和易于管理。
-
-创建一个命名空间：
-spring:  
-  cloud:  
-    nacos:  
-      discovery:  
-        server-addr: 127.0.0.1:8848 # Nacos服务地址  
-        namespace: your-namespace-id # 命名空间ID  
-      config:  
-        server-addr: 127.0.0.1:8848 # Nacos服务地址  
-        namespace: your-namespace-id # 命名空间ID
-
-
-Nacos配置中心的配置分组：
-配置分组是Nacos中的一个功能，允许用户将不同的配置划分到不同的组中，以实现更灵活的配置管理和控制。
-
-作用：
-分类管理：在实际开发中，我们通常会有多个配置文件，如数据库配置、缓存配置、日志配置等。通过使用配置分组，我们可以将不同类型的配置文件进行分类管理，使得配置更加清晰、易于维护。
-环境隔离：不同的环境（如开发环境、测试环境、生产环境）可能需要不同的配置。通过使用配置分组，我们可以为不同的环境创建不同的配置组，并在启动服务时指定要使用的配置组，从而实现环境隔离。
-
-创建一个配置分组：
-1.填写配置信息：
-2.在“Data ID”字段中输入你的配置的唯一标识符。
-3.在“Group”字段中输入你想要创建的新分组的名称。例如，你可以输入“myNewGroup”。
-4.选择配置格式（如YAML、Properties等）。
-5.在“配置内容”字段中输入你的配置信息。
 
 
 Java服务通过服务网关发现配置中心，再通过服务注册中心去发现配置，并启动服务的过程，是一个典型的微服务架构中的服务启动和配置管理流程。
@@ -18116,7 +18164,7 @@ spring:
         port:8500
         discovery:
             prefer-ip-address:true
-            service-name:${spring.application.name}
+            service-name:${spring.application.name} 
         gateway:
             routes:
                 -id:pay routh1 #pay routh1 #路由的ID(类似mysql主键ID)，没有固定规则但要求唯一，建议配合服务名#匹配后提供服务的路由地址
@@ -18130,7 +18178,115 @@ spring:
                     Path=/pay/gateway/info/** # 断言、路径相匹配的进行路由
 
 GateWay主流用法：以服务名动态获取服务URI
-修改配置 uri: lb://cloud-payment-service #微服务的名字
+修改配置 uri: lb://cloud-payment-service #微服 务的名字
+
+在注册中心中配置网关：
+spring:  
+  cloud:  
+    nacos:  
+      server-addr: <nacos-server-address> # 替换为Nacos注册中心的实际地址
+
+
+基于Spring Cloud Gateway实现限流：
+Spring Cloud Gateway是Spring Cloud生态系统中的网关组件，它提供了强大的路由和过滤功能，同时也支持限流。
+
+配置示例：
+在application.yml文件中配置限流规则。
+yaml
+spring:  
+  cloud:  
+    gateway:  
+      routes:  
+        - id: limit_route  
+          uri: http://localhost:8080  
+          predicates:  
+            - Path=/api/**  
+          filters:  
+            - name: RequestRateLimiter  
+              args:  
+                key-resolver: '#{@remoteAddrKeyResolver}'  
+                redis-rate-limiter.replenishRate: 10  
+                redis-rate-limiter.burstCapacity: 20
+实现KeyResolver，用于定义限流键。
+
+@Configuration  
+public class RateLimiterConfig {  
+    @Bean  
+    public KeyResolver remoteAddrKeyResolver() {  
+        return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress());  
+    }  
+}
+上述配置中，RequestRateLimiter使用Redis限流器，key-resolver定义限流键（这里基于客户端IP地址），redis-rate-limiter.replenishRate表示每秒新增令牌数，redis-rate-limiter.burstCapacity表示令牌桶的最大容量，允许突发流量。
+
+限流算法
+限流算法是实现限流功能的核心，常见的限流算法包括计数器算法、滑动窗口算法、漏桶算法和基于令牌桶的限流等。
+
+计数器算法：通过维护一个单位时间内的请求计数器来实现限流。当计数器达到设定的阈值时，拒绝新的请求。
+滑动窗口算法：维护一个时间窗口内的请求数量，当请求数量超过设定的阈值时，拒绝新的请求。滑动窗口算法比计数器算法更精细，能够处理更复杂的限流需求。
+漏桶算法：将请求看作是水滴，将系统处理能力看作是漏桶的容量。当水滴（请求）到达时，如果桶未满，则水滴（请求）进入桶中；如果桶已满，则水滴（请求）被丢弃或排队等待。桶中的水按固定速率流出，表示系统处理请求的能力。
+基于令牌桶的限流：使用一个令牌桶来存储单位时间内的请求令牌。当有新的请求到达时，从桶中获取一个令牌；如果令牌不足，则拒绝请求。令牌的生成速度可以根据实际情况进行调整，以达到不同的限流效果。
+
+
+
+在网关上做鉴权认证如何实现？
+网关鉴权认证是指在网络请求到达最终服务之前，通过网关进行身份验证和权限检查的过程。这种机制通过网关对请求进行预处理，确保请求者具有访问权限，是确保系统安全的重要手段之一。
+
+一、鉴权认证的基本流程
+用户登录：用户提交用户名和密码，系统验证身份。
+生成Token：验证成功后，生成Token（如JWT Token）并返回给客户端。Token通常包含用户信息、签名和过期时间等。
+请求验证：客户端在后续请求中携带Token，网关解析并验证Token的有效性。
+权限检查：验证Token后，根据Token中的用户信息（如用户ID、角色等）进行权限校验。
+响应处理：根据权限检查的结果返回相应的响应数据。如果验证失败或权限不足，则返回未授权的响应。
+
+二、常见的鉴权认证方法
+Token-Based认证：使用访问令牌（Access Token）进行身份验证，通常采用JWT（JSON Web Token）或OAuth等标准。
+JWT：一种自包含的、可签名的Token格式，支持无状态认证，易于扩展和分布式部署。
+OAuth：一种第三方授权认证机制，允许第三方应用在没有账号密码的情况下访问用户资源。OAuth支持多种授权类型，如客户端凭证、密码授权、隐式授权等。
+API Key认证：通过API密钥进行身份验证，常见于基于RESTful API的应用。
+Basic认证：基于HTTP Basic Auth的认证方式，简单但不太安全，适用于内部系统或简单的应用场景。
+IP白名单认证：通过限制访问来源的IP地址来进行身份验证，适用于安全需求较高的场景。
+证书认证：使用SSL/TLS证书进行身份验证，确保数据传输的安全性。
+
+三、在Spring Cloud Gateway中实现鉴权认证的示例
+Spring Cloud Gateway提供了丰富的功能和灵活的扩展机制，使得网关鉴权变得简单而又强大。
+
+以下是一个使用JWT Token在Spring Cloud Gateway中实现鉴权认证的示例：
+配置依赖：在Spring Cloud Gateway项目中添加必要的依赖，如spring-cloud-starter-gateway、spring-boot-starter-security和jjwt等。
+编写自定义过滤器：创建一个自定义的GlobalFilter或GatewayFilter来处理JWT验证。在过滤器中，解析请求中的Authorization头部，获取JWT Token，并验证其合法性和有效性。如果验证失败或Token过期，则返回未授权的响应。
+配置路由规则：在Spring Cloud Gateway的配置文件中配置路由规则，指定请求应该如何被路由到后端服务。同时，通过filters属性指定自定义的鉴权过滤器应用到特定的路由上。
+
+四、注意事项
+安全性：确保Token的生成和存储过程安全，避免Token泄露。同时，定期更换Token的签名密钥，提高系统的安全性。
+性能：鉴权认证过程可能会对系统的性能产生一定影响。因此，在设计鉴权认证流程时，需要考虑性能优化措施，如缓存Token验证结果等。
+兼容性：在选择鉴权认证方法时，需要考虑与现有系统的兼容性。确保新的鉴权认证机制能够平滑地集成到现有系统中，不会对现有业务造成影响。
+
+
+网关鉴权认证对比：有哪些场景只能用网关做鉴权认证而不能用SpringSecurity做鉴权认证？
+在探讨哪些场景只能用网关做鉴权认证而不能用SpringSecurity做鉴权认证时，我们首先要明确网关和SpringSecurity在鉴权认证中的不同角色和特性。
+网关通常位于系统的边缘，作为外部请求进入内部服务的唯一入口。它负责路由请求、流量控制、安全保护等任务，其中包括对请求的鉴权认证。网关的鉴权认证具有全局性、集中性和高效性的特点，可以对所有进入系统的请求进行统一的身份验证和权限检查。
+而SpringSecurity则是Spring框架提供的一个安全模块，专注于为Java应用程序提供身份验证和授权功能。它基于过滤器链的概念，可以轻松地集成到任何基于Spring的应用程序中。SpringSecurity提供了多种身份验证选项和授权策略，开发人员可以根据需要选择适合的方式。
+
+然而，在一些特定场景中，网关的鉴权认证可能更为合适，而SpringSecurity则不太适用。
+以下是一些可能的场景：
+
+1.多服务架构中的统一认证：
+在微服务架构中，如果系统由多个独立的服务组成，且这些服务需要共享一套认证机制，那么网关的鉴权认证可以提供一个统一的认证入口。这样可以避免在每个服务中都实现一套独立的认证逻辑，提高系统的可维护性和可扩展性。
+相比之下，SpringSecurity虽然可以在每个服务中独立配置，但在多服务架构中要实现统一的认证机制则相对复杂，需要额外的同步和协调机制。
+
+2.对外部服务的访问控制：
+如果系统需要访问外部服务，并且这些外部服务需要身份验证和授权，那么网关可以作为一个中间层来处理这些请求。网关可以对请求进行认证和授权，然后将经过验证的请求转发给外部服务。
+在这种情况下，使用SpringSecurity可能不太方便，因为它主要关注于内部服务的身份验证和授权。
+
+3.跨域请求的处理：
+在处理跨域请求时，网关可以作为一个中间层来处理跨域资源共享（CORS）问题，并在请求到达内部服务之前进行身份验证和授权。
+虽然SpringSecurity也可以配置CORS支持，但在处理跨域请求的认证和授权时，网关可能更加灵活和高效。
+
+4.性能和安全性的权衡：
+在一些对性能和安全性要求较高的场景中，网关可以提供更高效的认证和授权机制。例如，网关可以使用缓存技术来加速认证过程，或者通过集成第三方认证服务来增强安全性。
+相比之下，SpringSecurity虽然也提供了强大的安全功能，但在某些情况下可能无法达到与网关相同的性能和安全性水平。
+
+综上所述，虽然SpringSecurity是一个功能强大且易于使用的身份验证和授权框架，但在一些特定场景中，网关的鉴权认证可能更为合适。这些场景包括多服务架构中的统一认证、对外部服务的访问控制、跨域请求的处理以及性能和安全性的权衡等。
+
 
 
 另一种分布式管理的工具：
@@ -18178,6 +18334,126 @@ Dubbo优缺点
 
 缺点：
 只支持JAVA语言
+
+当然可以。以下是一个简单的Dubbo RPC调用示例，包括服务提供者（Provider）和服务消费者（Consumer）的基本实现。为了简化，这里使用注解配置和Spring Boot来构建示例。
+
+服务接口
+首先，定义一个公共的服务接口，这个接口将被服务提供者和消费者共享。
+
+package com.example.dubbo.demo.api;  
+  
+public interface DemoService {  
+    String sayHello(String name);  
+}
+
+
+服务提供者
+接下来，实现服务接口，并将其作为Dubbo服务暴露。
+
+application.yml（Dubbo配置）
+
+spring:  
+  application:  
+    name: dubbo-demo-provider  
+  
+dubbo:  
+  application:  
+    name: dubbo-demo-provider  
+  registry:  
+    address: zookeeper://127.0.0.1:2181 # 使用Zookeeper作为注册中心  
+  protocol:  
+    name: dubbo  
+    port: 20880
+
+
+DemoServiceImpl.java（服务实现）
+
+package com.example.dubbo.demo.provider;  
+  
+import com.example.dubbo.demo.api.DemoService;  
+import org.apache.dubbo.config.annotation.Service;  
+  
+@Service // Dubbo的@Service注解，用于暴露服务  
+public class DemoServiceImpl implements DemoService {  
+    @Override  
+    public String sayHello(String name) {  
+        return "Hello, " + name;  
+    }  
+}
+
+
+ProviderApplication.java（Spring Boot启动类）
+
+package com.example.dubbo.demo.provider;  
+  
+import org.springframework.boot.SpringApplication;  
+import org.springframework.boot.autoconfigure.SpringBootApplication;  
+  
+@SpringBootApplication  
+public class ProviderApplication {  
+    public static void main(String[] args) {  
+        SpringApplication.run(ProviderApplication.class, args);  
+    }  
+}
+
+服务消费者
+现在，创建一个服务消费者来调用远程服务。
+
+pom.xml（添加必要的依赖，与服务提供者相同）
+
+application.yml（Dubbo配置）
+
+spring:  
+  application:  
+    name: dubbo-demo-consumer  
+  
+dubbo:  
+  application:  
+    name: dubbo-demo-consumer  
+  registry:  
+    address: zookeeper://127.0.0.1:2181 # 使用相同的注册中心
+
+
+
+ConsumerController.java（控制器，用于调用远程服务）
+
+package com.example.dubbo.demo.consumer;  
+  
+import com.example.dubbo.demo.api.DemoService;  
+import org.apache.dubbo.config.annotation.Reference;  
+import org.springframework.web.bind.annotation.GetMapping;  
+import org.springframework.web.bind.annotation.RequestParam;  
+import org.springframework.web.bind.annotation.RestController;  
+  
+@RestController  
+public class ConsumerController {  
+  
+    @Reference // Dubbo的@Reference注解，用于引用远程服务  
+    private DemoService demoService;  
+  
+    @GetMapping("/hello")  
+    public String sayHello(@RequestParam String name) {  
+        return demoService.sayHello(name);  
+    }  
+}
+
+
+
+ConsumerApplication.java（Spring Boot启动类）
+
+package com.example.dubbo.demo.consumer;  
+  
+import org.springframework.boot.SpringApplication;  
+import org.springframework.boot.autoconfigure.SpringBootApplication;  
+  
+@SpringBootApplication  
+public class ConsumerApplication {  
+    public static void main(String[] args) {  
+        SpringApplication.run(ConsumerApplication.class, args);  
+    }  
+}
+
+
 
 分布式应用程序协调服务：
 什么是注册中心？
@@ -21357,8 +21633,7 @@ Apache Atlas 为组织提供开放式元数据管理和治理功能，用以构�
 2.字段与字段之间的血缘依赖
 
 Atlas的使用：
-Atlas 的使用相对简单，其主要工作是同步各服务（主要是 Hive）的元数据，
-并构建元数据实体之间的关联关系，然后对所存储的元数据建立索引，最终未用户提供数据血缘查看。
+Atlas 的使用相对简单，其主要工作是同步各服务（主要是 Hive）的元数据，并构建元数据实体之间的关联关系，然后对所存储的元数据建立索引，最终未用户提供数据血缘查看。
 
 Apache Atlas为Hadoop的元数据治理提供了以下特性：
 
