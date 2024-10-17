@@ -16553,6 +16553,37 @@ Docker的工作流程包括构建镜像、分发镜像、拉取镜像和运行�
 运行容器：用户使用docker run命令基于下载的镜像创建并运行容器。此时，Docker守护进程会分配必要的资源（如网络、存储等），启动容器进程。
 
 
+docker的执行过程：client -> containerd -> container shim -> runc() -> unshare() -> clone()
+
+Docker Client:
+用户通过 Docker 命令行界面（CLI）或其他 Docker 客户端工具（如 Docker API）与 Docker Daemon（守护进程）进行交互。
+用户执行一个 Docker 命令，比如 docker run，来请求创建一个新的容器。
+
+Docker Daemon:
+Docker Daemon 接收到来自客户端的请求后，并不直接处理容器的创建和运行。相反，它将这些请求转发给 containerd，这是 Docker 用来管理容器运行时的组件。
+
+containerd:
+containerd 是一个开源的容器运行时管理守护进程，负责处理来自 Docker Daemon 的请求。
+containerd 接收请求后，会根据请求的类型（如创建、启动、停止容器等）调用相应的处理逻辑。
+在创建容器的场景中，containerd 会负责准备容器的环境，包括创建容器镜像的实例（即容器文件系统），并设置必要的配置。
+
+container shim:
+当 containerd 完成容器的初步设置后，它会启动一个名为 container shim 的进程。
+container shim 是一个轻量级的进程，它作为容器和 containerd 之间的中介。它负责保持容器的运行状态，并监视容器的退出状态。
+如果容器退出，container shim 会通知 containerd，然后 containerd 会通知 Docker Daemon，最终 Docker Daemon 会清理相关的资源。
+
+runc():
+在 container shim 启动后，它会调用 runc（一个容器运行时实现，遵循 OCI 容器运行时规范）。
+runc 负责实际创建和启动容器进程。它使用 Linux 的命名空间（Namespaces）和控制组（Cgroups）等特性来隔离容器进程。
+runc 执行一系列步骤来准备容器环境，包括设置命名空间、挂载文件系统、配置网络等。
+
+unshare() 和 clone():
+在 runc 内部，最终会调用 Linux 系统调用 unshare() 和 clone() 来创建隔离的容器进程。
+unshare() 系统调用用于将进程从某些系统资源（如用户命名空间、网络命名空间等）中分离出来。
+clone() 系统调用则用于创建新的进程，这个新进程会继承调用进程的资源（如文件描述符、内存空间等），但可以根据 unshare() 的设置来隔离这些资源。
+通过这些系统调用，runc 能够创建一个完全隔离的容器进程，这个进程运行在一个与宿主机隔离的环境中，但可以使用宿主机提供的资源。
+
+
 容器（dockers）和虚拟机的区别是什么？
 容器（特别是Docker容器）与虚拟机在多个方面存在显著的区别，这些区别主要体现在架构层次、资源利用、性能、隔离性、部署灵活性以及应用场景上。以下是对这些区别的详细阐述：
 
