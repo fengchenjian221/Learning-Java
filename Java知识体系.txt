@@ -16969,6 +16969,126 @@ Docker和K8S并不是互斥的，而是可以互补使用的。
 综上所述，K8S和Docker在容器化技术中各自扮演着不同的角色。Docker提供了容器化的基本功能，而K8S则提供了容器编排和管理的高级功能。它们可以一起使用，以便帮助开发人员更好地构建、部署和管理应用程序。
 
 
+kubectl指令:
+kubectl 是 Kubernetes 的命令行工具，用于与 Kubernetes 集群进行交互。它允许用户部署、管理和故障排除 Kubernetes 应用程序。
+以下是一些常用的 kubectl 指令及其简要说明：
+基本命令：
+kubectl get
+获取集群中的资源信息。
+示例：
+kubectl get pods  
+kubectl get nodes  
+kubectl get services
+
+
+kubectl describe
+显示资源的详细信息。
+示例：
+kubectl describe pod <pod-name>  
+kubectl describe node <node-name>
+
+
+kubectl create
+根据文件或标准输入创建资源。
+示例：
+kubectl create -f deployment.yaml  
+kubectl create deployment my-deployment --image=nginx
+
+
+kubectl apply
+应用配置文件中的资源定义，并自动处理资源的更新。
+示例：
+kubectl apply -f deployment.yaml
+
+
+kubectl delete
+删除资源。
+示例：
+kubectl delete pod <pod-name>  
+kubectl delete deployment my-deployment
+
+部署和管理命令：
+kubectl scale
+更改 Deployment、ReplicaSet、StatefulSet 或 Replication Controller 中的 Pod 数量。
+示例：
+kubectl scale deployment my-deployment --replicas=5
+
+
+kubectl expose
+创建一个 Service 以暴露一个或多个 Pod。
+示例：
+kubectl expose pod <pod-name> --type=LoadBalancer --port=8080
+
+
+kubectl rollout
+管理 Deployment、DaemonSet 和 StatefulSet 的滚动更新。
+示例：
+kubectl rollout status deployment my-deployment  
+kubectl rollout undo deployment my-deployment
+
+
+kubectl logs
+获取 Pod 的日志。
+示例：
+kubectl logs <pod-name>  
+kubectl logs <pod-name> -c <container-name>  # 如果 Pod 有多个容器
+
+
+kubectl exec
+在 Pod 中运行命令。
+示例：
+kubectl exec -it <pod-name> -- /bin/ba  
+kubectl exec <pod-name> -- ping google.com
+
+
+集群和节点管理命令：
+kubectl cordon
+标记节点为不可调度。
+示例：
+kubectl cordon <node-name>
+
+
+kubectl uncordon
+标记节点为可调度。
+示例：
+kubectl uncordon <node-name>
+
+
+kubectl drain
+准备节点进行维护，通过驱逐 Pod 来实现。
+示例：
+kubectl drain <node-name> --ignore-daemonsets --delete-local-data
+
+
+kubectl taint
+更新节点的污点（taint），污点可以阻止某些 Pod 调度到该节点。
+示例：
+kubectl taint nodes <node-name> key=value:NoSchedule  
+kubectl taint nodes <node-name> key:value-
+
+
+插件和扩展命令：
+kubectl plugin
+管理 kubectl 插件。
+示例：
+kubectl plugin list  
+kubectl plugin install <plugin-url>
+
+
+kubectl top
+显示资源（CPU/内存）使用情况。
+示例：
+kubectl top pods  
+kubectl top nodes
+
+
+kubectl auth
+检查和修改授权。
+示例：
+kubectl auth can-i get pods --all-namespaces  
+kubectl auth reconcile -f rbac-config.yaml
+
+注意：kubectl 提供了丰富的功能和选项，可以通过 kubectl --help 或 kubectl <command> --help 查看更多详细信息。
 
 
 Java分布式系统：
