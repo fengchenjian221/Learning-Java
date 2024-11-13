@@ -5002,6 +5002,62 @@ Java动态代理：
 代码实现：创建RenterInvocationHandler类，这个类实现了InvocationHandler接口，并持有一个被代理类的对象，InvocationHandler中有一个invoke方法，所有执行代理对象的方法都会被替换成执行invoke方法。
 然后通过反射在invoke方法中执行代理类的方法。在代理过程中，在执行代理类的方法前或者后可以执行自己的操作，这就是spring aop的主要原理。
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+// 定义一个接口
+interface Service {
+    void performTask();
+}
+// 实现该接口的真实对象
+class RealService implements Service {
+    @Override
+    public void performTask() {
+        System.out.println("RealService is performing the task.");
+    }
+}
+// 创建一个处理器类，实现InvocationHandler接口
+class ServiceInvocationHandler implements InvocationHandler {
+    private final Object target; // 目标对象
+    public ServiceInvocationHandler(Object target) {
+        this.target = target;
+    }
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        // 在调用目标方法之前执行一些操作
+        System.out.println("Before method " + method.getName() + " is called.");
+        // 调用目标方法并获取返回值
+        Object result = method.invoke(target, args);
+        // 在调用目标方法之后执行一些操作
+        System.out.println("After method " + method.getName() + " is called.");
+        // 返回目标方法的返回值
+        return result;
+    }
+}
+public class DynamicProxyDemo {
+    public static void main(String[] args) {
+        // 创建真实对象
+        Service realService = new RealService();
+        // 创建处理器对象
+        InvocationHandler handler = new ServiceInvocationHandler(realService);
+        // 创建代理对象
+        Service proxyService = (Service) Proxy.newProxyInstance(
+                realService.getClass().getClassLoader(),
+                realService.getClass().getInterfaces(),
+                handler
+        );
+        // 通过代理对象调用方法
+        proxyService.performTask();
+    }
+}
+
+在这个例子中：
+1.Service接口定义了一个方法performTask。
+2.RealService类实现了Service接口，并提供了performTask方法的具体实现。
+3.ServiceInvocationHandler类实现了InvocationHandler接口，并重写了invoke方法。在invoke方法中，你可以添加在调用目标方法之前和之后执行的自定义逻辑。
+4.在DynamicProxyDemo类的main方法中，我们首先创建了真实对象RealService，然后创建了处理器对象ServiceInvocationHandler，并传入真实对象作为参数。
+接着，我们使用Proxy.newProxyInstance方法创建了代理对象proxyService。最后，我们通过代理对象调用了performTask方法，此时会触发invoke方法中的自定义逻辑。
+
 动态代理之Cglib代理：
 动态代理需要被代理类实现接口，如果被代理类没有实现接口，那么这么实现动态代理？这时候就需要用到CGLib了。这种代理方式就叫做CGlib代理。
 Cglib代理也叫作子类代理，他是通过在内存中构建一个子类，并在子类中采用方法拦截的技术拦截所有父类方法的调用，然后加入自己需要的操作。因为使用的是继承的方式，所以不能代理final 类
