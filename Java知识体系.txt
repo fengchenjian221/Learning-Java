@@ -5058,6 +5058,7 @@ public class DynamicProxyDemo {
 4.在DynamicProxyDemo类的main方法中，我们首先创建了真实对象RealService，然后创建了处理器对象ServiceInvocationHandler，并传入真实对象作为参数。
 接着，我们使用Proxy.newProxyInstance方法创建了代理对象proxyService。最后，我们通过代理对象调用了performTask方法，此时会触发invoke方法中的自定义逻辑。
 
+
 动态代理之Cglib代理：
 动态代理需要被代理类实现接口，如果被代理类没有实现接口，那么这么实现动态代理？这时候就需要用到CGLib了。这种代理方式就叫做CGlib代理。
 Cglib代理也叫作子类代理，他是通过在内存中构建一个子类，并在子类中采用方法拦截的技术拦截所有父类方法的调用，然后加入自己需要的操作。因为使用的是继承的方式，所以不能代理final 类
@@ -18851,6 +18852,102 @@ Java与数据库的紧耦合
 高访问量高并发对数据库的压力
 读写请求数据不一致
 
+MySQL的主从复制：
+MySQL的主从复制是一种常用的数据冗余和负载均衡技术，也是一种数据备份和同步的技术。它通过将数据从主服务器（Master）复制到一个或多个从服务器（Slave），以实现数据的冗余备份、负载均衡以及读写分离。
+主从复制的基本架构包括主库和从库。主库负责处理所有写请求，记录数据变更；而从库则同步主库的数据，可以处理读请求，从而减轻主库的负担。这种架构通过分布式负载实现更高的性能和可用性。
+
+复制过程主要涉及以下三个步骤：
+1.主库将所有更改操作记录到二进制日志（binary log，binlog）中。
+2.从库定期向主库请求新的二进制日志文件，并读取这些日志。
+3.从库执行读取到的日志中的SQL语句，将数据同步到本地数据库。
+
+在主从复制中，有两个关键的线程：Replication I/O Thread和Replication SQL Thread。Replication I/O Thread负责从主库拉取binlog，而Replication SQL Thread则负责执行binlog中的SQL语句。
+MySQL主从复制的配置步骤包括在主服务器上配置binlog、创建复制用户，并在从服务器上设置主服务器的信息、启动复制进程等。
+配置完成后，可以通过相关命令检查复制状态，确保Slave_IO_Running和Slave_SQL_Running都是Yes，以表示复制进程正在正常运行。
+
+
+Mycat配置Mysql数据库读写分离：
+Mycat搭建MySQL主从复制并实现读写分离的过程，主要涉及MySQL主从复制的配置以及Mycat的读写分离配置。以下是详细的步骤：
+
+一、MySQL主从复制配置
+1.准备环境
+确保有多台服务器或虚拟机，用于部署MySQL主从数据库。
+在每台服务器上安装相同版本的MySQL数据库。
+
+2.配置主数据库（Master）
+编辑MySQL配置文件（如my.cnf或my.ini），设置以下关键参数：
+server-id：为每个MySQL服务分配一个全局唯一的ID。
+log-bin：启用二进制日志，用于记录数据变更。
+binlog-do-db（可选）：指定需要复制的数据库。
+binlog-ignore-db（可选）：指定不需要复制的数据库。
+binlog_format：设置二进制日志的格式，如STATEMENT、ROW或MIXED。
+重启MySQL服务以应用配置。
+
+3.配置从数据库（Slave）
+同样编辑MySQL配置文件，设置server-id为唯一值，并启用relay-log（中继日志）。
+重启MySQL服务。
+
+4.创建复制用户
+在主数据库上创建一个用于复制的用户，并授予必要的权限。例如：
+CREATE USER 'replica'@'%' IDENTIFIED BY 'password';
+GRANT REPLICATION SLAVE ON *.* TO 'replica'@'%';
+FLUSH PRIVILEGES;
+
+5.配置复制
+在主数据库上锁定表并获取二进制日志的状态信息：
+FLUSH TABLES WITH READ LOCK;
+SHOW MASTER STATUS;
+
+记录File和Position字段的值，然后解锁表：
+UNLOCK TABLES;
+
+在从数据库上配置复制：
+CHANGE MASTER TO
+MASTER_HOST='主数据库IP',
+MASTER_USER='replica',
+MASTER_PASSWORD='password',
+MASTER_LOG_FILE='记录的File值',
+MASTER_LOG_POS=记录的Position值;
+
+启动从数据库的复制功能：
+START SLAVE;
+
+检查复制状态：
+SHOW SLAVE STATUS\G;
+确保Slave_IO_Running和Slave_SQL_Running两个属性都是Yes。
+
+二、Mycat读写分离配置
+安装与配置Mycat
+下载并解压Mycat安装包。
+配置Mycat的环境变量和启动脚本。
+根据需要编辑Mycat的配置文件（如schema.xml和server.xml）。
+配置读写分离
+在schema.xml文件中，配置dataHost、writeHost和readHost等标签。例如：
+
+<dataHost name="localhost1" maxCon="1000" minCon="10" balance="3" writeType="0" dbType="mysql" dbDriver="native" switchType="SLAVE">
+    <heartbeat>select 1</heartbeat>
+    <writeHost host="hostM1" url="主数据库URL" user="用户名" password="密码">
+   	 <readHost host="hostS1" url="从数据库URL1" user="用户名" password="密码" />
+   	 <readHost host="hostS2" url="从数据库URL2" user="用户名" password="密码" />
+    </writeHost>
+</dataHost>
+其中，balance属性用于配置读写分离的负载均衡策略：
+0：不开启读写分离机制。
+1：所有读请求参与负载均衡。
+2：所有读请求随机分发到写主机和读主机上。
+3：所有读请求随机分发到读主机上，写主机不负担读压力。
+启动Mycat
+使用Mycat的启动脚本启动服务。
+确保Mycat服务正常运行，并可以通过客户端进行连接和测试。
+测试读写分离
+通过Mycat客户端连接数据库。
+执行写操作（如INSERT、UPDATE、DELETE等），验证数据是否写入主数据库。
+执行读操作（如SELECT等），验证数据是否从从数据库读取。
+通过以上步骤，您可以成功搭建MySQL主从复制，并使用Mycat实现读写分离。这有助于提高数据库的读写性能和可用性。
+
+MYSQL的主从复制是CP还是AP？
+在MySQL的主从复制中，特别是异步复制模式下，系统更偏向于AP系统。因为异步复制在master写binlog成功之后立即提交，不等待slave的同步结果，这种方式有很高的性能，但是可能会牺牲数据一致性。
+如果slave同步不成功，就会造成master和slave数据不一致。然而，这种设计使得系统在遇到网络分区等故障时，仍然能够对外提供服务，从而保证了高可用性和分区容错性。
 
 
 分布式文件系统：
@@ -19950,6 +20047,21 @@ public class AuthenticationController {
 这些步骤只是整合Spring Security和JWT的基本步骤。您还需要根据您的项目需求进一步定制和实现这些部分。
 确保配置Spring Security和JWT的过滤器以进行身份验证，生成和验证JWT令牌，并提供登录端点用于用户登录。
 
+Spring Security权限校验的流程
+1.请求拦截：
+当一个请求到达后端时，Spring Security的过滤器链会拦截该请求。
+在过滤器链中，FilterSecurityInterceptor是负责认证和权限校验的关键拦截器。
+
+2.创建FilterInvocation对象：
+FilterSecurityInterceptor会创建一个FilterInvocation对象，该对象封装了请求、响应和过滤器链。
+
+3.调用invoke方法：
+以FilterInvocation对象为参数，调用FilterSecurityInterceptor的invoke方法。
+在invoke方法中，会进行认证和权限的校验。
+
+4.权限校验：
+根据配置的安全策略（如注解、表达式等），访问决策管理器会评估用户的权限和角色。
+如果用户具有访问资源的权限，则请求会继续处理；否则，会抛出访问拒绝异常。
 
 Shiro：
 Shiro是一个Java安全框架，它提供了身份验证、授权、密码和会话管理等安全特性。Shiro可以帮助开发者快速构建安全的应用程序，包括Web应用、移动应用和企业级应用。
