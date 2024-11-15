@@ -20553,10 +20553,10 @@ MapReduce 核心功能是将用户编写的业务逻辑代码和自带默认组�
 相当于YARN集群的客户端，用于提交我们整个程序到YARN集群，提交的是
 封装了MapReduce程序相关运行参数的job对象
 
+
 大数据资源管理系统YARN：
 Yarn是Hadoop的分布式资源调度平台，负责为集群的运算提供运算资源。
-如果把分布式计算机和单个计算机相对应的话，HDFS就相当于计算机的文件系统，
-Yarn就是计算机的操作系统，MapReduce就是计算机上的应用程序。
+如果把分布式计算机和单个计算机相对应的话，HDFS就相当于计算机的文件系统，Yarn就是计算机的操作系统，MapReduce就是计算机上的应用程序。
 
 Yarn主要由三个组件组成：
 ResourceManager：他是整个集群资源的老大，负责整个集群系统的资源分配与调度。
@@ -20587,8 +20587,7 @@ NodeManager 接收并处理来自 ApplicationMaster 的 Container 启动、停�
 YARN工作机制：
 1.客户端程序向ResourceManager提交应用并请求一个ApplicationMaster实例。
 2.ResourceManager找到可以运行一个Container的NodeManager，并在这个Container中启动ApplicationMaster实例。
-3.ApplicationMaster向ResourceManager进行注册，注册之后客户端就可以查询ResourceManager获得自己ApplicationMaster的详细信息，
-以后就可以和自己的ApplicationMaster直接交互了。
+3.ApplicationMaster向ResourceManager进行注册，注册之后客户端就可以查询ResourceManager获得自己ApplicationMaster的详细信息，以后就可以和自己的ApplicationMaster直接交互了。
 4.在平常的操作过程中，ApplicationMaster根据resource-request协议向ResourceManager发送resource-request请求。
 5.当Container被成功分配之后，ApplicationMaster通过向NodeManager发送container-launch-specification信息来启动
 Container，container-launch-specification信息包含了能够让Container和ApplicationMaster交流所需要的资料。
@@ -20733,6 +20732,124 @@ Container，container-launch-specification信息包含了能够让Container和Ap
     - 使用Grafana、Tableau等工具将数据以实时仪表盘和报表的形式展示给用户。
 
 这种架构确保了实时数据能够快速被处理和分析，支持实时决策和动态报告。
+
+列式存储系统Hbase：
+HBase是一个分布式的、面向列的开源数据库，它构建在Hadoop的HDFS（Hadoop Distributed File System）之上，主要用于大规模数据的存储和处理。
+
+一、基本概念与特点
+分布式存储：
+HBase使用Hadoop的HDFS作为底层存储系统，数据被分布在多个节点上，实现数据的水平扩展和高可靠性。
+面向列的存储：
+HBase以列族（Column Family）和列（Column）的方式存储数据，每个表可以包含多个列族，每个列族可以包含多个列。这种模型允许动态地添加和删除列，适用于存储半结构化和非结构化数据。
+极限扩展性：
+HBase具有良好的可伸缩性，可以容易地处理PB级别的数据集。通过增加节点，可以实现容量和吞吐量的线性扩展。
+高性能：
+HBase提供了快速的读写性能，支持高度并发的访问，能够处理大量的并行请求。它使用内存和硬盘结合的方式存储数据，充分利用硬件的性能优势。
+高可靠性：
+HBase具有数据的冗余存储和故障恢复机制，能够在集群中自动复制数据，提供数据的高可用性和容错性。当节点故障时，HBase可以自动重新分布和恢复数据。
+
+二、核心组件与功能
+HBase Master：
+负责管理和协调RegionServer的区域分配和负载均衡。根据数据的增长和负载情况动态调整区域的划分，并重新分配区域以优化集群的性能和稳定性。
+RegionServer：
+负责存储数据表中的数据，并将数据分为多个区域（Region）进行管理。RegionServer处理客户端的读写请求，根据请求从内存中的MemStore或磁盘上的HFile中读取数据，并将写入的数据追加到MemStore中。
+Region：
+是HBase中数据的基本分区单位，每个Region存储一部分表的数据，并由一个RegionServer进行管理。
+HBase Client：
+是与HBase集群交互的客户端应用程序，负责提交读写请求并处理返回的结果。客户端通过HBase API与HBase Master和RegionServer进行通信。
+Zookeeper：
+是一个分布式协调服务，用于协调HBase集群中的各个组件。它提供了分布式锁和协调服务，确保HBase Master和RegionServer之间的协调和一致性。同时，它还负责管理HBase的配置和状态信息，并处理集群的故障检测和恢复。
+
+三、应用场景与优势
+应用场景：
+HBase适用于需要存储和处理大规模非结构化数据的场景，如社交网络、电子商务、在线广告等。同时，它也适用于需要快速访问和处理大量结构化数据的场景，如日志分析、实时数据处理、数据仓库等。
+优势：
+HBase提供了高性能、可靠性、扩展性和灵活性，使得它成为大数据处理和实时应用的理想选择。其列式存储方式提高了数据访问的效率和存储的压缩比，支持高效的列级操作和数据压缩。此外，HBase还通过数据副本和故障恢复机制确保数据的可靠性和系统的稳定性。
+
+四、数据操作与访问控制
+数据操作：
+HBase支持多种数据操作方式，包括读取、写入、更新和删除数据。客户端可以使用HBase提供的API来执行这些操作请求。
+访问控制：
+HBase通过访问控制列表（ACL）来控制用户对表和列族的访问权限。管理员可以授予或撤销用户的权限，以支持读、写和管理等多种操作。
+
+
+Hbase的实现原理：
+HBase是一个开源的、分布式的、版本化的NoSQL数据库（即非关系型数据库），其实现原理主要基于以下几点：
+
+一、基础架构与组件
+HBase核心组件：
+库函数：链接到每个客户端。
+Master主服务器：也称为Master，负责一些管理操作，如region的分配、手动管理操作下发等。
+Region服务器：负责存储和维护分配给自己的Region，处理来自客户端的读写请求。
+其他关键组件：
+Hadoop HDFS：作为HBase的底层存储系统，提供分布式数据存储能力。
+ZooKeeper：作为HBase的分布式协同服务，实现稳定服务和失败恢复。
+Hadoop MapReduce：用于处理HBase中的海量数据，实现高性能计算。
+
+二、数据存储与访问
+数据模型：
+HBase采用表来组织数据，表由行和列组成。
+列划分为若干个列族，列族是基本的访问控制单元，需要在表创建时定义好。
+每个单元格中可以保存一个数据的多个版本，每个版本对应一个不同的时间戳。
+Region与Region服务器：
+初始时，每个表只包含一个Region。随着数据的不断插入，Region会持续增大。
+当一个Region中包含的行数量达到一个阈值时，就会被自动等分成两个新的Region。
+每个Region都有一个RegionID来标识它的唯一性。
+Region服务器负责存储和维护分配给自己的Region。
+数据访问：
+客户端通过ZooKeeper获取-ROOT-表的地址。
+通过-ROOT-表获取.META.表的信息。
+根据.META.表获取Region在Region服务器上的分布。
+客户端直接向目标Region服务器发送数据请求。
+
+三、数据写入与日志
+Write Ahead Log（WAL）：
+在写操作时，数据会首先写入到WAL日志文件中。
+这样可以在Region服务器发生故障时，通过WAL来恢复数据，避免数据丢失。
+MemStore与HFile：
+所有数据的写在完成WAL日志写后，再写入MemStore中。
+MemStore是一个写缓存（In Memory Sorted Buffer）。
+当MemStore达到一定大小时，会将数据Flush到底层的HFile中。
+HFile用于存储HBase的数据，数据在HFile中是按RowKey、Column Family、Column排序的。
+
+四、数据索引与查询
+数据索引：
+HBase只有一个索引——行键（RowKey）。
+所有的数据分布和查询都依赖RowKey。
+查询方式：
+通过单个行键访问。
+通过一个行键的区间来访问。
+全表扫描。
+
+五、数据维护与版本控制
+数据更新：
+在HBase中执行更新操作时，并不会删除数据的旧版本，而是生成一个新的版本。
+旧的版本仍然保留，并可以对允许保留的版本数量进行设置。
+数据删除：
+数据删除时，实际上是往里边新增一条数据，并为该数据添加一个删除标记。
+查找时会跳过被删除的键。
+DBA运维会定期删除被标记删除的数据。
+
+
+Hbase可以保障分布式吗？
+HBase可以保障分布式存储。HBase是一个分布式、可扩展、高性能的列式存储系统，它基于Google的Bigtable设计，是Hadoop生态系统的一部分。
+一、分布式架构
+HBase采用主从服务器结构（Master/Slave），包括一个HMaster服务器和多个HRegionServer。HMaster服务器负责管理所有的HRegionServer，而HRegionServer则负责存储数据并响应I/O请求。这种架构使得HBase能够轻松地实现数据的分布式存储和处理。
+
+二、数据分布与存储
+Region分布：在HBase中，表被划分为多个Region，每个Region是表的一个分块，可以存储在不同的HRegionServer上。这种分布方式使得数据能够均匀地分布在集群中，提高了数据的访问效率。
+HDFS支持：HBase依赖于Hadoop分布式文件系统（HDFS）来提供底层的数据存储服务。HDFS的高可靠性和高可用性为HBase提供了坚实的数据存储基础。
+
+三、分布式数据处理能力
+高并发访问：HBase支持高并发访问，能够在并发情况下保持较低的单个IO延迟，从而满足大规模数据处理的需求。
+可扩展性：HBase具有良好的扩展性，可以通过横向添加RegionServer的机器进行水平扩展，提升HBase上层的处理能力和数据存储能力。
+
+四、数据安全保障
+在分布式环境中，数据安全是一个重要的问题。HBase提供了一系列的安全功能来保障数据的安全性和完整性，包括：
+
+身份验证：HBase支持基于用户名和密码的身份验证，确保只有授权的用户可以访问HBase系统。
+授权：HBase支持基于角色的访问控制（RBAC），确保用户只能访问他们具有权限的数据。
+加密：HBase支持数据加密，防止未经授权的访问和篡改。用户可以通过HBase配置文件设置加密算法和密钥，启用表级数据加密。
 
 
 数据仓库工具Hive：
@@ -23038,8 +23155,7 @@ ClickHouse最初是一款名为Yandex.Metrica的产品，主要用于WEB流量�
 
 ClickHouse不是一个单一的数据库,它允许在运行时创建表和数据库，加载数据和运行查询，而无需重新配置和重新启动服务器。
 ClickHouse同时支持列式存储和数据压缩，这是对于一款高性能数据库来说是必不可少的特性。
-一个非常流行的观点认为，如果你想让查询变得更快，最简单且有效的方法是减少数据扫描范围和数据传输时的大小，
-而列式存储和数据压缩就可以帮助我们实现上述两点，列式存储和数据压缩通常是伴生的，因为一般来说列式存储是数据压缩的前提。
+一个非常流行的观点认为，如果你想让查询变得更快，最简单且有效的方法是减少数据扫描范围和数据传输时的大小，而列式存储和数据压缩就可以帮助我们实现上述两点，列式存储和数据压缩通常是伴生的，因为一般来说列式存储是数据压缩的前提。
 
 ClickHouse的特性包括：
 1.完备的DBMS功能：ClickHouse具备DDL（数据定义语言）、DML（数据操作语言）、分布式管理、权限控制、数据备份与恢复等功能。
