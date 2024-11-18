@@ -3439,6 +3439,97 @@ public class ThreadLocalExample {
 }
 在这个示例中，thread1 和 thread2 分别设置了它们自己的 ThreadLocal 变量的值，并且这些值之间互不影响。
 
+ThreadLocal工作原理：
+1. ThreadLocal 创建对象
+首先，你需要创建一个 ThreadLocal 对象。这个对象本身并不存储线程特有的值，而是作为一个访问线程特有值的钥匙。
+ThreadLocal<Integer> threadLocal = new ThreadLocal<>();
+
+2. 获取当前线程 currentThread()
+当你想在当前线程中设置或获取一个值时，你需要先获取当前线程对象。这是通过调用 Thread.currentThread() 方法实现的。
+Thread currentThread = Thread.currentThread();
+
+3. 从当前线程中获得 ThreadLocalMap
+每个线程对象内部维护了一个 ThreadLocalMap，这个 Map 存储了当前线程所有 ThreadLocal 变量及其对应的值。ThreadLocalMap 是 ThreadLocal 实现线程隔离的关键。
+注意，ThreadLocalMap 是 Thread 类的一个内部类，并且它对外部是隐藏的，直接访问是不可能的。但是，ThreadLocal 提供了一些方法（如 get() 和 set(T value)）来间接操作这个 Map。
+
+虽然我们不能直接访问 ThreadLocalMap，但我们可以理解为：
+// 伪代码，不能直接这样写
+ThreadLocalMap threadLocalMap = currentThread.getThreadLocalMap();
+
+4. 从 ThreadLocalMap 中获得 Entry
+当你调用 ThreadLocal 的 get() 或 set(T value) 方法时，ThreadLocal 会使用自己（即 ThreadLocal 实例）作为键，去 ThreadLocalMap 中查找或设置值。
+
+获取值 (get() 方法)：
+ThreadLocal 调用 get() 方法。
+ThreadLocal 内部会使用当前 Thread 对象作为上下文，获取到 ThreadLocalMap。
+在 ThreadLocalMap 中，使用当前 ThreadLocal 实例作为键，查找对应的 Entry。
+
+如果找到了 Entry，则返回 Entry 的值。
+（Entry的key是弱引用，value是强引用）
+如果没有找到，则进行初始化（如果提供了初始值函数），并返回初始值。
+
+Integer value = threadLocal.get(); // 内部会访问 ThreadLocalMap 并返回当前线程的值
+
+设置值 (set(T value) 方法)：
+ThreadLocal 调用 set(T value) 方法。
+同样地，ThreadLocal 内部会使用当前 Thread 对象作为上下文，获取到 ThreadLocalMap。
+在 ThreadLocalMap 中，使用当前 ThreadLocal 实例作为键，将值 value 存入对应的 Entry 中。
+
+threadLocal.set(42); // 内部会访问 ThreadLocalMap 并设置当前线程的值
+
+
+ThreadLocal的set方法：
+public void set(T value) {
+    Thread t = Thread.currentThread();
+    ThreadLocalMap map = getMap(t);
+    if (map != null)
+        map.put(this, value);
+    else
+        createMap(t, value);
+}
+
+ThreadLocalMap getMap(Thread t) {
+    return t.getThreadLocals(); // 这是通过 Thread 类的一个受保护方法访问的，而不是直接访问私有字段
+}
+
+void createMap(Thread t, T firstValue) {
+    t.setThreadLocals(new ThreadLocalMap(this, firstValue)); // 同样是通过 Thread 类的一个受保护方法设置的
+}
+
+创建ThreadLocalMap实例对象:
+void createMap(Thread t,T firstValue) {
+    t.threadLocals = new ThreadLocalMap(this, firstValue);
+}
+
+ThreadLocalMap(ThreadLocal<?> firstKey, Object firstValue) {
+    table = new Entry[INITIAL_CAPACITY]; //默认值为16
+    int i= firstKey.threadLocalHashCode &(INITIAL_CAPACITY - 1);
+    table[i]= new Entry(firstKey, firstValue);
+    size = 1;
+    setThresholdCINITIAL_CAPACITY;
+}    
+
+开放寻址法（Open Addressing）：
+一、开放寻址法的基本概念
+开放寻址法是一种解决哈希冲突的方法，当发生哈希冲突时，即两个或多个关键字具有相同的哈希值，并且该哈希值对应的数组位置已被占用时，开放寻址法会查找下一个可用的位置来存储该关键字。
+这种方法避免了使用额外的数据结构（如链表）来存储相同哈希值的键值对，而是直接在哈希表中寻找下一个可用的位置。
+
+二、ThreadLocal中的开放寻址法实现
+在ThreadLocal的源码中，ThreadLocalMap类使用开放寻址法来解决哈希冲突。ThreadLocalMap是一个静态内部类，用于存储线程本地变量。它的键是ThreadLocal对象，值是泛型T。ThreadLocalMap内部使用一个Entry[] table数组来存储键值对，其中Entry是ThreadLocalMap的静态内部类，表示一个键值对。
+
+哈希函数：在ThreadLocalMap中，使用ThreadLocal对象的threadLocalHashCode属性来计算哈希值，并通过与数组长度减一进行位运算来确定数组中的下标。这种哈希函数的设计可以确保在数组长度为2的次幂时，哈希值的计算可以通过位运算快速完成。
+线性探查：当发生哈希冲突时，ThreadLocalMap使用线性探查的方式来查找下一个可用的位置。即，如果当前位置被占用，则检查下一个位置，直到找到一个空槽或者遍历整个表。这种方法简单且易于实现。
+扩容与再哈希：当ThreadLocalMap中的元素数量超过扩容阈值（通常为数组长度的2/3）时，会进行扩容操作。扩容时，会创建一个新的Entry[]数组，其容量是原数组的两倍。然后，将原数组中的元素重新哈希并插入到新数组中。在重新哈希的过程中，会清理所有的stale Entry（即键为null的Entry），以确保内存的有效利用。
+
+三、开放寻址法的优缺点
+优点：
+不需要额外的数据结构来存储相同哈希值的元素，节省了内存空间。
+哈希表的访问速度通常较快，因为不需要额外的链表遍历或红黑树操作。
+
+缺点：
+可能会导致聚集（clustering）问题，即相邻的位置可能会被频繁占用，导致查找效率下降。为了解决这个问题，通常需要设计合适的探测方式和调整表的大小。
+在进行扩容和再哈希操作时，需要遍历整个哈希表并重新插入所有元素，这可能会导致性能下降。
+
 
 JUC：
 Java并发包（Java Util Concurrent，简称JUC）是Java提供的一组用于并发编程的类和接口，旨在简化多线程编程并提高并发程序的性能和可靠性。
