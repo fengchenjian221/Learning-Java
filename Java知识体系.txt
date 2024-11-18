@@ -2442,6 +2442,47 @@ Java多线程的几种锁：
 在Java中，偏向锁、轻量级锁、自旋锁（尽管Java的官方文档中并不直接称其为“自旋锁”，但自旋的概念在轻量级锁的实现中有所体现）和重量级锁都是JVM（Java虚拟机）内部用于实现同步机制的锁优化技术。
 这些锁的优化策略旨在提高多线程程序的性能，减少线程同步的开销。
 
+在Java多线程环境中，从偏向锁到轻量级锁、再到重量级锁的升级过程中，涉及哈希值的计算主要是在对象状态转换和锁机制变化的背景下进行的。
+以下是对这一过程中哈希值计算的具体操作的详细解释：
+
+一、偏向锁状态下的哈希值计算
+偏向锁的定义：
+偏向锁是Java 6中引入的一种锁优化机制，旨在减少无竞争场景下的锁开销。
+当一个线程访问同步块并获取锁时，会在对象头和栈帧中的锁记录里存储锁偏向的线程ID。
+哈希值的存储：
+在偏向锁状态下，对象的哈希值（如果已计算）通常不会直接存储在对象头中，而是可能缓存在持有偏向锁的线程内部或其他地方。
+如果线程获得了偏向锁，并且需要计算对象的哈希值（例如，通过调用hashCode()方法），则哈希值会被计算并存储，但具体存储位置取决于JVM的实现和锁的状态。
+偏向锁的撤销与哈希值：
+当其他线程尝试竞争偏向锁时，持有偏向锁的线程会释放锁，并可能触发偏向锁的撤销。
+在撤销偏向锁的过程中，如果对象的哈希值已被计算，JVM需要确保哈希值在锁状态转换后仍然可用。
+
+二、轻量级锁状态下的哈希值计算
+轻量级锁的定义：
+轻量级锁是基于CAS（Compare-And-Swap）操作实现的，用于减少线程在竞争锁时的开销。
+当多个线程尝试获取同一个锁时，它们会通过CAS操作来尝试修改对象头的Mark Word，以获取锁。
+哈希值的处理：
+在轻量级锁状态下，如果对象的哈希值已被计算，它会被存储在锁记录中（即Displaced Mark Word）。
+当线程释放轻量级锁时，哈希值会被原子地CAS操作回写到对象头中（如果之前没有竞争发生）。
+如果存在竞争，轻量级锁可能会升级为重量级锁，此时哈希值会记录在重量级锁的Monitor中。
+
+三、重量级锁状态下的哈希值计算
+重量级锁的定义：
+重量级锁是基于操作系统层面的互斥锁（如Mutex）实现的，用于处理高竞争场景下的锁需求。
+当多个线程长时间无法交替获得锁时，轻量级锁会升级为重量级锁。
+哈希值的存储：
+在重量级锁状态下，对象的哈希值会被记录在Monitor（监视器锁）的头部或相关结构中。
+Monitor是JVM用于实现同步的一种机制，它包含了锁信息、等待队列和条件变量等。
+哈希值的访问：
+当线程持有重量级锁并需要访问对象的哈希值时，它会从Monitor中读取哈希值。
+如果线程释放了重量级锁，哈希值仍然会保留在Monitor中，直到下次被访问或锁被重新获取。
+
+四、总结
+在Java多线程环境中，从偏向锁到轻量级锁、再到重量级锁的升级过程中，哈希值的计算与存储是随着锁状态的变化而变化的。
+在偏向锁状态下，哈希值可能缓存在持有锁的线程内部；在轻量级锁状态下，哈希值被存储在锁记录中；在重量级锁状态下，哈希值被记录在Monitor的头部或相关结构中。
+JVM会确保在锁状态转换时，哈希值的正确性和可用性，以便线程能够高效地访问对象的哈希值。
+
+
+
 偏向锁（Biased Locking）
 特点：
 当一个线程访问同步代码块并获取锁时，如果发现锁对象处于无锁状态（即没有被其他线程持有），JVM会把这个锁对象的锁记录（Mark Word）中的线程ID设置为当前线程的ID，表示这个锁偏向当前线程。
@@ -3026,6 +3067,8 @@ workQueue（工作队列）：用于在执行任务之前保存任务的队列�
 threadFactory（线程工厂）：用于创建新线程的工厂。通过自定义线程工厂，你可以设置线程名、优先级、守护状态等。
 handler（拒绝策略）：当工作队列和线程池都达到饱和状态时（即工作队列已满且线程数达到最大线程数），线程池会拒绝新的任务。RejectedExecutionHandler 提供了几种处理策略，如抛出异常、直接忽略新任务、使用调用者线程处理任务或将任务放入一个等待队列中。
 
+corePoolSize（核心线程数）-> workQueue（工作队列）-> maximumPoolSize（最大线程数）-> handler（拒绝策略）
+创建线程池时，会将数据放到核心线程数，大于核心线程数时会将数据放到工作队列，超过工作队列时会将数据放到最大线程数，超过最大线程数时会执行拒绝策略。
 一个使用这些参数的 ThreadPoolExecutor 构造方法示例如下：
 import java.util.concurrent.*;  
   
@@ -3225,9 +3268,122 @@ public class CASExample {
 }
 在这个例子中，incrementAndGet()方法内部使用了CAS操作来确保对count变量的自增操作是线程安全的。
 
+示例代码2
+import java.util.concurrent.atomic.AtomicInteger;
+ 
+public class CASCounterExample {
+ 
+    // 声明一个原子类AtomicInteger，初始值为0
+    private static AtomicInteger count = new AtomicInteger(0);
+ 
+    public static void main(String[] args) throws InterruptedException {
+ 
+        // 创建多个线程，每个线程都会调用increment方法增加计数器的值
+        Runnable task = () -> {
+            for (int i = 0; i < 1000; i++) {
+                count.incrementAndGet(); // 使用CAS操作实现线程安全的递增
+            }
+        };
+ 
+        Thread thread1 = new Thread(task);
+        Thread thread2 = new Thread(task);
+        Thread thread3 = new Thread(task);
+ 
+        // 启动线程
+        thread1.start();
+        thread2.start();
+        thread3.start();
+ 
+        // 等待所有线程执行完毕
+        thread1.join();
+        thread2.join();
+        thread3.join();
+ 
+        // 输出计数器的最终值
+        System.out.println("Final count is: " + count.get());
+    }
+}
+代码解释
+AtomicInteger类：AtomicInteger是Java提供的原子类之一，它利用CAS操作来保证对整数的原子性操作。原子性操作意味着操作是不可分割的，要么全部执行，要么全部不执行，从而避免了多线程环境下的竞态条件。
+incrementAndGet方法：incrementAndGet是AtomicInteger类中的一个方法，它使用CAS操作将当前值递增1并返回递增后的值。CAS操作在这里的作用是确保在多线程环境下，每个线程对计数器的递增操作是互斥的，即一个线程在执行递增操作时，其他线程不能同时执行递增操作。
+多线程执行：在示例中，我们创建了三个线程，每个线程都会执行1000次递增操作。由于使用了AtomicInteger的CAS操作，这些递增操作在多线程环境下是安全的，不会出现数据不一致的问题。
+结果输出：最后，我们等待所有线程执行完毕，并输出计数器的最终值。由于使用了CAS操作，最终值应该是3000，即三个线程各自执行了1000次递增操作的总和。
+
+AtomicStampedReference：
+AtomicStampedReference是Java并发包（java.util.concurrent.atomic）中提供的一个类，它扩展了CAS（Compare and Swap/Set）算法的应用，以解决在多线程环境下可能出现的ABA问题。
+
+一、ABA问题
+ABA问题：
+在CAS操作时，其他线程将变量值A改为了B，但是又被改回了A，等到本线程使用期望值A与当前变量进行比较时，发现变量A没有变，于是CAS就将A值进行了交换操作，但实际上该值已经被其他线程改变过。
+ABA问题会导致CAS操作在不该成功的时候成功，从而破坏了原子性和线程安全性。
+
+二、AtomicStampedReference的引入
+为了解决CAS操作中的ABA问题，Java并发包中引入了AtomicStampedReference类。这个类将整数值（通常用作版本号或时间戳）与引用关联起来，每次对引用的更新都会导致版本号的增加。
+这样，在进行CAS操作时，不仅要比较引用值，还要比较版本号，从而确保操作的正确性。
+
+三、AtomicStampedReference的CAS方法
+AtomicStampedReference类提供了一个名为compareAndSet的方法，该方法用于原子地更新引用和版本号。其方法签名如下：
+
+public boolean compareAndSet(V expectedReference, V newReference, int expectedStamp, int newStamp)
+参数：
+expectedReference：期望的当前引用值。
+newReference：要设置的新引用值。
+expectedStamp：期望的当前版本号。
+newStamp：要设置的新版本号。
+返回值：如果当前引用值和版本号都与期望值相等，则更新为新值和新版本号，并返回true；否则，不做任何操作，并返回false。
+
+四、AtomicStampedReference的使用示例
+以下是一个使用AtomicStampedReference的示例代码：
+
+import java.util.concurrent.atomic.AtomicStampedReference;
+ 
+public class AtomicStampedReferenceExample {
+    public static void main(String[] args) {
+        // 初始化AtomicStampedReference，设置初始引用值和版本号
+        AtomicStampedReference<String> atomicStampedReference = new AtomicStampedReference<>("Hello", 1);
+ 
+        // 获取当前引用值和版本号
+        String currentReference = atomicStampedReference.getReference();
+        int currentStamp = atomicStampedReference.getStamp();
+        System.out.println("Current Reference: " + currentReference + ", Stamp: " + currentStamp);
+ 
+        // 尝试更新引用值和版本号
+        boolean isUpdated = atomicStampedReference.compareAndSet("Hello", "World", 1, 2);
+        System.out.println("Is Updated: " + isUpdated);
+ 
+        // 获取更新后的引用值和版本号
+        currentReference = atomicStampedReference.getReference();
+        currentStamp = atomicStampedReference.getStamp();
+        System.out.println("Updated Reference: " + currentReference + ", Stamp: " + currentStamp);
+    }
+}
+在上面的示例中，我们创建了一个AtomicStampedReference对象，并初始化了引用值和版本号。然后，我们尝试使用compareAndSet方法更新引用值和版本号。由于初始版本号与期望值相等，所以更新成功，并输出了更新后的引用值和版本号。
+
+
+AtomicIntegerFieldUpdater：
+CAS（Compare-and-Swap）中的AtomicIntegerFieldUpdater是Java并发编程中一个非常有用的工具类，它提供了一种高效、简洁的方式来原子性地更新对象的volatile字段，而无需使用重量级的锁机制。它通过基于反射的API实现了细粒度的并发控制，从而提升了多线程环境下的性能表现。
+
+一、CAS操作基础
+CAS操作是一种无锁的同步机制，它通过比较和交换来保证原子性。具体来说，CAS操作包含三个参数：内存位置V、预期的原值A和新值B。如果内存位置V的值等于预期原值A，则将该位置的值更新为新值B；否则，不做任何操作。整个比较和交换的过程是原子的，不需要加锁。
+
+二、AtomicIntegerFieldUpdater的原子性保障
+AtomicIntegerFieldUpdater利用CAS操作来保障对目标对象的volatile整型字段的原子性更新。它主要提供了一系列的方法，如incrementAndGet、decrementAndGet、getAndAdd等，这些方法内部都使用了CAS操作来确保更新过程的原子性。
+
+使用CAS进行更新：当调用AtomicIntegerFieldUpdater的更新方法时，它会首先读取目标字段的当前值，然后基于这个当前值计算出新值，并尝试使用CAS操作将新值写入目标字段。如果在这个过程中，目标字段的值被其他线程修改了（即当前值不再等于预期的原值），那么CAS操作会失败，此时AtomicIntegerFieldUpdater会重新读取目标字段的值，并再次尝试进行更新，直到成功为止。
+自旋锁机制：为了保证CAS操作的成功，AtomicIntegerFieldUpdater可能会使用自旋锁机制。这意味着当CAS操作失败时，它会不断重试，直到成功为止。这种机制虽然会增加一些CPU的开销，但可以避免使用重量级的锁机制，从而提高并发性能。
+volatile修饰的字段：由于AtomicIntegerFieldUpdater只能更新volatile修饰的字段，这保证了所有线程都能看到最新的字段值。这是实现原子性的另一个重要前提。
+
+三、使用场景与限制
+AtomicIntegerFieldUpdater特别适用于在并发环境中，当多个线程需要访问和修改某个对象的某个volatile整型字段时，能够保证该字段更新的原子性。但是，它也有一些限制：
+
+只能更新public字段或具有public setter方法的字段：由于AtomicIntegerFieldUpdater是基于反射实现的，因此它只能更新那些可以被反射访问的字段，即public字段或具有public setter方法的字段。
+性能开销：虽然AtomicIntegerFieldUpdater可以避免使用重量级的锁机制，但由于它使用了反射和CAS操作，因此在一些情况下可能会带来一定的性能开销。
+综上所述，AtomicIntegerFieldUpdater通过CAS操作和一系列原子性更新方法，以及volatile字段的保证，实现了对目标对象的volatile整型字段的原子性更新。这使得它在多线程并发编程中具有广泛的应用前景。
+
 
 Java多线程的ThreadLocal：
-ThreadLocal 是 Java 中一个非常有用的类，它提供了一种线程局部变量的能力。这意味着每个使用该变量的线程都会有一个该变量值的独立副本，这些副本之间互不影响，从而避免了多线程环境下的数据共享问题。ThreadLocal 非常适合用于那些需要保持线程隔离性的场景，比如每个线程需要有自己的数据库连接、用户会话信息等。
+ThreadLocal 是 Java 中一个非常有用的类，它提供了一种线程局部变量的能力。这意味着每个使用该变量的线程都会有一个该变量值的独立副本，这些副本之间互不影响，从而避免了多线程环境下的数据共享问题。
+ThreadLocal 非常适合用于那些需要保持线程隔离性的场景，比如每个线程需要有自己的数据库连接、用户会话信息等。
 
 基本原理
 ThreadLocal 内部维护了一个以 Thread 对象为键，以线程局部变量为值的 HashMap（实际上，在 JDK 8 及以后版本中，ThreadLocal 的实现已经不再是简单的 HashMap，而是使用了更高效的 ThreadLocalMap 和 Entry 数组来存储数据，以减少哈希冲突和提高性能）。
@@ -5480,6 +5636,30 @@ Java JVM的双亲委派机制（Parent Delegation Mechanism）是一种类加载
 翻译问题：“双亲委派”这个词可能是翻译时的选择，将英文的“Parents Delegation Model”翻译为“双亲委派机制”。
 委托过程：以应用程序类加载器（AppClassLoader）为例，它加载项目（工程）下的CLASSPATH路径下的类。当需要加载一个类时，它会先委托给扩展类加载器（ExtClassLoader），而扩展类加载器又会再次委托给启动类加载器（BootstrapClassLoader）。
 由于这个过程中发生了两次委托，且都是向父类加载器进行委托，因此被称为“双亲委派”。
+
+SPI为什么要破坏双亲委派机制？
+SPI（Service Provider Interface，服务提供者接口）之所以要破坏双亲委派机制，主要源于Java类加载机制中的一些特定需求和限制。
+
+一、双亲委派机制概述
+双亲委派机制是Java类加载的一种设计规范，其核心思想是当一个类加载器收到加载类的请求时，它会先将请求委派给父类加载器，直到最终由Bootstrap ClassLoader（启动类加载器）加载。这种机制有助于保证类加载的安全性和避免类的重复加载。
+
+二、SPI机制的需求
+SPI机制允许第三方为接口提供实现，并可以动态地添加或替换这些实现。在Java中，SPI通常通过在META-INF/services目录下提供接口的实现类来实现，然后通过ServiceLoader加载这些实现类。
+
+三、破坏双亲委派机制的原因
+类加载器可见性原则：子类加载器能查看父类加载器加载的所有类，但父类加载器不能查看子类加载器所加载的类。由于SPI接口通常位于rt.jar包中，由Bootstrap类加载器加载，而SPI的实现类则位于classpath路径下，由App类加载器加载。因此，当SPI接口需要调用其实现类的代码时，就会出现类加载器可见性的问题。
+实现类的动态加载：SPI机制允许动态地加载实现类，而双亲委派机制则要求类加载器按照固定的层次结构进行类加载。为了满足SPI的动态加载需求，就需要打破双亲委派机制的限制。
+第三方实现的加载：SPI机制的一个重要应用场景是允许第三方为接口提供实现。这些第三方实现通常不在Java的核心类库中，因此无法由Bootstrap类加载器加载。为了满足这一需求，就需要使用自定义的类加载器或线程上下文类加载器来加载这些第三方实现。
+
+四、破坏双亲委派机制的实现方式
+自定义类加载器：通过创建自定义的类加载器并重写loadClass方法，可以实现对特定类的加载控制。这种方式通常用于加载第三方库或特定路径下的类。
+线程上下文类加载器：Java提供了线程上下文类加载器（Thread Context ClassLoader），它允许线程在运行时动态地设置其类加载器。通过设置线程上下文类加载器，可以实现父类加载器请求子类加载器完成类加载的动作，从而打破双亲委派机制。
+
+五、示例
+以JDBC为例，JDBC是一个典型的SPI应用。JDBC接口位于rt.jar包中，由Bootstrap类加载器加载。而具体的数据库驱动实现类则位于不同的jar包中，由App类加载器或自定义类加载器加载。
+当应用程序需要使用某个数据库时，它会通过ServiceLoader动态地加载相应的数据库驱动实现类。为了满足这一需求，就需要打破双亲委派机制，使用线程上下文类加载器或自定义类加载器来加载数据库驱动实现类。
+
+综上所述，SPI破坏双亲委派机制是为了满足其动态加载和第三方实现加载的需求。通过自定义类加载器或线程上下文类加载器，可以实现这些需求并保证类加载的安全性和灵活性。
 
 
 沙箱安全机制：
