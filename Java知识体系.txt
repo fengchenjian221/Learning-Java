@@ -10126,10 +10126,18 @@ SSH框架
 
 
 Java Spring框架：
-Spring 框架就像一个家族，有众多衍生产品例如 boot、security、jpa等等。但他们的基础都是Spring 的 ioc和 aop ioc 提供了依赖注入的容器 aop ，解决了面向横切面的编程，然后在此两者的基础上实现了其他延伸产品的高级功能。
+Spring 框架就像一个家族，有众多衍生产品例如 boot、security、jpa等等。但他们的基础都是Spring 的 ioc和aop ioc 提供了依赖注入的容器aop，解决了面向横切面的编程，然后在此两者的基础上实现了其他延伸产品的高级功能。
 Spring MVC是基于 Servlet 的一个 MVC 框架 主要解决 WEB 开发的问题，因为 Spring 的配置非常复杂，各种XML、 JavaConfig、hin处理起来比较繁琐。于是为了简化开发者的使用，从而创造性地推出了Spring boot，约定优于配置，简化了spring的配置流程。
 Spring的工作原理其实是，Spring在启动时读取bean配置信息，这里bean配置信息包括xml文件、Java类#Configuration、注解#AutoWired，存放到Bean注册表，并根据Bean注册表实例化Bean，实际上就是实例化Bean的实现类，然后将Bean实例放到Spring容器中。
 
+Java Spring的几个核心部分：
+1.Spring Core：这是Spring框架的基础，提供了依赖注入（Dependency Injection，DI）和控制反转（Inversion of Control，IoC）的核心功能。通过DI，开发者可以将对象的创建和依赖关系的管理交给Spring容器，从而实现了解耦和可测试性。IoC则是一种设计原则，通过反转对象的创建流程，使得应用程序更加灵活和可扩展。
+2.Spring Context：应用上下文模块，建立在Spring Core之上，提供了框架式的Bean访问方式，以及企业级服务，例如JNDI、EJB、电子邮件、国际化、校验和调度功能。
+3.Spring DAO：JDBC DAO抽象层提供了有意义的异常层次结构，简化了错误处理，并且极大地降低了需要编写的异常代码数量。
+4.Spring AOP（Aspect-Oriented Programming）：面向切面编程，允许开发者定义跨多个点的行为，如日志、事务和安全性等，并将这些行为与业务逻辑分离。这种分离提高了代码的模块化和重用性。
+5.Spring ORM：对象关系映射，Spring框架插入了若干个ORM框架，从而提供了ORM的对象关系工具，其中包括JDO、Hibernate和iBatis SQL Map等。
+6.Spring Web：Web上下文模块建立在应用程序上下文模块之上，为基于Web的应用程序提供了上下文。它简化了处理多部分请求以及将请求参数绑定到域对象的工作。
+7.Spring Web MVC：MVC（Model-View-Controller）框架是一个全功能的构建Web应用程序的MVC实现。通过策略接口，MVC框架编程高度可配置的，它容纳了大量视图技术，其中包括JSP、Velocity、Tiles、iText和POI等。
 
 Spring IOC：
 Spring IOC（Inversion of Control，控制反转）是Spring框架中的一个核心概念，它是一种设计原则，用于减少程序中的耦合度，并提高代码的可维护性和可扩展性。
