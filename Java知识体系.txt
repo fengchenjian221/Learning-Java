@@ -9765,11 +9765,187 @@ SSH：
 SSH框架是Struts、Spring、Hibernate的一个合成框架，目前市场上比较流行的框架中也有它的身影。
 Struts是一个基于MVC模式的应用框架，如果学过Servlet,那么其本质和Servlet差不多。
 MVC模式主要包括模型(Model)，视图(View)，控制器(Controller)，而Struts主要作为控制器来建立模型和视图的数据交互。
-Struts通过拦截器处理客户的各种请求。Spring使用基本的JavaBean来完成以前只可能由EJB完成的事情，
-Spring的核-fl，主要控制翻转(IOC)和面向切面(AOP)，简单的说Spring是一种分层的轻量级开源框架。
+Struts通过拦截器处理客户的各种请求。
+Spring使用基本的JavaBean来完成以前只可能由EJB完成的事情，Spring的核-fl，主要控制翻转(IOC)和面向切面(AOP)，简单的说Spring是一种分层的轻量级开源框架。
 Spring更像是一个容器，将所有配置的Struts和Hibernate中的东西都放置进来，只要能够做好配置，它就会找到相应的位置，进行处理。
 Hibernate是一个开源代码的对象映射框架，是根据JDBC技术基础衍生而来的，它将直接操作原来的数据库变为直接操作数据表后生成的Java类，
 实现了对象编程思维来操纵数据库。SSH框架中的各种技术相互协调、配合。实现了这一强大的框架。
+
+
+示例代码：
+首先，你需要确保你的项目中已经包含了SSH所需的依赖。如果你使用Maven，可以在pom.xml中添加以下依赖（注意版本号可能需要更新）：
+<dependencies>
+    <!-- Struts 2 dependencies -->
+    <dependency>
+        <groupId>org.apache.struts</groupId>
+        <artifactId>struts2-core</artifactId>
+        <version>2.5.26</version>
+    </dependency>
+    <!-- Other Struts 2 plugins like struts2-spring-plugin may be needed -->
+ 
+    <!-- Spring dependencies -->
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>5.3.10</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-orm</artifactId>
+        <version>5.3.10</version>
+    </dependency>
+ 
+    <!-- Hibernate dependencies -->
+    <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>5.4.32.Final</version>
+    </dependency>
+    <!-- Hibernate JPA, connection pool (e.g., HikariCP), database driver dependencies -->
+    <!-- ... -->
+</dependencies>
+接下来，你需要配置Spring和Hibernate，并集成Struts 2。这通常通过XML文件或Java配置类来完成。由于SSH框架较老，且XML配置较为繁琐，这里将展示XML配置的简化版本。
+
+Spring配置文件 (applicationContext.xml):
+<beans ...>
+    <!-- DataSource bean, SessionFactory bean, TransactionManager bean, etc. -->
+    <!-- ... -->
+</beans>
+
+Hibernate配置文件 (hibernate.cfg.xml):
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database connection settings, mapping files, etc. -->
+        <!-- ... -->
+    </session-factory>
+</hibernate-configuration>
+
+Struts 2配置文件 (struts.xml):
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN" "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <constant name="struts.devMode" value="true"/>
+    <package name="default" namespace="/" extends="struts-default">
+        <action name="userAction_*" class="com.example.action.UserAction" method="{1}">
+            <result name="success">/user.jsp</result>
+            <!-- Other result mappings -->
+        </action>
+    </package>
+</struts>
+
+数据库实体类 (User.java):
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    // getters and setters
+    // ...
+}
+
+DAO接口和实现 (UserDao.java 和 UserDaoImpl.java):
+
+public interface UserDao {
+    User getUserById(Long id);
+    // other CRUD methods
+    // ...
+}
+ 
+@Repository
+public class UserDaoImpl implements UserDao {
+    @Autowired
+    private SessionFactory sessionFactory;
+ 
+    @Override
+    public User getUserById(Long id) {
+        return (User) sessionFactory.getCurrentSession().get(User.class, id);
+    }
+    // other CRUD method implementations
+    // ...
+}
+
+服务类 (UserService.java 和 UserServiceImpl.java):
+public interface UserService {
+    User getUserById(Long id);
+    // other service methods
+    // ...
+}
+ 
+@Service
+public class UserServiceImpl implements UserService {
+    @Autowired
+    private UserDao userDao;
+ 
+    @Override
+    public User getUserById(Long id) {
+        return userDao.getUserById(id);
+    }
+    // other service method implementations
+    // ...
+}
+
+Struts 2 Action类 (UserAction.java):
+
+@Controller
+public class UserAction extends ActionSupport {
+    @Autowired
+    private UserService userService;
+    private User user;
+    private Long userId;
+ 
+    // Getter and Setter for userId
+    // ...
+ 
+    @Action("userAction_show")
+    public String showUser() {
+        user = userService.getUserById(userId);
+        return SUCCESS;
+    }
+    // other action methods
+    // ...
+ 
+    // Getter and Setter for user (if needed for input/output)
+    // ...
+}
+
+JSP视图文件 (user.jsp):
+
+<html>
+<body>
+    <h1>User Information</h1>
+    <p>ID: ${user.id}</p>
+    <p>Name: ${user.name}</p>
+    <!-- Form for input or other content -->
+    <!-- ... -->
+</body>
+</html>
+
+web.xml（用于配置Struts 2的Dispatcher和Spring的ContextLoaderListener）:
+
+<web-app>
+    <filter>
+        <filter-name>struts2</filter-name>
+        <filter-class>org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>struts2</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+ 
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext.xml</param-value>
+    </context-param>
+ 
+    <!-- Other configurations like welcome-file-list, security, etc. -->
+</web-app>
+
+请注意，这个SSH示例代码是非常简化的，并且省略了很多细节，比如数据源配置、事务管理、日志记录、错误处理等。在实际项目中，你需要根据需求添加这些配置。
 
 
 SSM：SSM（Spring+SpringMVC+MyBatis）框架集由Spring、MyBatis两个开源框架整合而成（SpringMVC是Spring中的部分内容），常作为数据源较简单的web项目的框架。
@@ -9779,6 +9955,174 @@ SSM：SSM（Spring+SpringMVC+MyBatis）框架集由Spring、MyBatis两个开源�
 2、Spring是一个开源框架，Spring是一个轻量级的控制反转（IoC）和面向切面（AOP）的容器框架，还能更好的让其他框架整合。
 3、Spring MVC框架是有一个MVC框架，通过实现Model-View-Controller模式来很好地将数据、业务与展现进行分离。
 4、MyBatis 是一个基于Java的持久层框架
+
+示例代码：
+SSM（Spring + Spring MVC + MyBatis）是一个流行的Java Web应用程序框架组合。以下是一个简单的SSM示例代码，它展示了如何设置这些框架的基本结构，并创建一个简单的用户管理功能。由于篇幅限制，这里只提供一个简化的示例，包括基本的配置和控制器代码。
+
+首先，你需要确保你的项目中已经包含了SSM所需的依赖。如果你使用Maven，可以在pom.xml中添加以下依赖（注意版本号可能需要更新）：
+<dependencies>
+    <!-- Spring dependencies -->
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>5.3.10</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
+        <version>5.3.10</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jdbc</artifactId>
+        <version>5.3.10</version>
+    </dependency>
+ 
+    <!-- MyBatis dependencies -->
+    <dependency>
+        <groupId>org.mybatis</groupId>
+        <artifactId>mybatis</artifactId>
+        <version>3.5.7</version>
+    </dependency>
+    <dependency>
+        <groupId>org.mybatis.spring</groupId>
+        <artifactId>mybatis-spring</artifactId>
+        <version>2.0.6</version>
+    </dependency>
+ 
+    <!-- Database dependencies (e.g., MySQL) -->
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>8.0.25</version>
+    </dependency>
+ 
+    <!-- Other dependencies like logging, servlet-api, etc. -->
+</dependencies>
+接下来，你需要配置Spring和MyBatis。这通常通过XML文件或Java配置类来完成。由于篇幅原因，这里只展示Java配置类的简化版本。
+
+Spring配置类 (AppConfig.java):
+@Configuration
+@ComponentScan(basePackages = "com.example")
+@EnableWebMvc
+public class AppConfig implements WebMvcConfigurer {
+    // DataSource, SqlSessionFactory, TransactionManager beans, etc.
+    // ...
+}
+
+MyBatis配置类 (MyBatisConfig.java):
+@Configuration
+@MapperScan("com.example.mapper")
+public class MyBatisConfig {
+    // DataSource and SqlSessionFactory beans
+    // ...
+}
+
+数据库实体类 (User.java):
+public class User {
+    private Long id;
+    private String name;
+    // getters and setters
+    // ...
+}
+
+Mapper接口 (UserMapper.java):
+@Mapper
+public interface UserMapper {
+    User getUserById(Long id);
+    // other CRUD methods
+    // ...
+}
+
+服务类 (UserService.java 和 UserServiceImpl.java):
+public interface UserService {
+    User getUserById(Long id);
+    // other service methods
+    // ...
+}
+ 
+@Service
+public class UserServiceImpl implements UserService {
+    @Autowired
+    private UserMapper userMapper;
+ 
+    @Override
+    public User getUserById(Long id) {
+        return userMapper.getUserById(id);
+    }
+    // other service method implementations
+    // ...
+}
+
+控制器类 (UserController.java):
+@Controller
+@RequestMapping("/users")
+public class UserController {
+    @Autowired
+    private UserService userService;
+ 
+    @GetMapping("/{id}")
+    public String getUser(@PathVariable Long id, Model model) {
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
+        return "userView";
+    }
+    // other controller methods
+    // ...
+}
+
+视图文件 (userView.jsp):
+<html>
+<body>
+    <h1>User Information</h1>
+    <p>ID: ${user.id}</p>
+    <p>Name: ${user.name}</p>
+</body>
+</html>
+
+Spring MVC配置文件 (spring-mvc.xml 或在Java配置类中配置）:
+<!-- Enable annotation-driven MVC, view resolver, etc. -->
+<!-- This can also be configured using Java Config instead of XML -->
+<!-- ... -->
+
+web.xml（如果你使用Servlet容器部署）:
+<web-app>
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/spring-mvc.xml</param-value> <!-- or Java Config class -->
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <!-- Other configurations like listener for Spring context, etc. -->
+</web-app>
+
+请注意，这个示例非常简化，并且省略了很多细节，比如数据源配置、事务管理、日志记录、错误处理等。在实际项目中，你需要根据需求添加这些配置。此外，建议使用Spring Boot来简化SSM（或Spring + Spring Boot + MyBatis）的配置和部署过程。
+Spring Boot提供了很多自动配置和启动器依赖，可以大大减少XML配置和样板代码。
+
+
+SSH和SSM的区别：
+控制器层
+SSM：使用SpringMVC作为控制器层，基于方法的注解方式，配置更加简单和灵活，扩展性更强。它便于构建REST风格的接口，适应现代Web开发的需求。
+SSH：使用Struts作为控制器层，基于类的配置方式。虽然可以更好地实现MVC分离，但配置相对复杂和繁琐，性能相对较低。
+持久化层
+SSM：使用MyBatis作为持久化层框架，基于SQL映射的方式。开发者可以精细控制SQL语句，适合复杂的查询场景。但需要维护SQL和结果映射，增加了开发工作量。
+SSH：使用Hibernate作为持久化层框架，基于ORM的方式。它可以更好地实现面向对象的编程，适合简单的增删改查场景。但SQL语句优化困难，当数据量大、查询复杂时，生成的SQL可能不够高效。
+
+适用场景：
+SSM框架
+适用于需要灵活控制SQL查询的场景，开发者可以编写复杂的SQL语句，更适合性能要求较高、查询逻辑复杂的项目。
+常用于中小型企业级应用或快速开发项目，注重轻量级和简化配置。
+
+SSH框架
+适用于对象模型复杂的项目，尤其是数据库表和对象关系清晰且稳定的情况下。Hibernate的自动化和ORM能力更能发挥作用。
+在较早期的企业级应用开发中较为常见，但由于配置复杂、学习成本较高，逐渐被SSM所取代。
 
 
 Java Spring框架：
