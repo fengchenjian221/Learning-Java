@@ -11187,7 +11187,13 @@ Spring 还提供了几个特定用途的注解，它们是 @Component 的特化�
 @Repository：Dao注入容器
 @RestController：该注解是@Controller和@ResponseBody的结合体，一般用于类，作用等于在类上面添加了@ResponseBody和@Controller
 
-@Conditional：在配置类中的 bean 声明上添加条件，以决定这些 bean 是否应该被注册到 Spring 应用上下文中
+@Configuration：标识一个类作为配置类，用于定义 Spring 容器如何初始化 beans。该类中可以使用 @Bean 注解来定义和初始化 beans。
+@ComponentScan：指定 Spring 在初始化时应扫描的包路径，以便发现并使用带有 @Component、@Service、@Repository、@Controller 等注解的类。
+@Bean：用于声明一个 bean，通常放置在 @Configuration 注解的类中。它告诉 Spring 容器在启动时创建该方法的返回值对象，并将其注册为 Spring 应用上下文中的一个 bean。
+@Import：用于导入其他配置类或组件，使其配置可以被当前配置类使用。它支持导入单个配置类或包含多个配置类的数组。
+@Conditional：基于特定条件来决定是否创建一个 bean。它是 Spring 4.0 引入的一个强大特性，允许根据运行时环境或其他条件来控制 bean 的创建。在配置类中的 bean 声明上添加条件，以决定这些 bean 是否应该被注册到 Spring 应用上下文中。
+@ImportResource：用于导入 Spring 的 XML 配置文件，使其与基于 Java 的配置一起使用。这在需要将现有 XML 配置迁移到基于 Java 的配置时非常有用。
+
 
 自定义条件
 要创建一个自定义条件，你需要实现 Condition 接口，并重写 matches 方法。以下是一个简单的例子，展示了如何根据某个特定的属性来决定是否创建一个 bean。
