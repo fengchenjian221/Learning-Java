@@ -3910,11 +3910,11 @@ while(iterator.hasNext()){
 for (集合元素的类型 局部变量 ：集合对象)
 
 
-Java集合可分为Collection和Set两个体系：
+Java集合可分为Collection和Map两个体系：
 Collection接口：
 Collection 接口是 Java 集合框架（Java Collections Framework）中的一个根接口，它位于 java.util 包中。Collection 接口为各种具体的集合提供了统一的访问和操作方式，比如添加（add）、删除（remove）、遍历（通过迭代器 Iterator）等。
 Collection 接口是其他集合接口父类，Collection接口有三种子类型，分别是List、Set 和 Queue。
-List：表示一个有序的元素集合，可以包含重复的元素。Set：表示一个不包含重复元素的集合。Queue：表示一组先进先出（FIFO）的元素。
+List：表示一个有序的元素集合，可以包含重复的元素。Set：表示一个不包含重复元素的集合。Queue：表示一组先进先出（FIFO）的元素，代表队列集合，主要用于维护元素的顺序。
 
 List：元素有序、可重复的集合 
 >ArrayList:作为list接口的主要实现类；访问速度快，因为可以直接通过下标访问元素；
