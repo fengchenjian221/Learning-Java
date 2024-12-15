@@ -1462,10 +1462,30 @@ PS：Java多线程切换的原因：
 5.I/O操作：如果线程执行了大量的I/O操作，而不是CPU计算，那么线程可能会在等待I/O操作完成时进入阻塞状态，从而触发上下文切换。
 
 Java多线程生命周期：
-就绪状态：就绪状态的线程又叫做可运行状态，表示当前线程具有抢夺CPU时间片的权力（CPU时间片就是执行权）。当一个线程抢夺到CPU时间片之后，就开始执行run方法，run方法的开始执行标志着线程进入运行状态。
-运行状态：run方法的开始执行标志着这个线程进入运行状态，当之前占有的CPU时间片用完之后，会重新回到就绪状态继续抢夺CPU时间片，当再次抢到CPU时间之后，会重新进入run方法接着上一次的代码继续往下执行。
-阻塞状态：当一个线程遇到阻塞事件，例如接收用户键盘输入，或者sleep方法等，此时线程会进入阻塞状态，阻塞状态的线程会放弃之前占有的CPU时间片。之前的时间片没了需要再次回到就绪状态抢夺CPU时间片。
-锁池：在这里找共享对象的对象锁线程进入锁池找共享对象的对象锁的时候，会释放之前占有CPU时间片，有可能找到了，有可能没找到，没找到则在锁池中等待，如果找到了会进入就绪状态继续抢夺CPU时间片。（这个进入锁池，可以理解为一种阻塞状态）
+1.新建（New）：
+当一个Thread类或其子类的对象被创建时，新生的线程对象就处于新建状态。此时，它和其他Java对象一样，仅由JVM为其分配了内存，并初始化了实例变量的值。线程对象已经分配了内存空间，但尚未启动执行。
+
+2.就绪（Runnable）：
+线程对象调用了start()方法后，线程就从新建状态转换为就绪状态。此时，线程已经准备好执行，但还没有获得CPU时间片。JVM会为线程分配run()方法调用栈和分配程序计数器等资源。
+多个线程处于就绪状态时，由Java虚拟机的线程调度器来决定哪个线程获得CPU时间片开始执行。
+
+3.运行（Running）：
+当处于就绪状态的线程获得了CPU，并开始执行run()方法的线程体代码时，该线程就处于运行状态。如果计算机只有一个CPU，那么在任何时刻就只有一个线程处于运行状态。
+对于抢占式策略的系统而言，CPU只给每个可执行的线程一个时间片来处理任务，该时间片用完后，系统就会剥夺该线程所占用的资源，让其回到就绪状态等待下一次被调度。此时其他线程将获得执行机会，在选择下一个线程时，系统会适当考虑线程的优先级。
+
+4.阻塞（Blocked）：
+在特定情况下，线程可能会被暂时挂起，进入阻塞状态。例如，线程调用了sleep()方法、等待I/O操作、获得了某个对象的锁但没有获取到锁等。阻塞状态是线程因为某种原因（如等待资源、等待锁等）而暂时停止执行的状态。
+当阻塞状态的条件解除时，线程会重新进入就绪状态，等待获取CPU时间片继续执行。
+
+5.等待（Waiting）：
+线程等待某个条件的满足，或者等待其他线程的通知。在waiting状态下，线程会被挂起，直到被其他线程唤醒。例如，线程调用了Object类的wait()方法，或者通过其他方式（如Condition的await()方法）进入等待状态。
+
+6.限时等待（Timed Waiting）：
+类似于等待状态，但在限时等待状态下，线程会在一定的时间内等待。例如，线程调用了Thread类的sleep()方法、join()方法，或者在等待某个锁的过程中设置了超时时间，会进入限时等待状态。一旦等待时间到达或者锁被释放，线程会重新进入就绪状态。
+
+7.销毁（Terminated/Dead）：
+线程执行完run()方法后，或者因为异常、调用stop()方法（尽管stop()方法已过时，不推荐使用）等原因而终止时，线程进入销毁状态。一旦线程进入了销毁状态，就无法再恢复到其他状态。
+
 
 Java多线程的性质：原子性、可见性、有序性
 1. 原子性（Atomicity）
@@ -1747,8 +1767,8 @@ public class ThreadDemo {
     }
 }
 
-
-Java synchronized 关键字：同步代码块，解决线程安全问题，解决多线程上下文冲突问题，保证线程原子性
+Java多线程的同步方法：
+1.Java synchronized 关键字：同步代码块，解决线程安全问题，解决多线程上下文冲突问题，保证线程原子性
 synchronized(同步监视器){
 //需要被同步的代码
 }
@@ -1812,49 +1832,7 @@ public class StaticCounter {
 无论是实例方法还是静态方法，synchronized 都确保了同一时间只有一个线程可以执行该方法，从而避免了多线程环境下的数据不一致和线程安全问题。
 需要注意的是，过度使用synchronized 可能会导致性能下降，因为它会引入线程间的竞争和等待，因此应该谨慎使用，并在必要时考虑使用其他并发控制机制，如java.util.concurrent 包中的工具类。
 
-
-死锁问题：
-需要注意的是，不恰当的使用synchronized可能导致死锁问题。例如，如果两个线程互相等待对方释放锁，就会产生死锁。因此，在设计并发程序时，需要小心避免死锁。
-
-通过同步实例方法解决线程安全问题：
-public class SynchronizedExample {
-    private int count = 0;
-
-    public synchronized void increment() {
-        count++;
-    }
-
-    public synchronized int getCount() {
-        return count;
-    }
-
-    public static void main(String[] args) {
-        SynchronizedExample example = new SynchronizedExample();
-
-        Runnable task = () -> {
-            for (int i = 0; i < 1000; i++) {
-                example.increment();
-            }
-        };
-
-        Thread thread1 = new Thread(task);
-        Thread thread2 = new Thread(task);
-
-        thread1.start();
-        thread2.start();
-
-        try {
-            thread1.join();
-            thread2.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("Final count: " + example.getCount());
-    }
-}
-
-lock方法解决线程安全问题：
+2.lock方法解决线程安全问题：
 在Java中，除了synchronized关键字外，java.util.concurrent.locks包提供了更加灵活和强大的锁机制，比如ReentrantLock。
 ReentrantLock提供了与synchronized相同的互斥锁功能，并且提供了更多的高级特性，例如可重入、定时锁定和中断锁定等。
 
@@ -1914,54 +1892,86 @@ ReentrantLock的创建：ReentrantLock对象通过new ReentrantLock()来创建�
 锁的获取与释放：在需要保护的代码块前，使用lock.lock()获取锁，在代码块后使用lock.unlock()释放锁。为了确保无论代码块是否抛出异常，锁都能被正确释放，unlock()方法通常放在finally块中。
 try-finally结构：确保了即使在方法执行过程中发生异常，锁也会被正确释放，从而避免死锁情况。
 
+synchronized和lock的区别？
 
-lock方法与synchronized关键字解决线程安全问题的区别：
-synchronized：适用于简单的同步场景，且由于其简洁和JVM的优化，性能在简单同步下表现较好。
-Lock：适用于复杂的同步场景，提供了更高的灵活性和更多的控制能力，适合需要高级锁特性（如公平锁、轮询锁定、定时锁定和中断锁定）的情况。
+一、基本属性
+类型：
+synchronized：它是Java中的一个关键字，属于内置的语言实现。
+Lock：它是一个接口，属于代码层面的实现，通常通过ReentrantLock类来实现。
+加锁方式：
+synchronized：隐式加锁，无需显式地获取或释放锁。
+Lock：显式加锁，需要手动调用lock()方法来获取锁，并在finally块中调用unlock()方法来释放锁。
 
-1. 基本功能
-synchronized：
-内置语言特性，通过关键字实现同步。
-自动管理锁的获取和释放。
-Lock：
-类库特性，通过java.util.concurrent.locks.Lock接口实现同步。
-需要显式地获取和释放锁。
+二、功能特性
+作用范围：
+synchronized：可以作用于方法上或代码块上。当作用于方法上时，它会自动为该方法所在的实例或类（对于静态方法）加锁。
+Lock：只能作用于代码块上，通过显式地调用lock()和unlock()方法来控制锁的获取和释放。
 
-2. 灵活性
-synchronized：
-只能锁住方法或代码块。
-锁的范围和粒度是固定的。
-Lock：
-可以在方法或代码块中自由地控制锁的获取和释放。
-提供了更灵活的锁机制，例如：尝试锁定、定时锁定和可中断锁定。
+锁类型：
+synchronized：只支持非公平锁，即锁的获取顺序是不确定的，通常是抢占式的。
+Lock：支持非公平锁和公平锁。公平锁会按照线程请求锁的顺序来分配锁，从而避免了线程饥饿问题。
 
-3. 锁的特性
-synchronized：
-递归锁（Reentrant）：同一线程可以多次进入一个同步方法或代码块。
-公平性：无内置的公平性控制，锁是非公平的。
-Lock：
-递归锁（Reentrant）：ReentrantLock是递归锁，同一线程可以多次获取锁。
-公平性：可以通过构造函数参数设置公平锁或非公平锁（默认非公平）。
-ReentrantLock lock = new ReentrantLock(true); // 公平锁
+可中断性：
+synchronized：是不可中断的，即线程在获取锁的过程中无法被中断。如果线程在获取锁时发生了阻塞，它将一直等待直到获取到锁或者线程被终止。
+Lock：支持可中断的锁获取方式。通过调用lockInterruptibly()方法，线程可以在获取锁的过程中被中断，并抛出InterruptedException异常。
 
-4. 性能
-synchronized：
-简单同步下性能较好，JVM对其进行了许多优化（如偏向锁、轻量级锁、锁粗化等）。
-Lock：
-在复杂同步场景下性能较好。
-提供了更好的线程调度和资源管理能力。
+超时获取锁：
+synchronized：不支持超时获取锁的功能。
+Lock：提供了tryLock()方法，该方法可以在指定时间内尝试获取锁。如果超过了指定时间仍未获取到锁，则返回false。
 
-5. 错误处理
-synchronized：
-编译器自动管理锁的获取和释放，较少发生因忘记释放锁而导致的问题。
-Lock：
-必须显式地在finally块中释放锁，容易因编程错误导致死锁。
+等待和唤醒机制：
+synchronized：使用了Object类的wait()、notify()和notifyAll()方法来实现线程之间的等待和唤醒。
+Lock：使用了Condition接口来实现线程之间的等待和唤醒。Condition接口提供了更丰富的等待和唤醒功能，如await()、signal()和signalAll()等。
 
-6. 其他特性
-synchronized：
-不支持锁的轮询、定时获取锁和中断获取锁。
-Lock：
-提供了尝试锁定（tryLock()）、定时锁定（tryLock(long time, TimeUnit unit)）和中断锁定（lockInterruptibly())。
+三、性能和应用场景
+性能：
+synchronized：由于它是内置的语言实现，因此在性能上可能具有一定的优势。但是，由于它是非中断和非超时的，因此在某些情况下可能会导致线程阻塞和性能下降。
+Lock：虽然它是代码层面的实现，但提供了更灵活的锁获取和释放方式以及更丰富的功能特性。这使得Lock在某些情况下可能具有更好的性能和可扩展性。
+应用场景：
+synchronized：适用于简单的同步控制场景，如保护单个共享资源或方法级别的同步。
+Lock：适用于更复杂的同步控制场景，如需要支持公平锁、可中断锁或超时获取锁的功能时。
+
+
+死锁问题：
+需要注意的是，不恰当的使用synchronized可能导致死锁问题。例如，如果两个线程互相等待对方释放锁，就会产生死锁。因此，在设计并发程序时，需要小心避免死锁。
+
+通过同步实例方法解决线程安全问题：
+public class SynchronizedExample {
+    private int count = 0;
+
+    public synchronized void increment() {
+        count++;
+    }
+
+    public synchronized int getCount() {
+        return count;
+    }
+
+    public static void main(String[] args) {
+        SynchronizedExample example = new SynchronizedExample();
+
+        Runnable task = () -> {
+            for (int i = 0; i < 1000; i++) {
+                example.increment();
+            }
+        };
+
+        Thread thread1 = new Thread(task);
+        Thread thread2 = new Thread(task);
+
+        thread1.start();
+        thread2.start();
+
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Final count: " + example.getCount());
+    }
+}
 
 
 Java多线程实现线程通讯的方法： 
@@ -2028,7 +2038,6 @@ class SharedResource {
 3. 使用 Semaphore
 Semaphore 是一个计数信号量，用于控制对共享资源的访问。
 
-java
 import java.util.concurrent.Semaphore;  
   
 class SharedResource {  
@@ -2113,6 +2122,7 @@ Java多线程中sleep和wait的区别：
 2、sleep方法不会释放资源锁，但是wait会释放资源锁，而且会加入到等待队列中。
 3、sleep方法不依赖于同步器synchronized，但是wait需要依赖synchronized关键字。
 4、sleep不需要被唤醒（休眠之后推出阻塞），但是wait需要（不指定时间需要被别人中断）。
+5、sleep是将线程休眠，wait是将线程唤醒
 
 Java多线程中的notify()方法：
 Java多线程中的notify()方法是用于唤醒正在等待该对象监视器（monitor）的单个线程的方法。
@@ -2192,6 +2202,10 @@ Java多线程的中断方法：
 1. 调用Thread.interrupt()方法
 Thread.interrupt()方法用于中断目标线程。当调用一个线程的interrupt()方法时，Java虚拟机（JVM）会将该线程的中断状态设置为true。然而，这并不会立即停止线程的执行。
 线程必须检查其中断状态（通过Thread.currentThread().isInterrupted()或Thread.interrupted()），并据此做出响应，比如通过抛出InterruptedException或简单地结束执行。
+
+-interrupt():执行中断线程操作，添加中断状态
+-isInterrupted():判断线程是否中断
+-interrupted():判断线程是否中断，并清除当前中断状态
 
 2. 响应中断
 要使线程能够响应中断，它需要在执行过程中周期性地检查自己的中断状态，或者在执行可能阻塞的操作（如Thread.sleep(), Object.wait(), Thread.join()等）时正确响应这些操作抛出的InterruptedException。
@@ -4302,33 +4316,96 @@ Java集合框架中的Queue接口提供了对队列数据结构的支持，队�
 LinkedList（先进先出FIFO）
 实现接口：
 LinkedList实现了Deque接口，而Deque接口扩展了Queue接口。因此，LinkedList可以作为FIFO队列使用。
+
 数据结构：
 LinkedList基于双向链表实现。链表中的每个节点都包含数据元素以及指向前一个节点和后一个节点的引用。
+
 特性：
 LinkedList允许在队列的两端进行插入和删除操作，但由于它通常作为FIFO队列使用，所以主要的操作是在尾端插入元素（offer或addLast），在头部移除元素（poll或removeFirst）。
 它是非线程安全的，即在多线程环境下需要额外的同步机制。
 由于链表节点的开销，LinkedList在随机访问方面性能较差，但在频繁插入和删除操作方面性能较好。
+
 应用场景：
 适用于需要频繁在队列两端进行插入和删除操作的场景。
 适用于元素数量不固定且需要保持FIFO顺序的场景。
 
+LinkedList的源码分析：
+public boolean add(E e) {
+    linkLast(e);
+    return true;
+}
+
+void linkLast(E e) {
+    final Node<E> l = last;
+    final Node<E> newNode = new Node<>(l, e, null);
+    last = newNode;
+    if (l == null)
+        first = newNode;
+    else
+        l.next = newNode;
+    size++;
+    modCount++;
+}
+
 PriorityQueue（优先队列）
 实现接口：
 PriorityQueue实现了Queue接口，并提供了一个基于优先级堆的无界队列实现。
+
 数据结构：
 PriorityQueue基于二叉堆（通常是完全二叉树）实现，具体来说是小顶堆（父节点的键值总是小于或等于任何一个子节点的键值）。
 堆的实现通常通过数组来完成，因为数组可以方便地通过索引访问父节点和子节点。
+
 特性：
 PriorityQueue不允许插入null元素，因为无法比较null的优先级。
 队列的头部是优先级最高的元素（对于小顶堆来说，是键值最小的元素）。
 它是非线程安全的，但在多线程环境下可以通过外部同步来使用。
 PriorityQueue不保证同优先级元素的顺序。
+
 比较器：
 PriorityQueue可以接受一个Comparator来定义元素的优先级顺序。
 如果没有提供Comparator，则元素必须实现Comparable接口，以便根据其自然顺序进行排序。
+
 应用场景：
 适用于需要基于优先级处理元素的场景，如任务调度、事件处理等。
 适用于元素数量不固定且需要动态调整优先级的场景。
+
+PriorityQueue的源码解析：
+public boolean add(E e) {
+    return offer(e);
+}
+ 
+public boolean offer(E e) {
+	// 若添加的元素为null，则直接抛出空指针异常
+	if (e == null)
+		throw new NullPointerException();
+	// 操作数+1
+	modCount++;
+	int i = size;
+	// 如果元素个数已大于或等于数组的长度，则执行扩容操作
+	if (i >= queue.length)
+		grow(i + 1);
+	// 将待添加元素添加到数组最后，并执行元素上移过程
+	siftUp(i, e);
+	// 元素添加完成后，元素个数+1
+	size = i + 1;
+	// 返回true，代表添加元素成功
+	return true;
+}
+
+
+扩容过程（grow方法）：
+private void grow(int minCapacity) {
+	int oldCapacity = queue.length;
+	int newCapacity = oldCapacity + ((oldCapacity < 64) ? (oldCapacity + 2) : (oldCapacity >> 1));
+	if (newCapacity - MAX_ARRAY_SIZE > 0)
+		newCapacity = hugeCapacity(minCapacity);
+	queue = Arrays.copyOf(queue, newCapacity);
+}
+oldCapacity表示当前数组的容量。
+如果oldCapacity小于64，则新容量newCapacity为oldCapacity的两倍加2。
+如果oldCapacity大于或等于64，则新容量newCapacity为oldCapacity的1.5倍（右移一位相当于除以2）。
+如果新容量超过了Integer.MAX_VALUE - 8，则调用hugeCapacity方法进行特殊处理。
+最后，使用Arrays.copyOf方法将原数组的元素复制到新数组中。
 
 
 Map接口：双列数据，存储的是键值对。Map接口不继承Collection接口。在Java集合框架中，Map接口和Collection接口是两个并行的根接口，它们之间没有继承关系。
@@ -17268,7 +17345,9 @@ C字符串的缺陷：在C语言中，获取一个以空字符\0结尾的字符�
 SDS的优势：SDS在结构体头部显式记录了字符串的长度（len字段），因此可以直接通过读取这个字段得知字符串长度，无需遍历整个字符串，时间复杂度降为O(1)。这对于频繁需要获取字符串长度的应用场景（如Redis）来说，是一个显著的性能提升。
 2. 空间预分配与惰性释放
 C字符串的缺陷：C字符串在每次修改（如追加字符）时，如果空间不足，都需要重新分配内存并复制旧数据到新内存，这可能导致频繁的内存分配和释放操作，影响性能。同时，当字符串缩短时，C字符串需要立即回收不再使用的内存空间，否则会造成内存泄漏。
-SDS的优势：SDS在执行修改字符串操作时，会对内存进行预分配策略，预留一定的未使用空间（free字段）。这样当后续有连续的追加操作时，可以避免频繁的内存重分配。同时，当字符串缩短时，SDS不会立即回收内存，而是保持已分配内存，仅减少len的值，这样可以更快地执行字符串缩短操作，并在未来可能的扩展操作中重复利用这部分空间。这种策略被称为“空间预分配”和“惰性释放”。
+SDS的优势：SDS在执行修改字符串操作时，会对内存进行预分配策略，预留一定的未使用空间（free字段）。这样当后续有连续的追加操作时，可以避免频繁的内存重分配。
+同时，当字符串缩短时，SDS不会立即回收内存，而是保持已分配内存，仅减少len的值，这样可以更快地执行字符串缩短操作，并在未来可能的扩展操作中重复利用这部分空间。这种策略被称为“空间预分配”和“惰性释放”。
+这一机制是为了保障缩短内存的空间的申请与释放，提高使用效率。
 3. 二进制安全
 C字符串的缺陷：C语言的字符串必须以空字符结束，不支持包含内部\0字符的二进制数据。这限制了C字符串在存储和处理二进制数据方面的能力。
 SDS的优势：SDS支持任意二进制数据存储，因为它不是基于空字符来判断字符串的结束，而是根据长度字段（len）来确定字符串内容。这使得SDS能够安全地存储和处理包含空字符的二进制数据。
@@ -17287,7 +17366,7 @@ Redis跳表（Skip List）是一种基于并联的链表结构，用于在有序
 
 一、定义与核心思想
 定义：跳表是一种有序且随机化的数据结构，它通过在不同层级（level）上增加指针来加速查找过程。
-核心思想：通过多层索引来加速查找，每一层都以一定的概率选择部分元素添加额外的前向指针，这些额外的指针使得跳表可以快速跳过一些元素，从而加快查找速度。
+核心思想：通过多层索引来加速查找，每一层都以一定的概率选择部分元素添加额外的前向指针，这些额外的指针使得跳表可以快速跳过一些元素，从而加快查找速度，从而实现第一个节点找到第三个或更后节点。
 
 二、结构与组成
 节点结构：每个节点都包含一个值和一个指向其他节点的指针数组。指针数组中的每个指针都指向一个比当前节点值大的节点。
@@ -17316,12 +17395,23 @@ Redis跳表（Skip List）是一种基于并联的链表结构，用于在有序
 空间消耗：跳表需要额外的空间来存储指针数组，因此其空间消耗略大于普通链表。
 精度损失：跳表通过牺牲部分精确性（如随机生成指针数组长度）来换取更高的查询效率。
 
+跳表的索引结构：
+多级索引：跳表由多层组成，每一层都是一个有序链表。这些链表以层级的方式排列，从顶层到底层，每一层的元素数量逐层减少。顶层链表包含的元素最少，但能够迅速定位到大致的查找范围，而底层链表则包含所有元素，确保能够查找到具体的目标元素。
+指针连接：在跳表中，每个节点都包含多个指针。一个指针指向同一层的下一个节点，用于在同一层中移动；另一个指针（或一组指针）指向下一层的相同位置的节点（或附近节点），用于在不同层之间移动。
+这种指针连接的方式使得跳表能够在不同层级上快速跳过部分元素，从而加速查找过程。
+
 
 redis RDB：Redis RDB（Redis Database）是Redis的一种数据持久化方式，它通过将内存中的数据快照保存到磁盘上来实现数据的持久化。这种方式允许Redis在重启后能够恢复之前的状态，确保数据的持久性和可靠性。
 
 RDB快照的原理
 数据快照：Redis会定时或根据配置的条件（如一定时间间隔、执行了一定数量的写操作等）执行一次数据快照的保存操作。在快照过程中，Redis会创建一个子进程，这个子进程会遍历内存中的所有数据，并将数据写入到一个临时的RDB文件中。由于是在子进程中完成数据的拷贝，所以这个过程对Redis的主线程影响较小，Redis可以继续处理客户端的请求。
 替换旧文件：当新的RDB文件写入完成后，Redis会用新的RDB文件替换旧的RDB文件，完成数据的更新。这个替换过程是原子性的，确保了数据的一致性。
+
+RDB的两个指令： Save和BgSave
+它们两个的区别：
+阻塞性：SAVE指令是阻塞的，而BGSAVE指令是非阻塞的。
+执行效率：在数据量大或写操作频繁的情况下，BGSAVE指令的执行效率通常更高，因为它不会阻塞Redis服务器的正常运行。
+适用场景：SAVE指令适用于对数据持久化要求不高或可以接受阻塞操作的场景；而BGSAVE指令则更适用于生产环境，特别是需要高可用性和响应速度的场景。
 
 RDB的优点
 恢复速度快：由于RDB文件是Redis数据的完整快照，所以在Redis重启时加载RDB文件进行数据恢复的速度非常快。
@@ -17334,7 +17424,6 @@ RDB的缺点
 
 应用场景
 RDB适合用于对数据的完整性要求不是特别高，允许偶尔的数据丢失，且对数据恢复速度有较高要求的场景。同时，由于RDB文件易于传输，它也常被用于Redis数据的备份和迁移。
-
 在实际应用中，Redis通常会同时使用RDB和AOF（Append Only File）两种持久化方式，以确保数据的安全性和可靠性。AOF通过记录每次写操作来实现数据的持久化，可以很好地弥补RDB在数据丢失方面的不足。
 
 配置redis RDB
@@ -17344,6 +17433,9 @@ save 300 10
 save 60 10000
 默认情况下，900s进行1次主键变动，300s进行10此主键变动，60s进行10000次主键变动，RDB启动
 
+注意：
+当服务器启动的时候，RDB自动执行加载，没有专门的命令来加载RDB文件。只要Redis启动时检测到RDB文件的存在，那么就会自动载入RDB文件。加载过程中，会一直处于阻塞状态，直到加载完毕为止。
+由于AOF文件的更新频率一般比RDB文件的更新频率高，所以，如果服务期开启了AOF持久化功能，那么就优先加载AOF文件，否则，加载RDB文件。
 
 
 redis AOF：
@@ -17372,7 +17464,6 @@ Redis AOF（Append Only File）是Redis的一种持久化机制，它通过记�
 启用/禁用AOF：在Redis的配置文件redis.conf中，可以通过配置aof-enabled参数来启用或禁用AOF持久化方式。
 配置持久化策略：通过配置appendfsync参数来选择AOF的持久化策略（Always、EverySecond、No）。
 检查AOF文件：可以使用redis-check-aof工具来检查AOF文件的完整性，确保数据的一致性。
-
 
 
 AOF重写机制：
