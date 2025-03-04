@@ -102,7 +102,6 @@ char → String ：调用String中的构造器
 String：不可变的字符串序列
 StringBuffer ：可变的字符串序列，线程安全，效率低，多线程时用
 StringBuilder ：可变的字符串序列，线程不安全，效率高
-
 String可以直接赋值或者创建对象
 String s1 = "Hello"; // 通过直接赋值创建String对象  
 String s2 = new String("Hello"); // 通过new关键字创建String对象
@@ -247,6 +246,15 @@ public boolean equals(Object anObject) {
 2、判断equals()方法的参数是否为null，如果为null，则返回false；因为当前对象不可能为null，如果为null，则不能调用其equals()方法，否则抛java.lang.NullPointerException异常。
 3、当参数不为null，则如果两个对象的运行时类（通过getClass()获取）不相等，返回false，否则继续判断。
 
+重写equals()方法的时候需要重写hashcode方法。
+为什么需要同时重写equals和hashCode？
+equals和hashCode的契约：
+如果两个对象通过equals方法比较是相等的，那么它们的hashCode值必须相同。
+如果两个对象的hashCode值相同，它们通过equals方法比较不一定相等（哈希冲突是允许的）。
+
+哈希表依赖hashCode：
+Java中的HashMap、HashSet等集合类依赖于hashCode方法来快速定位对象。
+如果只重写equals而不重写hashCode，可能会导致两个相等的对象具有不同的哈希值，从而导致这些集合类无法正常工作。
 
 Java比较器：比较对象的大小
 Comparable 的使用举例：
@@ -554,17 +562,15 @@ try {
 使用throw关键字可以手动抛出一个异常。这通常用于在检测到错误情况时通知调用者。
 
 示例：
-
-public void checkInput(int input) throws IllegalArgumentException {  
-    if (input < 0) {  
-        throw new IllegalArgumentException("输入不能为负数");  
-    }  
-    // 其他代码...  
+public void divide(int a, int b) {
+    if (b == 0) {
+        throw new ArithmeticException("Division by zero is not allowed");
+    }
+    System.out.println(a / b);
 }
 
 声明异常
 如果一个方法可能会抛出异常，但该方法本身不处理该异常，那么它应该使用throws关键字声明它可能会抛出的异常。这样，调用该方法的代码就需要处理这些异常，或者继续声明它们。
-
 
 示例：
 public void readFile(String filePath) throws IOException {  
@@ -572,8 +578,250 @@ public void readFile(String filePath) throws IOException {
     // ...  
 }
 
+throw和throws关键字有什么不同？
+throw：用于在代码中显式抛出一个异常。
+throws：用于在方法签名中声明可能抛出的异常。
+
+区别：
+throw是动作，throws是声明。
+throw在方法内部使用，throws在方法签名中使用。
+throw可以抛出任何异常，throws只能声明已检查异常。
+
+Java中的一些异常：
+1.空指针异常（NullPointerException）
+原因：尝试访问或操作一个null对象的属性或方法。
+
+示例：
+String str = null;
+System.out.println(str.length()); // 抛出NullPointerException
+
+解决方法：
+在使用对象之前检查是否为null。
+使用Optional类避免空指针。
+使用Objects.requireNonNull进行显式检查。
+
+2. 数组越界异常（ArrayIndexOutOfBoundsException）
+原因：访问数组时，索引超出了数组的有效范围。
+
+示例：
+int[] arr = {1, 2, 3};
+System.out.println(arr[3]); // 抛出ArrayIndexOutOfBoundsException
+
+解决方法：
+在访问数组元素之前检查索引是否有效。
+使用增强型for循环避免手动管理索引。
+
+3. 类型转换异常（ClassCastException）
+原因：尝试将一个对象强制转换为不兼容的类型。
+
+示例：
+Object obj = "Hello";
+Integer num = (Integer) obj; // 抛出ClassCastException
+
+解决方法：
+在类型转换之前使用instanceof检查类型。
+尽量避免不必要的类型转换。
+
+4. 并发修改异常（ConcurrentModificationException）
+原因：在使用迭代器遍历集合时，直接修改了集合的结构（如添加或删除元素）。
+
+示例：
+List<String> list = new ArrayList<>();
+list.add("A");
+list.add("B");
+for (String s : list) {
+    list.remove(s); // 抛出ConcurrentModificationException
+}
+
+解决方法：
+使用迭代器的remove方法删除元素。
+使用CopyOnWriteArrayList等线程安全的集合类。
+
+5. 栈溢出错误（StackOverflowError）
+原因：递归调用过深，导致栈空间耗尽。
+
+示例：
+public void recursiveMethod() {
+    recursiveMethod(); // 无限递归，抛出StackOverflowError
+}
+
+解决方法：
+检查递归的终止条件是否正确。
+将递归改为迭代（如使用循环）。
+
+6. 内存溢出错误（OutOfMemoryError）
+原因：JVM内存不足，无法分配更多对象。
+
+示例：
+List<Object> list = new ArrayList<>();
+while (true) {
+    list.add(new Object()); // 抛出OutOfMemoryError
+}
+
+解决方法：
+检查是否有内存泄漏（如未释放不再使用的对象）。
+增加JVM的堆内存大小（如使用-Xmx参数）。
+
+7. 类未找到异常（ClassNotFoundException）
+原因：尝试加载一个不存在的类。
+
+示例：
+Class.forName("NonExistentClass"); // 抛出ClassNotFoundException
+
+解决方法：
+检查类路径是否正确。
+确保所需的类或依赖库已正确加载。
+
+8. 方法未找到异常（NoSuchMethodException）
+原因：尝试通过反射调用一个不存在的方法。
+
+示例：
+Method method = String.class.getMethod("nonExistentMethod"); // 抛出NoSuchMethodException
+
+解决方法：
+检查方法名和参数类型是否正确。
+确保目标类中确实存在该方法。
+
+9. 文件未找到异常（FileNotFoundException）
+原因：尝试访问一个不存在的文件。
+
+示例：
+FileInputStream fis = new FileInputStream("nonExistentFile.txt"); // 抛出FileNotFoundException
+
+解决方法：
+检查文件路径是否正确。
+确保文件确实存在。
+
+10. 数字格式异常（NumberFormatException）
+原因：尝试将一个非数字字符串转换为数字类型。
+
+示例：
+int num = Integer.parseInt("abc"); // 抛出NumberFormatException
+
+解决方法：
+在转换之前检查字符串是否为有效数字。
+使用try-catch捕获异常。
+
+11. 非法参数异常（IllegalArgumentException）
+原因：传递给方法的参数不合法。
+
+示例：
+public void setAge(int age) {
+    if (age < 0) {
+        throw new IllegalArgumentException("Age cannot be negative");
+    }
+}
+解决方法：
+在方法中检查参数的有效性。
+提供清晰的错误信息。
+
+12. 线程中断异常（InterruptedException）
+原因：线程在等待、睡眠或占用时被中断。
+
+示例：
+try {
+    Thread.sleep(1000);
+} catch (InterruptedException e) {
+    e.printStackTrace();
+}
+
+解决方法：
+正确处理线程中断（如恢复中断状态）。
+避免忽略中断异常。
+
+
 自定义异常
 除了使用Java内置的异常类外，程序员还可以定义自己的异常类。这通常用于表示特定于应用程序的错误情况。自定义异常类应该继承自Exception类或其子类。
+1. 自定义异常的基本步骤
+（1）选择基类
+如果自定义异常是已检查异常（Checked Exception），则继承Exception类。
+如果自定义异常是未检查异常（Unchecked Exception），则继承RuntimeException类。
+
+（2）定义构造方法
+提供多个构造方法，以便在抛出异常时可以传递不同的信息。
+
+通常包括以下构造方法：
+无参构造方法。
+带有错误信息的构造方法。
+带有错误信息和原因的构造方法（用于异常链）。
+
+（3）添加自定义属性和方法（可选）
+如果需要，可以为自定义异常添加额外的属性和方法，以提供更多的错误信息。
+
+2. 自定义已检查异常
+已检查异常需要在方法签名中使用throws声明，或者在方法内部捕获处理。
+
+示例：
+// 自定义已检查异常
+public class MyCheckedException extends Exception {
+    // 无参构造方法
+    public MyCheckedException() {
+        super();
+    }
+
+    // 带有错误信息的构造方法
+    public MyCheckedException(String message) {
+        super(message);
+    }
+
+    // 带有错误信息和原因的构造方法
+    public MyCheckedException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+
+使用示例：
+public class Example {
+    public void doSomething() throws MyCheckedException {
+        // 模拟抛出自定义异常
+        throw new MyCheckedException("This is a custom checked exception");
+    }
+
+    public static void main(String[] args) {
+        Example example = new Example();
+        try {
+            example.doSomething();
+        } catch (MyCheckedException e) {
+            System.out.println("Caught exception: " + e.getMessage());
+        }
+    }
+}
+3. 自定义未检查异常
+未检查异常不需要在方法签名中使用throws声明，通常用于表示程序逻辑错误。
+
+示例：
+
+// 自定义未检查异常
+public class MyUncheckedException extends RuntimeException {
+    // 无参构造方法
+    public MyUncheckedException() {
+        super();
+    }
+
+    // 带有错误信息的构造方法
+    public MyUncheckedException(String message) {
+        super(message);
+    }
+
+    // 带有错误信息和原因的构造方法
+    public MyUncheckedException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+
+使用示例：
+
+public class Example {
+    public void doSomething() {
+        // 模拟抛出自定义异常
+        throw new MyUncheckedException("This is a custom unchecked exception");
+    }
+
+    public static void main(String[] args) {
+        Example example = new Example();
+        example.doSomething(); // 不需要捕获，但会抛出异常
+    }
+}
 
 
 Java编程范式-面向对象：
@@ -584,8 +832,7 @@ Java编程范式-面向对象：
 面向对象包括：类、对象、属性、方法、成员变量、局部变量、修饰符、方法的重载、继承、方法的重写、多态、static关键字、abstract关键字、接口 → JVM调优，设计模式，web和大数据框架
 
 类：是一组相关属性和行为的集合。可以看成是一类事物的模板，使用事物的属性特征和行为特征来描述该类事物；如：人类
-
-实例对象：是一类事物的具体体现。对象是类的一个实例（对象并不是找个女朋友），必然具备该类事物的属性和行为；如：小红、小明、小南
+实例对象：是一类事物的具体体现。对象是类的一个实例，必然具备该类事物的属性和行为；如：小红、小明、小南
 
 Scanner scanner = new Scanner();
 具有静态描述的特征称之为属性
@@ -618,19 +865,19 @@ public class MyClass {
       
     public void myMethod() {  
         // 局部变量  
-        String myLocalVariable = "Hello, World!";  
+        String myLocalVariable = "Hello, World!";
     }  
 }
 
 修饰符：private：同类下访问  → 缺省：同包下访问 → protected：子包下可以访问，同包也可以访问。不同包下的子类，访问protected修饰的，需要使用子类的对象访问，不能使用父类的对象访问  → public ：项目中所有类都可以访问
 PS:修饰类的时候，只能用缺省和public。
 
-方法的重载：在 Java 类中可以定义 多个名称相同的方法 ，若只是参数不同，功能类似，那么可以将这类方法称为同名方法，也可以叫做方法重载
+方法的重载：在 Java 类中可以定义多个名称相同的方法 ，若只是参数不同，功能类似，那么可以将这类方法称为同名方法，也可以叫做方法重载
 例如：sort(byte[] a) 与 sort(char[] a) 构成了方法的重载
 Java中可变个数的形参 jdk5.0以上 格式：public void show(String ... strs){}
 可变个数的形参与相同的数组之间不构成重载，二者不能共存，编译器认为这两种方法没有区别。
 
-Java里面值传递机制只有一种：值传递。即将实际参数值的副本（复制）传入方法内，而参数本身不受影响。
+Java里面传递机制只有一种：值传递。即将实际参数值的副本（复制）传入方法内，而参数本身不受影响。
 >形参是基本数据类型，将实参的数据值传递给形参；形参是引用数据类型，将实参的地址值（含变量的数据类型）传递给形参。
 
 Java中的值传递机制是指在传递基本数据类型的参数时，实际是将参数的值复制一份传递给方法或函数，而不是传递参数本身。这意味着在方法或函数内部对参数的修改不会影响到原始变量的值。
@@ -719,9 +966,53 @@ public Person(String name, int age) {
 
 Java属性赋值的先后顺序：
 1.默认初始化
+示例：
+public class MyClass {
+    int num;       // 默认值为0
+    boolean flag;  // 默认值为false
+    String str;    // 默认值为null
+}
+
 2.显式初始化
+示例：
+public class MyClass {
+    int num = 10;       // 显式初始化为10
+    boolean flag = true; // 显式初始化为true
+    String str = "Hello"; // 显式初始化为"Hello"
+}
+
 3.构造器中初始化
+示例：
+public class MyClass {
+    int num;
+    boolean flag;
+    String str;
+
+    public MyClass() {
+        num = 20;       // 构造器中初始化为20
+        flag = false;  // 构造器中初始化为false
+        str = "World"; // 构造器中初始化为"World"
+    }
+}
+
 4.通过 "对象.方法" 或 "对象.属性" 的方式初始化
+示例：
+public class MyClass {
+    int num;
+    boolean flag;
+    String str;
+
+    public void setNum(int num) {
+        this.num = num; // 通过方法修改属性值
+    }
+
+    public static void main(String[] args) {
+        MyClass obj = new MyClass();
+        obj.num = 30;       // 直接修改属性值
+        obj.setNum(40);     // 通过方法修改属性值
+        System.out.println(obj.num); // 输出40
+    }
+}
 
 在Java中，new一个对象是给怎么样的一个过程？
 
@@ -738,14 +1029,15 @@ Java属性赋值的先后顺序：
 
 4.使用对象：现在，你可以使用这个新创建的对象来进行各种操作，比如调用方法、访问字段等。
 
+
 Java之this关键字：
 在Java中，this 关键字是一个引用变量，它引用当前对象（即调用方法或构造器的那个对象）。
 
 1.this可以修饰属性、方法、构造器
 2.this修饰属性和方法
+
 >this可以理解为当前对象
->在类的方法或类的构造器中，this修饰属性或方法时，一般情况下省略。特殊情况下，如果方法的形参和类的属性同名时，
-必须显式使用"this.属性"声明此变量是属性，而非形参。
+>在类的方法或类的构造器中，this修饰属性或方法时，一般情况下省略。特殊情况下，如果方法的形参和类的属性同名时，必须显式使用"this.属性"声明此变量是属性，而非形参。
 >this可以修饰构造器，结构为"this.形参列表"
 >构造器中，不能通过方式"this.形参列表"调用自己
 >如果一个类中有n个构造器，最多有n-1个构造器使用了"this.形参列表"方式
@@ -878,7 +1170,6 @@ public class Child extends Parent {
 }
 
 继承之执行顺序：
-
 无继承关系时的执行顺序：
 静态代码块先执行，且只执行一次，在类加载阶段执行
 当有对象创建时，才会执行实例代码块，实例代码块执行完后，再执行构造方法
@@ -895,6 +1186,7 @@ final关键字修饰类不能被继承。
 Java中的object类：
 Object类是Javajava.lang包下的核心类，Object类是所有类的父类，何一个类时候如果没有明确的继承一个父类的话，那么它就是Object的子类；
 
+Object类中的方法：
 1. clone()
 保护方法，实现对象的浅复制，只有实现了Cloneable接口才可以调用该方法，否则抛出CloneNotSupportedException异常。
 
@@ -1189,6 +1481,7 @@ PS：开发中，如何确定一个属性是否要声明为static？
 ②操作静态属性的方法，通常设计成static的
 ③工具类中的方法，习惯上声明为static的
 
+在Java中，静态变量和静态代码块会按照它们在类中出现的顺序依次执行。
 
 Java final关键字
 在Java中，final关键字是一个修饰符，它可以用于变量、方法和类，表示这些实体是“最终的”或“不可变的”。
@@ -2454,7 +2747,7 @@ Java多线程的几种锁：
 加锁顺序：偏向锁→轻量级锁→自旋锁→重量级锁。
 
 在Java中，偏向锁、轻量级锁、自旋锁（尽管Java的官方文档中并不直接称其为“自旋锁”，但自旋的概念在轻量级锁的实现中有所体现）和重量级锁都是JVM（Java虚拟机）内部用于实现同步机制的锁优化技术。
-这些锁的优化策略旨在提高多线程程序的性能，减少线程同步的开销。
+这些锁的优化策略旨在提高多线程程序的性能，减少线程同步的开销。这些锁类型是 JVM 在底层对 synchronized 的优化策略，目的是提高多线程并发性能。
 
 在Java多线程环境中，从偏向锁到轻量级锁、再到重量级锁的升级过程中，涉及哈希值的计算主要是在对象状态转换和锁机制变化的背景下进行的。
 以下是对这一过程中哈希值计算的具体操作的详细解释：
@@ -3322,6 +3615,38 @@ AtomicInteger类：AtomicInteger是Java提供的原子类之一，它利用CAS�
 incrementAndGet方法：incrementAndGet是AtomicInteger类中的一个方法，它使用CAS操作将当前值递增1并返回递增后的值。CAS操作在这里的作用是确保在多线程环境下，每个线程对计数器的递增操作是互斥的，即一个线程在执行递增操作时，其他线程不能同时执行递增操作。
 多线程执行：在示例中，我们创建了三个线程，每个线程都会执行1000次递增操作。由于使用了AtomicInteger的CAS操作，这些递增操作在多线程环境下是安全的，不会出现数据不一致的问题。
 结果输出：最后，我们等待所有线程执行完毕，并输出计数器的最终值。由于使用了CAS操作，最终值应该是3000，即三个线程各自执行了1000次递增操作的总和。
+
+二、ReentrantLock 是 Java 提供的显式锁，其底层实现依赖于 AQS，而 AQS 的核心机制就是 CAS。
+AQS 中的 CAS
+AQS 使用 CAS 来管理锁状态（state 变量）。
+
+例如，当一个线程尝试获取锁时，AQS 会通过 CAS 修改 state 的值：
+protected final boolean compareAndSetState(int expect, int update) {
+    return unsafe.compareAndSwapInt(this, stateOffset, expect, update);
+}
+
+三、ConcurrentHashMap
+CAS 在 ConcurrentHashMap 中的应用
+节点插入：在插入新节点时，使用 CAS 更新链表或红黑树的头节点。
+
+扩容：在扩容时，使用 CAS 更新表的引用。
+
+计数器更新：使用 LongAdder 或 CounterCell 来统计元素数量，底层基于 CAS。
+
+四、CopyOnWriteArrayList 和 CopyOnWriteArraySet
+这些类是线程安全的集合，通过写时复制（Copy-On-Write）机制实现。在更新操作中，使用 CAS 来保证原子性。
+
+CAS 的应用
+在更新数组时，使用 CAS 替换旧的数组引用。
+
+五、ThreadPoolExecutor
+Java 的线程池实现中，使用 CAS 来管理线程池的状态（如工作线程数、任务队列等）。
+
+CAS 的应用
+线程池状态：通过 CAS 更新线程池的状态（如 RUNNING、SHUTDOWN 等）。
+
+工作线程数：通过 CAS 更新工作线程的数量。
+
 
 AtomicStampedReference：
 AtomicStampedReference是Java并发包（java.util.concurrent.atomic）中提供的一个类，它扩展了CAS（Compare and Swap/Set）算法的应用，以解决在多线程环境下可能出现的ABA问题。
@@ -4461,6 +4786,37 @@ jdk8相较于jdk7在底层安现方面的不同:
 3.jdk7底层结构只有:数组+链表。jdk8中底层结构: 数组+链表+红黑树。
 当数组的某一个索引位置上的元素以链表形式存在的数个数 >8 且当前数组的长度>64时此时此索引位置上的所有数据改为使用红黑树存储。
 
+HashMap的扩容机制：
+1.扩容触发条件：
+当 HashMap 中的元素数量超过阈值（threshold）时，HashMap 会进行扩容。阈值是当前容量（capacity）与负载因子（load factor）的乘积。
+
+2.扩容操作：
+扩容操作涉及到创建一个新的内部数组（bucket array），其容量通常是当前数组的两倍。这个新的数组会替代原有的数组，成为 HashMap 的底层数据结构。
+
+3.计算新容量：
+新容量（newCap）通常是旧容量（oldCap）的两倍，但不会超过最大容量（MAXIMUM_CAPACITY）。如果旧容量已经达到最大容量，扩容操作将不再进行，阈值将被设置为 Integer.MAX_VALUE。
+
+4.计算新阈值：
+新阈值（newThr）是基于新容量和负载因子计算得出的。如果新容量小于最大容量并且新容量大于默认初始容量，新阈值将是旧阈值的两倍。
+
+5.迁移元素：
+在扩容过程中，所有现有的键值对需要重新映射到新的数组上。这个过程涉及到重新计算每个键的哈希值，并将其放置在新数组的正确位置上。对于链表结构的哈希冲突，可能需要将链表拆分为两部分，分别放置在新数组的两个位置上。
+
+6.链表拆分：
+当链表长度超过一定阈值（TREEIFY_THRESHOLD，默认为8）时，链表会被转换为红黑树。在扩容过程中，如果链表仍然存在，它们可能会被拆分为两个新的链表，并分别放置在新数组的两个位置上。
+
+7.性能影响：
+扩容是一个昂贵的操作，因为它涉及到大量的内存分配和元素重新映射。在多线程环境中，扩容可能会导致性能瓶颈，因为所有线程都必须等待扩容完成。
+
+8.避免频繁扩容：
+为了避免频繁的扩容操作，可以通过预估 HashMap 的最大大小并设置初始容量来减少扩容的次数。合理设置负载因子也可以在空间和时间效率之间取得平衡。
+
+9.扩容与并发：
+在 JDK 1.8 及以后的版本中，HashMap 是非同步的，但在多线程环境中，扩容操作可能会导致竞争条件。因此，如果需要线程安全的 HashMap，可以使用 ConcurrentHashMap。
+
+10.扩容与红黑树：
+JDK 1.8 引入了红黑树来优化长链表的性能问题。当链表长度超过阈值时，链表会被转换为红黑树。在扩容过程中，红黑树节点会被拆分并重新分配到新数组的两个位置上。
+
 
 >LinkedHashMap:LinkedHashMap继承了HashMap，是HashMap的一个子类，在HashMap的基础上增加了一个双向链表来维护插入顺序或访问顺序；
 遍历速度取决于数据多少，而不是容量大小；
@@ -4559,6 +4915,8 @@ Java泛型：
 泛型是工作在编译阶段的，一旦程序编译成class文件，class文件就不存在泛型了，这就是泛型擦除。通过泛型的桥界方法，Java编译器能够确保在运行时，尽管泛型类型被擦除，但仍然能够正确地处理类型转换，从而保持代码的类型安全性。
 泛型不支持基本数据类型，只能支持对象类型（引用数据类型）。
 在使用泛型的上下限时，需要特别注意PECS（Producer Extends Consumer Super）原则，即生产者使用? extends，消费者使用? super。这有助于避免在泛型集合中发生类型不匹配的错误。
+
+
 
 Java IO（Flie类、IO流、网络编程、序列化与反序列化）:
 Java的IO是实现输入和输出的基础，可以方便的实现数据的输入和输出操作。在Java中把对于输入/输出操作是以流的方式进行操作的。
@@ -7342,10 +7700,30 @@ JWT：JWT包含了完整的认证和授权信息，且可以通过HTTP头部或�
 
 JWT通常由三部分组成：
 - Header（头部）：包含了令牌类型和所用的签名算法等信息。
-- Payload（负载）：包含了要传输的数据，如用户ID、过期时间、授权信息等。
-- Signature（签名）：用于验证令牌的真实性。通常由头部和负载中的信息以及密钥生成。
+内容：头部通常是一个JSON对象，它包含了关于生成该JWT的信息以及所使用的算法类型。具体来说，它通常包含两部分信息：
+    1.令牌类型：声明该令牌的类型为JWT。
+    2.签名算法：指定用于签名该JWT的算法，如HMAC SHA256或RSA等。
+编码：头部信息经过Base64编码后，形成JWT的第一部分。
 
-创建一个JWT：
+- Payload（负载）：包含了要传输的数据，如用户ID、过期时间、授权信息等。
+    1.注册声明：这些声明是预定义的，如iss（发行人）、exp（过期时间）、nbf（生效时间）、iat（签发时间）、jti（JWT ID）等。
+    2.公共声明：这些声明是自定义的，可以包含任何与业务相关的数据，如user_id、username等。
+    3.私有声明：虽然也可以使用，但通常不建议定义与注册声明和公共声明相同的名称，以避免混淆。
+编码：载荷也使用Base64编码进行序列化，形成JWT的第二部分。
+
+- Signature（签名）：用于验证令牌的真实性。通常由头部和负载中的信息以及密钥生成。
+内容：签名部分是对头部和载荷进行签名生成的，用于验证消息的完整性和来源。签名的生成需要使用密钥，只有拥有密钥的一方才能对消息进行签名和验证。
+作用：签名的目的是确保JWT在传输过程中没有被篡改，并且只能被服务器端识别和验证。
+编码：签名部分同样经过Base64编码，形成JWT的第三部分。
+
+
+JWT工作原理：
+当用户登录时，服务器端会验证用户名和密码的正确性。一旦验证成功，服务器会根据用户的信息（如用户ID和用户名称）以及服务器端存储的JWT秘钥来生成一个JWT字符串（即Token）。这个Token是经过编码的，包含了头部、载荷和签名三个部分。
+客户端在每次请求时都会将这个Token放在Header请求头中传递给服务器端。服务器端接收到Token后，会先对其进行解码，然后使用它本地存储的秘钥以及头部中的加密算法和载荷中的信息进行重新加密，得到一个新的签名。
+最后，服务器会判断Token的真伪，用上一步新生成的签名和解码得到的签名进行判断。如果二者一致，则说明当前的Token是有效的、完整的，可以执行后续的操作；否则，返回Token错误。
+
+
+使用Java创建一个JWT：
 package boot.utils;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -7390,7 +7768,6 @@ public class JWTUtils {
     }
 
 }
-
 
 
 Node.js:
@@ -11106,9 +11483,9 @@ SpringBoot的启动方法：
 @SpringBootApplication 是 Spring Boot 应用的启动类上常用的注解，它结合了多个核心注解，简化了 Spring Boot 应用的配置。
 
 这个注解是由以下三个注解组合而成的：
-1. @SpringBootConfiguration
-2. @EnableAutoConfiguration
-3. @ComponentScan
+1. @SpringBootConfiguration：组合了@Configuration注解，实现配置文件的功能
+2. @EnableAutoConfiguration：打开自动配置的功能，也可以关闭某个自动配置的选项
+3. @ComponentScan：Spring组件扫描
 
 详细解析@SpringBootApplication：
 
@@ -11134,7 +11511,6 @@ import java.lang.annotation.*;
 public @interface SpringBootApplication {
     // Additional attributes omitted for brevity
 }
-```
 
 组成注解的详细解析
 
@@ -11153,7 +11529,7 @@ import java.lang.annotation.*;
 @Configuration
 public @interface SpringBootConfiguration {
 }
-```
+
 
 @Configuration 本身是 Spring 的核心注解之一，表示一个类可以使用 Spring IoC 容器作为 bean 定义的来源。@SpringBootConfiguration 本质上是一个带有@Configuration 注解的类，这意味着它可以定义 Spring beans。
 
@@ -11181,10 +11557,27 @@ public @interface EnableAutoConfiguration {
 
     String[] excludeName() default {};
 }
-```
 
-- @AutoConfigurationPackage：自动配置包，标记启动类所在包及其子包作为自动配置扫描包。
-- @Import(AutoConfigurationImportSelector.class)：导入 AutoConfigurationImportSelector，该类实现了自动配置的核心逻辑。
+@AutoConfigurationPackage:
+这个注解会将标注了 @EnableAutoConfiguration 的类所在的包作为自动配置的基准包。Spring Boot 会自动扫描这个包及其子包下的组件。
+
+@Import(AutoConfigurationImportSelector.class):
+AutoConfigurationImportSelector 是 Spring Boot 自动配置的核心类。它通过 SpringFactoriesLoader 加载 META-INF/spring.factories 文件中定义的自动配置类。
+AutoConfigurationImportSelector 会根据类路径下的依赖和配置，决定哪些自动配置类需要被加载。
+
+exclude() 和 excludeName():
+这两个属性允许你排除特定的自动配置类。你可以通过类对象或类名来排除不需要的自动配置。
+
+自动配置的工作原理
+①SpringFactoriesLoader:
+Spring Boot 通过 SpringFactoriesLoader 加载 META-INF/spring.factories 文件中的自动配置类。这些自动配置类通常位于 spring-boot-autoconfigure 模块中。
+
+②条件化配置:
+自动配置类通常使用 @Conditional 注解（如 @ConditionalOnClass, @ConditionalOnMissingBean 等）来决定是否生效。这些条件注解会根据类路径下的依赖和现有的 Bean 定义来决定是否应用该配置。
+
+③自动配置类的加载:
+AutoConfigurationImportSelector 会读取 spring.factories 文件中的 org.springframework.boot.autoconfigure.EnableAutoConfiguration 键对应的自动配置类列表，并根据条件注解进行筛选。
+
 
 3. @ComponentScan
 @ComponentScan 告诉 Spring 在启动类的包及其子包中查找其他组件、配置和服务，允许 Spring 自动扫描和注册这些组件。
@@ -18618,7 +19011,7 @@ docker rm -f nginx
  
 查看当前运行中的容器
 docker ps
-docker ps -a 
+docker ps -a (用于列出 Docker 容器中的所有实例，无论它们的状态是运行中（running）、已停止（stopped）、已退出（exited）还是其他任何状态)
  
 查看运行中的容器
 docker top nginx
@@ -20063,6 +20456,20 @@ RESTful API
 它可以通过转换格式、路由消息、管理连接等方式支持多种应用场景，并具有提高系统可靠性、安全性、扩展性等优势。
 常见的中间件技术包括消息队列、缓存、负载均衡、API网关、数据库代理和文件存储代理等。
 它们各具特点，可以应用于分布式系统、微服务架构、大数据系统等不同场景。
+
+中间件的主要功能和特点包括：
+数据交换：中间件提供了一种机制，使得不同的应用软件之间可以方便地进行数据交换和通信。这有助于实现系统的集成和互操作性。
+应用服务：中间件提供了各种应用服务，如事务处理、消息传递、负载均衡等。这些服务可以帮助应用软件更高效地完成其功能。
+资源管理：中间件能够管理和优化系统资源的使用，如内存、CPU和I/O设备等。这有助于提高系统的性能和可靠性。
+跨平台支持：中间件提供了一种抽象层，使得应用软件可以在不同的操作系统和硬件平台上运行，而无需对底层系统进行修改。这有助于降低开发和维护成本。
+安全性：中间件提供了各种安全机制，如身份验证、授权和加密等，以保护应用软件和数据免受未经授权的访问和攻击。
+
+根据功能和应用场景的不同，中间件可以分为多种类型，如：
+数据库中间件：用于数据库的连接、查询优化和数据同步等。
+应用服务器中间件：提供应用软件的部署、运行和管理环境。
+消息中间件：实现不同应用软件之间的异步通信和数据交换。
+远程过程调用（RPC）中间件：允许一个应用软件调用另一个应用软件的过程或函数，就像调用本地过程一样。
+Web中间件：用于Web应用的服务器、负载均衡、会话管理等。
 
 中间件技术包括：
 消息队列：如RabbitMQ、ActiveMQ、Kafka等。
@@ -24672,7 +25079,7 @@ Zookeeper从设计模式角度来理解：是一个基于观察者模式设计�
 
 特点：
 1.Zookeeper：一个领导者（Leader），多个跟随者（Follower）组成的集群。
-2.集群中只要有半数以上节点存活，Zookeeper集群就能正常服务。所 以Zookeeper适合安装奇数台服务器。
+2.集群中只要有半数以上节点存活，Zookeeper集群就能正常服务。所以Zookeeper适合安装奇数台服务器。
 3.全局数据一致：每个Server保存一份相同的数据副本，Client无论连接到哪个Server，数据都是一致的。
 4.更新请求顺序执行，来自同一个Client的更新请求按其发送顺序依次执行。
 5.数据更新原子性，一次数据更新要么成功，要么失败。
