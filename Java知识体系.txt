@@ -18500,8 +18500,42 @@ Redis分布式锁的看门狗（Watch Dog）机制是Redisson客户端在使用R
 该机制主要用于确保在客户端持有锁期间，锁不会因为超时而被意外释放，从而保证了操作的安全性和原子性。
 
 看门狗机制的好处包括：
-避免死锁：即使在客户端操作异常长的情况下，也可以保证锁最终被释放，避免死锁的发生。
-操作安全性：通过保证在操作期间锁一直有效，确保了操作的安全性和数据的一致性。
+锁续期：当客户端获取锁后，若业务执行时间较长，可能导致锁自动过期。看门狗通过周期性延长锁的TTL，避免锁提前释放。
+防止死锁：若客户端崩溃，看门狗线程也会终止，锁最终会因超时自动释放，避免永久死锁。
+
+实现机制
+后台线程：客户端（如Redisson）在获取锁后，启动一个后台守护线程（看门狗）。
+
+续期逻辑：
+周期检查：默认每隔锁TTL的1/3时间（如锁TTL为30秒，则每10秒检查一次）。
+原子续期：通过执行Lua脚本验证锁归属（比对客户端唯一标识）并延长TTL（例如EXPIRE key new_ttl）。
+递归续期：若业务未完成，续期操作会循环执行，直至锁被释放或客户端断开。
+
+关键细节：
+原子性操作：续期必须通过Lua脚本保证原子性，避免在检查和续期之间发生锁状态变化。
+客户端唯一标识：锁的值需为客户端生成的唯一随机字符串（如UUID），确保只有锁的持有者能续期。
+默认配置：部分客户端（如Redisson）默认启用看门狗，锁TTL为30秒，续期间隔10秒。
+
+示例代码：
+RedissonClient redisson = Redisson.create(config);
+RLock lock = redisson.getLock("myLock");
+try {
+    // 获取锁并自动启动看门狗
+    lock.lock();
+    // 执行业务逻辑（锁默认30秒TTL，看门狗每10秒续期）
+    // ...
+} finally {
+    lock.unlock(); // 释放锁并停止看门狗
+}
+
+注意事项
+客户端兼容性：并非所有Redis客户端都内置看门狗（如Python的redis-py需自行实现）。
+合理设置TTL：初始TTL应大于业务平均执行时间，避免频繁续期。
+避免长时间阻塞：业务代码需避免无限阻塞或长时间操作，否则看门狗会持续占用资源。
+
+潜在问题与优化
+网络延迟：若续期请求因网络问题未及时到达Redis，可能导致锁失效。可通过缩短续期间隔或增加重试缓解。
+线程管理：需确保客户端异常退出时，看门狗线程能正确终止，防止冗余续期。
 
 
 redis主从复制：
@@ -18513,7 +18547,6 @@ Redis主从复制的具体过程可以概括为以下几个阶段：
 数据同步阶段：
 
 全量复制：在从节点首次连接主节点或数据差异较大时，主节点会执行BGSAVE命令生成RDB快照文件，并将该文件发送给从节点。从节点接收到RDB文件后，会清空自己的数据并加载RDB文件，以此来实现数据的初始同步。
-
 增量复制：在全量复制完成后，主节点会将接收到的写操作命令记录在复制缓冲区中，并将这些命令发送给从节点，以保持数据的实时同步。如果主从节点之间的连接断开并重新连接，且从节点已经复制过部分数据，那么主节点会根据从节点的复制偏移量（offset）和复制积压缓冲区（repl-backlog）中的数据进行部分复制，以减少数据传输量。
 
 命令传播阶段：在数据同步完成后，主节点会持续将自己接收到的写操作命令发送给从节点，从节点则执行这些命令以保持与主节点的数据一致。
@@ -25665,6 +25698,136 @@ public class Miner {
 
 在这个例子中，mineBlock() 方法尝试添加一个新的区块到区块链上。它首先计算数据的哈希值，并检查该哈希值是否满足难度要求（在本例中，哈希值的前两个字符是否为零）。如果哈希值满足难度要求，那么它将创建一个新的区块并将其添加到链上。
 否则，它将继续尝试直到成功为止。这只是一个基本的示例，实际的区块链实现将更加复杂。
+
+Java如何实现区块链数据上链？
+1.区块类实现
+import java.util.Date;
+
+public class Block {
+    private int index;
+    private long timestamp;
+    private String data;
+    private String previousHash;
+    private String hash;
+    private int nonce;
+
+    // 构造函数
+    public Block(int index, String data, String previousHash) {
+        this.index = index;
+        this.timestamp = new Date().getTime();
+        this.data = data;
+        this.previousHash = previousHash;
+        this.hash = calculateHash();
+        this.nonce = 0;
+    }
+
+    // 计算哈希值（SHA-256）
+    public String calculateHash() {
+        String input = index + timestamp + data + previousHash + nonce;
+        return Sha256.applySha256(input);
+    }
+
+    // 挖矿（工作量证明）
+    public void mineBlock(int difficulty) {
+        String target = new String(new char[difficulty]).replace('\0', '0');
+        while (!hash.substring(0, difficulty).equals(target)) {
+            nonce++;
+            hash = calculateHash();
+        }
+        System.out.println("区块已挖出：" + hash);
+    }
+
+    // Getter方法
+    public String getHash() { return hash; }
+    public String getPreviousHash() { return previousHash; }
+    // ... 其他getter
+}
+
+2.加密工具类
+import java.security.MessageDigest;
+
+public class Sha256 {
+    public static String applySha256(String input) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(input.getBytes("UTF-8"));
+            StringBuilder hexString = new StringBuilder();
+            
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+
+3.区块链类
+import java.util.ArrayList;
+import java.util.List;
+
+public class Blockchain {
+    private List<Block> chain;
+    private int difficulty;
+
+    public Blockchain(int difficulty) {
+        this.chain = new ArrayList<>();
+        this.difficulty = difficulty;
+        // 创建创世区块
+        chain.add(new Block(0, "Genesis Block", "0"));
+    }
+
+    // 添加新区块
+    public void addBlock(String data) {
+        Block previousBlock = chain.get(chain.size() - 1);
+        Block newBlock = new Block(chain.size(), data, previousBlock.getHash());
+        newBlock.mineBlock(difficulty);
+        chain.add(newBlock);
+    }
+
+    // 验证区块链有效性
+    public boolean isValid() {
+        for (int i = 1; i < chain.size(); i++) {
+            Block current = chain.get(i);
+            Block previous = chain.get(i - 1);
+
+            if (!current.getHash().equals(current.calculateHash())) {
+                return false;
+            }
+
+            if (!current.getPreviousHash().equals(previous.getHash())) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+4.使用示例
+public class Main {
+    public static void main(String[] args) {
+        // 创建难度为3的区块链
+        Blockchain blockchain = new Blockchain(3);
+        
+        // 添加区块
+        System.out.println("正在挖掘第一个区块...");
+        blockchain.addBlock("转账10 BTC");
+        
+        System.out.println("正在挖掘第二个区块...");
+        blockchain.addBlock("转账20 BTC");
+        
+        // 验证区块链
+        System.out.println("区块链是否有效: " + blockchain.isValid());
+        
+        // 尝试篡改数据
+        blockchain.getChain().get(1).setData("转账100 BTC");
+        System.out.println("篡改后区块链是否有效: " + blockchain.isValid());
+    }
+}
+
 
 区块链的加密技术和传统密码加密技术有什么不同？
 区块链的加密技术与传统密码加密技术有一些关键的不同之处，这些不同主要是为了满足区块链分布式、去中心化的特性。以下是一些区块链加密技术与传统密码加密技术之间的不同点：
