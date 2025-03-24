@@ -10670,6 +10670,8 @@ Java Spring的几个核心部分：
 5.Spring ORM：对象关系映射，Spring框架插入了若干个ORM框架，从而提供了ORM的对象关系工具，其中包括JDO、Hibernate和iBatis SQL Map等。
 6.Spring Web：Web上下文模块建立在应用程序上下文模块之上，为基于Web的应用程序提供了上下文。它简化了处理多部分请求以及将请求参数绑定到域对象的工作。
 7.Spring Web MVC：MVC（Model-View-Controller）框架是一个全功能的构建Web应用程序的MVC实现。通过策略接口，MVC框架编程高度可配置的，它容纳了大量视图技术，其中包括JSP、Velocity、Tiles、iText和POI等。
+8.Spring JMS ：集成 Java 消息服务（JMS），支持异步消息处理。
+9.Spring web Flux：响应式编程模型，支持非阻塞、高并发的 Web 应用（如使用 Netty）。
 
 Spring IOC：
 Spring IOC（Inversion of Control，控制反转）是Spring框架中的一个核心概念，它是一种设计原则，用于减少程序中的耦合度，并提高代码的可维护性和可扩展性。
@@ -10713,6 +10715,7 @@ public class UserService {
     private UserDao userDao;  
   
     // 通过setter方法注入UserDao  
+    @Autowired
     public void setUserDao(UserDao userDao) {  
         this.userDao = userDao;  
     }  
@@ -10772,6 +10775,34 @@ public class Main {
 在这个示例中，我们定义了一个简单的UserService类和一个UserDao接口及其实现类UserDaoImpl。然后，在XML配置文件中定义了UserDao和UserService的Bean，并通过<property>标签将UserDao注入到UserService中。
 最后，在Main类中，我们通过ClassPathXmlApplicationContext加载Spring配置文件，并从IOC容器中获取UserService的Bean实例，然后调用其方法。这样就实现了IOC和依赖注入。
 
+Spring IOC的底层实现机制：
+（1）反射与动态代理
+反射：用于动态创建 Bean 实例和注入依赖。
+动态代理：处理 AOP 增强或接口型依赖（如 JDK 动态代理）。
+
+（2）三级缓存解决循环依赖
+Spring 通过三级缓存解决构造函数注入的循环依赖问题：
+
+一级缓存（singletonObjects）
+存放完全初始化好的单例 Bean。
+
+二级缓存（earlySingletonObjects）
+存放提前暴露的原始 Bean 实例（未填充属性）。
+
+三级缓存（singletonFactories）
+存放 Bean 工厂，用于生成原始对象的代理（应对 AOP 场景）。
+
+流程示例（A 依赖 B，B 依赖 A）：
+创建 A → 放入三级缓存 → 发现依赖 B → 创建 B。
+创建 B → 发现依赖 A → 从三级缓存获取 A 的工厂 → 得到 A 的早期引用 → B 完成初始化。
+A 注入 B 的实例 → A 完成初始化。
+
+（3）BeanPostProcessor 扩展点
+作用：在 Bean 初始化前后插入自定义逻辑（如 AOP、@Autowired 处理）。
+
+关键实现类：
+AutowiredAnnotationBeanPostProcessor：处理 @Autowired 注入。
+CommonAnnotationBeanPostProcessor：处理 @Resource、@PostConstruct。
 
 Bean的生命周期：
 Spring框架中的Bean生命周期是指从Bean的创建到销毁的整个过程，在这个过程中，Spring容器会负责管理Bean的状态和行为。
@@ -11290,31 +11321,40 @@ private perateLogMapper operateLogMapper;
 
 @Around("@annotation(com.itheima.anno.Log)")
 public Obiect recordLog(ProceedingdoinPoint joinPoint) throws Throwable {
-//操作人ID-当前登录员工ID
-//获取请求头中的iwt令牌，解析令牌
-String jwt=request.getHeader(name: "token");
-Claims claims=JwtUtils.parseuWT(jwt);
-Integer operateUser =(Integer)claims.get("id");
-//操作时间
-LocalDateTime operateTime = LocalDateTime.now();
-//操作类名
-String className = joinPoint.getTarget().getclass().getName ();
-//操作方法名
-String methodName = joinPoint.getSignature().getName ();
-//操作方法参数
-Object result =joinPoint.proceed();
-String methodParams =Arrays.tostring(args);
-long begin =System.currentTimeMillis();//调用原始目标方法运行
-long end=System.currentTimeMillis();
-//方法返回值
-String returnValue = JsONObject.touSONstring(result);
-//操作耗时
-Long costTime =end-begin;
-//记录操作日志
-OperateLog operateLog = new OperateLog( id: null,operateUser,operaoperate,operateTime,className,methodName,methodName,returnValue,costTime)
-LogMapper.insert(operateLog);
-log.info("AOP记录操作日志:{}"operateLog);
-return result;
+        //操作人ID-当前登录员工ID
+        //获取请求头中的iwt令牌，解析令牌
+        String jwt=request.getHeader(name: "token");
+        Claims claims=JwtUtils.parseuWT(jwt);
+        Integer operateUser =(Integer)claims.get("id");
+
+        //操作时间
+        LocalDateTime operateTime = LocalDateTime.now();
+
+        //操作类名
+        String className = joinPoint.getTarget().getclass().getName ();
+
+        //操作方法名
+        String methodName = joinPoint.getSignature().getName ();
+
+        //操作方法参数
+        Object result =joinPoint.proceed();
+        String methodParams =Arrays.tostring(args);
+
+        long begin =System.currentTimeMillis();//调用原始目标方法运行
+        long end=System.currentTimeMillis();
+
+        //方法返回值
+        String returnValue = JsONObject.touSONstring(result);
+
+        //操作耗时
+        Long costTime =end-begin;
+
+        //记录操作日志
+        OperateLog operateLog = new OperateLog( id: null,operateUser,operaoperate,operateTime,className,methodName,methodName,returnValue,costTime)
+        LogMapper.insert(operateLog);
+        log.info("AOP记录操作日志:{}"operateLog);
+
+        return result;
     }
 }
 3.在需要的方法上添加注解
@@ -11350,6 +11390,118 @@ CGLIB代理：这是一个基于字节码操作的代理方式，它可以为没
 当代理对象的方法被调用时，会在方法执行前后插入切面逻辑。这包括前置通知、后置通知、环绕通知等类型的通知。
 环绕通知是最强大的通知类型，它可以在方法调用前后完成自定义的行为，并可以选择是否继续执行目标方法或直接返回自己的返回值或抛出异常来结束执行。
 
+Spring的AOP实现的过程涉及哪些重要源码？
+1.切面解析：通过 @EnableAspectJAutoProxy 触发，由 AnnotationAwareAspectJAutoProxyCreator 处理。
+
+①启用 AOP 的入口
+@EnableAspectJAutoProxy
+注解触发 AspectJAutoProxyRegistrar，向容器注册 AnnotationAwareAspectJAutoProxyCreator（核心后置处理器）。
+
+@Import(AspectJAutoProxyRegistrar.class)
+public @interface EnableAspectJAutoProxy {}
+
+②切面扫描与 Advisor 生成
+AnnotationAwareAspectJAutoProxyCreator
+继承 AbstractAutoProxyCreator，在 Bean 初始化后拦截，生成代理对象。
+
+关键方法：postProcessAfterInitialization()（见 AbstractAutoProxyCreator）。
+
+public Object postProcessAfterInitialization(Object bean, String beanName) {
+    if (shouldSkip(bean.getClass(), beanName)) return bean;
+    // 创建代理
+    return wrapIfNecessary(bean, beanName, cacheKey);
+}
+
+BeanFactoryAspectJAdvisorsBuilder
+扫描 @Aspect 类，解析 @Pointcut 和 @Advice，生成 Advisor（封装 Advice + Pointcut）。
+
+List<Advisor> advisors = this.aspectJAdvisorBuilder.buildAspectJAdvisors();
+
+2.代理创建：DefaultAopProxyFactory 选择 JDK/CGLIB，生成代理对象。
+①选择代理方式
+DefaultAopProxyFactory
+根据目标类是否实现接口，决定使用 JDK 动态代理或 CGLIB：
+
+public AopProxy createAopProxy(AdvisedSupport config) {
+    if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
+        return new ObjenesisCglibAopProxy(config); // CGLIB
+    } else {
+        return new JdkDynamicAopProxy(config);     // JDK 代理
+    }
+}
+
+②代理对象生成
+JDK 动态代理
+JdkDynamicAopProxy 实现 InvocationHandler，拦截方法调用：
+
+public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    // 获取拦截器链并执行
+    List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
+    if (chain.isEmpty()) {
+        return method.invoke(target, args); // 无增强则直接调用原方法
+    } else {
+        MethodInvocation invocation = new ReflectiveMethodInvocation(proxy, target, method, args, chain);
+        return invocation.proceed(); // 执行拦截器链
+    }
+}
+
+CGLIB 代理
+CglibAopProxy 通过 Enhancer 生成子类，DynamicAdvisedInterceptor 处理拦截：
+
+public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+    // 逻辑与 JDK 代理类似，最终调用 MethodInvocation.proceed()
+}
+
+3.拦截执行：ReflectiveMethodInvocation 驱动拦截器链，按顺序调用通知逻辑。
+①拦截器链封装
+DefaultAdvisorChainFactory
+将 Advisor 转换为 MethodInterceptor（如 AspectJAfterAdvice、MethodBeforeAdviceInterceptor）。
+
+List<Object> interceptors = new ArrayList<>(advisors.length);
+for (Advisor advisor : advisors) {
+    if (advisor instanceof MethodInterceptor) {
+        interceptors.add(advisor);
+    }
+}
+②链式调用
+ReflectiveMethodInvocation
+维护拦截器链和当前执行位置，递归调用 proceed()：
+
+public Object proceed() throws Throwable {
+    if (this.currentInterceptorIndex == this.interceptorsAndDynamicMethodMatchers.size() - 1) {
+        return invokeJoinpoint(); // 调用目标方法
+    }
+    // 执行当前拦截器
+    Object interceptor = this.interceptorsAndDynamicMethodMatchers.get(++this.currentInterceptorIndex);
+    if (interceptor instanceof MethodInterceptor) {
+        return ((MethodInterceptor) interceptor).invoke(this);
+    }
+}
+③ 通知类型适配
+MethodBeforeAdviceInterceptor
+处理 @Before 通知：
+
+public Object invoke(MethodInvocation mi) throws Throwable {
+    this.advice.before(mi.getMethod(), mi.getArguments(), mi.getThis());
+    return mi.proceed(); // 继续链式调用
+}
+AspectJAfterAdvice
+处理 @After 通知：
+
+public Object invoke(MethodInvocation mi) throws Throwable {
+    try {
+        return mi.proceed(); // 先执行后续调用
+    } finally {
+        invokeAdviceMethod(); // 最终执行通知逻辑
+    }
+}
+AspectJAroundAdvice
+处理 @Around 通知：
+
+public Object invoke(MethodInvocation mi) throws Throwable {
+    ProceedingJoinPoint pjp = lazyGetProceedingJoinPoint(mi);
+    return invokeAdviceMethod(pjp); // 由用户控制是否调用 proceed()
+}
 
 Spring AOP和AspectJ AOP有什么区别？
 Spring中的AOP（Aspect-Oriented Programming，面向切面编程）和AspectJ AOP都是实现AOP编程的技术，但它们在实现机制、功能和适用场景上有一些重要的区别。
