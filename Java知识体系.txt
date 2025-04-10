@@ -4913,6 +4913,7 @@ Java泛型：
 
 泛型使用注意事项：
 泛型是工作在编译阶段的，一旦程序编译成class文件，class文件就不存在泛型了，这就是泛型擦除。通过泛型的桥界方法，Java编译器能够确保在运行时，尽管泛型类型被擦除，但仍然能够正确地处理类型转换，从而保持代码的类型安全性。
+泛型擦除可能会导致运行时无法获取泛型具体类型，可能引发 ClassCastException。
 泛型不支持基本数据类型，只能支持对象类型（引用数据类型）。
 在使用泛型的上下限时，需要特别注意PECS（Producer Extends Consumer Super）原则，即生产者使用? extends，消费者使用? super。这有助于避免在泛型集合中发生类型不匹配的错误。
 
@@ -7816,13 +7817,76 @@ Vue.js（通常简称为Vue）是一个用于构建用户界面的渐进式JavaS
 Vue被设计为可以自底向上逐层应用，其核心库只关注视图层，不仅易于上手，也便于与第三方库或已有项目整合。
 
 Vue的一些主要特点和概念：
-
 响应式数据绑定：Vue通过其内置的响应式系统，可以自动追踪JavaScript对象的变化，并在数据发生变化时更新DOM。这使得开发者无需手动操作DOM来更新视图，提高了开发效率和代码的可维护性。
 组件化开发：Vue允许开发者将界面拆分成独立的、可复用的组件。每个组件都包含了自己的HTML、CSS和JavaScript代码，并且可以与其他组件进行通信和交互。这种组件化的开发方式使得代码更加模块化和可维护。
 模板系统：Vue使用基于HTML的模板语法来描述组件的视图结构。模板可以绑定到Vue实例的数据上，当数据发生变化时，视图会自动更新。模板系统还支持条件渲染、列表渲染和自定义指令等高级功能。
 指令：Vue提供了一套内置指令（如v-if、v-for、v-bind等），用于在模板中操作DOM元素和绑定数据。这些指令可以简化常见的DOM操作，并使得模板代码更加清晰和易于理解。
 插件和生态系统：Vue拥有一个活跃的插件和工具生态系统，包括路由管理、状态管理、构建工具等。这些工具和插件可以帮助开发者构建更复杂、更强大的应用程序。
 轻量级和灵活性：Vue.js是一个轻量级的框架，核心库的大小相对较小，可以轻松地与其他库或现有项目集成。同时，Vue也提供了足够的灵活性，允许开发者根据项目的需求选择使用哪些功能或插件。
+
+Vue3比Vue2在设计思想上有了显著的改进，核心变化体现在响应式系统、组合式 API、性能优化和扩展性等方面。
+1. 响应式系统的重构
+Vue 2（基于 Object.defineProperty）
+
+通过递归遍历对象属性，使用 getter/setter 实现响应式。
+局限性：无法检测新增/删除的属性（需用 Vue.set/Vue.delete），对数组的某些操作（如通过索引修改）需特殊处理。
+初始化时递归劫持整个对象，性能开销较大。
+
+Vue 3（基于 Proxy）
+使用 Proxy 代理整个对象，支持动态增删属性和数组索引操作。
+
+优势：
+无需初始化递归，按需响应，性能更好。
+支持 Map、Set 等复杂数据结构。
+减少边缘情况的特殊处理，代码更简洁。
+
+
+2. 组合式 API（Composition API）
+Vue 2（Options API）
+通过 data、methods、computed 等选项组织代码。
+问题：逻辑分散在不同选项中，大型组件难以维护（尤其是复用逻辑需依赖 mixins，易命名冲突）。
+
+Vue 3（Composition API）
+使用 setup() 函数，通过 ref、reactive、computed 等函数按逻辑功能组织代码。
+
+优势：
+逻辑复用更灵活（自定义 Hook 函数替代 mixins）。
+更好的 TypeScript 支持。
+代码更内聚，便于提取和复用。
+
+3. 性能优化
+编译时优化：
+
+Vue 3 的模板编译生成更高效的虚拟 DOM：
+
+静态提升（Static Hoisting）：将静态节点提取为常量，避免重复渲染。
+Patch Flag：标记动态节点，仅对比变化的属性。
+Tree-Shaking 支持：按需引入 API，减少打包体积。
+
+运行时优化：
+虚拟 DOM 重写，Diff 算法更高效。
+组件实例初始化更快（约 2 倍性能提升）。
+
+4. 扩展性与源码结构
+模块化：
+Vue 3 将核心模块（如响应式、渲染器）拆解为独立包（@vue/reactivity、@vue/runtime-core），便于单独使用或自定义。
+支持自定义渲染器（如渲染到 WebGL、终端）。
+
+TypeScript 支持：
+Vue 3 完全用 TypeScript 重写，提供更完善的类型推断。
+
+5. 其他改进
+Fragment 和 Teleport：
+
+支持多根节点组件（Fragment）。
+Teleport 可将组件渲染到 DOM 任意位置（如模态框）。
+
+Suspense：
+内置异步组件加载状态管理。
+
+更小的体积：
+Vue 3 核心库约 10KB（gzip 后），比 Vue 2 更轻量。
+
 
 Vue的特点：
 遵循MVVM模式
@@ -7908,7 +7972,6 @@ export default {
 </html>
 
 注意：
-
 想让Vue工作，就必须创建一个Vue实例，且要传入一个配置对象。root容器里的代码依然符合html规范，只不过混入了一些特殊的Vue语法。
 root容器里的代码被称为Vue模板。Vue实例与容器是一一对应的。真实开发中只有一个Vue实例，并且会配合着组件一起使用。
 {{xxx}}中的xxx要写js表达式，且xxx可以自动读取到data中的所有属性。一旦data中的数据发生变化，那么模板中用到该数据的地方也会自动更新
@@ -15459,6 +15522,248 @@ public static void main(String[] args) {
 语法规则较复杂时，会引起类膨胀。
 执行效率比较低
 
+总结：
+在平常开发过程中，如何用设计模式设计一个业务接口？
+在日常开发中将设计模式融入业务接口设计时，关键在于识别业务场景与设计模式的匹配度。以下是常见模式的落地实践和示例：
+
+一、核心实践原则
+1.接口隔离原则：保持接口职责单一
+2.开闭原则：通过扩展而非修改实现变化
+3.依赖倒置：面向抽象编程
+
+二、高频模式与业务场景对应
+1. 策略模式（支付/计算场景）
+// 支付接口
+public interface PaymentStrategy {
+    void pay(BigDecimal amount);
+}
+
+// 具体策略
+public class AlipayStrategy implements PaymentStrategy {
+    @Override
+    public void pay(BigDecimal amount) {
+        // 支付宝支付逻辑
+    }
+}
+
+// 策略上下文
+public class PaymentContext {
+    private PaymentStrategy strategy;
+
+    public void setStrategy(PaymentStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public void executePayment(BigDecimal amount) {
+        strategy.pay(amount);
+    }
+}
+
+适用场景：支付方式切换、优惠计算规则、物流计费策略
+
+2. 工厂模式（多态对象创建）
+// 用户认证接口
+public interface AuthProvider {
+    CompletableFuture<User> authenticate(Object credentials);
+}
+
+// 工厂类
+public class AuthFactory {
+    public enum AuthType {
+        JWT, OAUTH, LDAP
+    }
+
+    public static AuthProvider createProvider(AuthType type) {
+        switch(type) {
+            case JWT: return new JwtAuth();
+            case OAUTH: return new OAuthHandler();
+            case LDAP: return new LdapAdapter();
+            default: throw new IllegalArgumentException("Unsupported auth type: " + type);
+        }
+    }
+}
+
+// 具体实现示例
+public class JwtAuth implements AuthProvider {
+    @Override
+    public CompletableFuture<User> authenticate(Object credentials) {
+        // JWT 验证逻辑
+        return CompletableFuture.completedFuture(new User());
+    }
+}
+
+适用场景：多登录方式、文件解析器创建、报表生成器
+
+3. 装饰器模式（功能扩展）
+// 增强版基础接口（带泛型）
+public interface DataAPI<T> {
+    T fetchData();
+}
+
+// 抽象装饰器（带泛型）
+public abstract class DataAPIDecorator<T> implements DataAPI<T> {
+    protected final DataAPI<T> wrapped;
+    
+    public DataAPIDecorator(DataAPI<T> wrapped) {
+        this.wrapped = wrapped;
+    }
+}
+
+// 函数式装饰器构建器
+public class APIDecorators {
+    public static <T> DataAPI<T> logging(DataAPI<T> api) {
+        return new DataAPIDecorator<T>(api) {
+            @Override
+            public T fetchData() {
+                System.out.println("Request at " + Instant.now());
+                return wrapped.fetchData();
+            }
+        };
+    }
+    
+    public static <T> DataAPI<T> caching(DataAPI<T> api) {
+        return new DataAPIDecorator<T>(api) {
+            private T cache;
+            
+            @Override
+            public T fetchData() {
+                if (cache == null) {
+                    cache = wrapped.fetchData();
+                }
+                return cache;
+            }
+        };
+    }
+}
+
+// 使用示例（流畅接口风格）
+public class Main {
+    public static void main(String[] args) {
+        DataAPI<String> api = APIDecorators.caching(
+                                APIDecorators.logging(
+                                    new CoreDataAPI()));
+                                    
+        System.out.println(api.fetchData());
+    }
+}
+
+适用场景：接口日志记录、缓存层封装、权限校验增强
+
+4. 观察者模式（事件驱动）
+
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+// 使用枚举定义订单状态
+public enum OrderState {
+    CREATED, PAID, SHIPPED, DELIVERED, CANCELLED
+}
+
+// 泛型观察者接口
+public interface Observer<T> {
+    void update(T event);
+}
+
+// 增强版主题（线程安全）
+public class OrderSubject {
+    private final List<Observer<OrderState>> observers = new CopyOnWriteArrayList<>();
+    
+    public void register(Observer<OrderState> observer) {
+        observers.add(observer);
+    }
+    
+    public void unregister(Observer<OrderState> observer) {
+        observers.remove(observer);
+    }
+    
+    public void notifyObservers(OrderState state) {
+        observers.forEach(observer -> observer.update(state));
+    }
+}
+
+// 具体观察者实现
+public class InventoryObserver implements Observer<OrderState> {
+    @Override
+    public void update(OrderState state) {
+        if (state == OrderState.PAID) {
+            System.out.println("[Inventory] Deducting stock for paid order");
+            updateStock();
+        }
+    }
+    
+    private void updateStock() {
+        // 库存更新逻辑
+    }
+}
+
+public class NotificationObserver implements Observer<OrderState> {
+    @Override
+    public void update(OrderState state) {
+        switch (state) {
+            case SHIPPED:
+                System.out.println("[Notification] Sending shipping alert");
+                sendSMS();
+                break;
+            case DELIVERED:
+                System.out.println("[Notification] Sending delivery confirmation");
+                sendEmail();
+                break;
+        }
+    }
+    
+    private void sendSMS() { /* SMS 发送逻辑 */ }
+    private void sendEmail() { /* Email 发送逻辑 */ }
+}
+
+// 使用示例
+public class Main {
+    public static void main(String[] args) {
+        OrderSubject orderTracker = new OrderSubject();
+        
+        orderTracker.register(new InventoryObserver());
+        orderTracker.register(new NotificationObserver());
+        
+        // 模拟订单状态变化
+        orderTracker.notifyObservers(OrderState.PAID);
+        orderTracker.notifyObservers(OrderState.SHIPPED);
+    }
+}
+
+适用场景：订单状态变更通知、库存同步、审计日志记录
+
+三、进阶应用技巧
+模式组合：工厂+策略实现动态算法选择
+模式变体：使用简化版模式（如静态代理）
+模式识别：通过代码异味发现模式应用点
+大量条件判断 → 考虑工厂/策略
+多重继承 → 考虑装饰器/适配器
+回调嵌套 → 考虑观察者/中介者
+
+四、实施注意事项
+性能权衡：装饰器链、复杂观察者可能影响性能
+可测试性：通过依赖注入提升接口可测试性
+文档规范：在接口文档中注明使用的设计模式
+团队共识：确保团队成员理解模式实现意图
+
+五、典型案例分析
+电商订单系统接口设计：
+
+1.使用工厂方法创建不同渠道订单
+2.策略模式处理优惠计算
+3.观察者模式通知库存/物流系统
+4.装饰器模式添加订单校验逻辑
+5.状态模式管理订单生命周期
+
+通过合理应用设计模式，业务接口可以实现：
+
+1.核心业务逻辑与基础设施解耦
+2.功能模块可插拔式扩展
+3.业务规则灵活配置
+4.系统状态变更的精准通知
+5.历史代码的渐进式重构
+
+最终达到提升代码可维护性、降低系统耦合度、增强业务适应性的目标。关键是根据实际业务复杂度选择恰当的模式，避免陷入过度设计的陷阱。
+
 
 数据结构与算法：
 数据结构与算法相辅相成，不会孤立存在；数据结构是为算法服务的，算法是作用在特定的数据结构之上（如数组具有随机访问的特点，二分查找算法需要用数组来存储数据）。
@@ -15999,7 +16304,6 @@ public class DoubleNode {
 
 树的种类：
 无序树：树中任意节点的子节点之间没有顺序关系，这种树称为无序树，也称为自由树；
-
 有序树：树中任意节点的子节点之间有顺序关系，这种树称为有序树；
 
 二叉树：每个节点最多含有两个子树的树称为二叉树；
