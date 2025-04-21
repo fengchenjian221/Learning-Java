@@ -19718,6 +19718,9 @@ boot file system （bootfs）：包含boot loader和kernel。用户不会修改�
 root file system （rootfs）：包含典型的目录结构，包括/dev, /proc, /bin, /etc, /lib, /usr, and /tmp等，
 再加上要运行用户应用所需要的所有配置文件，二进制文件和库文件。这个文件系统在不同的Linux发行版中是不同的，且用户可以对这个文件进行修改。
 
+Linux部署docker（官网链接）：
+https://docs.docker.com/engine/install/centos/
+
 
 Dockers常用命令：
 docker启动命令
@@ -19876,10 +19879,8 @@ I/O：可以设置每个容器的磁盘I/O使用量，避免某个容器对磁�
 
 
 Docker容器的镜像技术：
-Docker的镜像技术是一种特殊的文件系统，它除了提供容器运行时所需的程序、库、资源、配置等文件外，
-还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。
-镜像不包含任何动态数据，其内容在构建之后也不会被改变。
-Docker镜像的只读形式，在启动Docker容器中，文件系统结构和内容都包含在其中，Docker镜像是启动Docker容器的基础。
+Docker的镜像技术是一种特殊的文件系统，它除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。
+镜像不包含任何动态数据，其内容在构建之后也不会被改变。Docker镜像的只读形式，在启动Docker容器中，文件系统结构和内容都包含在其中，Docker镜像是启动Docker容器的基础。
 Docker镜像的文件内容和配置文件组成了Docker容器的静态文件系统运行环境--rootfs。
 简单的理解为：Docker镜像是Docker容器的静态视角，Docker容器是Docker镜像的运行状态。
 rootfs是Docker容器的根目录，在启动时Docker容器可见到的文件系统，rootfs包含了操作系统运行所需的文件系统，
@@ -19897,10 +19898,8 @@ rootfs是Docker容器的根目录，在启动时Docker容器可见到的文件�
 CI/CD流水线：
 CI/CD是持续集成和持续交付或持续部署的软件开发流程模型。CI/CD旨在通过自动化和持续性的构建、测试、部署和交付过程，来提高软件开发和发布的效率和质量。
 CI/CD的目标是缩短软件开发和发布的周期，降低开发和发布的成本和风险，以满足快速变化和不断迭代的业务需求。
-CI/CD中的"CI"指的是持续集成，是指开发人员将代码不断地提交到源代码管理系统中，在此过程中，
-自动化的测试和构建工具会自动从源代码库中获取最新的代码，进行编译、测试、打包等操作，并生成相应的构建产物；
-"CD"指的是持续交付和/或持续部署，将构建产物部署到测试环境进行测试和验证，最终生成可部署的产物，
-实现自动化的部署和发布，从而实现快速的交付和迭代。
+CI/CD中的"CI"指的是持续集成，是指开发人员将代码不断地提交到源代码管理系统中，在此过程中，自动化的测试和构建工具会自动从源代码库中获取最新的代码，进行编译、测试、打包等操作，并生成相应的构建产物；
+"CD"指的是持续交付和/或持续部署，将构建产物部署到测试环境进行测试和验证，最终生成可部署的产物，实现自动化的部署和发布，从而实现快速的交付和迭代。
 
 CI/CD 中的 "CI"指的是持续集成：
 持续集成属于开发人员的自动化流程，它帮助开发人员更加频繁地将代码的更改合并到主分支或共享分支，
@@ -19912,13 +19911,106 @@ CI/CD中的"CD"指的是持续交付和/或持续部署：
 主要为了解决因手动流程降低应用交付速度，从而使运维团队超负荷的问题。
 
 
-CI/CD流水线将程序部署到Kubernetes（k8s）的方式如下（以Jenkins为例）：
+CI/CD流水线将程序部署到docker，再由Kubernetes（k8s）的方式如下（以Jenkins为例）：
 
 1.建立流水线项目。首先建立一个Jenkins流水线项目，并配置相关参数，如选择源代码管理系统、设置构建环境等。
 2.从源代码管理系统拉取代码。Jenkins通过参数化的构建方式，从源代码管理系统中拉取代码并下载到本地。
 3.编译代码。通过Dockerfile的方式对代码进行编译和制作镜像，并将镜像上传到镜像仓库。
 4.部署应用。流水线项目将应用部署到Kubernetes集群中。
 5.配置邮件通知功能。配置邮件通知功能，将镜像构建结果通过邮件的方式通知给相关人员。
+
+配置GitLab CI/CD流水线：
+stages:
+  - test     # 运行单元测试
+  - build    # 构建 Docker 镜像
+  - deploy   # 部署到 Kubernetes
+
+variables:
+  DOCKER_IMAGE: registry.gitlab.com/your-username/your-project:$CI_COMMIT_REF_SLUG  # 镜像名称（按分支命名）
+  KUBE_NAMESPACE: production  # Kubernetes 命名空间
+
+# 阶段 1: 运行单元测试
+unit-test:
+  stage: test
+  image: python:3.9  # 根据项目语言选择基础镜像
+  script:
+    - pip install -r requirements.txt
+    - pytest tests/  # 执行测试
+
+# 阶段 2: 构建并推送 Docker 镜像
+docker-build:
+  stage: build
+  image: docker:20.10
+  services:
+    - docker:dind  # 启用 Docker-in-Docker
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"  # 仅 main 和 dev 分支触发构建
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY  # 登录镜像仓库
+    - docker build -t $DOCKER_IMAGE .
+    - docker push $DOCKER_IMAGE
+
+# 阶段 3: 部署到 Kubernetes
+deploy-to-k8s:
+  stage: deploy
+  image: bitnami/kubectl:latest  # 使用 kubectl 镜像
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"  # 仅 main 分支触发部署
+  script:
+    - kubectl config use-context production-cluster  # 切换 Kubernetes 上下文
+    - sed -i "s|{{IMAGE}}|$DOCKER_IMAGE|g" k8s/deployment.yaml  # 动态替换镜像标签
+    - kubectl apply -f k8s/ -n $KUBE_NAMESPACE
+
+配置docker镜像构建：
+FROM python:3.9-slim
+
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app:app"]
+
+
+配置kubernetes部署文件：
+在 k8s/deployment.yaml 中定义 Deployment 和 Service：
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app
+        image: {{IMAGE}}  # 占位符，由流水线替换为实际镜像
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-service
+spec:
+  selector:
+    app: my-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: ClusterIP
 
 
 前端项目如何部署？
@@ -19952,8 +20044,6 @@ CI/CD流水线将程序部署到Kubernetes（k8s）的方式如下（以Jenkins�
 使用命令行工具（如SSH）连接到服务器。
 切换到项目目录，执行启动命令（如java -jar 项目名.jar）来启动后端服务。
 确保项目成功启动，并检查日志输出以确认没有错误。
-
-
 
 
 Kubernetes：
@@ -21522,7 +21612,6 @@ MySQL主从复制延迟（Replication Lag）是指主服务器和从服务器之
 DFS的主要目的是允许物理分布式系统的用户通过使用公共文件系统（CFS）来共享他们的数据和资源。
 
 以下是几个分布式文件系统的例子：
-
 1.NFS 。网络文件系统是早期的分布式文件系统，主要解决如何在网络环境中共享和管理文件系统的问题。
 2.AFS 。AFS 是卡内基梅隆大学开发的分布式文件系统，特点是在客户端上缓存了服务器的部分数据，从而提高了访问速度。
 3.Coda 。Coda是一个可扩展的分布式文件系统，由卡内基梅隆大学开发，它通过分发和冗余技术来提高系统的可用性和健壮性。
