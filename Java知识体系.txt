@@ -20082,6 +20082,148 @@ container-runtime：实际运行和管理容器的服务。Kubernetes支持多�
 高可用性：Kubernetes通过持续监控容器的健康状态、自动重启崩溃的容器、重新调度失败的容器实例等方式，确保应用程序的高可用性。
 灵活的框架：Kubernetes的架构为分布式系统提供了灵活的框架，支持多种部署模式，并允许开发人员使用Kubernetes API来部署、扩展和管理容器化应用程序。
 
+在Linux上搭建kubernetes的过程：
+一、准备工作
+1. 环境要求
+节点：至少2台Linux机器（1个Master + 1个Worker，或单机All-in-One）。
+系统：Ubuntu 20.04+/CentOS 7+，禁用交换分区（swapoff -a）。
+网络：节点间互通，开放所需端口（如6443、2379-2380等）。
+硬件：2GB+ RAM，2核CPU+，硬盘20GB+。
+
+2. 配置所有节点
+
+# 禁用交换分区（永久生效需编辑 /etc/fstab）
+sudo swapoff -a
+
+# 设置主机名（如master/node1）
+sudo hostnamectl set-hostname master  # 控制平面节点
+sudo hostnamectl set-hostname node1   # 工作节点
+
+# 添加主机名解析（所有节点执行）
+sudo vi /etc/hosts
+# 添加内容：
+<master-ip> master
+<node1-ip> node1
+
+# 加载内核模块
+cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+overlay
+br_netfilter
+EOF
+sudo modprobe overlay
+sudo modprobe br_netfilter
+
+# 配置网络参数
+cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-iptables  = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward                 = 1
+EOF
+sudo sysctl --system
+
+二、安装容器运行时
+选项1：安装 containerd（推荐）
+
+# 安装依赖
+sudo apt-get update && sudo apt-get install -y containerd  # Ubuntu/Debian
+sudo yum install -y containerd                              # CentOS
+
+# 生成默认配置
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml
+
+# 修改配置，设置Systemd Cgroup驱动
+sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
+
+# 启动服务
+sudo systemctl restart containerd
+sudo systemctl enable containerd
+选项2：安装 Docker
+
+# 安装Docker
+curl -fsSL https://get.docker.com | 
+
+# 配置Docker使用systemd作为Cgroup驱动
+sudo cat <<EOF | sudo tee /etc/docker/daemon.json
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "registry-mirrors": ["https://镜像地址.mirror.aliyuncs.com"]
+}
+EOF
+
+# 重启Docker
+sudo systemctl restart docker
+sudo systemctl enable docker
+
+三、安装kubeadm、kubelet、kubectl
+
+# 添加Kubernetes源（所有节点执行）
+sudo apt-get update && sudo apt-get install -y apt-transport-https ca-certificates curl  # Ubuntu/Debian
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+# CentOS
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/
+enabled=1
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/repodata/repomd.xml.key
+EOF
+
+# 安装工具
+sudo apt-get update && sudo apt-get install -y kubelet kubeadm kubectl  # Ubuntu/Debian
+sudo yum install -y kubelet kubeadm kubectl                              # CentOS
+sudo systemctl enable --now kubelet
+
+四、初始化Master节点
+
+# 在Master节点执行
+sudo kubeadm init \
+  --apiserver-advertise-address=<master-ip> \
+  --pod-network-cidr=10.244.0.0/16 \  # Flannel网络插件默认CIDR
+  --image-repository registry.aliyuncs.com/google_containers  # 国内镜像加速
+
+# 成功后会输出加入节点的命令，类似：
+kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash <hash>
+
+# 配置kubectl（普通用户执行）
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+五、安装网络插件（如Flannel）
+
+# 在Master节点执行
+kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+
+# 检查Pod状态
+kubectl get pods -n kube-system
+
+六、加入Worker节点
+在Worker节点执行Master初始化后输出的kubeadm join命令：
+sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash <hash>
+
+七、验证集群
+
+# 查看节点状态
+kubectl get nodes  # 所有节点应显示Ready
+
+# 运行测试Pod
+kubectl create deployment nginx --image=nginx
+kubectl expose deployment nginx --port=80
+kubectl get pods,svc
+
+常见问题
+镜像拉取失败：使用国内镜像源（如registry.aliyuncs.com/google_containers）。
+节点未Ready：检查网络插件是否安装，或查看日志 kubectl describe node <node-name>。
+kubeadm init卡住：检查防火墙/SELinux设置，或查看日志 journalctl -xeu kubelet。
+
+扩展配置
+持久化存储：安装CSI驱动（如NFS、Ceph）。
+Dashboard：部署Kubernetes Dashboard并配置访问。
+Ingress：安装Nginx Ingress Controller。
 
 K8S和Docker的区别：
 K8S（Kubernetes）和Docker都是容器化技术中非常重要的工具，但它们各自有不同的定位和功能。以下是两者的主要区别：
@@ -26607,7 +26749,7 @@ Prometheus 对于联邦集群的支持，可以让多个 Prometheus 实例产生
 同时这些客户端收集的监控数据，不仅仅支持 Prometheus，还能支持 Graphite 这些其他的监控工具。
 同时 Prometheus 还支持与其他的监控系统进行集成：Graphite，Statsd，Collected，Scollector，muini，Nagios等。 
 Prometheus 社区还提供了大量第三方实现的监控数据采集支持：
-JMX，CloudWatch，EC2，MySQL，PostgresSQL，Haskell，Bash，SNMP，
+JMX，CloudWatch，EC2，MySQL，PostgresSQL，Haskell，，SNMP，
 Consul，Haproxy，Mesos，Bind，CouchDB，Django，Memcached，RabbitMQ，
 Redis，RethinkDB，Rsyslog 等等。
 
