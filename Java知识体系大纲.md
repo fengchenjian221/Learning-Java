@@ -1,9 +1,11 @@
 # Java知识体系大纲
+[Java知识体系](./Java知识体系.md)
 
-## Java
-Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概念。本文旨在汇总Java语法、Java语法特点、与计算机交互、优化、数据库、安全领域，囊括主流的开源框架、一些解决方案和一些前沿的技术，在web和大数据上的应用（不涉及桌面端GUI）。本文主要在软件开发方面进行总结，不涉及嵌入式开发等硬件领域。
+## Java [Java介绍](./Java知识体系.md/#java介绍)
+Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概念。本文旨在汇总Java语法、Java语法特点、与计算机交互、优化、数据库、安全领域，囊括主流的开源框架、一些解决方案和一些前沿的技术，在web和大数据上的应用（不涉及桌面端GUI）。
+本文主要在软件开发方面进行总结，不涉及嵌入式开发等硬件领域。
 
-### ① 基本语法
+### ① 基本语法 [基本语法](./Java知识体系.md/#基本语法)
 - **48个关键字**  
   Java关键字是电脑语言里事先定义的，有特别意义的标识符，有时又叫保留字，还有特别意义的变量。
   
@@ -37,7 +39,7 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
 - **异常处理**  
   `try`、`catch`、`finally`、`throw`、`throws`
 
-### ② 面向对象特点
+### ② 面向对象特点 [面向对象](./Java知识体系.md/#Java编程范式-面向对象)
 - **类**  
   是一组相关属性和行为的集合。可以看成是一类事物的模板，使用事物的属性特征和行为特征来描述该类事物
 
@@ -128,7 +130,7 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
 
 - **面向对象和面向过程的区别？**
 
-### ③ Java语言高级运用
+### ③ Java语言高级运用 [Java高级应用](./Java知识体系.md/#Java高级应用) 
 - **多线程**  
   Java的多线程不是直接调用操作系统的线程操作  
   线程的状态  
@@ -204,7 +206,7 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
 - **动态代理**  
   Cglib代理
 
-### ④ 编译特点
+### ④ 编译特点 [Java编译特点](./Java知识体系.md/#Java编译特点) 
 - **Javac**  
   Javac的编译过程
 
@@ -228,10 +230,11 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
 
 ## Web开发后端知识体系（框架）
 
-### ① 计算机网络知识与Java Web技术（含前端）
+### ① 计算机网络知识与Java Web技术（含前端）[J2EE应用程序开发技术](./Java知识体系.md/#J2EE应用程序开发技术)
 - **Web前端技术**  
   - HTML  
-  - JavaScript  
+  - JavaScript 
+  - JSP 
   - JSON  
   - AJAX  
   - Cookie  
@@ -284,7 +287,7 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
   - 在实际生活中有哪些因素影响网络传输？  
   - 为什么Java比其他语言更适合开发Web应用程序？
 
-- **Web后端技术**  
+### ② Web后端技术 [Web后端技术](./Java知识体系.md/#Web后端技术) 
   - Servlet  
     - Servlet的工作原理  
     - Servlet接口中定义的方法  
@@ -295,75 +298,80 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
     - `ServletConfig`接口  
     - `GenericServlet`抽象类  
     - `HttpServlet`抽象类
+  -Java WEB 中前后端不分离和前后端分离的区别是什么？  
+  -Struts2
+  -SSH
+  -SSM
+  -Spring
+  -Spring MVC
+  -Spring Boot
+   Spring Boot响应式编程
 
-### ② 数据库及持久层技术以及多种数据库的应用
-- **MYSQL**
-- **ORACLE**
-- **JDBC**
-- **数据库连接池Druid**
-- **Mybatis**
-- **MybatisPlus**
-- **ClickHouse**
-- **Redis**
-- **Memcache**
-- **MongoDB**
-- **ShardingSphere**
-- **Mycat**
+### ③ 数据库连接技术 [数据库连接技术](./Java知识体系.md/#数据库连接技术) 
+  - JDBC
+  - Mybatis
+    MybatisPlus
+  - Hibernate
 
-### ③ J2EE常用开发框架
-- **Hibernate**
-- **Spring**
-- **SpringMVC**
-- **SpringBoot**
-- **Mybatis**
-- **Struts2**
-- **EXTJS**
+### ④ 数据库及持久层技术以及多种数据库的应用 [数据库及持久层技术以及多种数据库的应用](./Java知识体系.md/#Java数据库及持久层技术以及多种数据库的应用)
+  - MYSQL
+  - ORACLE
+  - 数据库连接池Druid
+  - ClickHouse
+  - Redis
+  - Memcache
+  - MongoDB
+  - ShardingSphere
+  - Mycat
 
-### ④ 容器技术
-- **Docker**
-- **k8s**
+### ⑤ 容器技术 [容器技术](./Java知识体系.md/#容器技术) 
+  - Docker
+  - k8s
 
-### ⑤ 中间件技术
-- **消息队列RabbitMQ**
-- **消息队列RocketMQ**
-- **缓存中间件Redis**
-- **数据库中间件Mycat**
+### ⑥ 分布式中间件 [分布式中间件](./Java知识体系.md/#分布式中间件)
+  - 消息队列RabbitMQ
+  - 消息队列RocketMQ
+  - 缓存中间件Redis
+  - 数据库中间件Mycat
 
-### ⑥ 分布式系统
-- **Spring Cloud**
-- **Dubbo**
-- **分布式服务跟踪ELK**
-- **分布式搜索引擎Elasticsearch**
-- **分布式版本控制系统Git**
+### ⑦ 分布式微服务框架 [分布式微服务框架](./Java知识体系.md/#分布式微服务框架)
+  - Spring Cloud
+  - Dubbo
+  - 分布式服务跟踪ELK
+  - 分布式搜索引擎Elasticsearch
+  - 分布式版本控制系统Git
 
-### ⑦ 安全
-- **Spring Security**
-- **Shiro**
-- **Java安全编码指南**
-- **密码加密方式**
+### ⑧ 安全 [安全](./Java知识体系.md/#安全)
+  - Spring Security
+  - Shiro
+  - Java安全编码指南
+  - 密码加密方式
 
-### ⑧ 分布式计算-大数据
-- **底层原理Hadoop**
-- **大数据资源管理系统YARN**
-- **数据仓库工具Hive**
-- **Spark 批处理运算/Spark Streaming流式运输**
-- **Flink 批处理运算+流式运算**
-- **大数据列式存储ClickHouse**
-- **大数据分布式协调服务Zookeeper**
-- **大数据数据采集Flume**
-- **大数据消息队列Kafka**
-- **大数据任务调度Azkaban**
-- **大数据元数据管理Atlas**
-- **大数据监控系统Prometheus**
+### ⑨ 分布式计算-大数据 [大数据](./Java知识体系.md/#分布式计算-大数据)
+  - 底层原理Hadoop
+  - 大数据资源管理系统YARN
+  - 数据仓库工具Hive
+  - Spark 批处理运算/Spark Streaming流式运输
+  - Flink 批处理运算+流式运算
+  - 大数据列式存储ClickHouse
+  - 大数据分布式协调服务Zookeeper
+  - 大数据数据采集Flume
+  - 大数据消息队列Kafka
+  - 大数据任务调度Azkaban
+  - 大数据元数据管理Atlas
+  - 大数据监控系统Prometheus
 
-### ⑨ 分布式账本
-- **区块链**
-- **区块链的加密技术**
+### ⑩ 人工智能AIGC [人工智能AIGC](./Java知识体系.md/#人工智能AIGC)
+  - Java整合AGI
+  
+### ⑩ 分布式账本 [分布式账本](./Java知识体系.md/#分布式账本)
+- 区块链
+- 区块链的加密技术
 
 ---
 
 ## 计算机四大知识体系
-1. **计算机组成原理**
-2. **现代计算机操作系统**
-3. **计算机网络**
-4. **数据结构与算法**
+1. 计算机组成原理
+2. 现代计算机操作系统
+3. 计算机网络
+4. 数据结构与算法
