@@ -1,11 +1,15 @@
- Java:Java是一个面向对象高级编程语言，通过Java编译器生成字节码文件在计算机里运行。
+# Java介绍:
+Java是一个面向对象高级编程语言，通过Java编译器生成字节码文件在计算机里运行。
 与C++不同，Java运用Java Virtual Machine（JVM）执行Java字节码（二进制形式），并通过JVM在多台机器上运行。
 正因为Java运用了JVM在计算机上运行，并弱化了指针，因此Java不适合操作系统层面的源码编写，Java的应用在应用程序和web层面比较广泛。
 
 Java官方文档：https://www.w3cschool.cn/java/dict
 
-基本语法：关键字和保留字、标识符、变量、运算符、程序流程控制 
-关键字：Java关键字是电脑语言里事先定义的，有特别意义的标识符，有时又叫保留字，还有特别意义的变量。
+# 基本语法：
+关键字和保留字、标识符、变量、运算符、程序流程控制 
+
+**关键字**：Java关键字是电脑语言里事先定义的，有特别意义的标识符，有时又叫保留字，还有特别意义的变量。
+
 Java的关键字对Java的编译器有特殊的意义，他们用来表示一种数据类型，或者表示程序的结构等，关键字不能用作变量名、方法名、类名、包名和参数。
 1、48个关键字：
 用于定义类、函数、变量修饰符的关键字：
@@ -824,7 +828,7 @@ public class Example {
 }
 
 
-Java编程范式-面向对象：
+# Java编程范式-面向对象：
 "万事万物皆对象"
 1.在Java语言中，我们把功能、结构等封装到类中，通过类的实例化，来调用具体的功能结构
 2.涉及到Java语言与前端HTML或者后端数据库做交互时，都体现为用类、对象去做交互
@@ -1666,9 +1670,7 @@ Java 是一种广泛使用的编程语言，它确实具有许多面向对象的
 适合简单问题：在处理简单直观的问题时，易于理解和实施。
 
 
-
-
-Java高级应用：
+# Java高级应用：
 异步、多线程、集合、泛型、序列化、IO、网络编程、反射、动态代理、jdk8.0以及以后新特性
 
 Java多线程：Java多线程实现的原理是基于Java虚拟机（JVM）的线程调度。JVM通过线程调度器负责分配CPU时间，实现多线程的并发执行。
@@ -5983,7 +5985,7 @@ Goodbye, World!
 After method: sayGoodbye
 
 
-Java编译特点：
+# Java编译特点：
 Java的编译特点主要体现在其跨平台性、解释执行、即时编译、编译和解释的结合、安全性、可移植性和动态加载等方面。这些特点使得Java成为一种功能强大、安全可靠、易于学习和开发的编程语言，适用于各种应用场景。
 
 Javac：
@@ -6250,8 +6252,10 @@ ClassLoader classLoader3 = DriverManager.getCallerClassLoader ();
 
 
 双亲委派机制：
-Java JVM的双亲委派机制（Parent Delegation Mechanism）是一种类加载机制，它规定了当一个类加载器收到了类加载请求时，它首先不会自己尝试去加载这个类，而是把这个请求委派给父类加载器去完成，直到最终由系统类加载器（Bootstrap ClassLoader）加载。
-如果父类加载器也无法完成这个加载请求（比如父类加载器也找不到这个类），那么子加载器才会尝试自己去加载。这种双亲委派机制的主要目的是为了保护Java的核心API，防止恶意代码通过自定义类加载器的方式去加载和修改这些核心API。它确保了Java的核心类库只被系统类加载器加载一次，从而避免了类定义的混乱和冲突。
+Java JVM的双亲委派机制（Parent Delegation Mechanism）是一种类加载机制，它规定了当一个类加载器收到了类加载请求时，它首先不会自己尝试去加载这个类，
+而是把这个请求委派给父类加载器去完成，直到最终由系统类加载器（Bootstrap ClassLoader）加载。
+如果父类加载器也无法完成这个加载请求（比如父类加载器也找不到这个类），那么子加载器才会尝试自己去加载。这种双亲委派机制的主要目的是为了保护Java的核心API，防止恶意代码通过自定义类加载器的方式去加载和修改这些核心API。
+它确保了Java的核心类库只被系统类加载器加载一次，从而避免了类定义的混乱和冲突。
 
 
 双亲委派机制中的“双亲”指的是什么？
@@ -6269,7 +6273,8 @@ SPI（Service Provider Interface，服务提供者接口）之所以要破坏双
 SPI机制允许第三方为接口提供实现，并可以动态地添加或替换这些实现。在Java中，SPI通常通过在META-INF/services目录下提供接口的实现类来实现，然后通过ServiceLoader加载这些实现类。
 
 三、破坏双亲委派机制的原因
-类加载器可见性原则：子类加载器能查看父类加载器加载的所有类，但父类加载器不能查看子类加载器所加载的类。由于SPI接口通常位于rt.jar包中，由Bootstrap类加载器加载，而SPI的实现类则位于classpath路径下，由App类加载器加载。因此，当SPI接口需要调用其实现类的代码时，就会出现类加载器可见性的问题。
+类加载器可见性原则：子类加载器能查看父类加载器加载的所有类，但父类加载器不能查看子类加载器所加载的类。由于SPI接口通常位于rt.jar包中，由Bootstrap类加载器加载，而SPI的实现类则位于classpath路径下，由App类加载器加载。
+因此，当SPI接口需要调用其实现类的代码时，就会出现类加载器可见性的问题。
 实现类的动态加载：SPI机制允许动态地加载实现类，而双亲委派机制则要求类加载器按照固定的层次结构进行类加载。为了满足SPI的动态加载需求，就需要打破双亲委派机制的限制。
 第三方实现的加载：SPI机制的一个重要应用场景是允许第三方为接口提供实现。这些第三方实现通常不在Java的核心类库中，因此无法由Bootstrap类加载器加载。为了满足这一需求，就需要使用自定义的类加载器或线程上下文类加载器来加载这些第三方实现。
 
@@ -6915,12 +6920,12 @@ CPU分析器：显示CPU时间轴，帮助识别CPU消耗最高的方法和线�
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-J2EE应用程序开发技术：
+# J2EE应用程序开发技术：
 J2EE（Java 2 Platform, Enterprise Edition）是一个为企业级应用提供的一套标准规范，用于开发和部署可扩展、可移植、可靠且安全的服务器端Java应用程序。
 J2EE是Java平台的一部分，特别针对企业级应用进行了优化和扩展。
-
 Java Web是J2EE的重要应用之一。
-Web前端技术：
+
+# Web前端技术：
 在线帮助文档 https://www.w3school.com.cn/
 HTML：(主要用于网页主体结构的搭建)
 HTML 指的是超文本标记语言: HyperText Markup Language
@@ -7000,7 +7005,7 @@ CSS选择器：
         缺点:某些同名的元素不希望使用某些样式,某些不同名的元素也使用该样式,都无法协调
     2 id选择器   根据标签的id值确定样式的作用元素。
                 一般每个元素都有id属性,但是在一个页面中,id的值不应该相同,id具有唯一性
-        语法: #id值{}
+        语法: id值{}
         缺点: id值有唯一性,样式只能作用到一个元素上
     3 class选择器 根据元素的class属性值确定样式的作用元素
         元素的class属性值可以重复 而且一个元素的class属性可以有多个值
@@ -7023,7 +7028,7 @@ CSS选择器：
     
     <!--id选择器-->
     <style>    
-    #btn4{
+    btn4{
         width: 60px;
         height: 40px;
         background-color:rgb(166,232,66);
@@ -7303,6 +7308,63 @@ function fun7(){
     console.log(pinput.nextElementsibling)//获取后面的第一个元素
 }
 
+JSP：
+JSP（JavaServer Pages）是一种动态网页技术标准，它允许开发者将Java代码嵌入HTML页面中，用于创建动态生成的Web内容。
+JSP的定义：
+1.动态网页技术
+在静态HTML中嵌入Java代码片段
+服务器端执行，生成动态内容
+
+2.Servlet的进化形态
+
+JSP最终会被编译成Servlet（.java → .class）
+提供比原生Servlet更便捷的视图层开发方式
+
+3.MVC架构的视图组件
+通常作为经典Java Web MVC模式中的视图层（View）
+
+示例代码：
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>用户列表 - JSP示例</title>
+</head>
+<body>
+    <h1>用户列表</h1>
+    
+    <!-- JSTL循环 -->
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>姓名</th>
+            <th>注册时间</th>
+        </tr>
+        <c:forEach items="${users}" var="user">
+            <tr>
+                <td>${user.id}</td>
+                <td>${user.name}</td>
+                <td>
+                    <fmt:formatDate value="${user.regDate}" pattern="yyyy-MM-dd"/>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+    
+    <!-- 包含公共页脚 -->
+    <jsp:include page="/WEB-INF/fragments/footer.jsp"/>
+</body>
+</html>
+
+JSP适用场景：
+遗留系统维护：传统Java EE项目
+快速原型开发：小型项目验证
+服务端渲染：需要SEO友好的页面
+报表类页面：复杂表格/打印页面生成
+企业内部系统：无需复杂前端框架的管理后台
+
 Json：
 JavaScript Object Notation（JavaScript 对象标记法），它是一种存储和交换数据的语法。
 当数据在浏览器与服务器之间进行交换时，这些数据只能是文本，JSON 属于文本并且我们能够把任何 JavaScript 对象转换为 Json，然后将 Json 发送到服务器。
@@ -7412,7 +7474,8 @@ JS对象转换为Json字符串：
 
 
 AJAX(Asynchronous JavaScript and XML)：
-传统的web交互是用户触发一个http请求服务器，然后服务器收到之后，在做出响应到用户，并且返回一个新的页面，每当服务器处理客户端提交的请求时，客户都只能空闲等待，并且哪怕只是一次很小的交互、只需从服务器端得到很简单的一个数据，都要返回一个完整的HTML页，而用户每次都要浪费时间和带宽去重新读取整个页面。
+传统的web交互是用户触发一个http请求服务器，然后服务器收到之后，在做出响应到用户，并且返回一个新的页面。
+每当服务器处理客户端提交的请求时，客户都只能空闲等待，并且哪怕只是一次很小的交互、只需从服务器端得到很简单的一个数据，都要返回一个完整的HTML页，而用户每次都要浪费时间和带宽去重新读取整个页面。
 这个做法浪费了许多带宽，由于每次应用的交互都需要向服务器发送请求，应用的响应时间就依赖于服务器的响应时间，这导致了用户界面的响应比本地应用慢得多。
 AJAX 的出现,刚好解决了传统方法的缺陷，AJAX 是一种用于创建快速动态网页的技术，通过在后台与服务器进行少量数据交换，AJAX 可以使网页实现异步更新，这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。
 
@@ -7653,7 +7716,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 注意，页面域中的变量实际上是在JSP页面被转换成Servlet时定义的局部变量，所以它们并不是真正的“域对象”。在Servlet中，没有直接的API可以设置或获取页面域数据，因为页面域仅在JSP页面执行期间存在。
 
 
-JWT:
+**JWT:**
 JSON Web Tokens（JWT）是一种用于在网络应用中传递信息的开放标准（RFC 7519），它以紧凑且自包含的方式表示数据，
 通常用于在身份验证和授权系统中进行安全传输信息。在前后端分离的Java Web架构中，使用JWT或其他类似的Token机制进行身份验证更为常见和推荐。
 
@@ -7718,7 +7781,7 @@ JWT通常由三部分组成：
 编码：签名部分同样经过Base64编码，形成JWT的第三部分。
 
 
-JWT工作原理：
+**JWT工作原理：**
 当用户登录时，服务器端会验证用户名和密码的正确性。一旦验证成功，服务器会根据用户的信息（如用户ID和用户名称）以及服务器端存储的JWT秘钥来生成一个JWT字符串（即Token）。这个Token是经过编码的，包含了头部、载荷和签名三个部分。
 客户端在每次请求时都会将这个Token放在Header请求头中传递给服务器端。服务器端接收到Token后，会先对其进行解码，然后使用它本地存储的秘钥以及头部中的加密算法和载荷中的信息进行重新加密，得到一个新的签名。
 最后，服务器会判断Token的真伪，用上一步新生成的签名和解码得到的签名进行判断。如果二者一致，则说明当前的Token是有效的、完整的，可以执行后续的操作；否则，返回Token错误。
@@ -7966,7 +8029,7 @@ export default {
   
     const app = createApp({});  
     app.component('counter', Counter);  
-    app.mount('#app');  
+    app.mount('.app');  
   </script>  
 </body>  
 </html>
@@ -8959,7 +9022,7 @@ Nginx（发音为"engine-x"）是一个高性能、可伸缩、开源的反向�
 //配置Nginx
    server {
     listen 80;
-    server_name example.com;  # 修改为您的域名或IP地址
+    server_name example.com;  -- 修改为您的域名或IP地址
     location / {
         proxy_pass http://localhost:8080;
         proxy_set_header Host $host;
@@ -8985,7 +9048,7 @@ Nginx（发音为"engine-x"）是一个高性能、可伸缩、开源的反向�
         server backend3.example.com;
     }
 
-    # ...其他Nginx配置...
+     ...其他Nginx配置...
 
     server {
         listen 80;
@@ -9012,7 +9075,7 @@ server {
     server_name example.com;  
     location /static/ {  
         alias /var/www/static/;  
-        expires 30d;  # 设置静态资源缓存有效期为30天  
+        expires 30d;  --设置静态资源缓存有效期为30天  
     }  
 }
 
@@ -9196,8 +9259,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 5.可扩展性和多线程。Java是高度可扩展的，可以适应Web应用程序的需求，并为开发人员提供水平和垂直扩展的能力。此外，Java的NIO（非阻塞I/O）API促进了在软件的单个副本中创建尽可能多的线程，这极大地提高了应用程序的性能。
 
 
-
-Web后端技术：
+# Web后端技术：
 Servlet：
 Servlet（Server Applet）是Java Servlet的简称，称为小服务程序或服务连接器，用Java编写的服务器端程序，具有独立于平台和协议的特性，主要功能在于交互式地浏览和生成数据，生成动态Web内容。
 狭义的Servlet是指Java语言实现的一个接口，广义的Servlet是指任何实现了这个Servlet接口的类，一般情况下，人们将Servlet理解为后者。Servlet运行于支持Java的应用服务器中。
@@ -9226,6 +9288,143 @@ public interface Servlet {
     String getServletInfo();
  
     void destroy();
+}
+
+用Servlet创建轻量级Web框架：
+1.创建前端控制器DispatcherServlet
+
+@WebServlet("/*")
+public class DispatcherServlet extends HttpServlet {
+    private Map<String, Controller> handlerMappings = new HashMap<>();
+    private ViewResolver viewResolver;
+    
+    @Override
+    public void init() {
+        // 1. 初始化控制器映射 (硬编码示例)
+        handlerMappings.put("/user", new UserController());
+        handlerMappings.put("/product", new ProductController());
+        
+        // 2. 初始化视图解析器
+        viewResolver = new JspViewResolver("/WEB-INF/views/", ".jsp");
+    }
+    
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) 
+        throws ServletException, IOException {
+        
+        // 1. 获取请求路径
+        String path = req.getRequestURI().substring(req.getContextPath().length());
+        
+        // 2. 查找对应的Controller
+        Controller controller = handlerMappings.get(path);
+        if (controller == null) {
+            resp.sendError(404, "No controller for path: " + path);
+            return;
+        }
+        
+        try {
+            // 3. 调用Controller处理请求
+            ModelAndView mav = controller.handleRequest(req, resp);
+            
+            // 4. 视图渲染
+            if (mav.getViewName() != null) {
+                viewResolver.resolveView(mav.getViewName(), mav.getModel(), req, resp);
+            } else if (mav.getJsonData() != null) {
+                renderJson(resp, mav.getJsonData());
+            }
+        } catch (Exception e) {
+            throw new ServletException("Controller execution failed", e);
+        }
+    }
+    
+    private void renderJson(HttpServletResponse resp, Object data) throws IOException {
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        new ObjectMapper().writeValue(resp.getWriter(), data);
+    }
+}
+
+2.创建控制器接口
+public interface Controller {
+    ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse res) 
+        throws Exception;
+}
+
+3.创建模型视图对象
+public class ModelAndView {
+    private String viewName;
+    private Map<String, Object> model = new HashMap<>();
+    private Object jsonData;
+
+    // 构造器和getter/setter
+    public ModelAndView(String viewName) {
+        this.viewName = viewName;
+    }
+    
+    public ModelAndView withObject(String key, Object value) {
+        model.put(key, value);
+        return this;
+    }
+    
+    public ModelAndView withJson(Object jsonData) {
+        this.jsonData = jsonData;
+        return this;
+    }
+}
+
+4.创建视图解析器
+public interface ViewResolver {
+    void resolveView(String viewName, 
+                    Map<String, Object> model,
+                    HttpServletRequest req, 
+                    HttpServletResponse res) 
+        throws Exception;
+}
+
+// JSP实现
+public class JspViewResolver implements ViewResolver {
+    private final String prefix;
+    private final String suffix;
+    
+    public JspViewResolver(String prefix, String suffix) {
+        this.prefix = prefix;
+        this.suffix = suffix;
+    }
+    
+    @Override
+    public void resolveView(String viewName, Map<String, Object> model,
+                           HttpServletRequest req, HttpServletResponse res) 
+        throws ServletException, IOException {
+        
+        // 设置模型数据
+        model.forEach(req::setAttribute);
+        
+        // 转发到JSP
+        RequestDispatcher dispatcher = req.getRequestDispatcher(prefix + viewName + suffix);
+        dispatcher.forward(req, res);
+    }
+}
+
+5.实现业务控制器示例
+public class UserController implements Controller {
+    @Override
+    public ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse res) {
+        // 1. 处理请求逻辑
+        String action = req.getParameter("action");
+        
+        // 2. 返回JSON响应
+        if ("list".equals(action)) {
+            List<User> users = Arrays.asList(
+                new User(1, "Alice"),
+                new User(2, "Bob")
+            );
+            return new ModelAndView().withJson(users);
+        }
+        
+        // 3. 返回视图响应
+        return new ModelAndView("userProfile")
+            .withObject("user", new User(1001, "Charlie"));
+    }
 }
 
 
@@ -9614,7 +9813,8 @@ SEO友好度：好,后端的数据一步搞定,直接生成相对应的模板网
 过滤器处于客户端与Web资源（Servlet、JSP、HTML）之间，客户端与Web资源之间的请求和响应都要通过过滤器进行过滤。
 
 使用Servlet创建过滤器：
-在Java Web开发中，过滤器（Filter）是一个常用的组件，它能够对Web应用程序的请求和响应进行预处理和后处理。Servlet规范定义了过滤器API，使得开发人员可以创建自定义的过滤器来处理HTTP请求和响应。以下是一个简单的示例，说明如何使用Servlet创建一个过滤器：
+在Java Web开发中，过滤器（Filter）是一个常用的组件，它能够对Web应用程序的请求和响应进行预处理和后处理。Servlet规范定义了过滤器API，使得开发人员可以创建自定义的过滤器来处理HTTP请求和响应。
+以下是一个简单的示例，说明如何使用Servlet创建一个过滤器：
 
 实现Filter接口
 首先，你需要创建一个类，该类实现了javax.servlet.Filter接口。这个接口定义了三个方法：init(), doFilter(), 和 destroy()。
@@ -10039,32 +10239,28 @@ public class MyListener implements ServletContextListener {
  
 }
 
-Java WEB 中什么是前后端不分离？
+Java WEB 中前后端不分离和前后端分离的区别是什么？
 在Java WEB开发中，前后端不分离和前后端分离是两种常见的架构设计方式。
 前后端不分离（Monolithic Architecture）：在这种架构中，前端和后端是紧密耦合的，它们运行在同一个应用程序中。
 这种架构的设计初衷是为了简化开发和维护，尤其是在小型应用或初创公司中。下面是一些前后端不分离的例子：
 
-1.Spring Boot：Spring Boot是一个全栈的Java框架，它可以创建独立的、生产级别的Spring应用程序。
-Spring Boot可以构建Web应用，并且内置了Tomcat服务器，前端和后端代码都放在同一个应用中。
-2.JavaServer Pages (JSP)：JSP是一种Java技术，让你可以在HTML中嵌入Java代码。
-JSP在服务器上运行，并动态生成HTML页面返回给客户端。这种方式下，前端和后端的代码是混在一起的。
+1.Spring Boot：Spring Boot是一个全栈的Java框架，它可以创建独立的、生产级别的Spring应用程序。Spring Boot可以构建Web应用，并且内置了Tomcat服务器，前端和后端代码都放在同一个应用中。
+2.JavaServer Pages (JSP)：JSP是一种Java技术，让你可以在HTML中嵌入Java代码。JSP在服务器上运行，并动态生成HTML页面返回给客户端。这种方式下，前端和后端的代码是混在一起的。
 
 
 前后端分离（Microservices Architecture）：与前后端不分离相反，前后端分离将前端和后端的职责完全分开。
 前端通常负责展示数据和用户交互，而后端则负责处理业务逻辑和数据持久化。这种架构有助于提高可扩展性、模块化和独立性。
 下面是一些前后端分离的例子：
 
-1.Spring Cloud + React/Vue：这是一种常见的微服务架构。Spring Cloud用于构建后端微服务，如API网关、服务发现、负载均衡等。
-而React或Vue等前端框架则负责构建用户界面。
-2.RESTful API + Front-end SPA：后端提供RESTful API来处理业务逻辑和数据，
-而前端使用Single Page Application (SPA)框架（如Angular、React或Vue）来获取数据并展示给用户。
+1.Spring Cloud + React/Vue：这是一种常见的微服务架构。Spring Cloud用于构建后端微服务，如API网关、服务发现、负载均衡等。而React或Vue等前端框架则负责构建用户界面。
+2.RESTful API + Front-end SPA：后端提供RESTful API来处理业务逻辑和数据，而前端使用Single Page Application (SPA)框架（如Angular、React或Vue）来获取数据并展示给用户。
 
-总之：这两种架构都有其优缺点。前后端不分离的架构简单易用，但在大型项目中可能限制了可扩展性和模块化。
-前后端分离的架构提供了更高的灵活性，但同时也增加了开发和维护的复杂性。
+总之：这两种架构都有其优缺点。前后端不分离的架构简单易用，但在大型项目中可能限制了可扩展性和模块化。前后端分离的架构提供了更高的灵活性，但同时也增加了开发和维护的复杂性。
 
 
 路由控制:前后端分离的情况后端在任何都会返回一个json数据，不涉及路由处理，即页面跳转全是由前端自己完成。
 不分离的情况，路由跳转一般由后端完成，而且携带数据，通过重定向或请求转发实现，依赖Servlet中的内置对象。
+
 返回数据:前后端分离的情况后端返回的整体划分上只有执行逻辑响应的消息实体类和对应的需要展示的数据分页类对应的JSON。
 不分离后端返回的是经过视图解析器处理前的字符串。
 
@@ -10076,198 +10272,6 @@ JSP在服务器上运行，并动态生成HTML页面返回给客户端。这种�
 返回数据时使用@ResponseBody,作用在方法上,当然对于全局的也可以使用@RespController注解。
 前后端不分离一般使用@RequestMapping，请求方式不用管。前后端不分离一般使用@RequestMapping，请求方式不用管。
 
-
-
-后端技术：
-Servlet → Java spring → springMVC
-JDBC → ORM框架
-以前：J2EE应用框架 J2EE开发框架主要有Hibernate，Spring，Struts2，EXTJS，Json。
-现在：SpringBoot、SpringCloud
-
-JDBC:
-JDBC（Java Database Connectivity）
-JDBC 是 Java 数据库连接（Java Database Connectivity）的缩写，它是一种用于执行 SQL 语句的 Java API。JDBC 可以让 Java 应用程序连接到几乎所有的关系数据库，执行查询和更新数据库中的数据，并处理结果。
-JDBC 是一种底层的 API，它为开发者提供了操作数据库的标准方法，但它本身并不包含数据库的实现，而是由数据库厂商提供 JDBC 驱动来实现对特定数据库的访问。
-
-JDBC 基本步骤
-使用 JDBC 访问数据库的基本步骤通常包括：
-
-加载 JDBC 驱动：通过 Class.forName() 方法加载数据库的 JDBC 驱动程序。
-建立数据库连接：通过 DriverManager.getConnection() 方法建立到数据库的连接。
-创建 Statement：通过连接对象创建 Statement 对象，用于执行 SQL 语句。
-执行 SQL 语句：使用 Statement 对象执行 SQL 语句，并返回结果。
-处理结果：根据 SQL 语句的不同，可能需要处理 ResultSet 结果集或更新计数。
-关闭连接：关闭 ResultSet、Statement 和 Connection 对象，以释放 JDBC 资源。
-
-示例代码：
-import java.sql.Connection;  
-import java.sql.DriverManager;  
-import java.sql.ResultSet;  
-import java.sql.Statement;  
-  
-public class JDBC {  
-    public static void main(String[] args) {  
-        // 数据库 URL，用户名和密码  
-        String url = "jdbc:mysql://localhost:3306/your_database_name?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";  
-        String user = "your_username";  
-        String password = "your_password";  
-  
-        try {  
-            // 加载 JDBC 驱动  
-            Class.forName("com.mysql.cj.jdbc.Driver");  
-  
-            // 建立连接  
-            Connection conn = DriverManager.getConnection(url, user, password);  
-  
-            // 创建 Statement  
-            Statement stmt = conn.createStatement();  
-  
-            // 执行查询  
-            String sql = "SELECT id, name FROM users";  
-            ResultSet rs = stmt.executeQuery(sql);  
-  
-            // 处理结果  
-            while (rs.next()) {  
-                int id = rs.getInt("id");  
-                String name = rs.getString("name");  
-                System.out.println("ID: " + id + ", Name: " + name);  
-            }  
-  
-            // 关闭资源  
-            rs.close();  
-            stmt.close();  
-            conn.close();  
-        } catch (Exception e) {  
-            e.printStackTrace();  
-        }  
-    }  
-}
-
-
-Hibernate：
-Hibernate是一个开放源代码的对象关系映射框架，它对JDBC进行了非常轻量级的对象封装，它将POJO与数据库表建立映射关系，是一个全自动的orm框架，hibernate可以自动生成SQL语句，自动执行，使得Java程序员可以随心所欲的使用对象编程思维来操纵数据库。
-Hibernate可以应用在任何使用JDBC的场合，既可以在Java的客户端程序使用，也可以在Servlet/JSP的Web应用中使用，最具革命意义的是，Hibernate可以在应用EJB的JavaEE架构中取代CMP，完成数据持久化的重任。
-
-创建映射配置文件：
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC 
-    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-    
-<hibernate-mapping>
-	<!-- 建立类与表的映射 -->
-	<class name="com.meimeixia.hibernate.demo01.Customer" table="cst_customer">
-		<!-- 建立类中的属性与表中的主键相对应 -->
-		<id name="cust_id" column="cust_id">
-			<!-- 主键的生成策略，后面会讲，现在使用的是本地生成策略 -->
-			<generator class="native" />
-		</id>
-		
-		<!-- 建立类中的普通属性和表中的字段相对应 -->
-		<property name="cust_name" column="cust_name" />
-		<property name="cust_source" column="cust_source" />
-		<property name="cust_industry" column="cust_industry" />
-		<property name="cust_level" column="cust_level" />
-		<property name="cust_phone" column="cust_phone" />
-		<property name="cust_mobile" column="cust_mobile" />
-	</class>
-</hibernate-mapping>
-
-创建核心配置文件：
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration PUBLIC
-	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
-	
-<hibernate-configuration>
-	<session-factory>
-		<!-- 下面是三个必须要有的配置 -->
-		<!-- 配置连接MySQL数据库的基本参数 -->
-		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="hibernate.connection.url">jdbc:mysql:///hibernate_demo01</property>
-		<property name="hibernate.connection.username">root</property>
-		<property name="hibernate.connection.password">liayun</property>
-		
-		<!-- 配置Hibernate的方言 -->
-		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-		
-		<!-- 下面两个是可选的配置！ -->
-		<!-- 打印sql语句 -->
-		<property name="hibernate.show_sql">true</property>
-		<!-- 格式化sql语句 -->
-		<property name="hibernate.format_sql">true</property>
-		
-		<!-- 告诉Hibernate的核心配置文件加载哪个映射文件 -->
-		<mapping resource="com/meimeixia/hibernate/demo01/Customer.hbm.xml"/>
-	</session-factory>
-</hibernate-configuration>
-
-创建单元测试类：
-package com.meimeixia.hibernate.demo01;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.junit.Test;
-
-/**
- * Hibernate的入门案例
- * @author 
- *
- */
-public class HibernateDemo1 {
-	
-	//保存用户的案例
-	@Test
-	public void demo1() {
-		//1. 加载Hibernate的核心配置文件
-		Configuration configuration = new Configuration().configure();
-		//如果在Hibernate的核心配置文件没有设置加载哪个映射文件，则可手动加载映射文件
-		//configuration.addResource("com/meimeixia/hibernate/demo01/Customer.hbm.xml");
-		
-		//2. 创建SessionFactory对象，类似于JDBC中的连接池
-		SessionFactory sessionFactory = configuration.buildSessionFactory();
-		
-		//3. 通过SessionFactory获取到Session对象，类似于JDBC中的Connection
-		Session session = sessionFactory.openSession();
-		
-		//4. 手动开启事务，（最好是手动开启事务）
-		Transaction transaction = session.beginTransaction();
-		
-		//5. 编写代码
-		Customer customer = new Customer();
-		customer.setCust_name("张小敬aaa");
-		
-		session.save(customer);//保存一个用户
-		
-		//6. 事务提交
-		transaction.commit();
-		
-		//7. 释放资源
-		session.close();
-		sessionFactory.close();
-	}
-	
-}
-
-MVC设计模式：MVC指MVC模式的某种框架，它强制性地使应用程序的输入、处理和输出分开。
-使用MVC应用程序被分成三个核心部件：模型、视图、控制器。
-
->M即model模型是指模型表示业务规则。在MVC的三个部件中，模型拥有最多的处理任务。即Bean层、mapper层和service层。
-被模型返回的数据是中立的，模型与数据格式无关，这样一个模型能为多个视图提供数据，由于应用于模型的代码只需写一次就可以被多个视图重用，所以减少了代码的重复性。
-
->V即View视图是指用户看到并与之交互的界面。比如由html元素组成的网页界面，或者软件的客户端界面。
-MVC的好处之一在于它能为应用程序处理很多不同的视图。在视图中其实没有真正的处理发生，它只是作为一种输出数据并允许用户操作的方式。
-
->C即controller控制器是指控制器接受用户的输入并调用模型和视图去完成用户的需求，控制器本身不输出任何东西和做任何处理。
-它只是接收请求并决定调用哪个模型构件去处理请求，然后再确定用哪个视图来显式返回的数据。
-
-MVC(Model模型、View视图、Control控制层)，将软件进行分层达到松耦合的效果。
-通用的软件编程思想, 在MVC设计模式中认为, 任何软件都可以分三层：
-控制层（Controller）、数据处理模型（Model）、负责展示数据的视图（View）。
-在MVC设计思想中要求一个符合MVC设计思想的软件应该保证上面这三部分相互独立，互不干扰，每一个部分只负责自己擅长的部分。
-如果某一个模块发生变化，应该尽量做到不影响其他两个模块。提高代码的可读性，实现程序间的松耦合、提高代码复用性。
 
 Struts2：
 Struts2框架是一个用于开发Java EE网络应用程序的开放源代码网页应用程序架构。它利用并延伸了Java Servlet API，鼓励开发者采用MVC架构。
@@ -10722,11 +10726,14 @@ SSH框架
 
 Java Spring框架：
 Spring 框架就像一个家族，有众多衍生产品例如 boot、security、jpa等等。但他们的基础都是Spring 的 ioc和aop ioc 提供了依赖注入的容器aop，解决了面向横切面的编程，然后在此两者的基础上实现了其他延伸产品的高级功能。
-Spring MVC是基于 Servlet 的一个 MVC 框架 主要解决 WEB 开发的问题，因为 Spring 的配置非常复杂，各种XML、 JavaConfig、hin处理起来比较繁琐。于是为了简化开发者的使用，从而创造性地推出了Spring boot，约定优于配置，简化了spring的配置流程。
-Spring的工作原理其实是，Spring在启动时读取bean配置信息，这里bean配置信息包括xml文件、Java类#Configuration、注解#AutoWired，存放到Bean注册表，并根据Bean注册表实例化Bean，实际上就是实例化Bean的实现类，然后将Bean实例放到Spring容器中。
+Spring MVC是基于 Servlet 的一个 MVC 框架 主要解决 WEB 开发的问题，因为 Spring 的配置非常复杂，各种XML、 JavaConfig、hin处理起来比较繁琐。
+于是为了简化开发者的使用，从而创造性地推出了Spring boot，约定优于配置，简化了spring的配置流程。
+Spring的工作原理其实是，Spring在启动时读取bean配置信息，这里bean配置信息包括xml文件、Java类@Configuration、注解@AutoWired，存放到Bean注册表，并根据Bean注册表实例化Bean。
+实际上就是实例化Bean的实现类，然后将Bean实例放到Spring容器中。
 
 Java Spring的几个核心部分：
-1.Spring Core：这是Spring框架的基础，提供了依赖注入（Dependency Injection，DI）和控制反转（Inversion of Control，IoC）的核心功能。通过DI，开发者可以将对象的创建和依赖关系的管理交给Spring容器，从而实现了解耦和可测试性。IoC则是一种设计原则，通过反转对象的创建流程，使得应用程序更加灵活和可扩展。
+1.Spring Core：这是Spring框架的基础，提供了依赖注入（Dependency Injection，DI）和控制反转（Inversion of Control，IoC）的核心功能。通过DI，开发者可以将对象的创建和依赖关系的管理交给Spring容器，从而实现了解耦和可测试性。
+IoC则是一种设计原则，通过反转对象的创建流程，使得应用程序更加灵活和可扩展。
 2.Spring Context：应用上下文模块，建立在Spring Core之上，提供了框架式的Bean访问方式，以及企业级服务，例如JNDI、EJB、电子邮件、国际化、校验和调度功能。
 3.Spring DAO：JDBC DAO抽象层提供了有意义的异常层次结构，简化了错误处理，并且极大地降低了需要编写的异常代码数量。
 4.Spring AOP（Aspect-Oriented Programming）：面向切面编程，允许开发者定义跨多个点的行为，如日志、事务和安全性等，并将这些行为与业务逻辑分离。这种分离提高了代码的模块化和重用性。
@@ -12070,7 +12077,7 @@ public @interface ComponentScan {
     Class<?>[] basePackageClasses() default {};
     boolean lazyInit() default false;
 }
-```
+
 
 @ComponentScan 默认扫描启动类所在包及其子包中的所有组件（如 @Component、@Service、@Repository 和 @Controller 等），这意味着您通常会将启动类放在根包中，以便扫描整个项目的组件。
 
@@ -12184,7 +12191,8 @@ SpringBoot的自动配置：
 Spring Boot的自动配置是其核心功能之一，它极大地简化了Spring应用程序的初始搭建和配置过程。自动配置的核心思想是根据项目中的依赖和类路径下的特定类，自动创建和配置Spring容器中的bean，从而省去了手动配置的大量工作。
 
 以下是Spring Boot自动配置的主要原理和实现方式：
->条件化配置：Spring Boot通过条件注解（如@ConditionalOnClass、@ConditionalOnMissingBean等）来决定是否加载某个自动配置类或bean。这些条件可以是类路径下是否存在某个类、是否存在某个bean等。只有当满足特定条件时，相关的自动配置才会生效。
+>条件化配置：Spring Boot通过条件注解（如@ConditionalOnClass、@ConditionalOnMissingBean等）来决定是否加载某个自动配置类或bean。这些条件可以是类路径下是否存在某个类、是否存在某个bean等。
+只有当满足特定条件时，相关的自动配置才会生效。
 >自动配置类：自动配置类通过@Configuration注解标识，它们包含了Spring容器需要自动创建的bean的定义。这些bean的创建和配置会根据条件化注解的条件来确定。自动配置类通常存放在spring-boot-autoconfigure模块的jar包中。
 >META-INF/spring.factories文件：Spring Boot通过在类路径下的META-INF/spring.factories文件中定义自动配置类，告诉Spring Boot哪些配置类需要被加载。这个文件是一个属性文件，其中包含了自动配置类的全限定名。
 >属性绑定：Spring Boot还允许开发者在application.properties或application.yml文件中定义外部化配置，这些配置会被自动绑定到相关的bean上。这大大简化了配置的复杂性，使得开发者能够更专注于业务逻辑的实现。
@@ -12485,6 +12493,440 @@ Spring WebFlux可以与多种日志框架集成，如SLF4J、Logback和Log4j2。
 集成监控工具
 将Spring WebFlux应用程序与监控工具集成，如Elastic APM、New Relic等，以获取更详细的性能监控和异常跟踪信息。
 这些工具通常提供了丰富的监控功能，如分布式跟踪、性能瓶颈分析、错误日志收集等。
+
+# 数据库连接技术：
+JDBC → ORM框架
+
+JDBC:
+JDBC（Java Database Connectivity）
+JDBC 是 Java 数据库连接（Java Database Connectivity）的缩写，它是一种用于执行 SQL 语句的 Java API。JDBC 可以让 Java 应用程序连接到几乎所有的关系数据库，执行查询和更新数据库中的数据，并处理结果。
+JDBC 是一种底层的 API，它为开发者提供了操作数据库的标准方法，但它本身并不包含数据库的实现，而是由数据库厂商提供 JDBC 驱动来实现对特定数据库的访问。
+
+JDBC 基本步骤
+使用 JDBC 访问数据库的基本步骤通常包括：
+
+加载 JDBC 驱动：通过 Class.forName() 方法加载数据库的 JDBC 驱动程序。
+建立数据库连接：通过 DriverManager.getConnection() 方法建立到数据库的连接。
+创建 Statement：通过连接对象创建 Statement 对象，用于执行 SQL 语句。
+执行 SQL 语句：使用 Statement 对象执行 SQL 语句，并返回结果。
+处理结果：根据 SQL 语句的不同，可能需要处理 ResultSet 结果集或更新计数。
+关闭连接：关闭 ResultSet、Statement 和 Connection 对象，以释放 JDBC 资源。
+
+示例代码：
+import java.sql.Connection;  
+import java.sql.DriverManager;  
+import java.sql.ResultSet;  
+import java.sql.Statement;  
+  
+public class JDBC {  
+    public static void main(String[] args) {  
+        // 数据库 URL，用户名和密码  
+        String url = "jdbc:mysql://localhost:3306/your_database_name?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";  
+        String user = "your_username";  
+        String password = "your_password";  
+  
+        try {  
+            // 加载 JDBC 驱动  
+            Class.forName("com.mysql.cj.jdbc.Driver");  
+  
+            // 建立连接  
+            Connection conn = DriverManager.getConnection(url, user, password);  
+  
+            // 创建 Statement  
+            Statement stmt = conn.createStatement();  
+  
+            // 执行查询  
+            String sql = "SELECT id, name FROM users";  
+            ResultSet rs = stmt.executeQuery(sql);  
+  
+            // 处理结果  
+            while (rs.next()) {  
+                int id = rs.getInt("id");  
+                String name = rs.getString("name");  
+                System.out.println("ID: " + id + ", Name: " + name);  
+            }  
+  
+            // 关闭资源  
+            rs.close();  
+            stmt.close();  
+            conn.close();  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }  
+    }  
+}
+
+Mybatis：
+MyBatis是一个优秀的持久层框架，它对jdbc的操作数据库的过程进行封装，使开发者只需要关注 SQL 本身，而不需要花费精力去处理例如注册驱动、创建connection、创建statement、手动设置参数、结果集检索等jdbc繁杂的过程代码。
+Mybatis通过xml或注解的方式将要执行的各种statement（statement、preparedStatemnt、CallableStatement）配置起来，并通过java对象和statement中的sql进行映射生成最终执行的sql语句，最后由mybatis框架执行sql并将结果映射成java对象并返回。
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybitis.mapper.UserMapper">
+    <resultMap id="result" type="com.mybitis.entity.User">
+        <result column="userid" jdbcType="INTEGER" property="userid" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+    </resultMap>
+
+    <select id="findAllUser" resultType="com.mybitis.entity.User">
+        select  * from user;
+    </select>
+
+    <select id="findUserByUserId" resultType="com.mybitis.entity.User">
+        select * from user where userid=#{userid};
+    </select>
+    <select id="findUserByUsername" resultType="com.mybitis.entity.User">
+        select * from user where username=#{username};
+    </select>
+
+    <insert id="insertUser" parameterType="com.mybitis.entity.User" keyProperty="userid" useGeneratedKeys="true">
+        insert into user(userid,username,password) values (#{userid},#{username},#{password});
+    </insert>
+
+    <update id="updateUser" parameterType="com.mybitis.entity.User">
+        update user set username=#{username},password=#{password} where userid=#{userid};
+    </update>
+
+    <delete id="deleteUser" parameterType="com.mybitis.entity.User">
+        delete from user where userid=#{userid};
+    </delete>
+</mapper>
+
+MyBatis获取参数值的两种方式：${}和#{}
+${}的本质就是字符串拼接，#{}的本质就是占位符赋值
+${}使用字符串拼接的方式拼接sql，若为字符串类型或日期类型的字段进行赋值时，需要手动加单引号；
+但是#{}使用占位符赋值的方式拼接sql，此时为字符串类型或日期类型的字段进行赋值时，可以自动添加单引号使用#{}可以防止SQL注入
+
+1、单个字面量类型的参数
+若mapper接口中的方法参数为单个的字面量类型
+此时可以使用${}和#{}以任意的名称获取参数的值，注意${}需要手动加单引号
+
+2、多个字面量类型的参数
+若mapper接口中的方法参数为多个时
+此时MyBatis会自动将这些参数放在一个map集合中，以arg0,arg1...为键，以参数为值；
+以param1,param2...为键，以参数为值；因此只需要通过${}和#{}访问map集合的键就可以获取相对应的值，注意${}需要手动加单引号
+
+3、map集合类型的参数
+若mapper接口中的方法需要的参数为多个时，此时可以手动创建map集合，将这些数据放在map中
+只需要通过${}和#{}访问map集合的键就可以获取相对应的值，注意${}需要手动加单引号
+
+4、实体类类型的参数
+若mapper接口中的方法参数为实体类对象时
+此时可以使用${}和#{}，通过访问实体类对象中的属性名获取属性值，注意${}需要手动加单引号
+
+5、使用@Param标识参数
+可以通过@Param注解标识mapper接口中的方法参数
+此时，会将这些参数放在map集合中，以@Param注解的value属性值为键，以参数为值；
+以param1,param2...为键，以参数为值；只需要通过${}和#{}访问map集合的键就可以获取相对应的值，注意${}需要手动加单引号
+
+
+MyBatis的缓存：
+1、MyBatis的一级缓存
+一级缓存是SqlSession级别的，通过同一个SqlSession查询的数据会被缓存，下次查询相同的数据，就会从缓存中直接获取，不会从数据库重新访问
+
+使一级缓存失效的四种情况：
+1) 不同的SqlSession对应不同的一级缓存
+2) 同一个SqlSession但是查询条件不同
+3) 同一个SqlSession两次查询期间执行了任何一次增删改操作
+4) 同一个SqlSession两次查询期间手动清空了缓存
+
+2、MyBatis的二级缓存
+二级缓存是SqlSessionFactory级别，通过同一个SqlSessionFactory创建的SqlSession查询的结果会被缓存；此后若再次执行相同的查询语句，结果就会从缓存中获取。
+
+二级缓存开启的条件：
+a>在核心配置文件中，设置全局配置属性cacheEnabled="true"，默认为true，不需要设置
+<settings>
+    <setting name="cacheEnabled" value="true"/>
+</settings>
+b>在映射文件中设置标签<cache />
+<mapper namespace="com.example.MyMapper">
+    <cache/>
+    <!-- 其他映射配置 -->
+</mapper>
+c>二级缓存必须在SqlSession关闭或提交之后有效
+d>查询的数据所转换的实体类类型必须实现序列化的接口
+使二级缓存失效的情况：
+两次查询之间执行了任意的增删改，会使一级和二级缓存同时失效
+
+Mybatis的源码解析：
+
+SqlSessionFactory
+作用：SqlSessionFactory 是 MyBatis 的核心接口，用于创建 SqlSession 对象。SqlSession 对象完全包含了执行 SQL 命令所需的所有方法。
+实现：通常通过 SqlSessionFactoryBuilder 来构建 SqlSessionFactory 实例。
+
+SqlSession
+作用：SqlSession 是 MyBatis 的核心接口，用于执行持久化操作。
+方法：提供了执行 SQL 命令、获取映射器实例和管理事务的方法。
+
+Mapper
+作用：Mapper 接口是 MyBatis 中的一个重要概念，它是开发者定义的接口，MyBatis 会自动生成这个接口的实现，并通过这个实现来执行 SQL 语句。
+实现：Mapper 接口的实现是通过动态代理来完成的，MyBatis 会在运行时动态地创建 Mapper 接口的代理对象。
+
+
+获得Mapper动态代理之后，执行SQL的顺序：
+1.获得Mapper动态代理
+2.获得MapperMethod对象
+3.根据SQL指令跳转执行语句
+4.查询前的缓存处理
+5.执行数据库查询操作
+6.针对ResultSet结果集转换为实体类
+
+MyBatis 的工作流程大致可以分为以下几个步骤：
+1.读取配置文件：MyBatis 在启动时会读取全局配置文件和映射器文件，并将配置信息解析成 Java 对象存储在内存中。
+2.创建 SqlSessionFactory：通过 SqlSessionFactoryBuilder 根据配置信息创建 SqlSessionFactory 实例。
+3.创建 SqlSession：通过 SqlSessionFactory 创建 SqlSession 实例，SqlSession 提供了执行 SQL 命令的所有方法。
+4.执行 SQL 命令：
+使用 SqlSession 的方法执行 SQL 命令。
+如果执行的是 Mapper 接口中的方法，MyBatis 会通过动态代理机制调用对应的 Mapper SQL 语句。
+5.处理结果：将 SQL 执行的结果映射成 Java 对象并返回。
+
+
+Mybatis的逆向工程：
+MyBatis Generator是一个用于生成MyBatis的Java数据访问层代码和SQL映射文件的逆向工程工具。你可以通过配置MyBatis Generator来自动生成数据库表的实体类、Mapper接口以及SQL映射文件。
+
+逆向工程的配置文件：
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+    "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <classPathEntry location="path/to/your/database/driver.jar" />
+
+    <context id="MyBatisGenerator" targetRuntime="MyBatis3">
+        <property name="javaFileEncoding" value="UTF-8" />
+        <property name="beginningDelimiter" value=" " />
+        <property name="endingDelimiter" value=" " />
+
+        <!-- 数据库连接配置 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+            connectionURL="jdbc:mysql://localhost:3306/your_database"
+            userId="your_username"
+            password="your_password">
+        </jdbcConnection>
+
+        <!-- 生成实体类的目标包 -->
+        <javaModelGenerator targetPackage="com.example.model" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- 生成Mapper接口的目标包 -->
+        <sqlMapGenerator targetPackage="com.example.mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- 生成Mapper XML 文件的目标包 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!-- 配置要生成的表和生成规则 -->
+        <table tableName="your_table_name" domainObjectName="YourTable" enableCountByExample="false" enableUpdateByExample="false"
+            enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
+    </context>
+</generatorConfiguration>
+
+MybatisPlus：
+MyBatis-Plus 是一个 MyBatis 的增强工具，旨在简化 MyBatis 的开发，提供常见的 CRUD 操作，并且支持丰富的插件扩展能力。以下是 MyBatis-Plus 的详细介绍：
+
+MyBatis-Plus 的特点
+无侵入：MyBatis-Plus 在 MyBatis 的基础上进行增强，不会影响已有的 MyBatis 配置和使用方式。
+CRUD 操作封装：提供了丰富的 CRUD 操作封装，减少了编写 SQL 的时间和工作量。
+插件支持：支持多种插件，包括分页插件、性能分析插件、SQL 注入器等，扩展性强。
+代码生成器：提供代码生成器，可以快速生成实体类、Mapper 接口、Service 接口及实现类、Controller 等。
+支持 Lambda 表达式：提供 Lambda 风格的条件构造器，使得查询条件的构建更加优雅。
+多种数据库支持：支持 MySQL、Oracle、PostgreSQL、SQL Server、SQLite 等多种数据库。
+自动填充：支持字段的自动填充功能，例如创建时间、更新时间等字段。
+
+核心功能
+1. 简化的 CRUD 操作
+MyBatis-Plus 提供了一系列简化的 CRUD 操作方法，通过继承 BaseMapper 接口，可以快速实现基本的 CRUD 操作。
+
+
+public interface UserMapper extends BaseMapper<User> {
+}
+通过继承 BaseMapper，可以直接使用以下方法：
+
+insert：插入数据
+deleteById：根据 ID 删除数据
+updateById：根据 ID 更新数据
+selectById：根据 ID 查询数据
+selectList：查询所有数据
+
+2. 条件构造器
+MyBatis-Plus 提供了 QueryWrapper 和 UpdateWrapper 用于构建查询和更新条件。
+
+
+// QueryWrapper 示例
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.eq("name", "John");
+List<User> users = userMapper.selectList(queryWrapper);
+
+// LambdaQueryWrapper 示例
+LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+lambdaQueryWrapper.eq(User::getName, "John");
+List<User> users = userMapper.selectList(lambdaQueryWrapper);
+
+3. 分页插件
+MyBatis-Plus 提供了分页插件，方便进行分页查询。
+
+
+IPage<User> page = new Page<>(1, 10);
+IPage<User> userPage = userMapper.selectPage(page, null);
+
+4. 代码生成器
+通过代码生成器可以快速生成实体类、Mapper 接口、Service 接口及实现类、Controller 等。
+
+
+AutoGenerator mpg = new AutoGenerator();
+
+// 全局配置
+GlobalConfig gc = new GlobalConfig();
+gc.setOutputDir("D://mybatis-plus");
+gc.setAuthor("Author");
+mpg.setGlobalConfig(gc);
+
+// 数据源配置
+DataSourceConfig dsc = new DataSourceConfig();
+dsc.setUrl("jdbc:mysql://localhost:3306/testdb");
+dsc.setDriverName("com.mysql.cj.jdbc.Driver");
+dsc.setUsername("root");
+dsc.setPassword("password");
+mpg.setDataSource(dsc);
+
+// 包配置
+PackageConfig pc = new PackageConfig();
+pc.setModuleName("module");
+pc.setParent("com.example");
+mpg.setPackageInfo(pc);
+
+// 执行生成
+mpg.execute();
+
+
+Hibernate：
+Hibernate是一个开放源代码的对象关系映射框架，它对JDBC进行了非常轻量级的对象封装，它将POJO与数据库表建立映射关系，是一个全自动的orm框架，hibernate可以自动生成SQL语句，自动执行，使得Java程序员可以随心所欲的使用对象编程思维来操纵数据库。
+Hibernate可以应用在任何使用JDBC的场合，既可以在Java的客户端程序使用，也可以在Servlet/JSP的Web应用中使用，最具革命意义的是，Hibernate可以在应用EJB的JavaEE架构中取代CMP，完成数据持久化的重任。
+
+创建映射配置文件：
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+	<!-- 建立类与表的映射 -->
+	<class name="com.meimeixia.hibernate.demo01.Customer" table="cst_customer">
+		<!-- 建立类中的属性与表中的主键相对应 -->
+		<id name="cust_id" column="cust_id">
+			<!-- 主键的生成策略，后面会讲，现在使用的是本地生成策略 -->
+			<generator class="native" />
+		</id>
+		
+		<!-- 建立类中的普通属性和表中的字段相对应 -->
+		<property name="cust_name" column="cust_name" />
+		<property name="cust_source" column="cust_source" />
+		<property name="cust_industry" column="cust_industry" />
+		<property name="cust_level" column="cust_level" />
+		<property name="cust_phone" column="cust_phone" />
+		<property name="cust_mobile" column="cust_mobile" />
+	</class>
+</hibernate-mapping>
+
+创建核心配置文件：
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+	
+<hibernate-configuration>
+	<session-factory>
+		<!-- 下面是三个必须要有的配置 -->
+		<!-- 配置连接MySQL数据库的基本参数 -->
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql:///hibernate_demo01</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">liayun</property>
+		
+		<!-- 配置Hibernate的方言 -->
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		
+		<!-- 下面两个是可选的配置！ -->
+		<!-- 打印sql语句 -->
+		<property name="hibernate.show_sql">true</property>
+		<!-- 格式化sql语句 -->
+		<property name="hibernate.format_sql">true</property>
+		
+		<!-- 告诉Hibernate的核心配置文件加载哪个映射文件 -->
+		<mapping resource="com/meimeixia/hibernate/demo01/Customer.hbm.xml"/>
+	</session-factory>
+</hibernate-configuration>
+
+创建单元测试类：
+package com.meimeixia.hibernate.demo01;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.junit.Test;
+
+/**
+ * Hibernate的入门案例
+ * @author 
+ *
+ */
+public class HibernateDemo1 {
+	
+	//保存用户的案例
+	@Test
+	public void demo1() {
+		//1. 加载Hibernate的核心配置文件
+		Configuration configuration = new Configuration().configure();
+		//如果在Hibernate的核心配置文件没有设置加载哪个映射文件，则可手动加载映射文件
+		//configuration.addResource("com/meimeixia/hibernate/demo01/Customer.hbm.xml");
+		
+		//2. 创建SessionFactory对象，类似于JDBC中的连接池
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		
+		//3. 通过SessionFactory获取到Session对象，类似于JDBC中的Connection
+		Session session = sessionFactory.openSession();
+		
+		//4. 手动开启事务，（最好是手动开启事务）
+		Transaction transaction = session.beginTransaction();
+		
+		//5. 编写代码
+		Customer customer = new Customer();
+		customer.setCust_name("张小敬aaa");
+		
+		session.save(customer);//保存一个用户
+		
+		//6. 事务提交
+		transaction.commit();
+		
+		//7. 释放资源
+		session.close();
+		sessionFactory.close();
+	}
+	
+}
+
+MVC设计模式：MVC指MVC模式的某种框架，它强制性地使应用程序的输入、处理和输出分开。
+使用MVC应用程序被分成三个核心部件：模型、视图、控制器。
+
+>M即model模型是指模型表示业务规则。在MVC的三个部件中，模型拥有最多的处理任务。即Bean层、mapper层和service层。
+被模型返回的数据是中立的，模型与数据格式无关，这样一个模型能为多个视图提供数据，由于应用于模型的代码只需写一次就可以被多个视图重用，所以减少了代码的重复性。
+
+>V即View视图是指用户看到并与之交互的界面。比如由html元素组成的网页界面，或者软件的客户端界面。
+MVC的好处之一在于它能为应用程序处理很多不同的视图。在视图中其实没有真正的处理发生，它只是作为一种输出数据并允许用户操作的方式。
+
+>C即controller控制器是指控制器接受用户的输入并调用模型和视图去完成用户的需求，控制器本身不输出任何东西和做任何处理。
+它只是接收请求并决定调用哪个模型构件去处理请求，然后再确定用哪个视图来显式返回的数据。
+
+MVC(Model模型、View视图、Control控制层)，将软件进行分层达到松耦合的效果。
+通用的软件编程思想, 在MVC设计模式中认为, 任何软件都可以分三层：
+控制层（Controller）、数据处理模型（Model）、负责展示数据的视图（View）。
+在MVC设计思想中要求一个符合MVC设计思想的软件应该保证上面这三部分相互独立，互不干扰，每一个部分只负责自己擅长的部分。
+如果某一个模块发生变化，应该尽量做到不影响其他两个模块。提高代码的可读性，实现程序间的松耦合、提高代码复用性。
 
 
 Java程序通过设计模式、数据结构与算法等技术组成框架
@@ -16315,7 +16757,7 @@ B树：一种对读写操作进行优化的自平衡的二叉查找树，能够�
 
 数据结构与算法之排序算法：
 
-直接插入排序：
+**直接插入排序：**
 
 算法思想：
 直接插入排序的核心思想就是：将数组中的所有元素依次跟前面已经排好的元素相比较，
@@ -16327,20 +16769,19 @@ B树：一种对读写操作进行优化的自平衡的二叉查找树，能够�
 如果：selected > ordered，那么将二者交换
 
 代码实现：
-#直接插入排序
 def insert_sort(L):
-    #遍历数组中的所有元素，其中0号索引元素默认已排序，因此从1开始
+    --遍历数组中的所有元素，其中0号索引元素默认已排序，因此从1开始
     for x in range(1,len(L)):
-    #将该元素与已排序好的前序数组依次比较，如果该元素小，则交换
-    #range(x-1,-1,-1):从x-1倒序循环到0
+    --将该元素与已排序好的前序数组依次比较，如果该元素小，则交换
+    --range(x-1,-1,-1):从x-1倒序循环到0
         for i in range(x-1,-1,-1):
-    #判断：如果符合条件则交换
+    --判断：如果符合条件则交换
             if L[i] > L[i+1]:
                 temp = L[i+1]
                 L[i+1] = L[i]
                 L[i] = temp
 
-希尔排序
+**希尔排序**
 算法思想：
 希尔排序的算法思想：将待排序数组按照步长gap进行分组，然后将每组的元素利用直接插入排序的方法进行排序；
 每次将gap折半减小，循环上述操作；当gap=1时，利用直接插入，完成排序。
@@ -16350,23 +16791,22 @@ def insert_sort(L):
 第二、三层循环：也即直接插入排序所需要的两次循环。具体描述见上。
 
 代码实现：
-#希尔排序
 def insert_shell(L):
-    #初始化gap值，此处利用序列长度的一般为其赋值
+    --初始化gap值，此处利用序列长度的一般为其赋值
     gap = (int)(len(L)/2)
-    #第一层循环：依次改变gap值对列表进行分组
+    --第一层循环：依次改变gap值对列表进行分组
     while (gap >= 1):
-    #下面：利用直接插入排序的思想对分组数据进行排序
-    #range(gap,len(L)):从gap开始
+    --下面：利用直接插入排序的思想对分组数据进行排序
+    --range(gap,len(L)):从gap开始
         for x in range(gap,len(L)):
-    #range(x-gap,-1,-gap):从x-gap开始与选定元素开始倒序比较，每个比较元素之间间隔gap
+    --range(x-gap,-1,-gap):从x-gap开始与选定元素开始倒序比较，每个比较元素之间间隔gap
             for i in range(x-gap,-1,-gap):
-    #如果该组当中两个元素满足交换条件，则进行交换
+    --如果该组当中两个元素满足交换条件，则进行交换
                 if L[i] > L[i+gap]:
                     temp = L[i+gap]
                     L[i+gap] = L[i]
                     L[i] =temp
-    #while循环条件折半
+    --while循环条件折半
         gap = (int)(gap/2)
 
 
@@ -16382,19 +16822,19 @@ def insert_shell(L):
 第二层循环：将遍历得到的当前元素依次与余下的元素进行比较，符合最小元素的条件，则交换。
 
 代码实现：
-# 简单选择排序
+--简单选择排序
 def select_sort(L):
-#依次遍历序列中的每一个元素
+--依次遍历序列中的每一个元素
     for x in range(0,len(L)):
-#将当前位置的元素定义此轮循环当中的最小值
+--将当前位置的元素定义此轮循环当中的最小值
         minimum = L[x]
-#将该元素与剩下的元素依次比较寻找最小元素
+--将该元素与剩下的元素依次比较寻找最小元素
         for i in range(x+1,len(L)):
             if L[i] < minimum:
                 temp = L[i];
                 L[i] = minimum;
                 minimum = temp
-#将比较后得到的真正的最小值赋值给当前位置
+--将比较后得到的真正的最小值赋值给当前位置
         L[x] = minimum	
 
 堆排序
@@ -16416,32 +16856,32 @@ def select_sort(L):
 
 3.重复2.3步骤，直至堆中只有1个元素为止
 	
-#-------------------------堆排序--------------------------------
-#**********获取左右叶子节点**********
+--------------------------堆排序--------------------------------
+**********获取左右叶子节点**********
 def LEFT(i):
     return 2*i + 1
 def RIGHT(i):
     return 2*i + 2
-#********** 调整大顶堆 **********
-#L:待调整序列 length: 序列长度 i:需要调整的结点
+********** 调整大顶堆 **********
+--L:待调整序列 length: 序列长度 i:需要调整的结点
 def adjust_max_heap(L,length,i):
-#定义一个int值保存当前序列最大值的下标
+--定义一个int值保存当前序列最大值的下标
     largest = i
-#执行循环操作：两个任务：1 寻找最大值的下标；2.最大值与父节点交换
+--执行循环操作：两个任务：1 寻找最大值的下标；2.最大值与父节点交换
     while (1):
-#获得序列左右叶子节点的下标
+--获得序列左右叶子节点的下标
         left,right = LEFT(i),RIGHT(i)
-#当左叶子节点的下标小于序列长度 并且 左叶子节点的值大于父节点时，将左叶子节点的下标赋值给largest
+--当左叶子节点的下标小于序列长度 并且 左叶子节点的值大于父节点时，将左叶子节点的下标赋值给largest
         if (left < length) and (L[left] > L[i]):
             largest = left
             print('左叶子节点')
         else:
             largest = i
-#当右叶子节点的下标小于序列长度 并且 右叶子节点的值大于父节点时，将右叶子节点的下标值赋值给largest
+--当右叶子节点的下标小于序列长度 并且 右叶子节点的值大于父节点时，将右叶子节点的下标值赋值给largest
         if (right < length) and (L[right] > L[largest]):
             largest = right
             print('右叶子节点')
-#如果largest不等于i 说明当前的父节点不是最大值，需要交换值
+--如果largest不等于i 说明当前的父节点不是最大值，需要交换值
         if (largest != i):
             temp = L[i]
             L[i] = L[largest]
@@ -16451,26 +16891,26 @@ def adjust_max_heap(L,length,i):
             continue
         else:
             break
-#********** 建立大顶堆 **********
+********** 建立大顶堆 **********
 def build_max_heap(L):
     length = len(L)
     for x in range((int)((length-1)/2),-1,-1):
         adjust_max_heap(L,length,x)
-#********** 堆排序 **********
+********** 堆排序 **********
 def heap_sort(L):
-#先建立大顶堆，保证最大值位于根节点；并且父节点的值大于叶子结点
+--先建立大顶堆，保证最大值位于根节点；并且父节点的值大于叶子结点
     build_max_heap(L)
-#i：当前堆中序列的长度.初始化为序列的长度
+--i：当前堆中序列的长度.初始化为序列的长度
     i = len(L)
-#执行循环：1. 每次取出堆顶元素置于序列的最后(len-1,len-2,len-3...)
-#         2. 调整堆，使其继续满足大顶堆的性质，注意实时修改堆中序列的长度
+--执行循环：1. 每次取出堆顶元素置于序列的最后(len-1,len-2,len-3...)
+           2. 调整堆，使其继续满足大顶堆的性质，注意实时修改堆中序列的长度
     while (i > 0):
         temp = L[i-1]
         L[i-1] = L[0]
         L[0] = temp
-#堆中序列长度减1
+--堆中序列长度减1
         i = i-1
-#调整大顶堆
+--调整大顶堆
         adjust_max_heap(L,i,0)
 
 冒泡排序
@@ -16483,13 +16923,12 @@ def heap_sort(L):
 对于长度为n的序列，一共需要执行n-1轮比较
 （利用while循环可以减少执行次数）
 
-#冒泡排序
 def bubble_sort(L):
     length = len(L)
-#序列长度为length，需要执行length-1轮交换
+--序列长度为length，需要执行length-1轮交换
     for x in range(1,length):
-#对于每一轮交换，都将序列当中的左右元素进行比较
-#每轮交换当中，由于序列最后的元素一定是最大的，因此每轮循环到序列未排序的位置即可
+--对于每一轮交换，都将序列当中的左右元素进行比较
+--每轮交换当中，由于序列最后的元素一定是最大的，因此每轮循环到序列未排序的位置即可
         for i in range(0,length-x):
             if L[i] > L[i+1]:
                 temp = L[i]
@@ -16510,34 +16949,33 @@ def bubble_sort(L):
 4．再重复执行2，3二步，直到i==j，将基准数填入a[i]中
 
 代码实现：
-#快速排序
-#L：待排序的序列；start排序的开始index,end序列末尾的index
-#对于长度为length的序列：start = 0;end = length-1
+--L：待排序的序列；start排序的开始index,end序列末尾的index
+--对于长度为length的序列：start = 0;end = length-1
 def quick_sort(L,start,end):
     if start < end:
         i , j , pivot = start , end , L[start]
         while i < j:
-#从右开始向左寻找第一个小于pivot的值
+--从右开始向左寻找第一个小于pivot的值
             while (i < j) and (L[j] >= pivot):
                 j = j-1
-#将小于pivot的值移到左边
+--将小于pivot的值移到左边
             if (i < j):
                 L[i] = L[j]
                 i = i+1 
-#从左开始向右寻找第一个大于pivot的值
+--从左开始向右寻找第一个大于pivot的值
             while (i < j) and (L[i] < pivot):
                 i = i+1
-#将大于pivot的值移到右边
+--将大于pivot的值移到右边
             if (i < j):
                 L[j] = L[i]
                 j = j-1
-#循环结束后，说明 i=j，此时左边的值全都小于pivot,右边的值全都大于pivot
-#pivot的位置移动正确，那么此时只需对左右两侧的序列调用此函数进一步排序即可
-#递归调用函数：依次对左侧序列：从0 ~ i-1//右侧序列：从i+1 ~ end
+--循环结束后，说明 i=j，此时左边的值全都小于pivot,右边的值全都大于pivot
+--pivot的位置移动正确，那么此时只需对左右两侧的序列调用此函数进一步排序即可
+--递归调用函数：依次对左侧序列：从0 ~ i-1//右侧序列：从i+1 ~ end
         L[i] = pivot
-#左侧序列继续排序
+--左侧序列继续排序
         quick_sort(L,start,i-1)
-#右侧序列继续排序
+--右侧序列继续排序
         quick_sort(L,i+1,end)
 
 归并排序
@@ -16558,14 +16996,12 @@ L[first...mid]为第一段，L[mid+1...last]为第二段，并且两端已经有
 直到分组后组内只有一个元素，此时我们认为组内所有元素有序，则分组结束。
 
 代码实现:
-
-# 归并排序
-#这是合并的函数
-# 将序列L[first...mid]与序列L[mid+1...last]进行合并
+--这是合并的函数
+--将序列L[first...mid]与序列L[mid+1...last]进行合并
 def mergearray(L,first,mid,last,temp):
-#对i,j,k分别进行赋值
+--对i,j,k分别进行赋值
     i,j,k = first,mid+1,0
-#当左右两边都有数时进行比较，取较小的数
+--当左右两边都有数时进行比较，取较小的数
     while (i <= mid) and (j <= last):
         if L[i] <= L[j]:
             temp[k] = L[i]
@@ -16575,34 +17011,34 @@ def mergearray(L,first,mid,last,temp):
             temp[k] = L[j]
             j = j+1
             k = k+1
-#如果左边序列还有数
+--如果左边序列还有数
     while (i <= mid):
         temp[k] = L[i]
         i = i+1
         k = k+1
-#如果右边序列还有数
+--如果右边序列还有数
     while (j <= last):
         temp[k] = L[j]
         j = j+1
         k = k+1
-#将temp当中该段有序元素赋值给L待排序列使之部分有序
+--将temp当中该段有序元素赋值给L待排序列使之部分有序
     for x in range(0,k):
         L[first+x] = temp[x]
-# 这是分组的函数
+--这是分组的函数
 def merge_sort(L,first,last,temp):
     if first < last:
         mid = (int)((first + last) / 2)
-#使左边序列有序
-        merge_sort(L,first,mid,temp)
-#使右边序列有序
-        merge_sort(L,mid+1,last,temp)
-#将两个有序序列合并
-        mergearray(L,first,mid,last,temp)
-# 归并排序的函数
+--使左边序列有序
+       merge_sort(L,first,mid,temp)
+--使右边序列有序
+       merge_sort(L,mid+1,last,temp)
+--将两个有序序列合并
+       mergearray(L,first,mid,last,temp)
+--归并排序的函数
 def merge_sort_array(L):
-#声明一个长度为len(L)的空列表
+--声明一个长度为len(L)的空列表
     temp = len(L)*[None]
-#调用归并排序
+--调用归并排序
     merge_sort(L,0,len(L)-1,temp)	
 
 
@@ -16615,55 +17051,55 @@ def merge_sort_array(L):
 根据上述“基数排序”的展示，我们可以清楚的看到整个实现的过程
 
 代码实现:
-#************************基数排序****************************
-#确定排序的次数
-#排序的顺序跟序列中最大数的位数相关
+--确定排序的次数
+--排序的顺序跟序列中最大数的位数相关
 def radix_sort_nums(L):
     maxNum = L[0]
-#寻找序列中的最大数
+--寻找序列中的最大数
     for x in L:
         if maxNum < x:
             maxNum = x
-#确定序列中的最大元素的位数
+--确定序列中的最大元素的位数
     times = 0
     while (maxNum > 0):
         maxNum = (int)(maxNum/10)
         times = times+1
     return times
-#找到num从低到高第pos位的数据
+--找到num从低到高第pos位的数据
 def get_num_pos(num,pos):
     return ((int)(num/(10**(pos-1))))%10
-#基数排序
+
+**基数排序**
 def radix_sort(L):
-    count = 10*[None]       #存放各个桶的数据统计个数
-    bucket = len(L)*[None]  #暂时存放排序结果
-#从低位到高位依次执行循环
+    count = 10*[None]       --存放各个桶的数据统计个数
+    bucket = len(L)*[None]  --暂时存放排序结果
+--从低位到高位依次执行循环--
     for pos in range(1,radix_sort_nums(L)+1):
-        #置空各个桶的数据统计
+        --置空各个桶的数据统计
         for x in range(0,10):
             count[x] = 0
-        #统计当前该位(个位，十位，百位....)的元素数目
+        --统计当前该位(个位，十位，百位....)的元素数目
         for x in range(0,len(L)):
-            #统计各个桶将要装进去的元素个数
+            --统计各个桶将要装进去的元素个数
             j = get_num_pos(int(L[x]),pos)
             count[j] = count[j]+1
-        #count[i]表示第i个桶的右边界索引
+        --count[i]表示第i个桶的右边界索引
         for x in range(1,10):
             count[x] = count[x] + count[x-1]
-        #将数据依次装入桶中
+        --将数据依次装入桶中
         for x in range(len(L)-1,-1,-1):
-            #求出元素第K位的数字
+            --求出元素第K位的数字
             j = get_num_pos(L[x],pos)
-            #放入对应的桶中，count[j]-1是第j个桶的右边界索引
+            --放入对应的桶中，count[j]-1是第j个桶的右边界索引
             bucket[count[j]-1] = L[x]
-            #对应桶的装入数据索引-1
+            --对应桶的装入数据索引-1
             count[j] = count[j]-1
-        # 将已分配好的桶中数据再倒出来，此时已是对应当前位数有序的表
+        -- 将已分配好的桶中数据再倒出来，此时已是对应当前位数有序的表
         for x in range(0,len(L)):
             L[x] = bucket[x]
 
 
-Java数据库及持久层技术以及多种数据库的应用：
+# Java数据库及持久层技术以及多种数据库的应用：
 
 MYSQL：MySQL 是一个流行的开源关系型数据库管理系统（RDBMS），它使用 SQL（结构化查询语言）来管理数据。
 
@@ -17972,252 +18408,6 @@ public class Druid_ {
     }
 }
 
-Mybatis：
-MyBatis是一个优秀的持久层框架，它对jdbc的操作数据库的过程进行封装，使开发者只需要关注 SQL 本身，而不需要花费精力去处理例如注册驱动、创建connection、创建statement、手动设置参数、结果集检索等jdbc繁杂的过程代码。
-Mybatis通过xml或注解的方式将要执行的各种statement（statement、preparedStatemnt、CallableStatement）配置起来，并通过java对象和statement中的sql进行映射生成最终执行的sql语句，最后由mybatis框架执行sql并将结果映射成java对象并返回。
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mybitis.mapper.UserMapper">
-    <resultMap id="result" type="com.mybitis.entity.User">
-        <result column="userid" jdbcType="INTEGER" property="userid" />
-        <result column="username" jdbcType="VARCHAR" property="username" />
-        <result column="password" jdbcType="VARCHAR" property="password" />
-    </resultMap>
-
-    <select id="findAllUser" resultType="com.mybitis.entity.User">
-        select  * from user;
-    </select>
-
-    <select id="findUserByUserId" resultType="com.mybitis.entity.User">
-        select * from user where userid=#{userid};
-    </select>
-    <select id="findUserByUsername" resultType="com.mybitis.entity.User">
-        select * from user where username=#{username};
-    </select>
-
-    <insert id="insertUser" parameterType="com.mybitis.entity.User" keyProperty="userid" useGeneratedKeys="true">
-        insert into user(userid,username,password) values (#{userid},#{username},#{password});
-    </insert>
-
-    <update id="updateUser" parameterType="com.mybitis.entity.User">
-        update user set username=#{username},password=#{password} where userid=#{userid};
-    </update>
-
-    <delete id="deleteUser" parameterType="com.mybitis.entity.User">
-        delete from user where userid=#{userid};
-    </delete>
-</mapper>
-
-MyBatis获取参数值的两种方式：${}和#{}
-${}的本质就是字符串拼接，#{}的本质就是占位符赋值
-${}使用字符串拼接的方式拼接sql，若为字符串类型或日期类型的字段进行赋值时，需要手动加单引号；
-但是#{}使用占位符赋值的方式拼接sql，此时为字符串类型或日期类型的字段进行赋值时，可以自动添加单引号使用#{}可以防止SQL注入
-
-1、单个字面量类型的参数
-若mapper接口中的方法参数为单个的字面量类型
-此时可以使用${}和#{}以任意的名称获取参数的值，注意${}需要手动加单引号
-
-2、多个字面量类型的参数
-若mapper接口中的方法参数为多个时
-此时MyBatis会自动将这些参数放在一个map集合中，以arg0,arg1...为键，以参数为值；
-以param1,param2...为键，以参数为值；因此只需要通过${}和#{}访问map集合的键就可以获取相对应的值，注意${}需要手动加单引号
-
-3、map集合类型的参数
-若mapper接口中的方法需要的参数为多个时，此时可以手动创建map集合，将这些数据放在map中
-只需要通过${}和#{}访问map集合的键就可以获取相对应的值，注意${}需要手动加单引号
-
-4、实体类类型的参数
-若mapper接口中的方法参数为实体类对象时
-此时可以使用${}和#{}，通过访问实体类对象中的属性名获取属性值，注意${}需要手动加单引号
-
-5、使用@Param标识参数
-可以通过@Param注解标识mapper接口中的方法参数
-此时，会将这些参数放在map集合中，以@Param注解的value属性值为键，以参数为值；
-以param1,param2...为键，以参数为值；只需要通过${}和#{}访问map集合的键就可以获取相对应的值，注意${}需要手动加单引号
-
-
-MyBatis的缓存：
-1、MyBatis的一级缓存
-一级缓存是SqlSession级别的，通过同一个SqlSession查询的数据会被缓存，下次查询相同的数据，就会从缓存中直接获取，不会从数据库重新访问
-
-使一级缓存失效的四种情况：
-1) 不同的SqlSession对应不同的一级缓存
-2) 同一个SqlSession但是查询条件不同
-3) 同一个SqlSession两次查询期间执行了任何一次增删改操作
-4) 同一个SqlSession两次查询期间手动清空了缓存
-
-2、MyBatis的二级缓存
-二级缓存是SqlSessionFactory级别，通过同一个SqlSessionFactory创建的SqlSession查询的结果会被缓存；此后若再次执行相同的查询语句，结果就会从缓存中获取。
-
-二级缓存开启的条件：
-a>在核心配置文件中，设置全局配置属性cacheEnabled="true"，默认为true，不需要设置
-<settings>
-    <setting name="cacheEnabled" value="true"/>
-</settings>
-b>在映射文件中设置标签<cache />
-<mapper namespace="com.example.MyMapper">
-    <cache/>
-    <!-- 其他映射配置 -->
-</mapper>
-c>二级缓存必须在SqlSession关闭或提交之后有效
-d>查询的数据所转换的实体类类型必须实现序列化的接口
-使二级缓存失效的情况：
-两次查询之间执行了任意的增删改，会使一级和二级缓存同时失效
-
-Mybatis的源码解析：
-
-SqlSessionFactory
-作用：SqlSessionFactory 是 MyBatis 的核心接口，用于创建 SqlSession 对象。SqlSession 对象完全包含了执行 SQL 命令所需的所有方法。
-实现：通常通过 SqlSessionFactoryBuilder 来构建 SqlSessionFactory 实例。
-
-SqlSession
-作用：SqlSession 是 MyBatis 的核心接口，用于执行持久化操作。
-方法：提供了执行 SQL 命令、获取映射器实例和管理事务的方法。
-
-Mapper
-作用：Mapper 接口是 MyBatis 中的一个重要概念，它是开发者定义的接口，MyBatis 会自动生成这个接口的实现，并通过这个实现来执行 SQL 语句。
-实现：Mapper 接口的实现是通过动态代理来完成的，MyBatis 会在运行时动态地创建 Mapper 接口的代理对象。
-
-
-获得Mapper动态代理之后，执行SQL的顺序：
-1.获得Mapper动态代理
-2.获得MapperMethod对象
-3.根据SQL指令跳转执行语句
-4.查询前的缓存处理
-5.执行数据库查询操作
-6.针对ResultSet结果集转换为实体类
-
-MyBatis 的工作流程大致可以分为以下几个步骤：
-1.读取配置文件：MyBatis 在启动时会读取全局配置文件和映射器文件，并将配置信息解析成 Java 对象存储在内存中。
-2.创建 SqlSessionFactory：通过 SqlSessionFactoryBuilder 根据配置信息创建 SqlSessionFactory 实例。
-3.创建 SqlSession：通过 SqlSessionFactory 创建 SqlSession 实例，SqlSession 提供了执行 SQL 命令的所有方法。
-4.执行 SQL 命令：
-使用 SqlSession 的方法执行 SQL 命令。
-如果执行的是 Mapper 接口中的方法，MyBatis 会通过动态代理机制调用对应的 Mapper SQL 语句。
-5.处理结果：将 SQL 执行的结果映射成 Java 对象并返回。
-
-
-Mybatis的逆向工程：
-MyBatis Generator是一个用于生成MyBatis的Java数据访问层代码和SQL映射文件的逆向工程工具。你可以通过配置MyBatis Generator来自动生成数据库表的实体类、Mapper接口以及SQL映射文件。
-
-逆向工程的配置文件：
-<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-    "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
-
-<generatorConfiguration>
-    <classPathEntry location="path/to/your/database/driver.jar" />
-
-    <context id="MyBatisGenerator" targetRuntime="MyBatis3">
-        <property name="javaFileEncoding" value="UTF-8" />
-        <property name="beginningDelimiter" value=" " />
-        <property name="endingDelimiter" value=" " />
-
-        <!-- 数据库连接配置 -->
-        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-            connectionURL="jdbc:mysql://localhost:3306/your_database"
-            userId="your_username"
-            password="your_password">
-        </jdbcConnection>
-
-        <!-- 生成实体类的目标包 -->
-        <javaModelGenerator targetPackage="com.example.model" targetProject="src/main/java">
-            <property name="enableSubPackages" value="true" />
-            <property name="trimStrings" value="true" />
-        </javaModelGenerator>
-
-        <!-- 生成Mapper接口的目标包 -->
-        <sqlMapGenerator targetPackage="com.example.mapper" targetProject="src/main/resources">
-            <property name="enableSubPackages" value="true" />
-        </sqlMapGenerator>
-
-        <!-- 生成Mapper XML 文件的目标包 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.mapper" targetProject="src/main/resources">
-            <property name="enableSubPackages" value="true" />
-        </javaClientGenerator>
-
-        <!-- 配置要生成的表和生成规则 -->
-        <table tableName="your_table_name" domainObjectName="YourTable" enableCountByExample="false" enableUpdateByExample="false"
-            enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
-    </context>
-</generatorConfiguration>
-
-MybatisPlus：
-MyBatis-Plus 是一个 MyBatis 的增强工具，旨在简化 MyBatis 的开发，提供常见的 CRUD 操作，并且支持丰富的插件扩展能力。以下是 MyBatis-Plus 的详细介绍：
-
-MyBatis-Plus 的特点
-无侵入：MyBatis-Plus 在 MyBatis 的基础上进行增强，不会影响已有的 MyBatis 配置和使用方式。
-CRUD 操作封装：提供了丰富的 CRUD 操作封装，减少了编写 SQL 的时间和工作量。
-插件支持：支持多种插件，包括分页插件、性能分析插件、SQL 注入器等，扩展性强。
-代码生成器：提供代码生成器，可以快速生成实体类、Mapper 接口、Service 接口及实现类、Controller 等。
-支持 Lambda 表达式：提供 Lambda 风格的条件构造器，使得查询条件的构建更加优雅。
-多种数据库支持：支持 MySQL、Oracle、PostgreSQL、SQL Server、SQLite 等多种数据库。
-自动填充：支持字段的自动填充功能，例如创建时间、更新时间等字段。
-
-核心功能
-1. 简化的 CRUD 操作
-MyBatis-Plus 提供了一系列简化的 CRUD 操作方法，通过继承 BaseMapper 接口，可以快速实现基本的 CRUD 操作。
-
-
-public interface UserMapper extends BaseMapper<User> {
-}
-通过继承 BaseMapper，可以直接使用以下方法：
-
-insert：插入数据
-deleteById：根据 ID 删除数据
-updateById：根据 ID 更新数据
-selectById：根据 ID 查询数据
-selectList：查询所有数据
-
-2. 条件构造器
-MyBatis-Plus 提供了 QueryWrapper 和 UpdateWrapper 用于构建查询和更新条件。
-
-
-// QueryWrapper 示例
-QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-queryWrapper.eq("name", "John");
-List<User> users = userMapper.selectList(queryWrapper);
-
-// LambdaQueryWrapper 示例
-LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-lambdaQueryWrapper.eq(User::getName, "John");
-List<User> users = userMapper.selectList(lambdaQueryWrapper);
-
-3. 分页插件
-MyBatis-Plus 提供了分页插件，方便进行分页查询。
-
-
-IPage<User> page = new Page<>(1, 10);
-IPage<User> userPage = userMapper.selectPage(page, null);
-
-4. 代码生成器
-通过代码生成器可以快速生成实体类、Mapper 接口、Service 接口及实现类、Controller 等。
-
-
-AutoGenerator mpg = new AutoGenerator();
-
-// 全局配置
-GlobalConfig gc = new GlobalConfig();
-gc.setOutputDir("D://mybatis-plus");
-gc.setAuthor("Author");
-mpg.setGlobalConfig(gc);
-
-// 数据源配置
-DataSourceConfig dsc = new DataSourceConfig();
-dsc.setUrl("jdbc:mysql://localhost:3306/testdb");
-dsc.setDriverName("com.mysql.cj.jdbc.Driver");
-dsc.setUsername("root");
-dsc.setPassword("password");
-mpg.setDataSource(dsc);
-
-// 包配置
-PackageConfig pc = new PackageConfig();
-pc.setModuleName("module");
-pc.setParent("com.example");
-mpg.setPackageInfo(pc);
-
-// 执行生成
-mpg.execute();
-
 
 列式存储数据库：
 列存储不同于传统的关系型数据库，其数据在表中是按行存储的，列方式所带来的重要好处之一就是，由于查询中的选择规则是通过列来定义的，因此整个数据库是自动索引化的。
@@ -18903,7 +19093,7 @@ return value;
 监控与自动恢复：
 监控Redis的运行状态和缓存命中率，及时发现和处理问题。可以通过脚本或运维工具实现自动恢复。
 
-# 监控脚本示例
+监控脚本示例
 redis-cli ping
 if [ $? -ne 0 ]; then
     # 重启Redis服务或切换到备用服务
@@ -19051,10 +19241,10 @@ private void redistribute(RedisNode overloadedNode) {
 3. 使用Redis Cluster
 Redis Cluster：Redis官方提供的解决方案，可以自动进行数据分片和负载均衡。它将数据分为16384个插槽（slots），并将这些插槽分布在不同的节点上。Redis Cluster能够在节点增加或减少时自动调整数据分布。
 
-# 创建Redis Cluster节点
+创建Redis Cluster节点
 redis-server --cluster-enabled yes --cluster-config-file nodes.conf --cluster-node-timeout 5000 --appendonly yes --cluster-announce-ip 192.168.0.1 --port 7000
 
-# 添加节点到集群
+添加节点到集群
 redis-cli --cluster add-node 192.168.0.2:7001 192.168.0.1:7000
 
 4. 数据预热与缓存策略
@@ -19086,10 +19276,10 @@ return value;
 5. 监控与告警
 监控系统：部署监控系统，实时监控Redis集群的负载情况和数据分布，及时发现和处理数据倾斜问题。
 
-# 使用Redis自带的INFO命令获取节点信息
+使用Redis自带的INFO命令获取节点信息
 redis-cli -h 192.168.0.1 -p 7000 INFO
 
-# 使用第三方监控工具，如Prometheus和Grafana
+使用第三方监控工具，如Prometheus和Grafana
 通过以上方法，可以有效解决Redis的数据倾斜问题，确保系统在高并发和大数据量场景下的稳定性和性能。根据具体需求和场景，可以选择一种或多种方法组合使用。
 
 
@@ -19552,7 +19742,7 @@ ShardingSphere 的主要特点包括：
 ShardingSphere 是一个强大的工具，可用于构建大规模、高性能和高可用性的分布式数据库架构，特别适用于云原生环境和大型企业应用程序。
 
 
-Java容器技术：
+# 容器技术：
 容器技术是一种软件开发和部署技术，允许开发人员在虚拟环境中将应用程序与其依赖关系封装在一起，以实现在不同的环境中的一致性。
 容器技术通过使用容器映像来管理应用程序，并在系统上运行容器实例。容器映像是包含所有应用程序代码和依赖关系的可执行文件。容器实例则是运行在特定环境中的应用程序副本。
 
@@ -19929,7 +20119,7 @@ variables:
   DOCKER_IMAGE: registry.gitlab.com/your-username/your-project:$CI_COMMIT_REF_SLUG  # 镜像名称（按分支命名）
   KUBE_NAMESPACE: production  # Kubernetes 命名空间
 
-# 阶段 1: 运行单元测试
+阶段 1: 运行单元测试
 unit-test:
   stage: test
   image: python:3.9  # 根据项目语言选择基础镜像
@@ -19937,7 +20127,7 @@ unit-test:
     - pip install -r requirements.txt
     - pytest tests/  # 执行测试
 
-# 阶段 2: 构建并推送 Docker 镜像
+阶段 2: 构建并推送 Docker 镜像
 docker-build:
   stage: build
   image: docker:20.10
@@ -19950,7 +20140,7 @@ docker-build:
     - docker build -t $DOCKER_IMAGE .
     - docker push $DOCKER_IMAGE
 
-# 阶段 3: 部署到 Kubernetes
+阶段 3: 部署到 Kubernetes
 deploy-to-k8s:
   stage: deploy
   image: bitnami/kubectl:latest  # 使用 kubectl 镜像
@@ -20092,20 +20282,20 @@ container-runtime：实际运行和管理容器的服务。Kubernetes支持多�
 
 2. 配置所有节点
 
-# 禁用交换分区（永久生效需编辑 /etc/fstab）
+禁用交换分区（永久生效需编辑 /etc/fstab）
 sudo swapoff -a
 
-# 设置主机名（如master/node1）
+设置主机名（如master/node1）
 sudo hostnamectl set-hostname master  # 控制平面节点
 sudo hostnamectl set-hostname node1   # 工作节点
 
-# 添加主机名解析（所有节点执行）
+添加主机名解析（所有节点执行）
 sudo vi /etc/hosts
-# 添加内容：
+添加内容：
 <master-ip> master
 <node1-ip> node1
 
-# 加载内核模块
+加载内核模块
 cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
 overlay
 br_netfilter
@@ -20113,7 +20303,7 @@ EOF
 sudo modprobe overlay
 sudo modprobe br_netfilter
 
-# 配置网络参数
+配置网络参数
 cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-iptables  = 1
 net.bridge.bridge-nf-call-ip6tables = 1
@@ -20124,26 +20314,26 @@ sudo sysctl --system
 二、安装容器运行时
 选项1：安装 containerd（推荐）
 
-# 安装依赖
+安装依赖
 sudo apt-get update && sudo apt-get install -y containerd  # Ubuntu/Debian
 sudo yum install -y containerd                              # CentOS
 
-# 生成默认配置
+生成默认配置
 sudo mkdir -p /etc/containerd
 containerd config default | sudo tee /etc/containerd/config.toml
 
-# 修改配置，设置Systemd Cgroup驱动
+修改配置，设置Systemd Cgroup驱动
 sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
 
-# 启动服务
+启动服务
 sudo systemctl restart containerd
 sudo systemctl enable containerd
 选项2：安装 Docker
 
-# 安装Docker
+安装Docker
 curl -fsSL https://get.docker.com | 
 
-# 配置Docker使用systemd作为Cgroup驱动
+配置Docker使用systemd作为Cgroup驱动
 sudo cat <<EOF | sudo tee /etc/docker/daemon.json
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
@@ -20151,18 +20341,18 @@ sudo cat <<EOF | sudo tee /etc/docker/daemon.json
 }
 EOF
 
-# 重启Docker
+重启Docker
 sudo systemctl restart docker
 sudo systemctl enable docker
 
 三、安装kubeadm、kubelet、kubectl
 
-# 添加Kubernetes源（所有节点执行）
+添加Kubernetes源（所有节点执行）
 sudo apt-get update && sudo apt-get install -y apt-transport-https ca-certificates curl  # Ubuntu/Debian
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
-# CentOS
+CentOS
 cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
@@ -20172,33 +20362,33 @@ gpgcheck=1
 gpgkey=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/repodata/repomd.xml.key
 EOF
 
-# 安装工具
+安装工具
 sudo apt-get update && sudo apt-get install -y kubelet kubeadm kubectl  # Ubuntu/Debian
-sudo yum install -y kubelet kubeadm kubectl                              # CentOS
+sudo yum install -y kubelet kubeadm kubectl                             # CentOS
 sudo systemctl enable --now kubelet
 
 四、初始化Master节点
 
-# 在Master节点执行
+在Master节点执行
 sudo kubeadm init \
   --apiserver-advertise-address=<master-ip> \
   --pod-network-cidr=10.244.0.0/16 \  # Flannel网络插件默认CIDR
   --image-repository registry.aliyuncs.com/google_containers  # 国内镜像加速
 
-# 成功后会输出加入节点的命令，类似：
+成功后会输出加入节点的命令，类似：
 kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash <hash>
 
-# 配置kubectl（普通用户执行）
+配置kubectl（普通用户执行）
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 五、安装网络插件（如Flannel）
 
-# 在Master节点执行
+在Master节点执行
 kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
 
-# 检查Pod状态
+检查Pod状态
 kubectl get pods -n kube-system
 
 六、加入Worker节点
@@ -20207,10 +20397,10 @@ sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-has
 
 七、验证集群
 
-# 查看节点状态
+查看节点状态
 kubectl get nodes  # 所有节点应显示Ready
 
-# 运行测试Pod
+运行测试Pod
 kubectl create deployment nginx --image=nginx
 kubectl expose deployment nginx --port=80
 kubectl get pods,svc
@@ -20458,7 +20648,7 @@ kubernetes可以实现云服务环境下的微服务编排，也同时实现了�
 以Kafka为例，将大数据组件容器化
 Kubernetes部署（StatefulSet + Headless Service）
 
-# kafka-statefulset.yaml
+-- kafka-statefulset.yaml
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -20495,7 +20685,7 @@ spec:
         requests:
           storage: 50Gi
 
-# kafka-service.yaml
+-- kafka-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -20515,7 +20705,7 @@ Kubernetes编排微服务
 批处理任务：使用Job或CronJob（如每日数据清洗任务）。
 
 资源限制与弹性伸缩
-# 示例：Spark Executor资源配置
+-- 示例：Spark Executor资源配置
 resources:
   limits:
     cpu: "2"
@@ -20524,7 +20714,7 @@ resources:
     cpu: "1"
     memory: "2Gi"
 
-# 自动扩缩容（HPA）
+-- 自动扩缩容（HPA）
 kubectl autoscale deployment spark-executor --cpu-percent=80 --min=2 --max=10
 
 服务发现与负载均衡
@@ -20573,22 +20763,22 @@ Ingress：统一入口（如Nginx Ingress Controller）。
 如何用nginx集成kubernetes负载均衡？
 Nginx 可以作为 Kubernetes 负载均衡体系的重要组成部分，在七层（HTTP/HTTPS）负载均衡场景中，通过 Nginx Ingress Controller 实现灵活的路由、流量管理和 TLS 终止。
 1.部署 Nginx Ingress Controller
-# 使用 Helm 快速部署（需提前安装 Helm）
+-- 使用 Helm 快速部署（需提前安装 Helm）
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm install ingress-nginx ingress-nginx/ingress-nginx
 
-# 验证部署
+-- 验证部署
 kubectl get pods -n default -l app.kubernetes.io/name=ingress-nginx
 
 2.暴露 Ingress Controller
 云环境：自动创建云负载均衡器（LoadBalancer 类型 Service）
-# 查看自动生成的 Service（通常已默认配置为 LoadBalancer）
+-- 查看自动生成的 Service（通常已默认配置为 LoadBalancer）
 kubectl get svc ingress-nginx-controller
 
 本地集群（裸金属）：使用 NodePort 或 MetalLB
-# 修改 Service 类型为 NodePort
+-- 修改 Service 类型为 NodePort
 kubectl edit svc ingress-nginx-controller
-# 或通过 MetalLB 分配外部 IP
+-- 或通过 MetalLB 分配外部 IP
 
 3.定义 Ingress 资源
 创建 Ingress 规则文件（如 my-ingress.yaml）：
@@ -20683,8 +20873,7 @@ MVC架构将网络交互层和数据交互层区分开，实现了业务读取�
 
 微服务和分布式之间的关系：
 微服务是实现分布式系统的一种方式。微服务架构是一种云原生架构方法，它将单个应用拆分为众多松散耦合且可单独部署的小型组件或服务。
-这些服务拥有自己的技术栈，通过REST API、事件流和消息代理进行通信，并且按照业务能力进行组织。通过微服务架构，可以将大型应用拆分为多个小服务，
-每个服务都可以独立地部署、扩展和管理，从而实现分布式系统的特性。
+这些服务拥有自己的技术栈，通过REST API、事件流和消息代理进行通信，并且按照业务能力进行组织。通过微服务架构，可以将大型应用拆分为多个小服务，每个服务都可以独立地部署、扩展和管理，从而实现分布式系统的特性。
 
 微服务之间的调用可以是RPC（远程过程调用）：
 RPC（Remote Procedure Call，远程过程调用）是一种用于在不同的计算机或进程之间进行通信和调用远程方法的协议和框架。
@@ -21307,7 +21496,7 @@ Leader选举与副本管理：在Kafka中，每个分区有一个Leader副本和
 1. 配置 Kafka 主题
 创建一个 Kafka 主题，并确保它的日志清理策略设置为紧凑（compact），这样当消息被消费后，日志中的消息可以被删除（或覆盖）。不过，Kafka 本身并没有直接提供“消息被消费后立即删除”的功能，但可以通过一些配置和逻辑来模拟这种行为。
 
-# 创建一个名为 "point-to-point-topic" 的主题，分区数为 1，副本因子为 1  
+-- 创建一个名为 "point-to-point-topic" 的主题，分区数为 1，副本因子为 1  
 kafka-topics.sh --create --topic point-to-point-topic --partitions 1 --replication-factor 1 --bootstrap-server localhost:9092
 
 2. 配置消费者
@@ -21415,10 +21604,10 @@ public class PointToPointProducer {
 1. 创建Kafka主题
 首先，你需要创建Kafka主题。这些主题将作为消息发布的目的地。
 
-# 创建一个名为 "topic1" 的主题，分区数为 3，副本因子为 1  
+-- 创建一个名为 "topic1" 的主题，分区数为 3，副本因子为 1  
 kafka-topics.sh --create --topic topic1 --partitions 3 --replication-factor 1 --bootstrap-server localhost:9092  
   
-# 创建一个名为 "topic2" 的主题，分区数为 2，副本因子为 1  
+-- 创建一个名为 "topic2" 的主题，分区数为 2，副本因子为 1  
 kafka-topics.sh --create --topic topic2 --partitions 2 --replication-factor 1 --bootstrap-server localhost:9092
 
 2. 配置生产者
@@ -21604,7 +21793,7 @@ RESTful API
 有时候，系统可能会结合多种方式来满足不同的需求，例如使用消息队列进行异步通信，结合RESTful API进行同步交互。
 
 
-分布式中间件：
+# 分布式中间件：
 中间件技术是计算机系统中的一个软件层，位于客户端和服务端之间，负责处理两者之间的通信和数据交换。
 它可以通过转换格式、路由消息、管理连接等方式支持多种应用场景，并具有提高系统可靠性、安全性、扩展性等优势。
 常见的中间件技术包括消息队列、缓存、负载均衡、API网关、数据库代理和文件存储代理等。
@@ -21935,7 +22124,7 @@ DFS的主要目的是允许物理分布式系统的用户通过使用公共文�
 它通过哈希函数将文件的元数据（如名称、内容等）编码成一个唯一的地址，从而可以在全球范围内进行文件的查找和访问。
 
 
-分布式微服务框架：
+# 分布式微服务框架：
 Spring Cloud：
 Spring Cloud是一个为构建分布式系统的微服务框架。
 准确的说，它不是一个框架，而是一个大的容器，将各个微服务通过接口调用，从而简化了开发者的代码量。
@@ -23170,7 +23359,7 @@ filebeat隶属于beats。目前beats包含四种工具：
 
 
 
-安全：
+# 安全：
 登录-安全框架Spring security：
 Spring Security是一个能够为基于Spring的企业应用系统提供声明式的安全访问控制解决方案的安全框架。
 它提供了一组可以在Spring应用上下文中配置的Bean，充分利用了Spring IoC，DI（控制反转Inversion of Control ,DI:Dependency Injection 依赖注入）和AOP（面向切面编程）功能，为应用系统提供声明式的安全访问控制功能，减少了为企业系统安全控制编写大量重复代码的工作。
@@ -23765,7 +23954,7 @@ pull request：将自己的修改推送给原仓库，向原仓库的开发者�
 
 
 
-分布式计算-大数据：
+# 分布式计算-大数据：
 从业务层面来说，"大数据" 指的是由企业、组织和个人生成的大量和复杂的数据集。
 这些数据集太大、太快或太复杂，它们无法用传统的数据处理工具进行处理和分析，它们通常来自多种来源，包括但不限于社交媒体、电子商务交易、移动设备、传感器和日志文件渠道获取数据。大数据既给社会带来机会，也给行业带来挑战。
 一方面，企业可以利用大数据获得有价值的洞察力、改进决策和优化运营。另一方面，管理、存储和处理大数据需要专门的工具和技术，例如分布式系统、并行处理和机器学习算法。
@@ -23964,7 +24153,7 @@ Container，container-launch-specification信息包含了能够让Container和Ap
     - 确保数据的一致性、完整性和安全性。
     - 包括数据访问控制、数据审计、数据隐私保护等。
 
-## 常见的实时数仓架构图示例
+**常见的实时数仓架构图示例**
 
 ```plaintext
 +----------------+      +----------------+      +----------------+      +----------------+      +----------------+      +----------------+
@@ -26768,7 +26957,7 @@ Redis，RethinkDB，Rsyslog 等等。
 因此你甚至可以在不使用 Prometheus 的情况下，采用 Prometheus 的 client library 来让你的应用程序支持监控数据采集。
 
 
-人工智能AIGC：
+# 人工智能AIGC：
 AIGC（AI-Generated Content），即人工智能生成内容，是指利用人工智能技术自动生成各种形式的内容，包括文本、图像、视频、音频等。
 AIGC 技术的核心在于利用机器学习，特别是深度学习模型来处理海量数据，并基于特定输入或条件生成具有创造性或实用性的内容。
 
@@ -26932,7 +27121,7 @@ public class NLPExample {
 机器人控制：结合计算机视觉和自然语言理解，控制复杂的机器人系统。
 
 
-分布式账本：
+# 分布式账本：
 分布式账本是一种基于分布式计算和密码学技术的数据记录和交互方式。它是一种去中心化的数据库系统，由多个参与方共同管理和维护。
 
 分布式账本技术的核心是区块链技术。区块链是一个由区块组成的链式结构，每个区块包含了一定的数据记录和相应的验证信息。
