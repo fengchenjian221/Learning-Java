@@ -88,7 +88,8 @@ String代表不可变的字符串序列，称作"不可变性"
 >当对现有的字符串进行连接操作时，需要重新写内存区域赋值，不能在原有的基础上赋值
 >当调用String的replace方法时，也需要重新写内存区域赋值，不能在原有的基础上赋值
 >String字符串拼接的方式，常量和常量拼接的结果在常量池；只要其中有一个是变量，结果就在堆中；
- 如果拼接的结果使用intern()方法，返回值在常量池中
+
+如果拼接的结果使用intern()方法，返回值在常量池中
 
 String的实例化方式：
 1.通过字面量的方式，声明在方法区中，两个相同的字符串返回true（即使是在对象中通过字面量定义的两个相同的字符串，返回的也是true）
@@ -110,25 +111,36 @@ String可以直接赋值或者创建对象
 String s1 = "Hello"; // 通过直接赋值创建String对象  
 String s2 = new String("Hello"); // 通过new关键字创建String对象
 
-StringBuffer是Java中的一个可变类，它允许我们在同一个对象上进行多次的字符串操作。
-StringBuffer sb = new StringBuffer(); // 创建一个空的StringBuffer对象  
-sb.append("Hello"); // 添加字符串  
-sb.append(" World"); // 添加另一个字符串  
-System.out.println(sb.toString()); // 输出 "Hello World"
-
 StringBuilder：StringBuilder和StringBuffer类似，也是Java中的一个可变类，允许我们在同一个对象上进行多次的字符串操作。
 StringBuilder sb = new StringBuilder(); // 创建一个空StringBuilder对象  
 sb.append("Hello"); // 添加字符串  
 sb.append(" World"); // 添加另一个字符串  
 System.out.println(sb.toString()); // 输出 "Hello World"
 
+StringBuffer是Java中的一个可变类，它允许我们在同一个对象上进行多次的字符串操作。
+StringBuffer sb = new StringBuffer(); // 创建一个空的StringBuffer对象  
+sb.append("Hello"); // 添加字符串  
+sb.append(" World"); // 添加另一个字符串  
+System.out.println(sb.toString()); // 输出 "Hello World"
+
+**StringBuffer 的线程安全性是通过 synchronized 关键字实现的。**
+1.synchronized 方法：
+* StringBuffer 类中几乎所有修改其内部状态的方法（如 append(), insert(), delete(), replace(), setCharAt(), setLength() 等）都被声明为 synchronized。
+* 这意味着这些方法在执行时，会获取 StringBuffer 对象实例本身的锁（this 锁）。
+
+2.锁机制与互斥访问：
+* 当一个线程调用一个 synchronized 方法（例如 append("abc")）时，它必须先获得这个 StringBuffer 对象的锁。
+* 如果此时锁没有被其他线程持有，该线程成功获取锁，进入方法体执行操作（修改内部的字符数组）。
+* 如果此时锁正被另一个线程持有（因为那个线程正在执行另一个 synchronized 方法），那么当前线程会被阻塞（进入等待状态），直到持有锁的线程执行完毕并释放锁。
+* 持有锁的线程执行完方法后（无论是正常返回还是抛出异常），会自动释放锁。
+
 创建StringBuffer时，底层创建了一个长度为16的字符串char型数组；
 如果创建时传了参数，则在此基础上增加一个长度为16的字符串char型数组，默认情况下，扩容为原来的2倍+2，同时将原有数组的元素复制到新的数组中
 
 基础数据类型的转换：
-容量小的数据类型与容量大的数据类型运算，结果自动转换为容量大的数据类型。
-当byte,short,char做运算时，结果必须是int类型。
-byte,short,char -> int -> long -> float -> double
+* 容量小的数据类型与容量大的数据类型运算，结果自动转换为容量大的数据类型。
+* 当byte,short,char做运算时，结果必须是int类型。
+* byte,short,char -> int -> long -> float -> double
 
 容量大的转换为容量小的：强制类型转换
 注意：强制类型转换，可能导致精度损失。
@@ -450,7 +462,7 @@ for (int i = 0; i < 5; i++) {
   * 是
   * 文档
   * 注释
- */
+  */
 
 8、注解
 Annotation(注解)也被称为元数据(Metadata)是JDK1.5及以后版本引入的，用于修饰解释 包、类、方法、属性、构造器、局部变量等数据信息。
@@ -470,8 +482,7 @@ RetentionPolicy.CLASS – 在类加载期间丢弃。应用在进行字节码级
 RetentionPolicy.RUNTIME – 不会丢弃。该注解可以在运行时进行反射。这是我们通常用于自定义注解的内容。
 
 @Target - 注解可以使用的地方。如果不指定这一属性，注解可以应用在任何地方。
-以下是该注解的有效值。这里的一个要点，它只有包含的形式，这意味着如果您想要对7个属性进行注解，
-并且只想排除一个属性，这时需要在定义目标时包含所有7个属性。 
+以下是该注解的有效值。这里的一个要点，它只有包含的形式，这意味着如果您想要对7个属性进行注解，并且只想排除一个属性，这时需要在定义目标时包含所有7个属性。 
 
 @Documented: 用于指定被该元注解修饰的 Annotation 类将被javadoc 工具提取成文档，即在生成文档时，可以看到该注解。
 注意：
@@ -592,7 +603,7 @@ throw在方法内部使用，throws在方法签名中使用。
 throw可以抛出任何异常，throws只能声明已检查异常。
 
 Java中的一些异常：
-1.空指针异常（NullPointerException）
+1.空指针异常（NullPointerException），是运行时异常
 原因：尝试访问或操作一个null对象的属性或方法。
 
 示例：
@@ -604,7 +615,7 @@ System.out.println(str.length()); // 抛出NullPointerException
 使用Optional类避免空指针。
 使用Objects.requireNonNull进行显式检查。
 
-2. 数组越界异常（ArrayIndexOutOfBoundsException）
+2. 数组越界异常（ArrayIndexOutOfBoundsException），是运行时异常
 原因：访问数组时，索引超出了数组的有效范围。
 
 示例：
@@ -615,7 +626,7 @@ System.out.println(arr[3]); // 抛出ArrayIndexOutOfBoundsException
 在访问数组元素之前检查索引是否有效。
 使用增强型for循环避免手动管理索引。
 
-3. 类型转换异常（ClassCastException）
+3. 类型转换异常（ClassCastException），是运行时异常
 原因：尝试将一个对象强制转换为不兼容的类型。
 
 示例：
@@ -626,7 +637,7 @@ Integer num = (Integer) obj; // 抛出ClassCastException
 在类型转换之前使用instanceof检查类型。
 尽量避免不必要的类型转换。
 
-4. 并发修改异常（ConcurrentModificationException）
+4. 并发修改异常（ConcurrentModificationException），是运行时异常
 原因：在使用迭代器遍历集合时，直接修改了集合的结构（如添加或删除元素）。
 
 示例：
@@ -641,7 +652,7 @@ for (String s : list) {
 使用迭代器的remove方法删除元素。
 使用CopyOnWriteArrayList等线程安全的集合类。
 
-5. 栈溢出错误（StackOverflowError）
+5. 栈溢出错误（StackOverflowError），是错误
 原因：递归调用过深，导致栈空间耗尽。
 
 示例：
@@ -653,7 +664,7 @@ public void recursiveMethod() {
 检查递归的终止条件是否正确。
 将递归改为迭代（如使用循环）。
 
-6. 内存溢出错误（OutOfMemoryError）
+6. 内存溢出错误（OutOfMemoryError），是错误
 原因：JVM内存不足，无法分配更多对象。
 
 示例：
@@ -666,7 +677,7 @@ while (true) {
 检查是否有内存泄漏（如未释放不再使用的对象）。
 增加JVM的堆内存大小（如使用-Xmx参数）。
 
-7. 类未找到异常（ClassNotFoundException）
+7. 类未找到异常（ClassNotFoundException），是编译时异常
 原因：尝试加载一个不存在的类。
 
 示例：
@@ -676,7 +687,7 @@ Class.forName("NonExistentClass"); // 抛出ClassNotFoundException
 检查类路径是否正确。
 确保所需的类或依赖库已正确加载。
 
-8. 方法未找到异常（NoSuchMethodException）
+8. 方法未找到异常（NoSuchMethodException），是编译时异常
 原因：尝试通过反射调用一个不存在的方法。
 
 示例：
@@ -686,7 +697,7 @@ Method method = String.class.getMethod("nonExistentMethod"); // 抛出NoSuchMeth
 检查方法名和参数类型是否正确。
 确保目标类中确实存在该方法。
 
-9. 文件未找到异常（FileNotFoundException）
+9. 文件未找到异常（FileNotFoundException），是编译时异常
 原因：尝试访问一个不存在的文件。
 
 示例：
@@ -696,7 +707,7 @@ FileInputStream fis = new FileInputStream("nonExistentFile.txt"); // 抛出FileN
 检查文件路径是否正确。
 确保文件确实存在。
 
-10. 数字格式异常（NumberFormatException）
+10. 数字格式异常（NumberFormatException），是运行时异常
 原因：尝试将一个非数字字符串转换为数字类型。
 
 示例：
@@ -706,7 +717,7 @@ int num = Integer.parseInt("abc"); // 抛出NumberFormatException
 在转换之前检查字符串是否为有效数字。
 使用try-catch捕获异常。
 
-11. 非法参数异常（IllegalArgumentException）
+11. 非法参数异常（IllegalArgumentException），是运行时异常
 原因：传递给方法的参数不合法。
 
 示例：
@@ -719,7 +730,7 @@ public void setAge(int age) {
 在方法中检查参数的有效性。
 提供清晰的错误信息。
 
-12. 线程中断异常（InterruptedException）
+12. 线程中断异常（InterruptedException），是编译时异常
 原因：线程在等待、睡眠或占用时被中断。
 
 示例：
@@ -9452,8 +9463,7 @@ Servlet 是 Java Web 应用程序中的一部分，用于处理客户端的请�
 ServletRequset接口:
     Servlet容器对于接受到的每一个Http请求，都会创建一个ServletRequest对象，并把这个对象传递给Servlet的Sevice( )方法。其中，ServletRequest对象内封装了关于这个请求的许多详细信息。
 
-public interface ServletRequest {
-  
+public interface ServletRequest { 
  
     int getContentLength();//返回请求主体的字节数
  
@@ -19613,7 +19623,8 @@ Redis Cluster是Redis的分布式解决方案，它在Redis 3.0版本之后正�
 二、Redis Cluster的核心机制
 Gossip协议：节点间通过Gossip协议交换集群状态信息，包括节点新增、删除、故障、槽信息变更等。这种协议确保了集群信息的快速传播和一致性。
 客户端路由：客户端与任意节点建立连接，节点负责将请求转发至正确的主节点。如果客户端发送的请求被转发到了错误的节点，该节点会返回一个MOVED重定向响应，告知客户端正确的节点地址。
-故障检测与恢复：节点间定期发送PING/PONG消息进行心跳检测，以判断对方是否存活。如果某个节点被检测到长时间无响应，则会被标记为主观下线；当多数节点都认为该节点已下线时，则会被标记为客观下线。此时，故障节点的从节点会竞选成为新的主节点，其他节点更新槽映射与配置，客户端自动重定向。
+故障检测与恢复：节点间定期发送PING/PONG消息进行心跳检测，以判断对方是否存活。如果某个节点被检测到长时间无响应，则会被标记为主观下线；当多数节点都认为该节点已下线时，则会被标记为客观下线。
+此时，故障节点的从节点会竞选成为新的主节点，其他节点更新槽映射与配置，客户端自动重定向。
 数据同步：新节点加入或从节点晋升为主节点时，会进行全量同步或增量同步。全量同步通过RDB快照进行，增量同步则通过PSYNC命令进行，以减少网络开销。
 
 三、Redis Cluster的优势
@@ -19652,35 +19663,82 @@ Redis集群通过结合虚拟节点和一致性哈希的方式，实现了高效
 
 配置reids集群节点：
 
-一、准备环境
-安装Redis：确保已经安装了Redis服务器软件。可以从Redis的官方网站下载对应的安装包进行安装。
-确定节点数量：Redis集群至少需要3个主节点，以提供基本的容错能力。通常，每个主节点还会配置一个或多个从节点，以提高数据的高可用性。
+一、**准备环境**
+* 安装Redis：确保已经安装了Redis服务器软件。可以从Redis的官方网站下载对应的安装包进行安装。
+* 确定节点数量：Redis集群至少需要3个主节点，以提供基本的容错能力。通常，每个主节点还会配置一个或多个从节点，以提高数据的高可用性。
 
-二、创建配置文件
-复制配置文件：将Redis的配置文件（通常是redis.conf）复制到每个节点的配置目录中，并根据需要进行修改。
-配置集群相关设置：在配置文件中，需要设置集群模式为启用（cluster-enabled yes），并指定集群配置文件（cluster-config-file nodes.conf）的存储位置。此外，还需要设置节点的监听地址和端口号等。
+二、**创建配置文件**
+* 复制配置文件：将Redis的配置文件（通常是redis.conf）复制到每个节点的配置目录中，并根据需要进行修改。
+* 配置集群相关设置：在配置文件中，需要设置集群模式为启用（cluster-enabled yes），并指定集群配置文件（cluster-config-file nodes.conf）的存储位置。此外，还需要设置节点的监听地址和端口号等。
 
-三、启动Redis节点
-使用配置文件启动节点：通过命令行使用redis-server命令和对应的配置文件启动每个Redis节点。例如：redis-server /path/to/redis.conf。
-验证节点启动：使用redis-cli工具连接到每个节点，并执行一些基本命令（如PING）来验证节点是否成功启动。
+三、**启动Redis节点**
+* 使用配置文件启动节点：通过命令行使用redis-server命令和对应的配置文件启动每个Redis节点。例如：redis-server /path/to/redis.conf。
+* 验证节点启动：使用redis-cli工具连接到每个节点，并执行一些基本命令（如PING）来验证节点是否成功启动。
 
-四、创建集群
-使用redis-cli创建集群：在Redis的客户端工具redis-cli中，使用--cluster create选项来创建集群，并指定所有节点的地址和端口。例如：redis-cli --cluster create 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 --cluster-replicas 1，其中--cluster-replicas 1表示每个主节点有一个从节点。
-分配槽位：Redis集群使用槽位（slot）来分配数据。总共有16384个槽位，需要将这些槽位分配给集群中的节点。可以使用CLUSTER ADDSLOTS命令来手动分配槽位，但在创建集群时，redis-cli会自动进行槽位分配。
+四、**创建集群**
+* 使用redis-cli创建集群：在Redis的客户端工具redis-cli中，使用--cluster create选项来创建集群，并指定所有节点的地址和端口。
+* 例如：redis-cli --cluster create 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 --cluster-replicas 1，其中--cluster-replicas 1表示每个主节点有一个从节点。
+* 分配槽位：Redis集群使用槽位（slot）来分配数据。总共有16384个槽位，需要将这些槽位分配给集群中的节点。可以使用CLUSTER ADDSLOTS命令来手动分配槽位，但在创建集群时，redis-cli会自动进行槽位分配。
 
-五、设置主从关系
-自动设置：在创建集群时，redis-cli会自动为每个主节点分配一个从节点（如果指定了--cluster-replicas选项）。
-手动设置：如果需要手动设置主从关系，可以使用CLUSTER REPLICATE命令将一个节点设置为另一个节点的从节点。
+五、**设置主从关系**
+* 自动设置：在创建集群时，redis-cli会自动为每个主节点分配一个从节点（如果指定了--cluster-replicas选项）。
+* 手动设置：如果需要手动设置主从关系，可以使用CLUSTER REPLICATE命令将一个节点设置为另一个节点的从节点。
 
-六、验证集群状态
-查看集群信息：使用CLUSTER INFO命令来查看集群的详细信息，如节点数量、槽位分配等。
-查看节点信息：使用CLUSTER NODES命令来查看集群中所有节点的信息，包括节点的ID、地址、端口、角色（主节点或从节点）等。
+六、**验证集群状态**
+* 查看集群信息：使用CLUSTER INFO命令来查看集群的详细信息，如节点数量、槽位分配等。
+* 查看节点信息：使用CLUSTER NODES命令来查看集群中所有节点的信息，包括节点的ID、地址、端口、角色（主节点或从节点）等。
 
-七、其他注意事项
-网络配置：确保所有节点之间的网络是互通的，以便它们能够相互通信和协作。
-持久化配置：根据需要配置Redis的持久化选项（如RDB或AOF），以确保数据的安全性和可靠性。
-密码认证：如果集群需要密码认证，请在配置文件中设置密码，并在创建集群时使用-a选项指定密码。
+七、**其他注意事项**
+* 网络配置：确保所有节点之间的网络是互通的，以便它们能够相互通信和协作。
+* 持久化配置：根据需要配置Redis的持久化选项（如RDB或AOF），以确保数据的安全性和可靠性。
+* 密码认证：如果集群需要密码认证，请在配置文件中设置密码，并在创建集群时使用-a选项指定密码。
 
+**redis为什么是单线程但是还能做高速缓存**
+Redis 之所以能作为**高速缓存**，即使采用单线程模型（主要指的是其核心命令处理逻辑），主要归功于以下几个关键设计理念和优化：
+
+1.  **纯内存操作：**
+    *   这是最根本的原因。Redis 的数据主要存储在内存中，而内存的访问速度（纳秒级）比磁盘（毫秒级）或网络快几个数量级。对数据的读写操作直接在内存中进行，避免了磁盘 I/O 带来的巨大延迟。单线程处理这些极快的内存操作绰绰有余。
+
+2.  **避免锁竞争和上下文切换开销：**
+    *   **无锁设计：** 单线程模型天然避免了多线程编程中最复杂、最影响性能的问题：锁竞争。多线程需要复杂的锁机制来保证数据一致性，而锁的获取、释放、等待都会消耗 CPU 时间，并可能引入死锁风险。
+    单线程按顺序执行命令，无需任何锁，执行路径极其简洁高效。
+    *   **零上下文切换：** 多线程环境下，操作系统需要在不同线程之间进行切换（上下文切换），这个过程需要保存和恢复线程状态，消耗 CPU 资源。单线程模型避免了这种开销，CPU 时间可以完全用于处理请求本身。
+
+3.  **高效的 I/O 多路复用模型：**
+    *   虽然命令执行是单线程的，但 Redis 使用高效的 I/O 多路复用技术（如 Linux 上的 `epoll`, `kqueue` 或 `select`）来处理大量的网络连接。
+    *   这个 I/O 线程（或更准确地说，是事件循环）可以同时监听成百上千个客户端的 Socket 连接。当任何一个 Socket 有数据可读（客户端发送命令）或有可写空间（准备向客户端发送响应）时，I/O 多路复用器会通知 Redis。
+    *   核心的单线程工作器（命令处理器）会按顺序处理这些准备好的事件：读取命令、解析命令、执行命令（内存操作）、生成响应、写入响应。这样，单线程就能高效地处理大量并发连接，瓶颈主要在内存访问速度和网络带宽，而非 CPU 计算能力。
+
+4.  **精心优化的数据结构：**
+    *   Redis 提供了丰富的数据结构（字符串、哈希、列表、集合、有序集合等），这些数据结构在内存中都有非常高效的实现（如哈希表、跳表、压缩列表等），其操作的时间复杂度通常是 O(1) 或 O(log N)。这使得单线程执行这些操作非常快速。
+
+5.  **协议简单高效：**
+    *   Redis 使用基于文本（RESP）或二进制（RESP3）的简单协议。客户端请求和服务器响应的解析和序列化都非常高效，减少了 CPU 在协议处理上的开销。
+
+**单线程模型的优势与局限：**
+
+*   **优势：**
+    *   **简单性：** 设计、实现、调试、维护都相对简单。
+    *   **无锁原子性：** 任何命令的执行都是原子性的，不需要额外的同步机制，对开发者更友好（尤其在 Lua 脚本执行时）。
+    *   **避免上下文切换和锁竞争：** 如上所述，这是高性能的关键。
+*   **局限：**
+    *   **CPU 密集型操作可能成为瓶颈：** 对于非常复杂的命令（如涉及大量数据的 `KEYS`、`SORT`）或 Lua 脚本，或者需要执行持久化（RDB/AOF）操作时，单线程会被阻塞，导致所有后续请求延迟。
+    *   **无法利用多核 CPU：** 单个 Redis 实例无法充分利用服务器上的多个 CPU 核心来处理命令（虽然 I/O 线程可以分担网络读写的负载）。
+
+**Redis 6.0+ 引入的多线程 I/O：**
+*   为了解决网络 I/O 可能成为瓶颈的问题（尤其是在高带宽场景下），Redis 6.0 引入了多线程 I/O（默认关闭）。
+*   **重要：** 这里的多线程**仅用于处理网络读（Socket Read）和写（Socket Write）**，**命令的解析和执行仍然是单线程的！**
+*   原理：
+    1.  主线程（命令执行线程）仍然使用 I/O 多路复用接收连接请求并建立连接。它会将已建立连接的 Socket 分发给 I/O 线程。
+    2.  I/O 线程（可配置数量）负责读取这些 Socket 上的请求数据（将原始字节流读入缓冲区）和将命令执行完成后的响应数据（由主线程生成）写回 Socket。
+    3.  主线程等待所有 I/O 线程完成读取后，按顺序解析缓冲区中的命令、执行命令、生成响应结果。
+    4.  主线程将响应结果交给 I/O 线程去写回给客户端。
+*   目的：将耗时的网络读写操作（特别是写大量响应数据）分摊到多个 I/O 线程上，减轻主线程（命令执行线程）在 I/O 上的压力，使其能更专注于执行命令。这在网络带宽很高（例如万兆网卡）或响应包很大的场景下提升显著。
+*   **命令执行的核心逻辑（内存操作）依然是单线程的，因此它依然保留着单线程模型的核心优势（简单、无锁、原子性）**。
+
+**总结：**
+Redis 单线程高速的核心秘诀在于：**内存操作 + 无锁/无上下文切换 + I/O 多路复用 + 高效数据结构**。它巧妙地避开了传统磁盘数据库的 I/O 瓶颈和多线程编程的锁竞争/切换开销，将性能发挥在内存访问这个最快的环节上。
+后续引入的**多线程 I/O 是为了优化网络瓶颈，而命令执行本身仍然是单线程**，以保持核心优势。因此，Redis 的单线程设计是其能作为高性能缓存的关键因素之一。
 
 Memcache:
 memcache是一个高性能的分布式的内存对象缓存系统，用于动态Web应用以减轻数据库负担。
@@ -19728,8 +19786,7 @@ ShardingSphere 主要包括以下子项目：
 1.Sharding-JDBC：用于实现关系型数据库的数据分片（Sharding）和读写分离（Master-Slave）功能。
 它允许应用程序在使用关系型数据库时将数据分散到多个数据库实例，从而提高数据库性能和扩展性。
 2.Sharding-Proxy：这是一个数据库代理，它支持分片和分布式事务，并允许应用程序通过一个中心化的访问点来访问分布式数据库，而不需要直接连接到底层数据库实例。
-3.Sharding-Sidecar：这是 ShardingSphere 的云原生版本，它提供了 Kubernetes 和 Service Mesh（如 Istio）的支持，
-以便更轻松地在云原生环境中部署和管理 ShardingSphere。
+3.Sharding-Sidecar：这是 ShardingSphere 的云原生版本，它提供了 Kubernetes 和 Service Mesh（如 Istio）的支持，以便更轻松地在云原生环境中部署和管理 ShardingSphere。
 
 ShardingSphere 的主要特点包括：
 
