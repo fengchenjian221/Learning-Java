@@ -24,6 +24,13 @@ try catch finally throw throws
 package import
 其他修饰符关键字：
 native、assert、transient、volatile、strictfp 
+
+native: 指示一个方法的实现并不是由 Java 语言编写的，而是由本地（Native）代码（通常是 C 或 C++）实现的。
+assert: 断言，用于在代码中进行“假设”，即在程序某个特定的点，断言某个条件必须为真。
+transient: 用来标记一个成员变量在序列化（即实现 java.io.Serializable 接口的对象被转换为字节流的过程）时应该被忽略，该字段不会被序列化。
+volatile: 一个字段修饰符。用来确保变量的可见性和有序性。
+strictfp: 用于修饰类、接口或方法，确保在不同平台上执行的浮点计算都遵循 IEEE 754 标准，从而保证结果的一致性。
+
 *用于定义数据类型值的字面值：
 true、false、null。
 
@@ -2587,6 +2594,7 @@ Java 是一种广泛使用的编程语言，它确实具有许多面向对象的
 Java多线程：Java多线程实现的原理是基于Java虚拟机（JVM）的线程调度。JVM通过线程调度器负责分配CPU时间，实现多线程的并发执行。
 
 Java的多线程不是直接调用操作系统的线程操作，而是通过Java虚拟机（JVM）提供的抽象层来管理和实现。Java的这种设计使得Java程序具有更好的跨平台性和线程安全性。
+
 下面详细阐述Java多线程的实现机制及其与操作系统的关系：
 1. Java线程的抽象
 Java中的线程（Thread）是Java编程语言中用于表示线程的对象。每个Thread对象都代表一个线程，并可以启动一个新的线程来执行特定的任务。Java线程模型是建立在JVM之上的，而JVM又是在操作系统之上运行的。
@@ -2712,6 +2720,24 @@ i = i + 1; 这个操作实际上包括读取i的值、计算i+1的值以及将�
 使用synchronized关键字：通过进入和退出同步块，可以确保线程在修改共享变量时，将变量的修改刷新到主内存中，同时使其他线程能够看到这个修改。
 使用volatile关键字：声明为volatile的变量可以确保变量的修改对其他线程立即可见，但需要注意的是，volatile不能保证复合操作的原子性。
 使用java.util.concurrent包中的原子类：这些类通过底层的硬件支持和锁机制保证了变量的可见性和原子性。
+``` java
+public class VisibilityExample {
+    private volatile boolean flag = false; // 使用volatile保证flag的可见性
+
+    public void start() {
+        new Thread(() -> {
+            while (!flag) { // 线程会及时看到主线程对flag的修改
+                // do something...
+            }
+            System.out.println("Thread stopped.");
+        }).start();
+    }
+
+    public void stop() {
+        flag = true; // 修改后，立即对所有线程可见
+    }
+}
+```
 
 3. 有序性（Ordering）
 有序性是指在多线程环境下，程序执行的顺序可能会因为指令重排序（Instruction Reorder）而变得不确定。Java编译器和处理器为了提高性能，可能会对指令进行重排序，这在单线程环境下通常是安全的，但在多线程环境下可能会导致问题。
@@ -2722,9 +2748,23 @@ i = i + 1; 这个操作实际上包括读取i的值、计算i+1的值以及将�
 使用synchronized关键字：synchronized块不仅保证了原子性和可见性，还保证了指令的有序性。
 使用volatile关键字：虽然volatile不能保证复合操作的原子性，但它可以禁止指令重排序，确保变量的修改对其他线程立即可见。
 使用java.util.concurrent.locks包中的显式锁：这些锁提供了比synchronized更细粒度的控制，并且也保证了指令的有序性。
+``` java
+public class Singleton {
+    // 使用volatile禁止 instance = new Singleton(); 这行代码内部的指令重排序
+    private static volatile Singleton instance;
 
-
-
+    public static Singleton getInstance() {
+        if (instance == null) { // 第一次检查
+            synchronized (Singleton.class) { // 加锁
+                if (instance == null) { // 第二次检查
+                    instance = new Singleton(); // 非原子操作，可能发生指令重排序
+                }
+            }
+        }
+        return instance;
+    }
+}
+```
 多线程的实现方式（一）
 继承Thread类
 1、自定义一个类MyThread类，用来继承与Thread类
@@ -3186,26 +3226,98 @@ Java多线程实现线程通讯的方法：
 1. 使用 synchronized 和 wait/notify 机制
 synchronized 关键字用于定义同步代码块或同步方法，确保同一时间只有一个线程可以执行这些代码。wait() 方法使当前线程等待，直到其他线程调用 notify() 或 notifyAll() 方法来唤醒它。
 
-class SharedResource {  
-    private int value = 0;  
-    private final Object lock = new Object();  
-  
-    public void setValue(int value) {  
-        synchronized (lock) {  
-            this.value = value;  
-            lock.notifyAll(); // 通知所有等待的线程  
-        }  
-    }  
-  
-    public int getValue() throws InterruptedException {  
-        synchronized (lock) {  
-            while (value == 0) {  
-                lock.wait(); // 等待其他线程设置值  
-            }  
-            return value;  
-        }  
-    }  
+* 1.1 ProducerConsumer的源码运用了synchronized 和 wait/notify 机制
+``` java
+public class ProducerConsumer {
+    private final Object lock = new Object();
+    private int count = 0;
+
+    public void produce() throws InterruptedException {
+        synchronized (lock) {
+            while (count == 3) {           // 队列满
+                lock.wait();               // 释放锁，进入 WAITING
+            }
+            count++;
+            System.out.println(Thread.currentThread().getName() + " produce -> " + count);
+            lock.notifyAll();              // 唤醒阻塞在 wait() 上的线程
+        }
+    }
+
+    public void consume() throws InterruptedException {
+        synchronized (lock) {
+            while (count == 0) {           // 队列空
+                lock.wait();
+            }
+            count--;
+            System.out.println(Thread.currentThread().getName() + " consume -> " + count);
+            lock.notifyAll();
+        }
+    }
+
+    public static void main(String[] args) {
+        ProducerConsumer pc = new ProducerConsumer();
+        // 2 生产者
+        for (int i = 0; i < 2; i++) {
+            new Thread(() -> {
+                try { while (true) { pc.produce(); Thread.sleep(300); } }
+                catch (InterruptedException ignored) {}
+            }, "P-" + i).start();
+        }
+        // 3 消费者
+        for (int i = 0; i < 3; i++) {
+            new Thread(() -> {
+                try { while (true) { pc.consume(); Thread.sleep(500); } }
+                catch (InterruptedException ignored) {}
+            }, "C-" + i).start();
+        }
+    }
 }
+```
+
+* 1.2 手写阻塞队列
+``` java
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class MyBlockingQueue<T> {
+    private final Queue<T> queue = new LinkedList<>();
+    private final int capacity;
+
+    public MyBlockingQueue(int capacity) { this.capacity = capacity; }
+
+    public synchronized void put(T e) throws InterruptedException {
+        while (queue.size() == capacity) {    // 必须用 while 防虚假唤醒
+            wait();
+        }
+        queue.add(e);
+        notifyAll();                          // 唤醒等待 take() 的线程
+    }
+
+    public synchronized T take() throws InterruptedException {
+        while (queue.isEmpty()) {
+            wait();
+        }
+        T item = queue.poll();
+        notifyAll();                          // 唤醒等待 put() 的线程
+        return item;
+    }
+
+    /* -------- 测试 -------- */
+    public static void main(String[] args) throws InterruptedException {
+        MyBlockingQueue<Integer> q = new MyBlockingQueue<>(2);
+        // 生产者
+        new Thread(() -> {
+            try { for (int i = 0; i < 5; i++) { q.put(i); System.out.println("put " + i); } }
+            catch (InterruptedException ignored) {}
+        }).start();
+        // 消费者
+        new Thread(() -> {
+            try { for (int i = 0; i < 5; i++) { System.out.println("take " + q.take()); } }
+            catch (InterruptedException ignored) {}
+        }).start();
+    }
+}
+```
 
 2. 使用 ReentrantLock 和 Condition
 ReentrantLock 提供了比 synchronized 更加灵活的锁机制，而 Condition 提供了比 wait/notify 更加丰富的线程等待/通知机制。
@@ -3241,25 +3353,156 @@ class SharedResource {
         }  
     }  
 }
+
 3. 使用 Semaphore
 Semaphore 是一个计数信号量，用于控制对共享资源的访问。
 
-import java.util.concurrent.Semaphore;  
-  
-class SharedResource {  
-    private int value = 0;  
-    private final Semaphore semaphore = new Semaphore(0); // 初始化为0，表示没有资源可用  
-  
-    public void setValue(int value) {  
-        this.value = value;  
-        semaphore.release(); // 释放一个许可  
-    }  
-  
-    public int getValue() throws InterruptedException {  
-        semaphore.acquire(); // 请求一个许可，如果没有许可则阻塞  
-        return value;  
-    }  
+* 3.1 固定大小连接池
+``` java 
+import java.util.concurrent.*;
+
+/**
+ * 同时最多允许 3 个线程拿到“数据库连接”，其余线程阻塞等待
+ */
+public class ConnectionPool {
+    private static final int POOL_SIZE = 3;
+
+    // 1. 非公平模式即可，吞吐更高
+    private final Semaphore semaphore = new Semaphore(POOL_SIZE, false);
+
+    // 真正持有的物理连接（复用同一个对象模拟）
+    private final Object[] connections = new Object[POOL_SIZE];
+
+    public ConnectionPool() {
+        for (int i = 0; i < POOL_SIZE; i++) {
+            connections[i] = new Object();      // 假装是 JDBC Connection
+        }
+    }
+
+    /**
+     * 获取连接，拿不到就阻塞
+     */
+    public Object borrow() throws InterruptedException {
+        semaphore.acquire();                    // 2. 关键点：拿许可
+        return getIdleConnection();
+    }
+
+    /**
+     * 归还连接
+     */
+    public void release(Object conn) {
+        returnToPool(conn);
+        semaphore.release();                    // 3. 关键点：还许可
+    }
+
+    /* ---------------- 简单辅助方法 ---------------- */
+    private synchronized Object getIdleConnection() {
+        for (int i = 0; i < connections.length; i++) {
+            if (connections[i] != null) {
+                Object c = connections[i];
+                connections[i] = null;          // 标记为“已借出”
+                return c;
+            }
+        }
+        throw new IllegalStateException("池已满但逻辑仍拿到信号量？");
+    }
+
+    private synchronized void returnToPool(Object conn) {
+        for (int i = 0; i < connections.length; i++) {
+            if (connections[i] == null) {
+                connections[i] = conn;
+                return;
+            }
+        }
+    }
+
+    /* ---------------- 演示 ---------------- */
+    public static void main(String[] args) {
+        ExecutorService pool = Executors.newFixedThreadPool(10);
+        ConnectionPool cp = new ConnectionPool();
+
+        for (int i = 0; i < 10; i++) {
+            int id = i;
+            pool.execute(() -> {
+                try {
+                    Object conn = cp.borrow();
+                    System.out.println("thread-" + id + " get " + conn);
+                    TimeUnit.SECONDS.sleep(2);       // 业务逻辑
+                    cp.release(conn);
+                    System.out.println("thread-" + id + " release " + conn);
+                } catch (InterruptedException ignored) {
+                }
+            });
+        }
+        pool.shutdown();
+    }
 }
+```
+
+运行效果：
+控制台先打印 3 条 get，2 秒后打印 release，再打印新的 get，始终维持 3 条并发。
+
+* 3.2 进阶用法：tryAcquire + 超时，实现“弹性降级”
+``` java 
+import java.time.LocalTime;
+import java.util.concurrent.*;
+
+public class DegradeDemo {
+    private static final Semaphore GUARD = new Semaphore(5, true); // 公平
+
+    public static void main(String[] args) {
+        ExecutorService es = Executors.newCachedThreadPool();
+        for (int i = 1; i <= 20; i++) {
+            final int no = i;
+            es.execute(() -> {
+                try {
+                    // 只等 800 ms，拿不到就走降级逻辑
+                    if (GUARD.tryAcquire(800, TimeUnit.MILLISECONDS)) {
+                        try {
+                            System.out.println(LocalTime.now() + " - " + no + " 抢到许可");
+                            TimeUnit.SECONDS.sleep(2);          // 模拟业务
+                        } finally {
+                            GUARD.release();
+                        }
+                    } else {
+                        System.out.println(LocalTime.now() + " - " + no + " 降级：直接返回兜底数据");
+                    }
+                } catch (InterruptedException ignored) {
+                }
+            });
+        }
+        es.shutdown();
+    }
+}
+```
+
+* 3.3 原理级示例：自实现“许可证递减/递增”可视化
+``` java
+import java.util.concurrent.*;
+import java.util.concurrent.locks.LockSupport;
+
+/**
+ * 把 Semaphore 当 CountDownLatch 用，直观看到 state 变化
+ */
+public class AsLatch {
+    public static void main(String[] args) throws InterruptedException {
+        // 初始 0 个许可，主线程需要等待 3 个子线程“释放”才能继续
+        Semaphore latch = new Semaphore(0);
+
+        for (int i = 1; i <= 3; i++) {
+            int id = i;
+            new Thread(() -> {
+                LockSupport.parkNanos(TimeUnit.SECONDS.toNanos(id)); // 每个线程耗时不同
+                System.out.println("child-" + id + " done");
+                latch.release();          // 许可证 +1
+            }).start();
+        }
+
+        latch.acquire(3);                 // 需要 3 张许可证才能继续
+        System.out.println("all child finished, main exit");
+    }
+}
+```
 
 4. 使用 CountDownLatch
 CountDownLatch 允许一个或多个线程等待其他线程完成一系列操作。
@@ -3865,11 +4108,22 @@ Java多线程中的四种锁类型——偏向锁、轻量级锁、自旋锁（�
 综上所述，偏向锁和轻量级锁（包括其自旋锁机制）主要为了减少线程获取锁和保持锁的开销而设计，它们并不直接依赖于操作系统的互斥锁。而重量级锁则直接依赖于操作系统的互斥锁来实现线程同步，虽然能够确保线程安全，但会带来较大的开销。
 因此，在Java多线程编程中，应根据具体场景选择合适的锁类型以优化性能。
 
+synchronized锁的底层实现原理
+synchronized锁**是一个在JVM层面实现的、高度智能化的优化策略，但其底层最终确实依赖于操作系统提供的机制。**
+
+我们可以这样分层理解：
+1.  **设计理念与策略层 (JVM层)**：
+    *   整个锁升级的**策略、逻辑和状态机（无锁→偏向→轻量级→重量级）完全是由JVM的设计者制定的**。它基于一个非常聪明的观察：大部分锁的竞争激烈程度是很低的。因此，JVM试图用最低成本的锁来应对当前 scenario（场景）。
+    *   偏向锁、轻量级锁、自旋操作等，其实现（如CAS、栈上分配Lock Record、操作Mark Word）都是在**用户态**完成的，**完全没有操作系统的参与**。这极大地提升了效率。
+
+2.  **底层支撑与最终保障层 (操作系统层)**：
+    *   实现这些锁的基础**原子操作（如CAS操作）** 需要CPU指令的支持（如x86架构的`CMPXCHG`指令）。JVM通过调用CPU提供的这些指令来实现用户态的原子操作。
+    *   当竞争加剧，升级到最终的**重量级锁**时，JVM就不得不依赖操作系统提供的**互斥量（mutex）** 和**条件变量（condition variable）** 等同步原语来实现。这时，线程的**挂起（park）** 和**唤醒（unpark）** 都需要通过操作系统内核来进行系统调用（如Linux下的`futex`），这会导致从用户态切换到内核态，上下文切换开销巨大。
 
 
 在操作系统层面，解决同步问题往往会采用互斥锁和信号量。在现代操作系统中，多线程并发执行是常见的现象，但这也带来了线程间同步与互斥的问题。互斥锁（Mutex）作为一种重要的同步机制，在解决这些问题上发挥着关键作用。
 
-互斥锁的基本概念
+* 互斥锁的基本概念
 互斥锁是一种简单的加锁方法，用于控制对共享资源的访问。它只有两种状态：上锁（locked）和解锁（unlocked）。
 当一个线程需要访问某个共享资源（临界区）时，它会尝试获取互斥锁。如果锁当前是解锁状态，则获取锁成功，线程可以进入临界区；如果锁已经上锁，则线程会被阻塞，直到持有锁的线程释放锁为止。
 
