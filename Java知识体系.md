@@ -3226,7 +3226,7 @@ Java多线程实现线程通讯的方法：
 1. 使用 synchronized 和 wait/notify 机制
 synchronized 关键字用于定义同步代码块或同步方法，确保同一时间只有一个线程可以执行这些代码。wait() 方法使当前线程等待，直到其他线程调用 notify() 或 notifyAll() 方法来唤醒它。
 
-* 1.1 ProducerConsumer的源码运用了synchronized 和 wait/notify 机制
+* 1.1 ProducerConsumer(多线程并发生产者-消费者模型)的源码运用了synchronized 和 wait/notify 机制
 ``` java
 public class ProducerConsumer {
     private final Object lock = new Object();
@@ -3274,6 +3274,16 @@ public class ProducerConsumer {
 }
 ```
 
+1.1.1 **初始状态**：`count = 0`。
+1.1.2 **生产者运行**：
+   - 假设生产者P-0获得锁，调用`produce()`。由于`count = 0 < 3`，它增加`count`到1，打印消息，调用`notifyAll()`（但如果没有线程等待，则无效果），然后释放锁（退出`synchronized`块）。
+   - 接着，生产者P-1可能获得锁，调用`produce()`，增加`count`到2，打印消息，调用`notifyAll()`，然后释放锁。
+   - 此时`count = 2`，没有线程在等待（因为消费者还没有运行或没有调用`wait`），锁是自由的。
+1.1.3 **消费者获取锁**：
+   - 现在，锁被释放后，所有线程（包括生产者和消费者）都会竞争锁。由于有2个生产者和3个消费者，任何线程都可能获得锁。这不是“自动获得”，而是通过线程调度器竞争决定的。
+   - 如果消费者线程（如C-0）竞争到锁，它会调用`consume()`。由于`count = 2 > 0`，它不会等待，而是减少`count`到1，打印消息，调用`notifyAll()`，然后释放锁。
+   - 其他消费者线程也可能竞争到锁并消费。
+
 * 1.2 手写阻塞队列
 ``` java
 import java.util.LinkedList;
@@ -3320,6 +3330,7 @@ public class MyBlockingQueue<T> {
 ```
 
 2. 使用 ReentrantLock 和 Condition
+``` java
 ReentrantLock 提供了比 synchronized 更加灵活的锁机制，而 Condition 提供了比 wait/notify 更加丰富的线程等待/通知机制。
 
 import java.util.concurrent.locks.Condition;  
@@ -3353,6 +3364,7 @@ class SharedResource {
         }  
     }  
 }
+```
 
 3. 使用 Semaphore
 Semaphore 是一个计数信号量，用于控制对共享资源的访问。
@@ -4154,7 +4166,7 @@ synchronized锁**是一个在JVM层面实现的、高度智能化的优化策略
 注意锁的释放时机：在编写多线程程序时，需要特别注意锁的释放时机。如果线程在持有锁的情况下意外终止或进入死循环等异常情况，则可能导致其他线程无法获取锁而永远阻塞。因此，需要确保在适当的时候释放锁。
 
 以下是一个使用互斥锁（Mutex）的C语言示例代码，该代码展示了如何在多线程环境中使用互斥锁来保护共享资源，防止数据竞争。这个示例使用的是C语言和POSIX线程库（pthread）。
-
+``` c
 #include <stdio.h>  
 #include <stdlib.h>  
 #include <pthread.h>  
@@ -4216,11 +4228,13 @@ int main() {
   
     return EXIT_SUCCESS;  
 }
+```
 在这个示例中，我们创建了一个共享资源shared_counter，并初始化了一个互斥锁mutex。然后，我们创建了5个线程，每个线程都会尝试对shared_counter进行1000次递增操作。
 在每次递增操作之前，线程会先获取互斥锁（pthread_mutex_lock），确保没有其他线程同时访问shared_counter。完成递增操作后，线程会释放互斥锁（pthread_mutex_unlock），以便其他线程可以获取锁并继续执行。
 
 主线程会等待所有子线程完成（pthread_join），然后销毁互斥锁并输出最终的shared_counter值。由于互斥锁的保护，最终的shared_counter值应该是所有线程递增操作的总和，即5 * 1000 = 5000。
 
+* 在Java中我们使用**synchronized关键字和ReentrantLock**来实现互斥锁
 
 信号量：
 在操作系统中，信号量（Semaphore）是一种广泛使用的同步机制，用于解决多个进程或线程之间的同步问题。信号量通过维护一个计数器来跟踪可用资源的数量，并通过原子操作来修改这个计数器的值，从而确保对共享资源的访问是安全的。
@@ -4250,7 +4264,7 @@ V操作（signal操作）：当一个进程或线程完成共享资源的访问�
 
 以下是一个利用信号量解决同步问题的示例代码，该代码采用C语言和POSIX信号量（sem_t）进行实现。在这个示例中，我们创建了一个信号量来控制对共享资源（一个整数计数器）的访问。
 多个线程将尝试对这个计数器进行递增操作，而信号量将确保这些操作是同步进行的，从而避免数据竞争。
-
+``` c
 #include <stdio.h>  
 #include <stdlib.h>  
 #include <pthread.h>  
@@ -4324,6 +4338,7 @@ int main() {
   
     return EXIT_SUCCESS;  
 }
+```
 在这个示例中，我们创建了一个信号量semaphore，并将其初始化为1，表示有一个资源（在这个例子中，是对共享计数器shared_counter的访问权限）可用。然后，我们创建了5个线程，每个线程都会尝试对shared_counter进行1000次递增操作。
 在每次递增操作之前，线程会执行P操作（sem_wait），这会尝试减少信号量的值。如果信号量的值为0（表示没有可用资源），则sem_wait会阻塞线程，直到信号量的值大于0为止。一旦线程成功获取了信号量（即信号量的值大于0），它就可以安全地访问和修改共享资源shared_counter。
 完成递增操作后，线程会执行V操作（sem_post），释放信号量，并允许其他被阻塞的线程继续执行。
@@ -4400,12 +4415,12 @@ Java 的异步线程是指在 Java 应用程序中，多个线程同时执行不
 多线程：多线程则适用于需要长时间CPU运算的场合，如耗时较长的图形处理和算法执行。多线程可以通过并发执行多个任务来充分利用多核处理器的性能。
 
 
-线程异步需要考虑原子性：
+* 线程异步需要考虑原子性：
 在Java中异步编程中，线程原子性是需要考虑的因素。线程原子性指的是线程执行过程中不会被其他线程打断的特性。
 如果不考虑线程原子性，那么会有可能出现线程在执行过程中对数据的不一致性问题。
 因此，在异步编程中，为了保证数据的一致性，需要考虑线程的原子性。
 
-原子性可以通过以下几种方式来实现：
+* 原子性可以通过以下几种方式来实现：
 使用synchronized关键字：synchronized关键字可以保证同一时刻只有一个线程可以执行被synchronized修饰的方法或者代码块，因此可以保证原子性。
 使用Lock：Lock是Java提供的一种更加灵活的线程同步机制，它可以在方法或者代码块前后分别加锁和解锁，从而保证原子性。
 使用Atomic类：Java提供了许多Atomic类，如AtomicInteger、AtomicLong等，这些类可以保证对基本数据类型的操作是原子的。
@@ -4413,7 +4428,8 @@ Java 的异步线程是指在 Java 应用程序中，多个线程同时执行不
 使用Semaphore：Semaphore是一种用来控制访问资源的数量的工具类，可以在保证原子性的同时，控制并发线程的数量。
 
 Java异步线程的实现方式：
-继承Thread类
+1.继承Thread类
+``` java
 class MyThread extends Thread {
     @Override
     public void run() {
@@ -4427,8 +4443,9 @@ public class Main {
         thread.start(); // 启动线程
     }
 }
-
-实现Runnable接口
+```
+2.实现Runnable接口
+``` java
 class MyRunnable implements Runnable {
     @Override
     public void run() {
@@ -4442,8 +4459,9 @@ public class Main {
         thread.start(); // 启动线程
     }
 }
-
-实现Callable接口并使用FutureTask
+```
+3.实现Callable接口并使用FutureTask
+``` java
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -4470,10 +4488,10 @@ public class Main {
         }
     }
 }
-
-使用ExecutorService：
+```
+4.使用ExecutorService：
 ExecutorService提供了更高级的线程管理功能，可以管理线程池和异步任务。
-
+``` java
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -4485,16 +4503,18 @@ public class Main {
         executor.shutdown(); // 关闭线程池
     }
 }
+```
 
-
-使用CompletableFuture：
+5.使用CompletableFuture：
+``` java
 CompletableFuture<Long> completableFuture = CompletableFuture.supplyAsync(() -> factorial(number));
 while (!completableFuture.isDone()) {
     System.out.println("CompletableFuture is not finished yet...");
 }
 long result = completableFuture.get();
-
+```
 SpringBoot @Async异步：
+``` java
 @SpringBootApplication
 @EnableAsync
 public class StartApplication {
@@ -4503,10 +4523,10 @@ public class StartApplication {
         SpringApplication.run(StartApplication.class, args);
     }
 }
-
-使用ScheduledExecutorService：
+```
+6.使用ScheduledExecutorService：
 ScheduledExecutorService可以用于调度任务，在未来某个时间点执行任务或周期性地执行任务。
-
+``` java
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -4527,9 +4547,9 @@ public class Main {
         }, 0, 10, TimeUnit.SECONDS);
     }
 }
+```
 
-
-使用自定义线程池：
+7.使用自定义线程池：
 在Java中，ExecutorService 接口是执行提交给它的 Runnable 任务的对象的方法，这些任务可以异步地执行。ThreadPoolExecutor 类是 ExecutorService 接口的一个具体实现，它允许你通过调整多个参数来灵活地配置线程池。
 ThreadPoolExecutor 的构造方法有多种重载形式，但最常用和灵活的构造方法包含以下七个参数：
 
@@ -4544,6 +4564,7 @@ handler（拒绝策略）：当工作队列和线程池都达到饱和状态时�
 corePoolSize（核心线程数）-> workQueue（工作队列）-> maximumPoolSize（最大线程数）-> handler（拒绝策略）
 创建线程池时，会将数据放到核心线程数，大于核心线程数时会将数据放到工作队列，超过工作队列时会将数据放到最大线程数，超过最大线程数时会执行拒绝策略。
 一个使用这些参数的 ThreadPoolExecutor 构造方法示例如下：
+``` java
 import java.util.concurrent.*;  
   
 public class ThreadPoolExample {  
@@ -4574,11 +4595,12 @@ public class ThreadPoolExample {
         executor.shutdown();  
     }  
 }
+```
 这个示例展示了如何配置一个 ThreadPoolExecutor 实例，包括核心线程数、最大线程数、存活时间、工作队列、线程工厂和拒绝策略。
 
 示例代码2
 以下是一个使用ThreadPoolExecutor创建动态线程池的示例：
-
+``` java
 import java.util.concurrent.ArrayBlockingQueue;  
 import java.util.concurrent.ThreadPoolExecutor;  
 import java.util.concurrent.TimeUnit;  
@@ -4622,6 +4644,7 @@ public class DynamicThreadPoolExample {
         System.out.println("All tasks completed.");  
     }  
 }
+```
 线程池的常用方法和适用场景
 常用方法：
 execute(Runnable command): 提交一个任务用于执行，该任务将等待一个空闲的线程。
@@ -4642,6 +4665,7 @@ shutdownNow(): 尝试停止所有正在执行的活动任务，停止处理正�
 
 
 使用Guava：
+``` java
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
@@ -4674,12 +4698,12 @@ public class Main {
         }, executor);
     }
 }
+```
 在这个示例中，使用了Futures.addCallback()方法注册了一个回调函数，当任务成功完成时调用onSuccess()方法，当任务失败时调用onFailure()方法。
 使用Guava的ListenableFuture和ListeningExecutorService接口可以更加方便地处理异步任务的结果，并且提供了更丰富的回调机制来处理任务的执行完成或失败情况。
 
 
-
-缓存和线程池在实际应用上有什么区别？
+* 缓存和线程池在实际应用上有什么区别？
 缓存和线程池是两种用于提高系统性能和响应速度的技术，但它们的应用场景和目的有所不同。下面将分别说明何时使用缓存和线程池。
 
 何时使用缓存
@@ -4696,6 +4720,50 @@ public class Main {
 
 综上所述，缓存和线程池在提升系统性能和响应速度方面各有优势，应根据具体的应用场景和需求来选择合适的技术。在实际应用中，往往也会将缓存和线程池结合起来使用，以达到更好的性能优化效果。
 
+* Java异步如何实现线程通信、线程同步
+Java 的异步框架把「线程通信」和「线程同步」这两件事，全部包装成了**任务-回调（或事件）机制**。底层用到了**内存屏障、CAS、无锁队列、LockSupport**等工具，但应用层几乎感觉不到它们的存在。下面用两条典型链路拆开讲：
+
+
+1. 线程通信：把“结果”从执行线程送回调用线程
+- **线程 1（调用线程）**提交任务后，立即拿到一个「凭证」（Future/CompletableFuture）。  
+- **线程 2（执行线程，可能是 ForkJoinPool、Netty EventLoop、Tomcat NIO 线程等）**真正完成 I/O 或计算。  
+- **通信载体**  
+  ‑ `CompletableFuture` 内部有一个 `volatile Object result` 字段。  
+  ‑ 线程 2 完成后通过 `UNSAFE.putOrderedObject` 写入结果，再调用 `LockSupport.unpark` 唤醒挂在 `Future.get()` 上的线程 1。  
+  ‑ 如果调用线程使用了回调（`thenAccept`, `whenComplete` 等），则线程 2 直接把回调任务扔进调用线程所在的 `Executor`，或扔进**公共的** `ForkJoinPool.commonPool()`，完成跨线程的“消息投递”。
+
+* 写 volatile + unpark（或提交回调任务）就是 Java 异步世界里的“线程通信”。
+
+
+2. 线程同步：保证“先写后读”可见、保证回调顺序
+- **可见性**  
+  所有异步结果字段都用 `volatile` 或 `AtomicReference` 保存，借助 **内存屏障** 保证执行线程写入对调用线程可见。
+
+- **顺序性**  
+  ‑ `CompletableFuture` 的回调被封装成 `Completion` 链表，每个节点 CAS 更新 `next` 字段，天然无锁串行化。  
+  ‑ 多个串行回调（`thenApply → thenAccept`）会被压入同一条链，后一个节点依赖前一个节点的完成事件——这就是**事件驱动**的同步模型。  
+  ‑ 如果显式需要“多个任务都完成”才继续，则用 `allOf`、`anyOf` 等组合子，内部还是用 `CountDownLatch` 类似的**共享计数器 + CAS** 实现。
+
+- **避免锁**  
+  整个链路极少用到重量级锁，大量依赖：  
+  ‑ `VarHandle`/`Unsafe` 的 CAS  
+  ‑ `MpscLinkedQueue`（多生产者单消费者无锁队列）  
+  ‑ `LockSupport.park/unpark`
+
+
+示例代码：
+```java
+CompletableFuture
+    .supplyAsync(() -> queryDB(),      executorA)  // 线程池 A
+    .thenApplyAsync(d -> encrypt(d),   executorB)  // 线程池 B
+    .thenAccept(result -> sendMQ(result));         // 回调线程可能是 B 也可能是 A
+```
+- 线程池 A → 写 volatile → 线程池 B 被唤醒 → 线程池 B 再写 volatile → 回调线程拿到最终结果。  
+- 全程无显式 `synchronized`，靠 `volatile` + `CAS` + `LockSupport` 完成同步与通信。
+```
+
+结论
+Java 异步把「线程通信」抽象成“结果写回 + 回调投递”，把「线程同步」抽象成“事件顺序 + volatile 可见性”。开发者只关心“任务链”，底层由 JDK 用**无锁、事件驱动**的机制默默解决。
 
 
 Java多线程中的CAS（无锁）：
@@ -4811,7 +4879,6 @@ Java 的线程池实现中，使用 CAS 来管理线程池的状态（如工作�
 
 CAS 的应用
 线程池状态：通过 CAS 更新线程池的状态（如 RUNNING、SHUTDOWN 等）。
-
 工作线程数：通过 CAS 更新工作线程的数量。
 
 
@@ -5046,16 +5113,40 @@ JUC包位于java.util.concurrent和java.util.concurrent.atomic包中，提供了
 1. 线程池
 线程池是用于管理和复用线程资源的机制。通过线程池，可以避免频繁创建和销毁线程带来的开销，提高系统性能。
 
-Executor接口：定义了执行任务的基本方法。
-ExecutorService接口：扩展了Executor，提供了更多的方法来管理任务的提交和执行。
-Executors工厂类：提供了一些静态方法来创建不同类型的线程池，如固定线程池、缓存线程池、单线程池和定时任务线程池。
+**“Executors工厂类”**这种方式在**Java8及以前**的代码中非常常见，而在**Java9及以后**的官方文档中，已经明确**不建议**再使用`Executors`的静态工厂方法来创建线程池（如`Executors.newFixedThreadPool()`、`Executors.newCachedThreadPool()`等）。
 
+1. **Executor接口**  
+   只定义了一个方法：`void execute(Runnable command)`，用于提交一个任务，但不支持获取结果或管理生命周期。
 
-ExecutorService executor = Executors.newFixedThreadPool(5);
-executor.submit(() -> {
-    // 任务代码
-});
-executor.shutdown();
+2. **ExecutorService接口**  
+   继承自`Executor`，提供了更丰富的功能：
+   - 提交任务（`submit()`）
+   - 关闭线程池（`shutdown()` / `shutdownNow()`）
+   - 获取任务结果（`Future<T>`）
+   - 批量提交任务（`invokeAll()` / `invokeAny()`）
+
+3. **Executors工厂类**（⚠️已过时建议）  
+   提供了如下常用方法：
+   - `Executors.newFixedThreadPool(int nThreads)`
+   - `Executors.newCachedThreadPool()`
+   - `Executors.newSingleThreadExecutor()`
+   - `Executors.newScheduledThreadPool(int corePoolSize)`
+
+### ✅ 正确推荐方式（Java9+）
+
+从**Java9**开始，官方推荐直接使用`ThreadPoolExecutor`的构造方法来创建线程池，这样可以**明确指定线程池参数**，避免因默认配置导致的资源耗尽问题。
+
+```java
+ExecutorService executor = new ThreadPoolExecutor(
+    4,                      // corePoolSize
+    8,                      // maximumPoolSize
+    60L, TimeUnit.SECONDS, // keepAliveTime
+    new LinkedBlockingQueue<>(100), // workQueue
+    Executors.defaultThreadFactory(),
+    new ThreadPoolExecutor.AbortPolicy() // Rejection handler
+);
+```
+
 
 2. 并发集合
 JUC包提供了一些线程安全的集合类，用于在多线程环境下安全地操作集合。
@@ -5098,7 +5189,7 @@ long getCount()：获取当前计数器的值。
 
 五、示例代码
 以下是一个简单的示例代码，展示了如何使用CountDownLatch来等待多个线程完成任务：
-
+``` java
 import java.util.concurrent.CountDownLatch;  
 import java.util.concurrent.TimeUnit;  
   
@@ -5132,6 +5223,7 @@ public class CountDownLatchExample {
         System.out.println("所有任务已完成");  
     }  
 }
+```
 在这个示例中，主线程等待3个工作线程各自完成任务后再继续执行。每个工作线程在完成任务后调用latch.countDown()方法来递减计数器。当计数器减至零时，主线程从latch.await()方法中返回，并继续执行后续的代码。
 
 
@@ -5155,7 +5247,7 @@ CyclicBarrier(int parties, Runnable barrierAction)：创建一个新的CyclicBar
 四、使用方法
 以下是一个使用CyclicBarrier的简单示例：
 
-java
+``` java
 import java.util.concurrent.BrokenBarrierException;  
 import java.util.concurrent.CyclicBarrier;  
   
@@ -5192,7 +5284,7 @@ public class CyclicBarrierExample {
         }  
     }  
 }
-
+```
 五、注意事项
 线程安全性：CyclicBarrier的回调函数是在最后一个线程到达屏障点时执行的，因此，在回调函数中执行的操作应该是线程安全的，否则可能会导致不可预期的结果。
 异常处理：如果在等待过程中出现异常（如InterruptedException或BrokenBarrierException），计数器将会被重置，并且所有等待的线程都将会抛出相应的异常。
@@ -5251,20 +5343,624 @@ tryLock()方法还能设置超时时间，即tryLock(long timeout, TimeUnit unit
 
 ReentrantLock默认情况下是非公平锁，但可以在构造函数中通过传递true参数来初始化为公平锁。
 
-AQS源码（AbstractQueuedSynchronizer）
-ReentrantLock的锁实现委托于其内部类Sync，而Sync又继承自AbstractQueuedSynchronizer（AQS）。AQS是构建锁或其他同步组件的基础框架，它使用了一个int成员变量来表示同步状态，通过内置的FIFO队列来完成资源获取线程的排队工作。
-在ReentrantLock中，公平性锁（FairSync）和非公平性锁（NonfairSync）都继承自Sync，并实现了自己的tryAcquire()方法来尝试获取锁。对于公平性锁，在尝试获取锁时，会检查当前线程是否是等待队列中的第一个线程，如果是，则尝试获取锁；
-对于非公平性锁，则不会进行这样的检查，而是直接尝试获取锁。
+* ReentrantLock的底层实现原理：AQS
+AQS是一个用于构建锁和同步器的框架，它使用一个int成员变量表示同步状态，通过内置的FIFO队列来完成资源获取线程的排队工作。
 
-AQS中的关键方法包括：
-acquire(int arg)：以独占模式获取锁，如果获取不到则进入等待队列。
-release(int arg)：释放锁。
-tryAcquire(int arg)：尝试获取锁，成功则返回true，失败则返回false。
-tryRelease(int arg)：尝试释放锁，成功则返回true，失败则返回false。
-这些方法是ReentrantLock实现锁机制的核心。
+### 核心思想
+
+AQS的核心思想是：**如果被请求的共享资源空闲，则将当前请求资源的线程设置为有效的工作线程，并且将共享资源设置为锁定状态。如果被请求的共享资源被占用，那么就需要一套线程阻塞等待以及被唤醒时锁分配的机制**。
+
+## AQS的核心组成
+
+```java
+import java.util.concurrent.locks.AbstractQueuedSynchronizer;
+
+public class AQSCoreDemo {
+    /**
+     * AQS的核心组成部分：
+     * 1. volatile int state: 同步状态
+     * 2. FIFO队列: 等待队列
+     * 3. CAS操作: 保证原子性
+     */
+    
+    // 模拟AQS的简化实现
+    static class SimpleAQS extends AbstractQueuedSynchronizer {
+        // 获取同步状态
+        protected int getState() {
+            return super.getState();
+        }
+        
+        // 设置同步状态
+        protected void setState(int newState) {
+            super.setState(newState);
+        }
+        
+        // 使用CAS设置状态
+        protected boolean compareAndSetState(int expect, int update) {
+            return super.compareAndSetState(expect, update);
+        }
+    }
+}
+```
+
+## AQS的工作原理
+
+### 1. 同步状态（state）
+
+AQS使用一个volatile的int成员变量来表示同步状态，通过getState()、setState()和compareAndSetState()方法来操作状态。
+
+```java
+public class AQSStateDemo {
+    // 基于AQS的自定义锁实现
+    static class Mutex extends AbstractQueuedSynchronizer {
+        // 尝试获取锁
+        @Override
+        protected boolean tryAcquire(int arg) {
+            // CAS操作：如果state为0（未锁定），则设置为1（锁定）
+            if (compareAndSetState(0, 1)) {
+                setExclusiveOwnerThread(Thread.currentThread()); // 设置当前线程为独占所有者
+                return true;
+            }
+            return false;
+        }
+        
+        // 尝试释放锁
+        @Override
+        protected boolean tryRelease(int arg) {
+            if (getState() == 0) {
+                throw new IllegalMonitorStateException();
+            }
+            setExclusiveOwnerThread(null); // 清除所有者
+            setState(0); // 设置状态为未锁定
+            return true;
+        }
+        
+        // 判断是否处于占用状态
+        @Override
+        protected boolean isHeldExclusively() {
+            return getState() == 1;
+        }
+        
+        // 创建Condition对象
+        public Condition newCondition() {
+            return new ConditionObject();
+        }
+    }
+}
+```
+
+### 2. 等待队列
+
+AQS通过CLH（Craig, Landin, and Hagersten）队列来实现线程的排队管理。
+
+```java
+import java.util.concurrent.locks.AbstractQueuedSynchronizer;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class AQSQueueDemo {
+    public static void main(String[] args) {
+        // ReentrantLock就是基于AQS实现的
+        Lock lock = new ReentrantLock();
+        
+        // 线程1
+        new Thread(() -> {
+            lock.lock();
+            try {
+                System.out.println("线程1获取锁，并睡眠2秒");
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
+                System.out.println("线程1释放锁");
+            }
+        }).start();
+        
+        // 线程2 - 将会进入等待队列
+        new Thread(() -> {
+            try {
+                Thread.sleep(100); // 确保线程1先获取锁
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            
+            lock.lock();
+            try {
+                System.out.println("线程2获取锁");
+            } finally {
+                lock.unlock();
+                System.out.println("线程2释放锁");
+            }
+        }).start();
+    }
+}
+```
+
+## AQS的两种模式
+
+### 1. 独占模式（Exclusive Mode）
+
+一次只有一个线程可以执行，如ReentrantLock。
+
+```java
+public class ExclusiveModeDemo {
+    // 基于AQS的简单独占锁实现
+    static class SimpleLock extends AbstractQueuedSynchronizer {
+        // 尝试获取锁
+        @Override
+        protected boolean tryAcquire(int acquires) {
+            if (compareAndSetState(0, 1)) {
+                setExclusiveOwnerThread(Thread.currentThread());
+                return true;
+            }
+            return false;
+        }
+        
+        // 尝试释放锁
+        @Override
+        protected boolean tryRelease(int releases) {
+            if (getState() == 0) {
+                throw new IllegalMonitorStateException();
+            }
+            setExclusiveOwnerThread(null);
+            setState(0);
+            return true;
+        }
+        
+        public void lock() {
+            acquire(1);
+        }
+        
+        public void unlock() {
+            release(1);
+        }
+    }
+    
+    public static void main(String[] args) {
+        SimpleLock lock = new SimpleLock();
+        
+        // 多个线程竞争锁
+        for (int i = 0; i < 5; i++) {
+            new Thread(() -> {
+                lock.lock();
+                try {
+                    System.out.println(Thread.currentThread().getName() + " 获取锁");
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    lock.unlock();
+                    System.out.println(Thread.currentThread().getName() + " 释放锁");
+                }
+            }).start();
+        }
+    }
+}
+```
+
+### 2. 共享模式（Shared Mode）
+
+多个线程可以同时执行，如Semaphore、CountDownLatch。
+
+```java
+public class SharedModeDemo {
+    // 基于AQS的简单共享锁实现（类似Semaphore）
+    static class SimpleSharedLock extends AbstractQueuedSynchronizer {
+        SimpleSharedLock(int count) {
+            setState(count);
+        }
+        
+        // 尝试获取共享锁
+        @Override
+        protected int tryAcquireShared(int acquires) {
+            for (;;) {
+                int available = getState();
+                int remaining = available - acquires;
+                if (remaining < 0 || compareAndSetState(available, remaining)) {
+                    return remaining;
+                }
+            }
+        }
+        
+        // 尝试释放共享锁
+        @Override
+        protected boolean tryReleaseShared(int releases) {
+            for (;;) {
+                int current = getState();
+                int next = current + releases;
+                if (compareAndSetState(current, next)) {
+                    return true;
+                }
+            }
+        }
+        
+        public void acquire() {
+            acquireShared(1);
+        }
+        
+        public void release() {
+            releaseShared(1);
+        }
+    }
+    
+    public static void main(String[] args) {
+        // 允许3个线程同时访问
+        SimpleSharedLock sharedLock = new SimpleSharedLock(3);
+        
+        for (int i = 0; i < 10; i++) {
+            new Thread(() -> {
+                sharedLock.acquire();
+                try {
+                    System.out.println(Thread.currentThread().getName() + " 获取共享锁");
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    sharedLock.release();
+                    System.out.println(Thread.currentThread().getName() + " 释放共享锁");
+                }
+            }).start();
+        }
+    }
+}
+```
+
+## AQS的关键方法
+
+AQS提供了以下关键模板方法供子类实现：
+
+| 方法 | 描述 |
+|------|------|
+| `tryAcquire(int arg)` | 尝试以独占模式获取锁 |
+| `tryRelease(int arg)` | 尝试释放独占模式的锁 |
+| `tryAcquireShared(int arg)` | 尝试以共享模式获取锁 |
+| `tryReleaseShared(int arg)` | 尝试释放共享模式的锁 |
+| `isHeldExclusively()` | 判断当前线程是否独占资源 |
+
+## AQS的优势
+
+1. **灵活性**：可以轻松实现各种同步器
+2. **高性能**：使用CAS操作避免真正的阻塞
+3. **可扩展性**：支持公平和非公平两种模式
+4. **可靠性**：经过广泛测试和验证
+
+## 总结
+
+AQS是Java并发包的基石，它通过：
+- **同步状态管理**：使用volatile变量和CAS操作
+- **线程排队机制**：使用CLH队列管理等待线程
+- **模板方法模式**：提供可重写的钩子方法
+
+* ReentrantLock能实现公平锁和非公平锁的原理是什么？是根据AQS中的什么原理去实现的
+# ReentrantLock 实现公平锁与非公平锁的原理
+
+ReentrantLock 能够实现公平锁和非公平锁，其核心原理是基于 AQS（AbstractQueuedSynchronizer）框架，通过不同的同步器实现来区分公平和非公平的获取策略。
+
+## 1. 核心实现原理
+
+ReentrantLock 内部通过两个不同的同步器类来实现公平和非公平锁：
+
+```java
+// ReentrantLock 中的内部类结构
+public class ReentrantLock implements Lock, java.io.Serializable {
+    private final Sync sync;
+    
+    // 同步器基类
+    abstract static class Sync extends AbstractQueuedSynchronizer {
+        // 抽象方法，由子类实现
+        abstract void lock();
+        
+        // 非公平获取尝试
+        final boolean nonfairTryAcquire(int acquires) {
+            // 实现细节...
+        }
+        
+        // 释放锁
+        protected final boolean tryRelease(int releases) {
+            // 实现细节...
+        }
+    }
+    
+    // 非公平锁同步器
+    static final class NonfairSync extends Sync {
+        final void lock() {
+            // 非公平锁的实现
+        }
+        
+        protected final boolean tryAcquire(int acquires) {
+            // 非公平获取实现
+        }
+    }
+    
+    // 公平锁同步器
+    static final class FairSync extends Sync {
+        final void lock() {
+            // 公平锁的实现
+        }
+        
+        protected final boolean tryAcquire(int acquires) {
+            // 公平获取实现
+        }
+    }
+}
+```
+
+## 2. 非公平锁的实现原理
+
+### 2.1 非公平锁的获取过程
+
+```java
+// 非公平锁的 lock() 方法实现
+static final class NonfairSync extends Sync {
+    final void lock() {
+        // 第一步：直接尝试获取锁，不管等待队列中是否有线程在等待
+        if (compareAndSetState(0, 1)) {
+            setExclusiveOwnerThread(Thread.currentThread());
+        } else {
+            // 如果获取失败，调用 AQS 的 acquire 方法
+            acquire(1);
+        }
+    }
+    
+    protected final boolean tryAcquire(int acquires) {
+        return nonfairTryAcquire(acquires);
+    }
+}
+
+// Sync 类中的非公平获取实现
+final boolean nonfairTryAcquire(int acquires) {
+    final Thread current = Thread.currentThread();
+    int c = getState();
+    
+    // 状态为0表示锁未被占用
+    if (c == 0) {
+        // 直接尝试获取锁，不考虑等待队列
+        if (compareAndSetState(0, acquires)) {
+            setExclusiveOwnerThread(current);
+            return true;
+        }
+    }
+    // 如果当前线程已经持有锁，则重入
+    else if (current == getExclusiveOwnerThread()) {
+        int nextc = c + acquires;
+        if (nextc < 0) // overflow
+            throw new Error("Maximum lock count exceeded");
+        setState(nextc);
+        return true;
+    }
+    return false;
+}
+```
+
+### 2.2 非公平锁的特点
+
+1. **插队机制**：新来的线程可以直接尝试获取锁，无需检查等待队列
+2. **性能优势**：减少了线程切换的开销，提高了吞吐量
+3. **可能导致饥饿**：某些线程可能长时间无法获取锁
+
+## 3. 公平锁的实现原理
+
+### 3.1 公平锁的获取过程
+
+```java
+// 公平锁的 lock() 方法实现
+static final class FairSync extends Sync {
+    final void lock() {
+        // 直接调用 AQS 的 acquire 方法
+        acquire(1);
+    }
+    
+    protected final boolean tryAcquire(int acquires) {
+        final Thread current = Thread.currentThread();
+        int c = getState();
+        
+        // 状态为0表示锁未被占用
+        if (c == 0) {
+            // 关键区别：先检查是否有前驱节点在等待
+            if (!hasQueuedPredecessors() &&
+                compareAndSetState(0, acquires)) {
+                setExclusiveOwnerThread(current);
+                return true;
+            }
+        }
+        // 如果当前线程已经持有锁，则重入
+        else if (current == getExclusiveOwnerThread()) {
+            int nextc = c + acquires;
+            if (nextc < 0)
+                throw new Error("Maximum lock count exceeded");
+            setState(nextc);
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+### 3.2 关键方法：hasQueuedPredecessors()
+
+```java
+// AQS 中的方法，判断是否有前驱节点在等待
+public final boolean hasQueuedPredecessors() {
+    Node t = tail; // Read fields in reverse initialization order
+    Node h = head;
+    Node s;
+    
+    // 判断条件：
+    // 1. 头节点不等于尾节点（队列不为空）
+    // 2. 头节点的下一个节点为null，或者下一个节点的线程不是当前线程
+    return h != t &&
+        ((s = h.next) == null || s.thread != Thread.currentThread());
+}
+```
+
+### 3.3 公平锁的特点
+
+1. **先进先出**：严格按照线程请求锁的顺序分配锁
+2. **避免饥饿**：所有线程都有机会获取锁
+3. **性能较低**：增加了线程切换的开销
+
+## 4. AQS 中的实现原理
+
+### 4.1 AQS 的等待队列
+
+AQS 使用一个 FIFO 队列来管理等待获取锁的线程：
+
+```java
+// AQS 中的队列节点
+static final class Node {
+    volatile Node prev;       // 前驱节点
+    volatile Node next;       // 后继节点
+    volatile Thread thread;   // 等待的线程
+    volatile int waitStatus;  // 等待状态
+}
+
+// AQS 中的队列头尾指针
+private transient volatile Node head;
+private transient volatile Node tail;
+```
+
+### 4.2 获取锁的流程
+
+无论是公平锁还是非公平锁，最终都会调用 AQS 的 `acquire` 方法：
+
+```java
+// AQS 的 acquire 方法
+public final void acquire(int arg) {
+    if (!tryAcquire(arg) && // 尝试获取锁（由子类实现）
+        acquireQueued(addWaiter(Node.EXCLUSIVE), arg)) // 获取失败，加入队列
+        selfInterrupt(); // 中断当前线程
+}
+```
+
+### 4.3 加入等待队列
+
+```java
+// 将当前线程加入等待队列
+private Node addWaiter(Node mode) {
+    Node node = new Node(Thread.currentThread(), mode);
+    // 尝试快速入队
+    Node pred = tail;
+    if (pred != null) {
+        node.prev = pred;
+        if (compareAndSetTail(pred, node)) {
+            pred.next = node;
+            return node;
+        }
+    }
+    // 快速入队失败，使用完整入队流程
+    enq(node);
+    return node;
+}
+
+// 完整的入队操作
+private Node enq(final Node node) {
+    for (;;) {
+        Node t = tail;
+        if (t == null) { // 队列为空，需要初始化
+            if (compareAndSetHead(new Node()))
+                tail = head;
+        } else {
+            node.prev = t;
+            if (compareAndSetTail(t, node)) {
+                t.next = node;
+                return t;
+            }
+        }
+    }
+}
+```
+
+## 5. 实际代码示例
+
+```java
+import java.util.concurrent.locks.ReentrantLock;
+
+public class FairVsNonFairLockDemo {
+    public static void main(String[] args) {
+        // 创建非公平锁（默认）
+        ReentrantLock nonFairLock = new ReentrantLock();
+        
+        // 创建公平锁
+        ReentrantLock fairLock = new ReentrantLock(true);
+        
+        System.out.println("非公平锁演示:");
+        demoLock(nonFairLock, "非公平锁");
+        
+        System.out.println("\n公平锁演示:");
+        demoLock(fairLock, "公平锁");
+    }
+    
+    private static void demoLock(ReentrantLock lock, String lockType) {
+        // 创建多个线程竞争锁
+        for (int i = 0; i < 5; i++) {
+            new Thread(() -> {
+                for (int j = 0; j < 2; j++) { // 每个线程获取两次锁
+                    lock.lock();
+                    try {
+                        System.out.println(Thread.currentThread().getName() + 
+                                         " 获取了 " + lockType);
+                        Thread.sleep(100); // 模拟工作
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } finally {
+                        lock.unlock();
+                    }
+                }
+            }, "线程-" + i).start();
+        }
+        
+        // 等待所有线程完成
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+## 6. 性能对比与选择建议
+
+### 6.1 性能差异原因
+
+1. **非公平锁**：
+   - 减少了线程挂起和唤醒的开销
+   - 允许新请求的线程"插队"，提高了吞吐量
+   - 但可能导致某些线程长时间等待（饥饿）
+
+2. **公平锁**：
+   - 保证了锁分配的公平性
+   - 避免了线程饥饿问题
+   - 但增加了线程切换的开销，性能较低
+
+### 6.2 选择建议
+
+1. **使用非公平锁的场景**：
+   - 对性能要求高，吞吐量是关键指标
+   - 锁持有时间较短，竞争不激烈
+   - 能够容忍某些线程可能等待较长时间
+
+2. **使用公平锁的场景**：
+   - 需要保证所有线程都有机会获取锁
+   - 锁持有时间较长，竞争激烈
+   - 避免线程饥饿是重要考虑因素
+
+## 7. 总结
+
+ReentrantLock 实现公平锁和非公平锁的原理基于 AQS 框架：
+
+1. **非公平锁**：在尝试获取锁时，不检查等待队列中是否有其他线程在等待，直接尝试获取锁
+2. **公平锁**：在尝试获取锁时，先检查等待队列中是否有前驱节点，确保按照 FIFO 顺序获取锁
+
+关键区别在于 `tryAcquire` 方法的实现：
+- 非公平锁：直接尝试 CAS 获取锁
+- 公平锁：先调用 `hasQueuedPredecessors()` 检查是否有前驱节点
+
+AQS 提供了等待队列管理、线程阻塞与唤醒等底层机制，ReentrantLock 通过不同的同步器实现（FairSync 和 NonfairSync）来利用这些机制实现公平和非公平的锁获取策略。
 
 
-ReentrantReadWriteLock：读写锁，允许多个读线程同时访问，但写线程访问时独占。
+* ReentrantReadWriteLock：读写锁，允许多个读线程同时访问，但写线程访问时独占。
 一、概述
 ReentrantReadWriteLock读写锁内部包含两把锁：一把是读锁（共享锁），允许多个线程同时持有，以实现对共享资源的并发读取；另一把是写锁（独占锁），只能被一个线程持有，用于对共享资源的独占写入。这种设计能够最大化地提高读写的性能，特别是在读多写少的场景中。
 
