@@ -6358,6 +6358,40 @@ private boolean isPositionIndex(int index) {
 ②然后将加入的内容转化成数组；创建两个node的对象pred，succ；前者代表加入内容的前一个节点，后者表示加入位置的地址，如果index == size也就是是从链表尾部加入，那么succ就是null；否则succ就是第index个节点而pred就是第index前的那个节点
 ③遍历数组创建双链表
 
+LinkedList（先进先出FIFO）
+实现接口：
+LinkedList实现了Deque接口，而Deque接口扩展了Queue接口。因此，LinkedList可以作为FIFO队列使用。
+
+数据结构：
+LinkedList基于双向链表实现。链表中的每个节点都包含数据元素以及指向前一个节点和后一个节点的引用。
+
+特性：
+LinkedList允许在队列的两端进行插入和删除操作，但由于它通常作为FIFO队列使用，所以主要的操作是在尾端插入元素（offer或addLast），在头部移除元素（poll或removeFirst）。
+它是非线程安全的，即在多线程环境下需要额外的同步机制。
+由于链表节点的开销，LinkedList在随机访问方面性能较差，但在频繁插入和删除操作方面性能较好。
+
+应用场景：
+适用于需要频繁在队列两端进行插入和删除操作的场景。
+适用于元素数量不固定且需要保持FIFO顺序的场景。
+
+LinkedList的源码分析：
+public boolean add(E e) {
+    linkLast(e);
+    return true;
+}
+
+void linkLast(E e) {
+    final Node<E> l = last;
+    final Node<E> newNode = new Node<>(l, e, null);
+    last = newNode;
+    if (l == null)
+        first = newNode;
+    else
+        l.next = newNode;
+    size++;
+    modCount++;
+}
+
 >Vector：作为list接口的古老实现类；线程安全的，效率低；由于同步操作，Vector的性能比ArrayList差；底层使用Object[]elementData存储
 
 >Stack:Stack是Vector的一个子类，用于实现后进先出（LIFO）的堆栈；
@@ -6501,39 +6535,6 @@ TreeSet底层创建了一个TreeMap
 Queue：表示一个先进先出的元素
 Java集合框架中的Queue接口提供了对队列数据结构的支持，队列是一种遵循先进先出（FIFO）原则的线性数据结构。在Java中，Queue接口有多个实现类，其中LinkedList和PriorityQueue是两个最常用的实现类。以下是对这两个实现类的详细阐述：
 
-LinkedList（先进先出FIFO）
-实现接口：
-LinkedList实现了Deque接口，而Deque接口扩展了Queue接口。因此，LinkedList可以作为FIFO队列使用。
-
-数据结构：
-LinkedList基于双向链表实现。链表中的每个节点都包含数据元素以及指向前一个节点和后一个节点的引用。
-
-特性：
-LinkedList允许在队列的两端进行插入和删除操作，但由于它通常作为FIFO队列使用，所以主要的操作是在尾端插入元素（offer或addLast），在头部移除元素（poll或removeFirst）。
-它是非线程安全的，即在多线程环境下需要额外的同步机制。
-由于链表节点的开销，LinkedList在随机访问方面性能较差，但在频繁插入和删除操作方面性能较好。
-
-应用场景：
-适用于需要频繁在队列两端进行插入和删除操作的场景。
-适用于元素数量不固定且需要保持FIFO顺序的场景。
-
-LinkedList的源码分析：
-public boolean add(E e) {
-    linkLast(e);
-    return true;
-}
-
-void linkLast(E e) {
-    final Node<E> l = last;
-    final Node<E> newNode = new Node<>(l, e, null);
-    last = newNode;
-    if (l == null)
-        first = newNode;
-    else
-        l.next = newNode;
-    size++;
-    modCount++;
-}
 
 PriorityQueue（优先队列）
 实现接口：
@@ -6709,6 +6710,568 @@ static class Entry<K,V> extends HashMap.Node<K,V> {
 >HashTable:是Java早期提供的线程安全的Map实现类，通过在每个方法上添加synchronized关键字来实现线程安全；
 由于同步的粒度较大，其性能相对较低。
 
+### 核心原理
+`Hashtable` 实现线程安全的方式非常简单粗暴：**在所有会修改结构或访问数据的公共方法上，使用 `synchronized` 关键字修饰**。这意味着它通过一个粗粒度的锁（即 `this` 对象锁）来保证线程安全，任何时刻最多只有一个线程能执行这些同步方法。
+
+---
+
+### 源码解析
+
+我们通过关键的源码来理解它的实现。
+
+#### 1. 底层数据结构
+
+`Hashtable` 的内部结构和 `HashMap` 在 JDK 1.8 之前类似，都是采用 **"数组 + 链表"** 的形式来解决哈希冲突。
+
+```java
+public class Hashtable<K,V> extends Dictionary<K,V> implements Map<K,V>, Cloneable, java.io.Serializable {
+
+    // 1. 底层存储数据的数组
+    private transient Entry<?,?>[] table;
+
+    // 2. 数组中实际存储的键值对数量
+    private transient int count;
+
+    // 3. 扩容阈值 (capacity * loadFactor)
+    private int threshold;
+
+    // 4. 负载因子
+    private float loadFactor;
+
+    // 5. 修改次数，用于迭代器的快速失败机制
+    private transient int modCount = 0;
+
+    // 静态内部类，表示链表节点
+    private static class Entry<K,V> implements Map.Entry<K,V> {
+        final int hash;
+        final K key;
+        V value;
+        Entry<K,V> next; // 指向下一个节点的指针，形成链表
+
+        protected Entry(int hash, K key, V value, Entry<K,V> next) {
+            this.hash = hash;
+            this.key = key;
+            this.value = value;
+            this.next = next;
+        }
+        // ... 其他方法
+    }
+    // ... 其他方法
+}
+```
+
+#### 2. put 方法：核心的同步逻辑
+
+这是理解 `Hashtable` 线程安全实现的关键。
+
+```java
+// 使用 synchronized 修饰，锁住的是整个 Hashtable 实例（this）
+public synchronized V put(K key, V value) {
+    // 不允许 value 为 null
+    if (value == null) {
+        throw new NullPointerException();
+    }
+
+    Entry<?,?> tab[] = table;
+    int hash = key.hashCode(); // 注意：这里直接使用 key 的 hashCode()
+    // 计算数组下标：取模运算，保证落在数组范围内
+    int index = (hash & 0x7FFFFFFF) % tab.length; // 0x7FFFFFFF 是 Integer.MAX_VALUE，确保 index 为正数
+
+    // 遍历 index 位置的链表，检查 key 是否已存在
+    @SuppressWarnings("unchecked")
+    Entry<K,V> entry = (Entry<K,V>)tab[index];
+    for(; entry != null ; entry = entry.next) {
+        // 先比较哈希值，再比较 key 是否相等（使用 equals()）
+        if ((entry.hash == hash) && entry.key.equals(key)) {
+            // 如果 key 已存在，则覆盖旧的 value
+            V old = entry.value;
+            entry.value = value;
+            return old; // 返回旧值
+        }
+    }
+
+    // 如果 key 不存在，则调用 addEntry 方法添加新节点
+    addEntry(hash, key, value, index);
+    return null;
+}
+
+// 添加新条目，也是同步方法
+private synchronized void addEntry(int hash, K key, V value, int index) {
+    modCount++; // 结构修改计数器+1
+
+    Entry<?,?> tab[] = table;
+    // 检查当前元素数量是否超过了扩容阈值
+    if (count >= threshold) {
+        rehash(); // 如果超过，则进行扩容（重哈希），这是一个非常耗时的操作
+
+        // 扩容后，数组和 key 的索引位置可能发生变化，需要重新计算
+        tab = table;
+        hash = key.hashCode();
+        index = (hash & 0x7FFFFFFF) % tab.length;
+    }
+
+    // 创建新节点，并将其插入到链表的头部
+    @SuppressWarnings("unchecked")
+    Entry<K,V> e = (Entry<K,V>) tab[index];
+    // 新节点的 next 指向原来的链表头
+    tab[index] = new Entry<>(hash, key, value, e);
+    count++; // 元素数量+1
+}
+```
+
+**put 方法分析**:
+1.  **同步**：方法由 `synchronized` 修饰，锁对象是 `this`（即 `Hashtable` 实例本身）。
+2.  **空值检查**：不允许 `value` 为 `null`。
+3.  **计算索引**：使用 `key.hashCode()` 并通过对数组长度取模来计算下标。
+4.  **遍历链表**：检查 key 是否已存在。
+5.  **扩容检查**：在添加新元素前，检查是否需要扩容。
+6.  **头插法**：将新节点插入到链表的头部。
+
+#### 3. get 方法：同样简单粗暴的同步
+
+```java
+// get 方法也是同步的！
+public synchronized V get(Object key) {
+    Entry<?,?> tab[] = table;
+    int hash = key.hashCode();
+    int index = (hash & 0x7FFFFFFF) % tab.length;
+
+    // 遍历链表查找
+    for (Entry<?,?> e = tab[index] ; e != null ; e = e.next) {
+        if ((e.hash == hash) && e.key.equals(key)) {
+            return (V)e.value;
+        }
+    }
+    return null; // 找不到返回 null
+}
+```
+即使是读操作 `get()`，也使用了 `synchronized`。这意味着，如果一个线程正在执行 `put()`，另一个线程连 `get()` 都无法执行，必须等待。这在读多写少的场景下会造成严重的性能瓶颈。
+
+#### 4. rehash 方法：昂贵的扩容操作
+
+```java
+protected synchronized void rehash() {
+    int oldCapacity = table.length;
+    Entry<?,?>[] oldMap = table;
+
+    // 创建新数组，新容量是旧容量的 2 倍 + 1
+    int newCapacity = (oldCapacity << 1) + 1; // 左移一位相当于乘以2
+    // ... (检查 newCapacity 是否超过最大值)
+
+    Entry<?,?>[] newMap = new Entry<?,?>[newCapacity];
+
+    modCount++;
+    // 计算新的扩容阈值
+    threshold = (int)Math.min(newCapacity * loadFactor, MAX_ARRAY_SIZE + 1);
+    table = newMap;
+
+    // 遍历旧数组的所有位置，将每个元素重新哈希到新数组中
+    for (int i = oldCapacity ; i-- > 0 ;) {
+        for (Entry<K,V> old = (Entry<K,V>)oldMap[i] ; old != null ; ) {
+            Entry<K,V> e = old;
+            old = old.next;
+
+            // 为每个节点重新计算在新数组中的索引
+            int index = (e.hash & 0x7FFFFFFF) % newCapacity;
+            // 将节点插入到新数组对应链表的头部
+            e.next = (Entry<K,V>)newMap[index];
+            newMap[index] = e;
+        }
+    }
+}
+```
+`rehash()` 方法同样是同步的。扩容过程需要将所有元素重新计算哈希值并移动到新的数组中，这是一个 **O(n)** 时间复杂度的操作，并且在此期间，整个 `Hashtable` 被锁住，所有其他线程都无法访问，对性能影响极大。
+
+---
+
+### 总结：Hashtable 的实现特点与缺陷
+
+1.  **线程安全机制**：
+    *   **粗粒度锁**：在所有公共方法上使用 `synchronized`，锁的是整个对象实例 (`this`)。
+    *   **后果**：无论是 `put`、`get`、`size` 还是 `contains`，任何操作都是互斥的。**并发度极低，性能非常差**。
+
+2.  **不允许 Null 值**：
+    *   `key` 和 `value` 都**不允许**为 `null`。如果存入 `null`，会抛出 `NullPointerException`。
+
+3.  **继承与迭代器**：
+    *   它继承自古老的 `Dictionary` 类。
+    *   其迭代器是 **快速失败（fail-fast）** 的。如果在迭代过程中有其他线程修改了 `Hashtable`（除了通过迭代器自己的 `remove` 方法），迭代器会立即抛出 `ConcurrentModificationException`。这是一种设计上的安全预警，而非一种完备的并发控制机制。
+
+4.  **性能瓶颈**：
+    *   **锁竞争**：高并发环境下，锁竞争会非常激烈，大部分线程都会处于阻塞状态。
+    *   **扩容开销**：扩容操作会长时间独占锁，导致服务不可用。
+
+**结论**：`Hashtable` 的线程安全实现是一种**牺牲扩展性和性能来换取简单性**的方案。它适用于并发性要求不高的场景，但在现代多核处理器和高并发应用中，它已经**完全被 `ConcurrentHashMap` 所取代**。理解 `Hashtable` 的实现，更多的是为了理解为何需要 `ConcurrentHashMap` 以及后者所做的优化有多么重要。在新代码中，应绝对避免使用 `Hashtable`。
+
+
+>ConcurrentHashMap: JDK 1.7：采用 分段锁（Segment Locking） 机制。JDK 1.8及以后：做了巨大的优化，摒弃了分段锁，采用了更先进的 CAS (Compare-And-Swap) 操作 + synchronized 同步块。
+
+* JDK 1.7的`ConcurrentHashMap`机制
+JDK1.7中采用的是分段锁。这是一种非常经典的设计，其核心思想是**将一个大Map拆分成多个小的Segment，每个Segment自带一把锁，从而将锁的粒度从整个Map减小到一个Segment，极大地提升了并发能力**。
+
+### 分段锁实现原理
+
+* 1. 核心数据结构
+
+在 JDK 1.7 的 `ConcurrentHashMap` 中，内部包含一个 `Segment` 数组。每个 `Segment` 本质上是一个独立的、线程安全的 `HashMap`（更准确地说，是一个 `ReentrantLock` + `HashEntry` 数组）。
+
+```java
+// JDK 1.7 源码摘要
+public class ConcurrentHashMap<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V>, Serializable {
+
+    // 整个哈希表由 Segment 数组构成
+    final Segment<K,V>[] segments;
+
+    // 每个 Segment 是一个特殊的哈希表，继承自 ReentrantLock
+    static final class Segment<K,V> extends ReentrantLock implements Serializable {
+        // 每个 Segment 内部维护着一个 HashEntry 数组（类似HashMap的桶数组）
+        transient volatile HashEntry<K,V>[] table;
+        // ... 其他字段如 count, modCount 等
+    }
+
+    // 存储键值对的实际节点
+    static final class HashEntry<K,V> {
+        final int hash;
+        final K key;
+        volatile V value;
+        volatile HashEntry<K,V> next; // 链表下一个节点
+        // ... 构造方法等
+    }
+    // ... 其他方法
+}
+```
+
+**结构关系图**：
+```
+ConcurrentHashMap
+└── segments: Segment[] (大小为 concurrencyLevel，默认16)
+    │
+    ├── Segment 0: (继承 ReentrantLock)
+    │   └── table: HashEntry[] (独立扩容)
+    │       ├── HashEntry -> HashEntry -> HashEntry (链表)
+    │       └── ...
+    │
+    ├── Segment 1: (继承 ReentrantLock)
+    │   └── table: HashEntry[] (独立扩容)
+    │       └── ...
+    │
+    └── ... (其余 Segment)
+```
+
+#### 2. 如何定位Segment和Bucket？
+
+当你要插入或读取一个键值对 `(key, value)` 时，需要两次哈希计算：
+
+1.  **第一次哈希，定位到哪个Segment**：
+    ```java
+    // 源码中的关键步骤
+    public V put(K key, V value) {
+        int hash = hash(key.hashCode()); // 对key的hashCode进行再哈希，减少冲突
+        // 根据hash值的高位，计算出应该放在哪个Segment中
+        int segmentIndex = (hash >>> segmentShift) & segmentMask;
+        Segment<K,V> segment = segments[segmentIndex];
+        segment.put(key, hash, value, false); // 调用Segment的put方法
+    }
+    ```
+    `segmentShift` 和 `segmentMask` 是用来从整个哈希值中提取出高位部分，作为 `Segment` 数组的下标。
+
+2.  **第二次哈希，定位到Segment中的哪个Bucket（桶）**：
+    进入到具体的 `Segment` 后，它的 `put` 方法会再进行一次哈希计算，定位到它内部的 `HashEntry` 数组的某个下标（桶），然后在这个桶的链路上进行操作。
+    ```java
+    // 在Segment内部的put方法
+    final V put(K key, int hash, V value, boolean onlyIfAbsent) {
+        HashEntry<K,V> node = tryLock() ? null : scanAndLockForPut(key, hash, value);
+        try {
+            HashEntry<K,V>[] tab = table;
+            // 用hash值定位到Segment内部数组的index
+            int index = (tab.length - 1) & hash;
+            HashEntry<K,V> first = entryAt(tab, index);
+            // ... 遍历链表，插入或更新节点
+        } finally {
+            unlock();
+        }
+    }
+    ```
+
+#### 3. 加锁过程（以put为例）
+
+这是分段锁最精髓的部分。我们进入 `Segment.put` 方法看它如何加锁：
+
+```java
+// Segment 内部的 put 方法 (简化版)
+final V put(K key, int hash, V value, boolean onlyIfAbsent) {
+    // 1. 尝试直接获取锁（乐观锁）
+    HashEntry<K,V> node = tryLock() ? null : scanAndLockForPut(key, hash, value);
+    // 如果tryLock()失败，则进入scanAndLockForPut方法自旋获取锁
+
+    V oldValue;
+    try {
+        HashEntry<K,V>[] tab = table;
+        int index = (tab.length - 1) & hash; // 定位到桶
+        HashEntry<K,V> first = entryAt(tab, index);
+
+        // 2. 遍历链表...
+        for (HashEntry<K,V> e = first;;) {
+            if (e != null) {
+                // 如果key已存在，则更新value
+                K k;
+                if ((k = e.key) == key || (e.hash == hash && key.equals(k))) {
+                    oldValue = e.value;
+                    if (!onlyIfAbsent) {
+                        e.value = value;
+                    }
+                    break;
+                }
+                e = e.next;
+            } else {
+                // 3. 如果key不存在，则插入新节点
+                if (node != null) {
+                    // node 是在 scanAndLockForPut 中预先创建好的节点
+                    node.setNext(first);
+                } else {
+                    node = new HashEntry<K,V>(hash, key, value, first);
+                }
+                // 将新节点设置为链表的头节点
+                setEntryAt(tab, index, node);
+                break;
+            }
+        }
+    } finally {
+        // 4. 操作完成后，无论如何都要释放锁
+        unlock();
+    }
+    return oldValue;
+}
+```
+
+关键方法 `scanAndLockForPut` 体现了优化的自旋锁：
+
+```java
+// 自旋获取锁的方法
+private HashEntry<K,V> scanAndLockForPut(K key, int hash, V value) {
+    HashEntry<K,V> first = entryForHash(this, hash); // 找到链表的头节点
+    HashEntry<K,V> e = first;
+    HashEntry<K,V> node = null;
+    int retries = -1; // 重试次数
+
+    while (!tryLock()) { // 循环尝试获取锁
+        HashEntry<K,V> f;
+        if (retries < 0) {
+            // 第一轮扫描：检查key是否已存在，如果不存在就顺带创建好新节点
+            if (e == null) {
+                if (node == null) {
+                    node = new HashEntry<K,V>(hash, key, value, null);
+                }
+                retries = 0;
+            } else if (key.equals(e.key)) {
+                retries = 0; // key已存在，不再创建节点
+            } else {
+                e = e.next; // 继续遍历链表
+            }
+        } else if (++retries > MAX_SCAN_RETRIES) {
+            // 自旋超过最大次数（MAX_SCAN_RETRIES），改为阻塞式获取锁，避免CPU空转
+            lock();
+            break;
+        } else if ((retries & 1) == 0 && (f = entryForHash(this, hash)) != first) {
+            // 在自旋过程中，发现链表的头节点被其他线程修改了（发生了扩容或新节点插入）
+            // 则重置retries和e，重新开始扫描，确保数据的正确性
+            e = first = f;
+            retries = -1;
+        }
+    }
+    return node; // 返回创建好的新节点（如果已创建）
+}
+```
+
+#### 4. get操作（读操作）为什么不需要加锁？
+
+`ConcurrentHashMap` 的 `get` 方法性能极高的另一个原因是：**它完全不需要加锁**。这是通过将 `HashEntry` 的 `value` 和 `next` 指针声明为 `volatile` 来实现的。
+
+```java
+// JDK 1.7 的 get 方法
+public V get(Object key) {
+    Segment<K,V> s;
+    HashEntry<K,V>[] tab;
+    int h = hash(key.hashCode());
+    // 1. 定位Segment
+    long u = (((h >>> segmentShift) & segmentMask) << SSHIFT) + SBASE;
+    if ((s = (Segment<K,V>)UNSAFE.getObjectVolatile(segments, u)) != null && (tab = s.table) != null) {
+        // 2. 定位Segment中的桶，并遍历链表
+        for (HashEntry<K,V> e = (HashEntry<K,V>) UNSAFE.getObjectVolatile(tab, ((long)(((tab.length - 1) & h)) << TSHIFT) + TBASE); e != null; e = e.next) {
+            K k;
+            if ((k = e.key) == key || (e.hash == h && key.equals(k))) {
+                // 直接返回 volatile value，保证能读到最新值
+                return e.value;
+            }
+        }
+    }
+    return null;
+}
+```
+*   `volatile value`：保证了线程在读取 `value` 时，总能读到最新被写入的值，而不是缓存中的旧值。
+*   `volatile next`：保证了链表遍历的可见性。
+*   `UNSAFE.getObjectVolatile`：保证了在读取 `Segment` 和 `HashEntry` 数组元素时的原子性和可见性，防止读到过期的旧数组引用。
+
+### 总结：JDK 1.7 分段锁的优缺点
+
+*   **优点**：
+    *   **锁粒度细化**：将整个Map的锁转化为多个Segment的锁，使得写操作可以真正并行（操作不同Segment时）。
+    *   **读操作完全无锁**：得益于 `volatile` 变量，读性能极高。
+*   **缺点**：
+    *   **复杂度高**：代码实现非常复杂。
+    *   **存在性能瓶颈**：虽然锁粒度小了，但一个Segment的大小是固定的。如果某个Segment非常热（所有线程都操作同一个Segment），竞争依然会很激烈。此外，`size()` 等全局操作需要统计所有Segment，实现起来很麻烦且性能不高。
+
+**正是这些缺点，促使了 JDK 1.8 的彻底重构，放弃了分段锁，转而采用 `CAS + synchronized` 锁单个桶头节点的方案，进一步减小了锁粒度，并提升了在极高并发下的性能。**
+
+* JDK 1.8的 `ConcurrentHashMap`
+JDK 1.8 的 `ConcurrentHashMap` 放弃了分段锁的设计，其内部数据结构变得和 `HashMap` 非常相似（数组+链表+红黑树）。线程安全的保证不再依赖于多个子锁，而是通过以下三种技术的精妙结合：
+
+1.  **`CAS` (Compare-And-Swap)**：一种乐观锁，用于**无竞争条件下**的原子性更新操作（如设置桶的头节点、更新 `sizeCtl` 等控制变量）。CAS 操作不需要加锁，避免了线程阻塞和唤醒的开销，效率极高。
+2.  **`synchronized`**：用于**有竞争条件下**，对**单个桶的头节点**进行加锁。在 JDK 1.6 之后，`synchronized` 已经被优化得非常高效（拥有锁升级过程：偏向锁->轻量级锁->重量级锁），在低竞争场景下性能很好。
+3.  **`volatile`**：所有节点的 `value` 和 `next` 指针都用 `volatile` 修饰，保证了读操作的可见性，使得 `get()` 方法依然可以完全无锁，这也是其读性能极高的原因。
+
+**简单流程**：当一个线程要修改某个桶时，它首先尝试用 CAS 去进行无锁更新。如果失败（说明有其他线程也在竞争），则使用 `synchronized` 锁住这个桶的头节点，再进行操作。
+
+
+* 源码解析（以 put 方法为例）
+
+让我们跟随 `put` 方法的源码，一步步看这个机制如何运作。
+
+1. 入口：put(K key, V value)
+
+```java
+public V put(K key, V value) {
+    return putVal(key, value, false);
+}
+```
+
+2. 核心方法：putVal(...)
+
+```java
+final V putVal(K key, V value, boolean onlyIfAbsent) {
+    // 不允许null键或null值
+    if (key == null || value == null) throw new NullPointerException();
+    // 计算key的哈希值（高16位与低16位异或，并保证最高位为0）
+    int hash = spread(key.hashCode());
+    int binCount = 0; // 用于记录链表长度，后续判断是否要树化
+    // 开始自旋，插入成功后才退出
+    for (Node<K,V>[] tab = table;;) {
+        Node<K,V> f; int n, i, fh;
+        // CASE 1: 如果表是空的，初始化表
+        if (tab == null || (n = tab.length) == 0)
+            tab = initTable(); // 初始化使用了CAS控制，保证只初始化一次
+        // CASE 2: 计算出的桶位置(i)是空的
+        else if ((f = tabAt(tab, i = (n - 1) & hash)) == null) {
+            // -------------------- 使用 CAS ！--------------------
+            // 尝试用CAS方式将新节点设置为此桶的头节点
+            if (casTabAt(tab, i, null, new Node<K,V>(hash, key, value, null)))
+                break; // CAS 成功，插入完成，跳出循环
+            // CAS 失败，说明有其他线程抢先在这个桶插入了节点，则进入下一轮循环重试
+        }
+        // CASE 3: 发现当前桶的头节点 f 的 hash 是 MOVED，表示正在扩容
+        else if ((fh = f.hash) == MOVED)
+            tab = helpTransfer(tab, f); // 当前线程帮助一起扩容
+        // CASE 4: 桶不为空，且不在扩容，则进行链表或红黑树的插入
+        else {
+            V oldVal = null;
+            // -------------------- 使用 synchronized ！--------------------
+            // 锁住当前桶的头节点 f
+            synchronized (f) {
+                // 再次检查，防止在加锁前头节点已被其他线程修改
+                if (tabAt(tab, i) == f) {
+                    if (fh >= 0) { // fh > 0 表示是普通链表节点
+                        binCount = 1;
+                        // 遍历链表
+                        for (Node<K,V> e = f;; ++binCount) {
+                            K ek;
+                            // 如果找到key相同的节点，则更新value
+                            if (e.hash == hash && ((ek = e.key) == key || (ek != null && key.equals(ek)))) {
+                                oldVal = e.val;
+                                if (!onlyIfAbsent)
+                                    e.val = value;
+                                break;
+                            }
+                            Node<K,V> pred = e;
+                            // 如果遍历到链表尾部，则将新节点插入尾部
+                            if ((e = e.next) == null) {
+                                pred.next = new Node<K,V>(hash, key, value, null);
+                                break;
+                            }
+                        }
+                    }
+                    else if (f instanceof TreeBin) { // 如果头节点是 TreeBin，说明是红黑树
+                        Node<K,V> p;
+                        binCount = 2;
+                        // 调用红黑树的插入方法
+                        if ((p = ((TreeBin<K,V>)f).putTreeVal(hash, key, value)) != null) {
+                            oldVal = p.val;
+                            if (!onlyIfAbsent)
+                                p.val = value;
+                        }
+                    }
+                }
+            }
+            // 插入完成后，判断链表长度是否达到树化阈值（8）
+            if (binCount != 0) {
+                if (binCount >= TREEIFY_THRESHOLD)
+                    treeifyBin(tab, i); // 将链表转换为红黑树
+                if (oldVal != null)
+                    return oldVal;
+                break;
+            }
+        }
+    }
+    // 增加计数值，并检查是否需要扩容（这里使用了复杂的CAS逻辑）
+    addCount(1L, binCount);
+    return null;
+}
+```
+
+#### 3. 关键工具方法
+
+*   `tabAt(Node<K,V>[] tab, int i)`：使用 `Unsafe.getObjectVolatile` 原子性地获取数组中第 `i` 个元素，保证读到的是最新值。
+*   `casTabAt(Node<K,V>[] tab, int i, Node<K,V> c, Node<K,V> v)`：**CAS 操作的核心**。比较 `tab[i]` 是否是 `c`，如果是，则原子性地将其更新为 `v`。成功返回 `true`。
+    ```java
+    static final <K,V> boolean casTabAt(Node<K,V>[] tab, int i, Node<K,V> c, Node<K,V> v) {
+        return U.compareAndSetObject(tab, ((long)i << ASHIFT) + ABASE, c, v);
+    }
+    ```
+
+---
+
+### 机制总结与优势
+
+1.  **无竞争场景（桶为空）**：
+    *   使用 **CAS** 操作尝试写入头节点。
+    *   **优点**：极快，没有锁的任何开销。
+
+2.  **有竞争场景（桶不为空）**：
+    *   使用 **synchronized** 锁住**这个特定桶的头节点**。
+    *   **优点**：
+        *   **锁粒度极小**：只锁住一个桶，其他桶的操作完全不受影响。相比 JDK 1.7 锁一个 Segment（包含多个桶），并发度大大提高。
+        *   **synchronized 已优化**：在 JDK 1.6 之后，`synchronized` 的性能已经非常优秀，尤其在低竞争情况下（大部分情况下，同一个桶被多个线程同时操作的概率很低）。
+
+3.  **读操作（get）**：
+    *   完全**无锁**。因为 `Node` 的 `val` 和 `next` 都是 `volatile` 的，保证了可见性，可以直接读取。
+    *   **优点**：读性能极高，且读线程永不阻塞。
+
+4.  **扩容**：
+    *   扩容机制也非常巧妙。支持多线程协同扩容。当线程在进行插入操作时如果发现正在扩容，会调用 `helpTransfer` 方法来协助数据迁移，而不是傻等着。
+
+### 对比 JDK 1.7 的分段锁
+
+| 特性 | JDK 1.7 (Segment Locking) | JDK 1.8 (CAS + synchronized) |
+| :--- | :--- | :--- |
+| **锁粒度** | **Segment** (包含多个桶) | **单个桶的头节点** |
+| **锁数量** | 固定 (构造函数指定，默认16) | **动态变化**，与桶的数量一致 |
+| **写竞争** | 竞争发生在Segment级别 | 竞争发生在**桶级别**，粒度更细 |
+| **HashEntry** | `value` 是 `volatile` 的 | `val` 和 `next` 都是 `volatile` 的 |
+| **数据结构** | 数组 + 链表 | 数组 + 链表 + **红黑树** (优化长链表查询) |
+
+**结论**：JDK 1.8 的 `ConcurrentHashMap` 通过 **CAS + synchronized** 的方案，将锁的粒度降到了最低，并且在常见无竞争和高读低写场景下性能达到了最优，是当前实现并发 Map 的最佳实践。这也是为什么它能够完全取代 `Hashtable` 和一定程度上优于 JDK 1.7 自身实现的原因。
+
+
+* 线程安全的Java集合
 以上都是线程不安全的Java集合，线程安全的集合包括：
 
 一、List集合
