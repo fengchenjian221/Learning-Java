@@ -131,6 +131,7 @@ sb.append(" World"); // 添加另一个字符串
 System.out.println(sb.toString()); // 输出 "Hello World"
 
 **StringBuffer 的线程安全性是通过 synchronized 关键字实现的。**
+
 1.synchronized 方法：
 * StringBuffer 类中几乎所有修改其内部状态的方法（如 append(), insert(), delete(), replace(), setCharAt(), setLength() 等）都被声明为 synchronized。
 * 这意味着这些方法在执行时，会获取 StringBuffer 对象实例本身的锁（this 锁）。
@@ -6096,7 +6097,6 @@ Java的并发库和工具旨在提供更高级别的抽象，帮助开发人员�
 操作系统并发管理底层的线程和进程，而Java并发是编写多线程Java应用程序的一种编程范式。
 
 
-
 Java集合：
 集合 → 数组 ：toArray()
 数组 → 集合 ：调用Array类的静态方法asList()
@@ -7299,8 +7299,6 @@ ConcurrentSkipListSet：ConcurrentSkipListSet是线程安全的有序集合，�
 
 
 
-
-
 Java泛型：
 所操作的数据类型被指定为一个参数（type parameter）这种参数类型可以用在类、接口和方法的创建中，分别称为泛型类、泛型接口、泛型方法。
 
@@ -7337,7 +7335,371 @@ Java泛型：
 泛型的下限（Lower Bound）
 泛型的下限指的是泛型类型参数所能接受的最小类型范围，即该泛型类型参数必须是某个特定类型或其父类。在Java中，使用? super Type来表示泛型的下限。这里的Type是泛型类型参数的下限类型，意味着泛型类型参数可以是Type类型或其任何父类。
 
-泛型使用注意事项：
+
+泛型擦除：
+
+**泛型擦除** 是 Java 编译器在处理泛型类型时采用的一种机制。为了确保与旧版本 Java（Java 5 之前）的二进制兼容性，**编译器会在编译阶段将所有的泛型类型信息（类型参数）移除，并在必要的地方添加强制类型转换**。这意味着，泛型类型参数在运行时（Runtime）是不可见的。
+
+简单来说，**泛型只存在于编译期**，它的主要目的是提供更严格的类型检查，避免 `ClassCastException`。一旦代码编译完成，所有关于泛型类型参数的信息都会被擦除。
+
+* 泛型擦除的具体表现
+
+#### 示例 1： 类定义中的擦除
+
+```java
+// 源代码（编译前）
+public class Box<T> {
+    private T value;
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+    public T getValue() {
+        return value;
+    }
+}
+
+// 编译后，经过擦除的等价形式（概念上的）
+public class Box {
+    private Object value; // <-- 类型参数 T 被擦除，替换为 Object
+
+    public void setValue(Object value) { // 参数类型变为 Object
+        this.value = value;
+    }
+
+    public Object getValue() { // 返回类型变为 Object
+        return value;
+    }
+}
+```
+当你使用 `Box<String>` 时，编译器会帮你完成类型检查和转换：
+```java
+Box<String> stringBox = new Box<>();
+stringBox.setValue("Hello");
+// 编译后，getValue() 返回的是 Object，但编译器会自动插入强制转换
+String value = (String) stringBox.getValue(); // <-- 编译器自动加了 (String)
+```
+
+#### 示例 2： 方法重载与擦除
+
+由于擦除，下面这段代码是**无效的**，无法通过编译：
+
+```java
+public class Example {
+    public void print(List<String> list) {}
+    public void print(List<Integer> list) {} // 编译错误：方法重复了
+}
+```
+因为擦除后，两个方法的签名都变成了 `print(List list)`，从字节码层面看完全相同，违反了方法重载的规则。
+
+#### 示例 3： instanceof 操作符
+
+你不能对泛型类型使用 `instanceof`，因为运行时类型信息已被擦除：
+```java
+List<String> list = new ArrayList<>();
+if (list instanceof ArrayList<String>) { // 编译错误：非法泛型类型 instanceof
+    // ...
+}
+```
+正确的写法是使用通配符：
+```java
+if (list instanceof ArrayList<?>) { // 这是允许的
+    // ...
+}
+```
+
+---
+
+### 泛型擦除带来的限制与问题
+
+正是因为擦除机制，Java 泛型存在一些固有的限制：
+
+1.  **不能实例化类型参数**：
+    ```java
+    public static <E> void append(List<E> list) {
+        E elem = new E(); // 编译错误：不知道 E 的具体类型，无法实例化
+        list.add(elem);
+    }
+    ```
+    解决方法：通常通过传递一个 `Class<E>` 类型的对象，使用 `clazz.newInstance()` 反射来创建。
+
+2.  **不能创建泛型数组**：
+    ```java
+    public class Stack<E> {
+        private E[] elements;
+        public Stack() {
+            elements = new E[10]; // 编译错误：不能创建泛型数组
+        }
+    }
+    ```
+    解决方法：通常使用 `Object[]` 然后进行强制转换 `(E[]) new Object[10]`（会引发未经检查的警告），或者直接使用 `ArrayList<E>` 而非数组。
+
+3.  **静态上下文中不能使用类型参数**：
+    类的静态变量或静态方法不能引用类的类型参数，因为静态成员属于类本身，而泛型实例化是对象级别的。
+    ```java
+    public class MobileDevice<T> {
+        private static T os; // 编译错误：不能在静态字段中使用 T
+    }
+    ```
+
+4.  **异常类不能是泛型的**：
+    不能定义泛型类并使其继承自 `Throwable`。
+    ```java
+    // 编译错误：泛型类不能扩展 Throwable
+    class Problem<T> extends Exception { ... }
+    ```
+
+---
+
+### 为什么 Java 要采用泛型擦除？
+
+这是一个设计上的权衡，主要目的是**为了向后兼容**（Migration Compatibility）。
+
+*   **平滑过渡**：当 Java 5 引入泛型时，世界上已经有海量的 Java 代码（Java 1.0 - 1.4）在运行。这些代码使用的是原始类型（Raw Type），例如 `ArrayList` 而不是 `ArrayList<String>`。
+*   **二进制兼容性**：Sun公司（当时的Java所有者）希望确保新的泛型代码能够与旧的库和应用程序无缝交互。一个使用了 `ArrayList<String>` 的程序必须仍然能够向一个期望接收原始 `ArrayList` 的老方法传递参数。
+*   **性能**：擦除不需要在运行时为泛型创建新的类，因此不会产生额外的运行时开销（虽然强制转换会有极小的开销）。Java 的泛型可以看作是 Java 编译器提供的一种“语法糖”。
+
+**与之对比的是 C#**：C# 的泛型是在运行时实现的（Reified Generics），每个不同的构造类型（如 `List<String>` 和 `List<int>`）在运行时都是不同的类型。这提供了更强大的能力（如允许实例化 `T`），但也牺牲了与旧版本代码的兼容性，并且增加了运行时的负担。
+
+---
+
+### 如何获取泛型类型信息？（绕过擦除的部分手段）
+
+虽然擦除是主流，但在某些特定情况下，类型信息可以被保留下来。这主要通过**类型令牌**实现。
+
+**核心原理**：虽然类的泛型信息被擦除了，但**类、字段、方法的签名中的泛型信息（如父类、实现的接口、字段声明、方法参数/返回值声明）会被保留在字节码的元数据（Signature 属性）中**。可以通过反射 API 在运行时获取这些信息。
+
+**示例：获取 `List<String>` 的实际参数类型**
+
+```java
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
+public class GenericTypeInfo {
+
+    // 一个具有泛型字段的类
+    private List<String> stringList = new ArrayList<>();
+
+    public static void main(String[] args) throws Exception {
+        // 通过反射获取字段的泛型类型
+        java.lang.reflect.Field field = GenericTypeInfo.class.getDeclaredField("stringList");
+        Type genericFieldType = field.getGenericType();
+
+        if (genericFieldType instanceof ParameterizedType) {
+            ParameterizedType aType = (ParameterizedType) genericFieldType;
+            // 获取实际的类型参数
+            Type[] fieldArgTypes = aType.getActualTypeArguments();
+            for (Type fieldArgType : fieldArgTypes) {
+                Class<?> fieldArgClass = (Class<?>) fieldArgType;
+                System.out.println("字段的实际类型参数: " + fieldArgClass); // 输出：java.lang.String
+            }
+        }
+    }
+}
+```
+
+许多流行的框架（如 Jackson、Gson、Spring）都利用了这个机制来处理 JSON 反序列化和依赖注入。
+```java
+// 例如，在 Jackson 中反序列化时，你可能会这样写：
+List<MyClass> list = objectMapper.readValue(jsonString, new TypeReference<List<MyClass>>() {});
+```
+这里的 `TypeReference` 就是一个抽象类，它的匿名子类捕获了完整的泛型类型 `List<MyClass>`，使得 Jackson 在运行时能够知道要反序列化成什么类型。
+
+### 总结
+
+| 特性 | 描述 |
+| :--- | :--- |
+| **定义** | Java 编译器在编译时将泛型类型参数移除或替换为限定类型的机制。 |
+| **目的** | 保证与老版本 Java 代码的二进制兼容性。 |
+| **表现** | 泛型类在运行时只有原始类型（如 `List`），所有类型参数被替换为 `Object` 或其上限（如 `<T extends Number>` 则替换为 `Number`）。 |
+| **优点** | 兼容性好，运行时开销小。 |
+| **缺点** | 导致诸多限制（如无法实例化 `T`、无法创建泛型数组等），运行时类型信息缺失。 |
+| **应对** | 使用类型令牌（`TypeReference`）和反射可以部分地获取泛型信息。 |
+
+总而言之，**泛型擦除是 Java 泛型实现的核心特征，它是一种权衡下的设计选择**。它用运行时的能力换取了编译时的类型安全和至关重要的向后兼容性。理解擦除是理解 Java 泛型所有优点和局限性的关键。
+
+
+泛型的桥方法：
+桥方法是 Java 编译器为了**解决类型擦除与多态性之间的冲突**而自动生成的方法。要理解它，我们需要通过一个经典的例子。
+
+### 问题的产生：类型擦除与多态的冲突
+
+假设我们有一个简单的泛型类和一个继承它的类：
+
+```java
+// 泛型父类
+public class Pair<T> {
+    private T value;
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+    public T getValue() {
+        return value;
+    }
+}
+
+// 子类，继承自 Pair，并指定 T 为 String
+public class StringPair extends Pair<String> {
+
+    // 子类重写父类的 setValue 方法
+    @Override
+    public void setValue(String value) {
+        super.setValue(value);
+        // 这里可以添加一些子类特有的逻辑
+        System.out.println("StringPair.setValue() called with: " + value);
+    }
+}
+```
+
+现在，我们来分析一下类型擦除后会发生什么：
+
+1.  **编译后，父类 `Pair<T>` 被擦除**：
+    ```java
+    // 概念上的擦除结果
+    public class Pair { // 原始类型
+        private Object value; // T 被擦除为 Object
+
+        public void setValue(Object value) { // 参数变为 Object
+            this.value = value;
+        }
+
+        public Object getValue() { // 返回类型变为 Object
+            return value;
+        }
+    }
+    ```
+
+2.  **子类 `StringPair` 的现状**：
+    子类重写了一个方法，其签名是 `setValue(String value)`。
+
+**关键问题出现了**：
+- 父类擦除后有一个方法：`setValue(Object value)`
+- 子类有一个方法：`setValue(String value)`
+
+从 Java 方法重写的定义来看，这**不是一次有效的重写**！重写要求方法签名（方法名+参数列表）完全一致。这里的参数类型一个是 `Object`，一个是 `String`，所以它们成了**重载关系**，而不是重写关系。
+
+这破坏了多态性。如果我们写出以下代码：
+```java
+Pair<String> pair = new StringPair(); // 多态：父类引用指向子类对象
+pair.setValue("Hello"); // 编译时看 Pair<T>，知道是 String。运行时应该调用 StringPair 的 setValue
+```
+根据多态的原理，`pair.setValue(“Hello”)` 应该调用子类 `StringPair` 的 `setValue` 方法。但由于擦除，虚拟机在父类中只知道 `setValue(Object)`，而子类并没有重写这个方法，它只有 `setValue(String)`。这会导致运行时无法正确调用到子类的方法。
+
+### 桥方法的解决方案
+
+为了解决这个矛盾，Java 编译器会自动在子类 `StringPair` 中生成一个**桥方法**。
+
+**编译后的 `StringPair` 类实际上看起来像这样**（你不能直接看到，但编译器确实这样做了）：
+
+```java
+public class StringPair extends Pair<String> {
+
+    // 这是你写的方法
+    @Override
+    public void setValue(String value) {
+        System.out.println("StringPair.setValue() called with: " + value);
+        super.setValue(value);
+    }
+
+    // ！！！这是编译器生成的桥方法 ！！！
+    public void setValue(Object value) {
+        // 将 Object 类型的参数强制转换为 String，然后调用你写的 setValue(String) 方法
+        this.setValue((String) value);
+    }
+}
+```
+
+这个自动生成的 `setValue(Object value)` 方法就是一个**桥方法**。它就像一座桥梁：
+
+1.  **对外**：它“重写”了父类擦除后的 `setValue(Object)` 方法。满足了多态的要求。当通过父类引用 `Pair<String>` 调用 `setValue` 时，JVM 会找到这个桥方法。
+2.  **对内**：它在内部将传入的 `Object` 参数**安全地**强制转换为 `String`（因为父类的泛型类型已经是 `String`，所以这个转换是安全的），然后转发给你真正编写的、希望被调用的 `setValue(String)` 方法。
+
+### 另一个例子：返回值类型
+
+桥方法不仅用于参数类型协变（Covariant），也用于返回值类型协变。
+
+```java
+public class Pair<T> {
+    public T getValue() { ... }
+}
+
+public class StringPair extends Pair<String> {
+    @Override
+    public String getValue() { ... } // 返回值类型是 String，不是 Object
+}
+```
+擦除后，父类方法是 `Object getValue()`，而子类是 `String getValue()`。这也不是严格的重写（返回值类型不同，但构成覆盖）。
+
+编译器同样会生成一个桥方法：
+```java
+public class StringPair extends Pair<String> {
+
+    // 你写的方法
+    public String getValue() { ... }
+
+    // 编译器生成的桥方法
+    public Object getValue() {
+        return this.getValue(); // 调用你写的 String getValue()，返回值向上转型为 Object
+    }
+}
+```
+
+### 如何观察桥方法？
+
+你不能在源代码中看到桥方法，但它们确实存在于编译后的 `.class` 字节码文件中。你可以使用 `javap -c -p YourClass` 命令来反编译并查看。
+
+例如，对 `StringPair` 类运行 `javap -c -p StringPair`，你可能会看到类似这样的输出：
+
+```
+Compiled from "StringPair.java"
+public class StringPair extends Pair<java.lang.String> {
+  public StringPair();
+    Code:
+        ...
+
+  public void setValue(java.lang.String);
+    Code: // 这是你写的方法
+        ...
+
+  public void setValue(java.lang.Object); // 这是桥方法！注意描述符是 (Object)
+    Code:
+       0: aload_0
+       1: aload_1
+       2: checkcast     #2  // 强制转换为 String class
+       5: invokevirtual #3  //  Method setValue:(Ljava/lang/String;)V - 调用你写的方法
+       8: return
+
+  public java.lang.String getValue();
+    Code: // 这是你写的方法
+        ...
+
+  public java.lang.Object getValue(); // 这也是桥方法！
+    Code:
+       0: aload_0
+       1: invokevirtual #4  // Method getValue:()Ljava/lang/String; - 调用你写的方法
+       4: areturn // 返回 String (它也是 Object)
+}
+```
+
+### 总结
+
+| 特性 | 描述 |
+| ：--- | :--- |
+| **目的** | 解决因**类型擦除**而导致的**方法重写失效**问题，从而保证泛型情况下的**多态性**。 |
+| **生成者** | Java 编译器自动生成，对程序员不可见。 |
+| **工作原理** | 1. 生成一个与父类擦除后方法签名完全相同的方法。<br>2. 在此方法内部，进行安全的类型转换。<br>3. 将调用转发给程序员编写的、具有具体类型参数的方法。 |
+| **触发条件** | 当一个类继承或实现了一个参数化的类或接口，并重写了其中的泛型方法时。 |
+| **重要性** | 它是 Java 泛型能够正常工作且不与面向对象基本特性（如多态）冲突的基石。 |
+
+简而言之，**桥方法是 Java 编译器为了弥补类型擦除的缺陷，确保多态性能够正确工作而采用的“缝合”技术**。它让开发者可以专注于泛型带来的编译时类型安全的好处，而无需关心底层复杂的兼容性实现。
+
+
+* 泛型使用注意事项：
 泛型是工作在编译阶段的，一旦程序编译成class文件，class文件就不存在泛型了，这就是泛型擦除。通过泛型的桥界方法，Java编译器能够确保在运行时，尽管泛型类型被擦除，但仍然能够正确地处理类型转换，从而保持代码的类型安全性。
 泛型擦除可能会导致运行时无法获取泛型具体类型，可能引发 ClassCastException。
 泛型不支持基本数据类型，只能支持对象类型（引用数据类型）。
