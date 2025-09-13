@@ -169,11 +169,15 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
   `LinkedList`的源码分析  
   `List`常用方法  
   `HashMap`的底层实现原理
-
+  线程安全的Java集合
+  
 - **泛型**  
   在集合中使用泛型  
   自定义泛型接口  
   泛型的通配符
+  泛型的上限和下限
+  泛型的桥方法
+  泛型的使用注意事项
 
 - **IO（File类、IO流、网络编程、序列化与反序列化）**  
   Java `File`类  
@@ -183,7 +187,12 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
   - 节点流（或文件流）  
   - 缓冲流（处理流的一种）  
   文件专属字符流`FileReader`/文件专属字节流`FileInputStream`  
-  序列化/反序列化  
+  Java I/O中字节流可以处理一切数据，为什么还要设计字符流？
+  Java I/O流在哪些设计中使用了装饰者模式？
+  序列化/反序列化 
+  - 序列化与反序列化的方式 
+  - Java I/O涉及到哪些数据结构与算法？
+  RandomAccessFile
   磁盘IO  
   - 磁盘类型  
   - IO操作类型  
@@ -192,6 +201,55 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
   - 缓存和预读  
   - RAID技术  
   - 文件系统
+  Java NIO  
+  - Java NIO详解  
+  - 为什么Java NIO能直接创建缓冲区流进行数据传输，而传统的BIO只能用装饰者模式创建缓冲流
+  - Java NIO和多线程有什么联系？
+  - Java NIO是基于I/O多路复用设计的
+  网络编程  
+    - 网络七层架构的作用与协议  
+    - 一些网络编程概念    
+  Socket编程  
+    - 阐述Socket
+    - Socket中的双全工数据交换是什么？
+    - 代码实现  
+  TCP  
+    - 阐述TCP
+    - 两台计算机之间使用套接字建立TCP连接时的步骤  
+    - Java实现TCP网络程序设计
+  UDP    
+    - 阐述UDP
+    - Java实现UDP编程  
+    - 实现UDP的时候如何确保数据不丢失？
+    - 一个实现可靠UDP的例子：QUIC协议
+  URL  
+    - Java实现URL网络编程 
+  C/S架构和B/S架构 
+  HTTP协议/HTTPS协议    
+    - 什么是HTTP协议？  
+    - 什么是HTTPS协议？  
+    - HTTP协议的特点和基本工作原理  
+    - HTTP请求报文格式  
+    - 发起HTTPS请求的过程  
+    - HTTPS请求中的TCP三次握手过程  
+    - HTTP请求和HTTPS请求有什么区别  
+    - HTTP请求中的GET请求和POST请求  
+    - HTTP请求响应格式  
+    - 设置在后端程序中统一返回HTTP响应对象  
+  CDN  
+    - 关于CDN  
+  网络负载均衡/关于不同的负载均衡  
+  Tomcat  
+    - 可以在`webapps`目录中存放的一些文件类型  
+    - Tomcat的系统架构  
+  Nginx  
+    - Nginx系统架构  
+    - nginx做资源的动静分离  
+    - 项目中使用了nginx做反向代理，还需要网关做映射吗？  
+  Netty  
+    - Netty的主要特点  
+  在实际生活中有哪些因素影响网络传输？  
+  为什么Java比其他语言更适合开发Web应用程序？
 
 - **网络编程**  
   基础网络通信  
@@ -250,49 +308,6 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
     - Vue的一些主要特点和概念  
     - VUE简单实现（Vue3）  
     - 对比Vue3，创建一个选项试API Vue2  
-  - NIO  
-    - Java NIO详解  
-    - 关系图
-
-- **Web网络编程基础**  
-  - 网络编程  
-    - 网络七层架构的作用与协议  
-    - 一些网络编程概念  
-    - 实现`InetAddress`实例化  
-  - Socket编程  
-    - 代码实现  
-  - TCP/UDP  
-    - 两台计算机之间使用套接字建立TCP连接时的步骤  
-    - Java实现TCP网络程序设计  
-    - Java实现UDP编程  
-  - URL  
-    - Java实现URL网络编程  
-  - HTTP协议/HTTPS协议  
-    - 关于C/S架构和B/S架构  
-    - 什么是HTTP协议？  
-    - 什么是HTTPS协议？  
-    - HTTP协议的特点和基本工作原理  
-    - HTTP请求报文格式  
-    - 发起HTTPS请求的过程  
-    - HTTPS请求中的TCP三次握手过程  
-    - HTTP请求和HTTPS请求有什么区别  
-    - HTTP请求中的GET请求和POST请求  
-    - HTTP请求响应格式  
-    - 设置在后端程序中统一返回HTTP响应对象  
-  - CDN  
-    - 关于CDN  
-  - 网络负载均衡/关于不同的负载均衡  
-  - Tomcat  
-    - 可以在`webapps`目录中存放的一些文件类型  
-    - Tomcat的系统架构  
-  - Nginx  
-    - Nginx系统架构  
-    - nginx做资源的动静分离  
-    - 项目中使用了nginx做反向代理，还需要网关做映射吗？  
-  - Netty  
-    - Netty的主要特点  
-  - 在实际生活中有哪些因素影响网络传输？  
-  - 为什么Java比其他语言更适合开发Web应用程序？
 
 ### ② [Web后端技术](./Java知识体系.md/#Web后端技术) 
   - Servlet  
