@@ -233,18 +233,36 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
     - 考虑到系统的防护性，HTTPS如何做到有效防护？
     - HTTP请求和HTTPS请求有什么区别   
     - 描述一个HTTPS请求从客户端到服务器的网络传输过程 
+    - 如果两个服务器的物理距离横跨数千公里，这时我使用TCP连接，由于TCP的三次握手机制，传输层要传输三次才能建立连接吗？
   - CDN  
     - 关于CDN  
+  - P2P
+    - 关于P2P  
+  - PCDN
+    - 关于PCDN
   - 网络负载均衡
+    - 什么是负载均衡？
+    - 如何实现集群负载均衡？
     - 如何在分布式系统实现负载均衡？
     - 关于不同的负载均衡  
   - Tomcat  
-    - 可以在`webapps`目录中存放的一些文件类型  
-    - Tomcat的系统架构  
+    - Tomcat的系统架构 
+    - Tomcat 的工作原理
+    - Tomcat 的优缺点 
+    - Tomcat 与其他服务器对比
+    - Tomcat 的其他组件
+    - Tomcat中的`webapps`目录 
   - Nginx  
-    - Nginx系统架构  
-    - nginx做资源的动静分离  
-    - 项目中使用了nginx做反向代理，还需要网关做映射吗？  
+    - 关于Nginx  
+    - Nginx做资源的动静分离  
+    - Nginx的配置
+    - Nginx的配置项有哪些
+    - 项目中使用了Nginx做反向代理，还需要网关做映射吗？ 
+    - Nginx作用在网络架构的哪一层？
+    - Nginx实现负载均衡
+    - Nginx是如何实现反向代理的？
+    - Nginx实现反向代理的实现原理是什么？
+    - SpringCloudGateWay和Nginx相比，Nginx有哪些优势，有哪些不足Spring CloudGateWay的地方
   - Netty  
     - Netty的主要特点  
   - 在实际生活中有哪些因素影响网络传输？  
