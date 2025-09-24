@@ -204,7 +204,9 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
   - Java NIO  
     - Java NIO详解  
     - 为什么Java NIO能直接创建缓冲区流进行数据传输，而传统的BIO只能用装饰者模式创建缓冲流
+    - CPU密集型和I/O密集型任务对Java NIO的影响
     - Java NIO和多线程有什么联系？
+    - Java NIO的核心API调用了JVM还是操作系统？
     - Java NIO是基于I/O多路复用设计的
   - 网络编程  
     - 网络七层架构的作用与协议  
@@ -247,10 +249,10 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
     - 关于不同的负载均衡  
   - Tomcat  
     - Tomcat的系统架构 
-    - Tomcat 的工作原理
-    - Tomcat 的优缺点 
-    - Tomcat 与其他服务器对比
-    - Tomcat 的其他组件
+    - Tomcat的工作原理
+    - Tomcat的优缺点 
+    - Tomcat与其他服务器对比
+    - Tomcat的其他组件
     - Tomcat中的`webapps`目录 
   - Nginx  
     - 关于Nginx  
@@ -265,6 +267,7 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
     - SpringCloudGateWay和Nginx相比，Nginx有哪些优势，有哪些不足Spring CloudGateWay的地方
   - Netty  
     - Netty的主要特点  
+    - Netty中的零拷贝是什么？
   - 在实际生活中有哪些因素影响网络传输？  
   - 为什么Java比其他语言更适合开发Web应用程序？
 
