@@ -270,8 +270,9 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
     - Netty的主要特点
     - Netty中的Handle有什么作用
     - Netty中的零拷贝是什么？
-    - 
+    - Netty的心跳机制
     - Netty示例代码
+    - Netty是如何处理TCP粘包拆包问题的
   - Jetty  
     - 关于Jetty
   - 在实际生活中有哪些因素影响网络传输？  
