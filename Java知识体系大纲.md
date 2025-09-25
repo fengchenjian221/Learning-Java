@@ -266,10 +266,14 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
     - Nginx实现反向代理的实现原理是什么？
     - SpringCloudGateWay和Nginx相比，Nginx有哪些优势，有哪些不足Spring CloudGateWay的地方
   - Netty  
-    - 阐述Netty  
+    - 关于Netty  
     - Netty的主要特点
+    - Netty中的Handle有什么作用
     - Netty中的零拷贝是什么？
-  -Jetty  
+    - 
+    - Netty示例代码
+  - Jetty  
+    - 关于Jetty
   - 在实际生活中有哪些因素影响网络传输？  
   - 为什么Java比其他语言更适合开发Web应用程序？
 
