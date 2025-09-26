@@ -2096,7 +2096,7 @@ class AnotherClass {
 **补充提示**：虽然在技术上是可行的，但在现代Java开发中，更推荐使用**枚举（Enum）** 或 **常量工具类** 来定义常量，而不是放在接口中。
 因为一个类实现接口就“继承”了所有常量，这被一些人认为是一种“接口污染”（接口只应用于定义类型，而不应用作常量容器）。但在阅读和理解大量现有Java代码（如JDK本身）时，这个知识点至关重要。
 
-Java不同版本的特性：
+>Java不同版本的特性：
 * Jdk8和之前版本的对比
 
 ### 核心概览
@@ -2166,6 +2166,87 @@ Java 8 最大的改变是引入了 **“函数式编程”** 的能力，这主�
     ```
     **意义**：进一步简化代码，提高可读性。
 
+    **常用的 Stream 函数包括**：
+    *中间操作符：通常对于Stream的中间操作，可以视为是源的查询，并且是懒惰式的设计，对于源数据进行的计算只有在需要时才会被执行，
+    与数据库中视图的原理相似；Stream流的强大之处便是在于提供了丰富的中间操作，相比集合或数组这类容器，极大的简化源数据的计算复杂度
+    一个流可以跟随零个或多个中间操作。其目的主要是打开流，做出某种程度的数据映射/过滤，然后返回一个新的流，交给下一个操作使用
+    
+    *1. filter(Predicate<T> predicate)：根据指定的条件过滤出符合条件的元素。
+    userList.stream().filter(user -> user.getId() > 6).collect(Collectors.toList());
+
+    *2. map(Function<T, R> mapper)：将每个元素映射为另一个元素。
+    userList.stream().map(user -> user.getName() + "用户").collect(Collectors.toList());
+
+    *3. flatMap(Function<T, Stream<R>> mapper)：将每个元素映射为一个 Stream，并将所有 Stream 的元素合并为一个 Stream。
+    userList.stream().flatMap(user -> Arrays.stream(user.getCity().split(","))).forEach(System.out::println);
+    
+    map：对流中每一个元素进行处理
+    flatMap：流扁平化，让你把一个流中的“每个值”都换成另一个流，然后把所有的流连接起来成为一个流 
+    本质区别：map是对一级元素进行操作，flatmap是对二级元素操作map返回一个值；flatmap返回一个流，多个值
+    
+    *4. distinct()：去除重复的元素。
+    userList.stream().map(User::getCity).distinct().collect(Collectors.toList());
+
+    *5. sorted()：对元素进行排序。
+    userList.stream().sorted(Comparator.comparing(User::getName).reversed()).collect(Collectors.toList()).forEach(System.out::println);
+
+    *6. limit(long maxSize)：限制 Stream 的大小。
+    userList.stream().limit(5).collect(Collectors.toList()).forEach(System.out::println);
+
+    *7. skip(long n)：跳过前 n 个元素。
+    userList.stream().skip(7).collect(Collectors.toList()).forEach(System.out::println);
+
+    *8. peek():对元素进行遍历处理
+    //每个用户ID加1输出
+    userList.stream().peek(user -> user.setId(user.getId()+1)).forEach(System.out::println);
+
+    
+    终端操作符：Stream流执行完终端操作之后，无法再执行其他动作，否则会报状态异常，提示该流已经被执行操作或者被关闭，
+    想要再次执行操作必须重新创建Stream流。一个流有且只能有一个终端操作，当这个操作执行后，流就被关闭了，无法再被操作，
+    因此一个流只能被遍历一次，若想在遍历需要通过源数据在生成流。
+    
+    *9. forEach(Consumer<T> action)：对每个元素执行指定的操作。
+    userList.stream().forEach(user -> System.out.println(user));
+    userList.stream().filter(user -> "上海".equals(user.getCity())).forEach(System.out::println);
+
+    *10. collect(Collector<T, A, R> collector)：收集器，将流转换为其他形式。
+    Set set = userList.stream().collect(Collectors.toSet());
+    List list = userList.stream().collect(Collectors.toList());
+
+    *11. findFirst():返回第一个元素
+    User firstUser = userList.stream().findFirst().get();
+    User firstUser1 = userList.stream().filter(user -> "上海".equals(user.getCity())).findFirst().get();   
+
+    *12. findAny():返回当前流中的任意元素
+    User findUser = userList.stream().findAny().get();
+    User findUser1 = userList.stream().filter(user -> "上海".equals(user.getCity())).findAny().get();
+
+    *13. count():返回流中元素总数
+    long count = userList.stream().filter(user -> user.getAge() > 20).count();	
+
+    *14. sum():求和
+    int sum = userList.stream().mapToInt(User::getId).sum();
+
+    *15. max():最大值
+    int max = userList.stream().max(Comparator.comparingInt(User::getId)).get().getId();
+
+    *16. min():最小值
+    int min = userList.stream().min(Comparator.comparingInt(User::getId)).get().getId();
+
+    *17. anyMatch():检查是否至少匹配一个元素，返回boolean
+    boolean matchAny = userList.stream().anyMatch(user -> "北京".equals(user.getCity()));
+
+    *18. allMatch():检查是否匹配所有元素，返回boolean
+    boolean matchAll = userList.stream().allMatch(user -> "北京".equals(user.getCity()));
+
+    *19. noneMatch():检查是否没有匹配所有元素，返回boolean
+    boolean nonaMatch = userList.stream().allMatch(user -> "云南".equals(user.getCity()));
+
+    *20.reduce():可以将流中元素反复结合起来，得到一个值
+    Optional reduce = userList.stream().reduce((user, user2) -> {
+       return user;
+    });
+
 ---
 
 ### 二、新的日期和时间 API
@@ -2234,7 +2315,7 @@ Java 8 最大的改变是引入了 **“函数式编程”** 的能力，这主�
 **总而言之，Java 8 是一次革命性的升级**。它不仅仅增加了一些新功能，而是从根本上改变了 Java 程序的编写方式，使其更适应现代软件开发对简洁、高效和并行的需求。即使到了今天的 Java 17 或更高版本，Java 8 的这些核心特性仍然是所有 Java 开发者必须掌握的基础。
 
 
-* 至今为止，Java发布了多少个版本？有哪些版本有划时代的技术？
+>至今为止，Java发布了多少个版本？有哪些版本有划时代的技术？
 Java 从 1995 年诞生至今，经历了多次重大更新。下面这张表格汇总了其主要版本和标志性技术特性，希望能帮你直观地了解 Java 的演进历程：
 
 | 版本           | 发布年份 | 技术特性                                                                                              | 划时代意义                                     |
@@ -2340,11 +2421,6 @@ mycustomruntime/bin/java -m com.example.myapp/com.example.myapp.Main
 | **编程模型** | 为了应对高并发，必须使用复杂的**异步编程**（如 `CompletableFuture`）或**反应式编程**（如 Project Reactor），这会牺牲代码的可读性和可调试性。 | **回归简单**！使用直观的、同步的**命令式代码**（`thread-per-request`）。代码更容易编写、阅读、调试和维护。 |
 | **调试与监控** | 传统工具（如线程转储）在大量线程时难以使用。 | **完美集成**。JDK 的工具（如 `jcmd`）可以很好地支持虚拟线程，提供清晰的视图。 |
 
-**核心比喻：**
-
-想象一个邮局（CPU核心/OS线程）。
-*   **平台线程**就像是一个**固定的柜台职员**。即使当前顾客在填一张很慢的表（线程阻塞），这个职员也只能干等着，不能服务下一个顾客。要服务更多顾客，你就得雇佣更多职员（创建更多OS线程），成本很高。
-*   **虚拟线程**就像是**任务卡片**。一个职员（OS线程）可以处理一大堆任务卡片。当一张卡片上的任务需要等待（比如等顾客填表），职员就把它放到一边，立刻处理下一张卡片。等待结束后，他再回来继续处理这张卡片。**一个职员高效地处理了数百张卡片**。
 
 **总结：虚拟线程将应用程序的并发单元（大量轻量级任务）与操作系统用于运行这些单元的稀缺资源（少量重量级OS线程）分离开来。** 它使得阻塞操作变得“廉价”，从而让我们可以重回简单的同步编程风格。
 
@@ -2478,11 +2554,10 @@ public class VirtualThreadDemo {
    - 在CPU密集型场景中，两者性能相近
 
 ### 总结与展望
-
 Java 的版本迭代，尤其是近年的快速发展，展现了其适应现代应用开发需求的强大生命力。从最初的“一次编写，到处运行”到如今的**函数式编程**、**模块化**、**云原生**和**高并发**支持，Java 在不断进化。
 
 
-* Java有哪些设计借鉴了其他编程语言
+>Java有哪些设计借鉴了其他编程语言
 Java 作为一门成熟的语言，其成功很大程度上得益于它“博采众长”的设计哲学。它从众多先驱和同时代的语言中汲取了灵感，并将其融入到一个强大、稳定且易于使用（相对当时而言）的平台中。
 以下是 Java 中一些主要的设计理念和特性，以及它们可能借鉴或受其影响的来源：
 
@@ -13887,90 +13962,6 @@ public class EmbeddedJettyExample {
 4.高度安全。Java具有某些内置的安全功能，例如密码学、高级身份验证和访问控制，这些功能在很大程度上促成了Java开发服务的蓬勃发展。
 5.可扩展性和多线程。Java是高度可扩展的，可以适应Web应用程序的需求，并为开发人员提供水平和垂直扩展的能力。此外，Java的NIO（非阻塞I/O）API促进了在软件的单个副本中创建尽可能多的线程，这极大地提高了应用程序的性能。
 
-
-
-Java Stream流（函数式编程）：
-Stream流是一种顺序的元素集合，它支持类似于SQL语句的操作，如过滤、映射、排序等。通过使用Stream流，我们可以以声明式的方式对数据进行处理，而不需要关心具体的实现细节。
-
-Stream流的主要特点包括：
-Stream流不存储数据，而是通过管道传输数据。
-Stream流可以操作任何数据源，如集合、数组、I/O通道等。
-Stream流可以进行串行操作和并行操作。
-Java中的Stream流主要包含两种类型：中间操作和终端操作。中间操作用于对流进行一系列的转换和操作，而终端操作用于从流中获取结果。
-
-使用Stream流可以通过以下几个步骤进行：
-
-创建流：可以从集合、数组、I/O通道等数据源中创建Stream流。
-中间操作：对流进行一系列的转换和操作，如过滤、映射、排序等。
-终端操作：从流中获取结果，如聚合、收集、遍历等。
-
-
-常用的 Stream 函数包括：
-中间操作符：通常对于Stream的中间操作，可以视为是源的查询，并且是懒惰式的设计，对于源数据进行的计算只有在需要时才会被执行，
-与数据库中视图的原理相似；Stream流的强大之处便是在于提供了丰富的中间操作，相比集合或数组这类容器，极大的简化源数据的计算复杂度
-一个流可以跟随零个或多个中间操作。其目的主要是打开流，做出某种程度的数据映射/过滤，然后返回一个新的流，交给下一个操作使用
-
-1. filter(Predicate<T> predicate)：根据指定的条件过滤出符合条件的元素。
-userList.stream().filter(user -> user.getId() > 6).collect(Collectors.toList());
-2. map(Function<T, R> mapper)：将每个元素映射为另一个元素。
-userList.stream().map(user -> user.getName() + "用户").collect(Collectors.toList());
-3. flatMap(Function<T, Stream<R>> mapper)：将每个元素映射为一个 Stream，并将所有 Stream 的元素合并为一个 Stream。
-userList.stream().flatMap(user -> Arrays.stream(user.getCity().split(","))).forEach(System.out::println);
-
-map：对流中每一个元素进行处理
-flatMap：流扁平化，让你把一个流中的“每个值”都换成另一个流，然后把所有的流连接起来成为一个流 
-本质区别：map是对一级元素进行操作，flatmap是对二级元素操作map返回一个值；flatmap返回一个流，多个值
-
-4. distinct()：去除重复的元素。
-userList.stream().map(User::getCity).distinct().collect(Collectors.toList());
-5. sorted()：对元素进行排序。
-userList.stream().sorted(Comparator.comparing(User::getName).reversed()).collect(Collectors.toList()).forEach(System.out::println);
-6. limit(long maxSize)：限制 Stream 的大小。
-userList.stream().limit(5).collect(Collectors.toList()).forEach(System.out::println);
-7. skip(long n)：跳过前 n 个元素。
-userList.stream().skip(7).collect(Collectors.toList()).forEach(System.out::println);
-8. peek():对元素进行遍历处理
-//每个用户ID加1输出
-userList.stream().peek(user -> user.setId(user.getId()+1)).forEach(System.out::println);
-
-终端操作符：Stream流执行完终端操作之后，无法再执行其他动作，否则会报状态异常，提示该流已经被执行操作或者被关闭，
-想要再次执行操作必须重新创建Stream流。一个流有且只能有一个终端操作，当这个操作执行后，流就被关闭了，无法再被操作，
-因此一个流只能被遍历一次，若想在遍历需要通过源数据在生成流。
-
-9. forEach(Consumer<T> action)：对每个元素执行指定的操作。
-userList.stream().forEach(user -> System.out.println(user));
-userList.stream().filter(user -> "上海".equals(user.getCity())).forEach(System.out::println);
-10. collect(Collector<T, A, R> collector)：收集器，将流转换为其他形式。
-Set set = userList.stream().collect(Collectors.toSet());
-List list = userList.stream().collect(Collectors.toList());
-11. findFirst():返回第一个元素
-User firstUser = userList.stream().findFirst().get();
-User firstUser1 = userList.stream().filter(user -> "上海".equals(user.getCity())).findFirst().get();        
-12. findAny():返回当前流中的任意元素
-User findUser = userList.stream().findAny().get();
-User findUser1 = userList.stream().filter(user -> "上海".equals(user.getCity())).findAny().get();
-13. count():返回流中元素总数
-long count = userList.stream().filter(user -> user.getAge() > 20).count();		
-14. sum():求和
-int sum = userList.stream().mapToInt(User::getId).sum();
-15. max():最大值
-int max = userList.stream().max(Comparator.comparingInt(User::getId)).get().getId();
-16. min():最小值
-int min = userList.stream().min(Comparator.comparingInt(User::getId)).get().getId();
-17. anyMatch():检查是否至少匹配一个元素，返回boolean
-boolean matchAny = userList.stream().anyMatch(user -> "北京".equals(user.getCity()));
-18. allMatch():检查是否匹配所有元素，返回boolean
-boolean matchAll = userList.stream().allMatch(user -> "北京".equals(user.getCity()));
-19. noneMatch():检查是否没有匹配所有元素，返回boolean
-boolean nonaMatch = userList.stream().allMatch(user -> "云南".equals(user.getCity()));
-20.reduce():可以将流中元素反复结合起来，得到一个值
-Optional reduce = userList.stream().reduce((user, user2) -> {
-    return user;
-});
-
-
-		
-通过使用这些函数，可以简化代码、提高效率，并且使代码更加易读和可维护。
 
 Java反射：
 反射是作为动态语言的关键，反射机制允许程序在执行期借助于Reflection API取得任何类的内部信息，并能直接操作任意对象的内部属性和方法。
