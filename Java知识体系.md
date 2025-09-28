@@ -14534,10 +14534,66 @@ Java动态代理：
 代理类在程序运行时创建的代理方式被成为动态代理。在静态代理中，代理类（RenterProxy）是自己已经定义好了的，在程序运行之前就已经编译完成。
 而动态代理是在运行时根据我们在Java代码中的“指示”动态生成的。**Java运用了反射实现了动态代理**。
 动态代理相较于静态代理的优势在于**可以很方便的对代理类的所有函数进行统一管理**，如果我们想在每个代理方法前都加一个方法，如果代理方法很多，我们需要在每个代理方法都要写一遍，很麻烦。而动态代理则不需要。
+Java动态代理其核心依赖java.lang.reflect包下的Proxy类和InvocationHandler接口，且仅能代理实现了接口的目标类。
 
-代码实现：创建RenterInvocationHandler类，这个类实现了InvocationHandler接口，并持有一个被代理类的对象，InvocationHandler中有一个invoke方法，所有执行代理对象的方法都会被替换成执行invoke方法。
+* Java动态代理核心组件
+1. **`InvocationHandler`接口**：  
+   代理实例的方法调用会被转发到此接口的实现类中处理。该接口仅定义一个方法：  
+   ```java
+   Object invoke(Object proxy, Method method, Object[] args) throws Throwable;
+   ```  
+   - 参数说明：  
+     - `proxy`：当前生成的代理实例；  
+     - `method`：被调用的目标方法（`Method`对象）；  
+     - `args`：目标方法的参数列表；  
+   - 返回值：目标方法的返回值（经增强逻辑处理后）。  
+
+
+2. **`Proxy`类**：  
+   用于动态生成代理类及其实例的工具类，核心方法为：  
+   ```java
+   static Object newProxyInstance(ClassLoader loader, Class<?>[] interfaces, InvocationHandler h) throws IllegalArgumentException
+   ```  
+   - 参数说明：  
+     - `loader`：类加载器（通常使用目标类的类加载器）；  
+     - `interfaces`：目标类实现的所有接口（代理类会实现这些接口）；  
+     - `h`：`InvocationHandler`实现类实例（方法调用的转发目标）；  
+   - 返回值：动态生成的代理实例。  
+
+
+* Java动态代理实现原理
+1. **前提条件**：  
+   目标类必须实现至少一个接口（`interfaces`参数非空），否则`Proxy`无法生成代理类（这是JDK动态代理与CGLIB的核心区别）。
+
+
+2. **代理类的动态生成**：  
+   调用`Proxy.newProxyInstance()`时，JDK会在运行时通过字节码生成技术（由`sun.misc.ProxyGenerator`类实现）动态构建代理类的字节码，其特征包括：  
+   - 类名格式为`$ProxyN`（`N`为数字，如`$Proxy0`）；  
+   - 继承`java.lang.reflect.Proxy`类（因此无法再继承其他类，遵循Java单继承原则）；  
+   - 实现`interfaces`参数指定的所有接口，并重写接口中的所有方法。  
+
+
+3. **方法调用的转发机制**：  
+   代理类重写的接口方法中，会将方法调用转发给`InvocationHandler`实例的`invoke()`方法。具体流程：  
+   - 调用代理实例的接口方法（如`proxy.doSomething()`）；  
+   - 代理类的对应方法会调用`super.h.invoke(this, method, args)`（`super`即`Proxy`类，`h`为传入的`InvocationHandler`实例）；  
+   - `invoke()`方法中执行增强逻辑（如前置日志），再通过`method.invoke(target, args)`调用目标类的原始方法；  
+   - 将目标方法的返回值（或经处理后的值）返回给调用方。  
+
+
+4. **类加载与实例化**：  
+   动态生成的代理类字节码会通过`loader`类加载器加载到JVM中，随后`Proxy`通过反射创建代理类的实例（构造器参数为`InvocationHandler`实例）。
+
+
+### 局限性
+- 仅支持代理实现了接口的类，无法代理未实现接口的类（需依赖CGLIB等基于继承的动态代理技术）；  
+- 生成的代理类始终继承`Proxy`类，受Java单继承限制。
+
+
+Java动态代理代码实现：
+创建RenterInvocationHandler类，这个类实现了InvocationHandler接口，并持有一个被代理类的对象，InvocationHandler中有一个invoke方法，所有执行代理对象的方法都会被替换成执行invoke方法。
 然后通过反射在invoke方法中执行代理类的方法。在代理过程中，在执行代理类的方法前或者后可以执行自己的操作，这就是spring aop的主要原理。
-
+``` java
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -14586,7 +14642,7 @@ public class DynamicProxyDemo {
         proxyService.performTask();
     }
 }
-
+```
 在这个例子中：
 1.Service接口定义了一个方法performTask。
 2.RealService类实现了Service接口，并提供了performTask方法的具体实现。
@@ -14596,11 +14652,12 @@ public class DynamicProxyDemo {
 
 
 动态代理之Cglib代理：
-动态代理需要被代理类实现接口，如果被代理类没有实现接口，那么这么实现动态代理？这时候就需要用到CGLib了。这种代理方式就叫做CGlib代理。
-Cglib代理也叫作子类代理，他是通过在内存中构建一个子类，并在子类中采用方法拦截的技术拦截所有父类方法的调用，然后加入自己需要的操作。因为使用的是继承的方式，所以不能代理final 类
-动态代理与CGLib动态代理都是实现Spring AOP的基础。如果加入容器的目标对象有实现接口,用动态代理，如果目标对象没有实现接口,用Cglib代理。
+动态代理需要被代理类实现接口，如果被代理类没有实现接口，那么这么实现动态代理？这时候就需要用到CgLib了。这种代理方式就叫做Cglib代理。
+Cglib代理也叫作子类代理，他是通过在内存中构建一个子类，并在子类中采用方法拦截的技术拦截所有父类方法的调用，然后加入自己需要的操作。因为使用的是继承的方式，所以不能代理final类。
+动态代理与CGLib动态代理都是实现Spring AOP的基础。如果加入容器的目标对象有实现接口,用动态代理，如果目标对象没有实现接口，用Cglib代理。
 
 创建目标类：
+``` java
 public class PersonService {
     public void sayHello() {
         System.out.println("Hello, World!");
@@ -14610,8 +14667,10 @@ public class PersonService {
         System.out.println("Goodbye, World!");
     }
 }
+```
 
 创建代理类：
+``` java
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -14650,7 +14709,7 @@ public class CglibProxy implements MethodInterceptor {
         proxyPersonService.sayGoodbye();
     }
 }
-
+```
 CglibProxy类：
 实现了MethodInterceptor接口，该接口定义了代理类的方法拦截器。
 构造函数CglibProxy(Object target)接受一个目标对象。
@@ -14675,13 +14734,164 @@ Goodbye, World!
 After method: sayGoodbye
 
 
+>CGlib的实现原理是什么？
+CGLib 的核心原理可以概括为：**通过 ASM 字节码操作框架，在运行时生成被代理类的子类，并在子类中重写父类的方法，进而实现方法拦截。**
+
+我们通过分步拆解这个过程：
+
+#### 1. 核心组件
+
+- **`Enhancer`**： 这是 CGLib 的“增强器”，是主要的类生成工具。你通过配置它来指定要代理的类、回调逻辑等。
+- **`Callback`**： 这是一个接口，用于定义方法被拦截后要执行的逻辑。最常用的实现是：
+    - **`MethodInterceptor`**： 方法拦截器，提供了最强大的控制能力。
+- **`net.sf.cglib.proxy.MethodProxy`**： 这是一个非常强大的工具类，它提供了快速调用目标方法（无论是原始方法还是超类方法）的方式，避免了使用 Java 反射带来的性能开销。
+
+#### 2. 工作流程
+假设我们有一个没有实现任何接口的类 `UserService`：
+
+```java
+public class UserService {
+    public void addUser() {
+        System.out.println("添加用户");
+    }
+
+    public void deleteUser() {
+        System.out.println("删除用户");
+    }
+}
+```
+
+我们希望拦截 `addUser` 方法，在其前后加入日志。
+
+**步骤 1：创建 MethodInterceptor**
+
+我们实现 `MethodInterceptor` 接口，这是定义增强逻辑的地方。
+
+```java
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
+import java.lang.reflect.Method;
+
+public class LogInterceptor implements MethodInterceptor {
+
+    /**
+     * @param obj         被代理的 CGLib 生成的对象（子类实例）
+     * @param method      被拦截的方法（目标方法的反射对象）
+     * @param args        方法参数
+     * @param proxy       用于调用父类（即原始）方法的 MethodProxy 对象
+     * @return            方法执行后的返回值
+     */
+    @Override
+    public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+        System.out.println("【CGLib日志】开始执行方法: " + method.getName());
+
+        // 关键：通过 MethodProxy 调用父类（即原始 UserService）的方法
+        Object result = proxy.invokeSuper(obj, args);
+
+        System.out.println("【CGLib日志】方法执行结束: " + method.getName());
+        return result;
+    }
+}
+```
+
+**步骤 2：使用 Enhancer 创建代理对象**
+
+```java
+import net.sf.cglib.proxy.Enhancer;
+
+public class Main {
+    public static void main(String[] args) {
+        // 1. 创建 Enhancer 实例
+        Enhancer enhancer = new Enhancer();
+
+        // 2. 设置父类（即要被代理的类）
+        enhancer.setSuperclass(UserService.class);
+
+        // 3. 设置回调，即我们的 MethodInterceptor
+        enhancer.setCallback(new LogInterceptor());
+
+        // 4. 创建代理对象
+        // 注意：这里创建的是 UserService 的子类实例
+        UserService proxyUserService = (UserService) enhancer.create();
+
+        // 5. 调用方法
+        proxyUserService.addUser();
+        // 输出：
+        // 【CGLib日志】开始执行方法: addUser
+        // 添加用户
+        // 【CGLib日志】方法执行结束: addUser
+
+        proxyUserService.deleteUser();
+        // 输出：
+        // 【CGLib日志】开始执行方法: deleteUser
+        // 删除用户
+        // 【CGLib日志】方法执行结束: deleteUser
+    }
+}
+```
+
+#### 3. 底层字节码生成原理（与 ASM 的关系）
+
+1.  **CGLib 依赖于 ASM**： CGLib 本身不直接操作字节码，它底层使用 **ASM** 这个更底层的 Java 字节码操作和分析框架。
+2.  **生成子类**： 当你调用 `enhancer.create()` 时，CGLib 会启动一个过程：
+    - **类生成策略**： CGLib 使用 ASM 的 API 在内存中生成一个新的 `.class` 文件的字节数组。
+    - **类结构**： 这个新生成的类继承自你指定的父类（例如 `UserService`）。
+    - **方法重写**： 对于父类中每个非 `final` 的方法，子类都会重写它。重写后的方法体逻辑大致如下（伪代码）：
+
+    ```java
+    public class UserService$$EnhancerByCGLIB$$12345678 extends UserService {
+        private MethodInterceptor interceptor;
+
+        // 重写父类方法
+        @Override
+        public void addUser() {
+            // 调用我们设置的拦截器的 intercept 方法
+            interceptor.intercept(this, 
+                                 Method.of("addUser", ...), // 方法反射对象
+                                 new Object[0],            // 参数数组
+                                 MethodProxy.of(super, this, "addUser"...) // MethodProxy
+                                );
+        }
+
+        // ... 重写其他方法
+    }
+    ```
+3.  **FastClass 机制**： 这是 CGLib 高性能的关键。
+    - **问题**： 使用 Java 反射 `Method.invoke()` 调用方法性能较低。
+    - **解决方案**： CGLib 会为代理类和目标类各生成一个 `FastClass` 类。`FastClass` 为类中的每个方法分配一个索引（index）。
+    - **原理**： 当通过 `MethodProxy.invokeSuper()` 调用时，它并不是用反射，而是直接根据方法索引，通过 `switch` 语句直接调用对应的方法。这相当于一种“方法表”的直接访问，避免了反射的检查开销，性能接近直接方法调用。
+
+    `MethodProxy.invokeSuper(obj, args)` 的伪代码实现：
+    ```java
+    // 在生成的 FastClass 中
+    public Object invokeSuper(int methodIndex, Object obj, Object[] args) {
+        UserService$$EnhancerByCGLIB$$12345678 proxy = (UserService$$EnhancerByCGLIB$$12345678) obj;
+        switch (methodIndex) {
+            case 0: // 假设 addUser 的索引是 0
+                return proxy.super_addUser(); // 直接调用父类方法
+            case 1: // 假设 deleteUser 的索引是 1
+                return proxy.super_deleteUser();
+            // ...
+        }
+    }
+    ```
+
+### 总结
+
+- **核心思想**： **继承 + 方法重写**。通过生成目标类的子类来创建代理对象。
+- **技术基石**： 依赖于 **ASM** 字节码框架在运行时动态生成新的 Java 类。
+- **性能关键**： 引入了 **`MethodProxy`** 和 **`FastClass`** 机制，通过方法索引直接调用，避免了反射的性能瓶颈。
+- **应用场景**： 主要用于代理那些没有实现接口的普通类，是 Spring AOP 等框架在需要代理类（而非接口）时的默认选择。
+
+正是由于这种巧妙的设计，CGLib 能够在提供强大功能的同时，保持非常高的性能，从而在 Java 生态系统中占据了重要地位。
+
+
 # Java编译特点：
 Java的编译特点主要体现在其跨平台性、解释执行、即时编译、编译和解释的结合、安全性、可移植性和动态加载等方面。这些特点使得Java成为一种功能强大、安全可靠、易于学习和开发的编程语言，适用于各种应用场景。
 
 Javac：
 Javac的编译过程：
-Javac编译过程主要包括四个步骤：词法分析、语法分析、语义分析和代码生成。词法分析器逐行读取源代码，
-将源代码匹配到Token流，识别每一个单词是什么东西；语法分析器将Token流转换成更加结构化的语法树；
+Javac编译过程主要包括四个步骤：词法分析、语法分析、语义分析和代码生成。词法分析器逐行读取源代码，将源代码匹配到Token流，识别每一个单词是什么东西；语法分析器将Token流转换成更加结构化的语法树；
 语义分析器对语法树进行精简和处理；代码生成器将语法树生成java字节码。
 
 
