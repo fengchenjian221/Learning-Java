@@ -14887,6 +14887,7 @@ public class Main {
 
 
 # Java编译特点：
+与C/C++等传统编译型语言相比，Java的编译过程有其独特之处，核心在于“编译与解释相结合”以及“平台无关性”。
 Java的编译特点主要体现在其跨平台性、解释执行、即时编译、编译和解释的结合、安全性、可移植性和动态加载等方面。这些特点使得Java成为一种功能强大、安全可靠、易于学习和开发的编程语言，适用于各种应用场景。
 
 Javac：
@@ -14894,13 +14895,542 @@ Javac的编译过程：
 Javac编译过程主要包括四个步骤：词法分析、语法分析、语义分析和代码生成。词法分析器逐行读取源代码，将源代码匹配到Token流，识别每一个单词是什么东西；语法分析器将Token流转换成更加结构化的语法树；
 语义分析器对语法树进行精简和处理；代码生成器将语法树生成java字节码。
 
+好的，我们来详细梳理一下Java编译过程的主要特点。
+
+与C/C++等传统编译型语言相比，Java的编译过程有其独特之处，核心在于“**编译与解释相结合**”以及“**平台无关性**”。
+
+### 核心特点
+
+1. **“半编译” - 编译成字节码，而非本地机器码**
+   - **过程**：Java源代码（`.java`文件）通过`javac`编译器编译成**字节码**。这种字节码存储在以`.class`为扩展名的文件中。
+   - **字节码是什么**：字节码是一种中间代码，它不是针对任何一种特定的物理机器（如x86或ARM）的指令集，而是针对一个虚拟的计算机——**Java虚拟机（JVM）** 的指令集。
+   - **关键区别**：这与C/C++直接编译成与特定操作系统和CPU架构绑定的本地机器码有本质不同。
+
+2. **平台无关性（“Write Once, Run Anywhere”）**
+   - 这是上述特点带来的直接结果。因为字节码是统一的、与平台无关的，所以同一个`.class`文件可以运行在任何安装了对应平台JVM的设备上。
+   - JVM充当了“翻译官”的角色，它负责将统一的字节码“翻译”成当前宿主机的本地机器指令并执行。你只需要为不同平台（Windows, Linux, macOS）提供对应的JVM即可。
+
+3. **动态性（运行时编译/JIT编译）**
+   - 这是Java高性能的关键。JVM并不是简单地逐条“解释”执行字节码。现代JVM（如HotSpot）采用了**即时编译**技术。
+   - **工作流程**：
+     1. **解释执行**：JVM最初会解释执行字节码。
+     2. **热点探测**：JVM会监控代码的执行频率，找出那些被频繁调用的“热点代码”（如循环、常用方法）。
+     3. **JIT编译**：将这些热点代码**即时编译**成本地机器码，并优化它。
+     4. **直接执行**：之后再次执行这些代码时，就直接运行已经编译好的、优化过的本地机器码，从而极大地提升运行效率。
+   - **优势**：JIT编译器可以在程序运行时收集信息，进行基于运行时信息的激进优化（如方法内联、逃逸分析等），这是静态编译器（如C++的编译器）难以做到的。
+
+4. **链接过程在运行时进行**
+   - 在C/C++中，编译和链接是分开的步骤，链接器在程序运行前将所有目标文件和库文件合并成一个可执行文件。
+   - 在Java中，类的加载、链接（验证、准备、解析）和初始化都是在程序**运行期间**由JVM完成的。这提供了极大的灵活性，是实现动态加载类（如Web应用、插件系统）的基础。
+
+5. **严格的编译时检查**
+   - Java编译器在编译阶段会进行非常严格的语法和类型检查。
+   - **强类型语言**：要求变量的使用严格符合其定义的类型。
+   - **异常检查**：要求必须处理或声明受检异常。
+   - 这些严格的检查将很多潜在的错误暴露在编译阶段，而不是等到运行时才崩溃，提高了程序的健壮性。
+
+### 与C/C++编译的对比表格
+
+| 特性 | Java | C/C++ |
+| :--- | :--- | :--- |
+| **输出物** | 字节码（.class） | 本地机器码（.exe, .out） |
+| **执行环境** | 需要JVM | 直接由操作系统执行 |
+| **平台依赖性** | **平台无关**（依赖JVM） | **平台相关**（依赖特定OS和CPU） |
+| **编译时机** | 前期编译（javac） + 运行时JIT编译 | 一次性提前编译（AOT） |
+| **性能特点** | 启动稍慢，但长期运行效率高（得益于JIT） | 启动快，运行效率稳定 |
+| **链接时机** | 运行时 | 编译时 |
+
+### 示例字节码
+以User类为例
+``` java
+@Data
+@NoArgsConstructor
+public class User {
+
+    private Integer id;
+
+    private String username;
+
+    private String password;
+}
+```
+
+编译后的字节码文件
+``` java
+// class version 52.0 (52)
+// access flags 0x21
+public class boot/entity/User {
+
+  // compiled from: User.java
+
+  // access flags 0x2
+  private Ljava/lang/Integer; id
+
+  // access flags 0x2
+  private Ljava/lang/String; username
+
+  // access flags 0x2
+  private Ljava/lang/String; password
+
+  // access flags 0x1
+  public getId()Ljava/lang/Integer;
+   L0
+    LINENUMBER 10 L0
+    ALOAD 0
+    GETFIELD boot/entity/User.id : Ljava/lang/Integer;
+    ARETURN
+   L1
+    LOCALVARIABLE this Lboot/entity/User; L0 L1 0
+    MAXSTACK = 1
+    MAXLOCALS = 1
+
+  // access flags 0x1
+  public getUsername()Ljava/lang/String;
+   L0
+    LINENUMBER 12 L0
+    ALOAD 0
+    GETFIELD boot/entity/User.username : Ljava/lang/String;
+    ARETURN
+   L1
+    LOCALVARIABLE this Lboot/entity/User; L0 L1 0
+    MAXSTACK = 1
+    MAXLOCALS = 1
+
+  // access flags 0x1
+  public getPassword()Ljava/lang/String;
+   L0
+    LINENUMBER 14 L0
+    ALOAD 0
+    GETFIELD boot/entity/User.password : Ljava/lang/String;
+    ARETURN
+   L1
+    LOCALVARIABLE this Lboot/entity/User; L0 L1 0
+    MAXSTACK = 1
+    MAXLOCALS = 1
+
+  // access flags 0x1
+  public setId(Ljava/lang/Integer;)V
+    // parameter final  id
+   L0
+    LINENUMBER 6 L0
+    ALOAD 0
+    ALOAD 1
+    PUTFIELD boot/entity/User.id : Ljava/lang/Integer;
+    RETURN
+   L1
+    LOCALVARIABLE this Lboot/entity/User; L0 L1 0
+    LOCALVARIABLE id Ljava/lang/Integer; L0 L1 1
+    MAXSTACK = 2
+    MAXLOCALS = 2
+
+  // access flags 0x1
+  public setUsername(Ljava/lang/String;)V
+    // parameter final  username
+   L0
+    LINENUMBER 6 L0
+    ALOAD 0
+    ALOAD 1
+    PUTFIELD boot/entity/User.username : Ljava/lang/String;
+    RETURN
+   L1
+    LOCALVARIABLE this Lboot/entity/User; L0 L1 0
+    LOCALVARIABLE username Ljava/lang/String; L0 L1 1
+    MAXSTACK = 2
+    MAXLOCALS = 2
+
+  // access flags 0x1
+  public setPassword(Ljava/lang/String;)V
+    // parameter final  password
+   L0
+    LINENUMBER 6 L0
+    ALOAD 0
+    ALOAD 1
+    PUTFIELD boot/entity/User.password : Ljava/lang/String;
+    RETURN
+   L1
+    LOCALVARIABLE this Lboot/entity/User; L0 L1 0
+    LOCALVARIABLE password Ljava/lang/String; L0 L1 1
+    MAXSTACK = 2
+    MAXLOCALS = 2
+
+  // access flags 0x1
+  public equals(Ljava/lang/Object;)Z
+    // parameter final  o
+   L0
+    LINENUMBER 6 L0
+    ALOAD 1
+    ALOAD 0
+    IF_ACMPNE L1
+    ICONST_1
+    IRETURN
+   L1
+   FRAME SAME
+    ALOAD 1
+    INSTANCEOF boot/entity/User
+    IFNE L2
+    ICONST_0
+    IRETURN
+   L2
+   FRAME SAME
+    ALOAD 1
+    CHECKCAST boot/entity/User
+    ASTORE 2
+   L3
+    ALOAD 2
+    ALOAD 0
+    INVOKEVIRTUAL boot/entity/User.canEqual (Ljava/lang/Object;)Z
+    IFNE L4
+    ICONST_0
+    IRETURN
+   L4
+   FRAME APPEND [boot/entity/User]
+    ALOAD 0
+    INVOKEVIRTUAL boot/entity/User.getId ()Ljava/lang/Integer;
+    ASTORE 3
+   L5
+    ALOAD 2
+    INVOKEVIRTUAL boot/entity/User.getId ()Ljava/lang/Integer;
+    ASTORE 4
+   L6
+    ALOAD 3
+    IFNONNULL L7
+    ALOAD 4
+    IFNULL L8
+    GOTO L9
+   L7
+   FRAME APPEND [java/lang/Object java/lang/Object]
+    ALOAD 3
+    ALOAD 4
+    INVOKEVIRTUAL java/lang/Object.equals (Ljava/lang/Object;)Z
+    IFNE L8
+   L9
+   FRAME SAME
+    ICONST_0
+    IRETURN
+   L8
+   FRAME SAME
+    ALOAD 0
+    INVOKEVIRTUAL boot/entity/User.getUsername ()Ljava/lang/String;
+    ASTORE 5
+   L10
+    ALOAD 2
+    INVOKEVIRTUAL boot/entity/User.getUsername ()Ljava/lang/String;
+    ASTORE 6
+   L11
+    ALOAD 5
+    IFNONNULL L12
+    ALOAD 6
+    IFNULL L13
+    GOTO L14
+   L12
+   FRAME APPEND [java/lang/Object java/lang/Object]
+    ALOAD 5
+    ALOAD 6
+    INVOKEVIRTUAL java/lang/Object.equals (Ljava/lang/Object;)Z
+    IFNE L13
+   L14
+   FRAME SAME
+    ICONST_0
+    IRETURN
+   L13
+   FRAME SAME
+    ALOAD 0
+    INVOKEVIRTUAL boot/entity/User.getPassword ()Ljava/lang/String;
+    ASTORE 7
+   L15
+    ALOAD 2
+    INVOKEVIRTUAL boot/entity/User.getPassword ()Ljava/lang/String;
+    ASTORE 8
+   L16
+    ALOAD 7
+    IFNONNULL L17
+    ALOAD 8
+    IFNULL L18
+    GOTO L19
+   L17
+   FRAME APPEND [java/lang/Object java/lang/Object]
+    ALOAD 7
+    ALOAD 8
+    INVOKEVIRTUAL java/lang/Object.equals (Ljava/lang/Object;)Z
+    IFNE L18
+   L19
+   FRAME SAME
+    ICONST_0
+    IRETURN
+   L18
+   FRAME SAME
+    ICONST_1
+    IRETURN
+   L20
+    LOCALVARIABLE this Lboot/entity/User; L0 L20 0
+    LOCALVARIABLE o Ljava/lang/Object; L0 L20 1
+    LOCALVARIABLE other Lboot/entity/User; L3 L20 2
+    LOCALVARIABLE this$id Ljava/lang/Object; L5 L20 3
+    LOCALVARIABLE other$id Ljava/lang/Object; L6 L20 4
+    LOCALVARIABLE this$username Ljava/lang/Object; L10 L20 5
+    LOCALVARIABLE other$username Ljava/lang/Object; L11 L20 6
+    LOCALVARIABLE this$password Ljava/lang/Object; L15 L20 7
+    LOCALVARIABLE other$password Ljava/lang/Object; L16 L20 8
+    MAXSTACK = 2
+    MAXLOCALS = 9
+
+  // access flags 0x4
+  protected canEqual(Ljava/lang/Object;)Z
+    // parameter final  other
+   L0
+    LINENUMBER 6 L0
+    ALOAD 1
+    INSTANCEOF boot/entity/User
+    IRETURN
+   L1
+    LOCALVARIABLE this Lboot/entity/User; L0 L1 0
+    LOCALVARIABLE other Ljava/lang/Object; L0 L1 1
+    MAXSTACK = 1
+    MAXLOCALS = 2
+
+  // access flags 0x1
+  public hashCode()I
+   L0
+    LINENUMBER 6 L0
+    BIPUSH 59
+    ISTORE 1
+   L1
+    ICONST_1
+    ISTORE 2
+   L2
+    ALOAD 0
+    INVOKEVIRTUAL boot/entity/User.getId ()Ljava/lang/Integer;
+    ASTORE 3
+   L3
+    ILOAD 2
+    BIPUSH 59
+    IMUL
+    ALOAD 3
+    IFNONNULL L4
+    BIPUSH 43
+    GOTO L5
+   L4
+   FRAME FULL [boot/entity/User I I java/lang/Object] [I]
+    ALOAD 3
+    INVOKEVIRTUAL java/lang/Object.hashCode ()I
+   L5
+   FRAME FULL [boot/entity/User I I java/lang/Object] [I I]
+    IADD
+    ISTORE 2
+    ALOAD 0
+    INVOKEVIRTUAL boot/entity/User.getUsername ()Ljava/lang/String;
+    ASTORE 4
+   L6
+    ILOAD 2
+    BIPUSH 59
+    IMUL
+    ALOAD 4
+    IFNONNULL L7
+    BIPUSH 43
+    GOTO L8
+   L7
+   FRAME FULL [boot/entity/User I I java/lang/Object java/lang/Object] [I]
+    ALOAD 4
+    INVOKEVIRTUAL java/lang/Object.hashCode ()I
+   L8
+   FRAME FULL [boot/entity/User I I java/lang/Object java/lang/Object] [I I]
+    IADD
+    ISTORE 2
+    ALOAD 0
+    INVOKEVIRTUAL boot/entity/User.getPassword ()Ljava/lang/String;
+    ASTORE 5
+   L9
+    ILOAD 2
+    BIPUSH 59
+    IMUL
+    ALOAD 5
+    IFNONNULL L10
+    BIPUSH 43
+    GOTO L11
+   L10
+   FRAME FULL [boot/entity/User I I java/lang/Object java/lang/Object java/lang/Object] [I]
+    ALOAD 5
+    INVOKEVIRTUAL java/lang/Object.hashCode ()I
+   L11
+   FRAME FULL [boot/entity/User I I java/lang/Object java/lang/Object java/lang/Object] [I I]
+    IADD
+    ISTORE 2
+    ILOAD 2
+    IRETURN
+   L12
+    LOCALVARIABLE this Lboot/entity/User; L0 L12 0
+    LOCALVARIABLE PRIME I L1 L12 1
+    LOCALVARIABLE result I L2 L12 2
+    LOCALVARIABLE $id Ljava/lang/Object; L3 L12 3
+    LOCALVARIABLE $username Ljava/lang/Object; L6 L12 4
+    LOCALVARIABLE $password Ljava/lang/Object; L9 L12 5
+    MAXSTACK = 2
+    MAXLOCALS = 6
+
+  // access flags 0x1
+  public toString()Ljava/lang/String;
+   L0
+    LINENUMBER 6 L0
+    NEW java/lang/StringBuilder
+    DUP
+    INVOKESPECIAL java/lang/StringBuilder.<init> ()V
+    LDC "User(id="
+    INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;
+    ALOAD 0
+    INVOKEVIRTUAL boot/entity/User.getId ()Ljava/lang/Integer;
+    INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    LDC ", username="
+    INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;
+    ALOAD 0
+    INVOKEVIRTUAL boot/entity/User.getUsername ()Ljava/lang/String;
+    INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;
+    LDC ", password="
+    INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;
+    ALOAD 0
+    INVOKEVIRTUAL boot/entity/User.getPassword ()Ljava/lang/String;
+    INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;
+    LDC ")"
+    INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;
+    INVOKEVIRTUAL java/lang/StringBuilder.toString ()Ljava/lang/String;
+    ARETURN
+   L1
+    LOCALVARIABLE this Lboot/entity/User; L0 L1 0
+    MAXSTACK = 2
+    MAXLOCALS = 1
+
+  // access flags 0x1
+  public <init>()V
+   L0
+    LINENUMBER 7 L0
+    ALOAD 0
+    INVOKESPECIAL java/lang/Object.<init> ()V
+    RETURN
+   L1
+    LOCALVARIABLE this Lboot/entity/User; L0 L1 0
+    MAXSTACK = 1
+    MAXLOCALS = 1
+}
+```
+
+Java 字节码：
+**Java 字节码** 是 Java 源代码（.java 文件）编译后生成的中间表示形式，它存储在以 `.class` 为扩展名的文件中。它可以被看作是 Java 虚拟机 的“机器语言”。
+**字节码不是为任何特定的物理 CPU 架构（如 x86, ARM）设计的，而是为抽象的 JVM 设计的。** 这正是 Java 实现“一次编写，到处运行”（Write Once, Run Anywhere）理念的基石。
+只要目标平台有对应的 JVM，同一个 `.class` 文件就可以在该平台上运行。
+
+---
+
+### 字节码的生成与执行流程
+
+1.  **编写源码**：程序员编写 `HelloWorld.java` 文件。
+2.  **编译**：使用 `javac` 编译器将 `.java` 文件编译成 `HelloWorld.class` 文件。这个 `.class` 文件中包含字节码。
+3.  **执行**：使用 `java` 命令启动 JVM。
+4.  **类加载**：JVM 的类加载器将 `.class` 文件加载到内存中。
+5.  **解释执行** 或 **即时编译**：
+    *   **解释执行**：JVM 的字节码解释器逐条读取字节码指令并执行。
+    *   **即时编译**：对于频繁执行的代码（热点代码），JVM 的即时编译器会将其编译成本地机器码，后续直接执行高效的机器码。
+
+---
+
+### 字节码文件（.class 文件）的结构
+
+一个 `.class`` 文件是一个结构非常严谨的二进制文件，它由以下部分组成：
+
+| 组成部分 | 描述 |
+| :--- | :--- |
+| **魔数** | 前 4 个字节，固定为 `0xCAFEBABE`，用于快速识别该文件是否为有效的 class 文件。 |
+| **版本号** | 接下来 4 个字节，分别表示**次版本号**和**主版本号**。JVM 会用它来校验版本兼容性。 |
+| **常量池** | 一个类似符号表的结构，包含了类中所有的常量，如字符串、类名、方法名、字段名等。它是 `.class` 文件中占比最大的部分之一。 |
+| **访问标志** | 表示类或接口的访问权限和属性，例如是 `public`、`abstract` 还是 `final`。 |
+| **类索引、父类索引、接口索引** | 用于确定这个类的继承关系。 |
+| **字段表** | 描述类中声明的所有字段（成员变量）。 |
+| **方法表** | 描述类中声明的所有方法，包括方法的名称、描述符（参数和返回类型）以及最重要的——**代码属性**。 |
+| **属性表** | 存放一些额外的信息，例如源文件名称、行号表（用于调试）、内部类列表等。 |
+
+**其中，方法的可执行代码就存储在方法表的 “Code” 属性中。**
+
+---
+
+### 字节码指令集
+
+字节码指令（Opcode）是字节码的核心。每个指令都是一个字节长（这也是“字节码”名称的由来），因此最多可以有 256 个指令。实际上使用的指令大约有 200 个左右。
+
+这些指令可以大致分为以下几类：
+
+| 类别 | 示例指令 | 功能描述 |
+| :--- | :--- | :--- |
+| **加载与存储** | `iload`, `istore`, `aload`, `astore` | 在局部变量表和操作数栈之间传输数据。 |
+| **算术与逻辑** | `iadd`, `isub`, `imul`, `idiv`, `iand`, `ior` | 执行基本的数学和位运算。 |
+| **类型转换** | `i2l`, `f2d`, `i2b` | 将一种基本数据类型转换为另一种。 |
+| **对象操作** | `new`, `getfield`, `putfield`, `invokevirtual` | 创建对象、访问字段、调用方法。 |
+| **操作数栈管理** | `pop`, `dup`, `swap` | 直接操作操作数栈。 |
+| **控制转移** | `ifeq`, `if_icmpeq`, `goto` | 实现条件分支、循环等流程控制。 |
+| **方法调用与返回** | `invokestatic`, `invokespecial`, `ireturn`, `areturn` | 调用方法和从方法返回。 |
+
+#### 关键概念：基于栈的架构
+
+JVM 执行字节码时使用**基于栈的架构**，这与我们常见的 x86 等**基于寄存器的架构**不同。
+
+*   **操作数栈**：每个线程中的每个方法在执行时，都会创建一个栈帧。栈帧中包含一个后进先出的**操作数栈**。几乎所有的字节码指令都是通过从操作数栈**弹出**操作数，进行计算，然后将结果**压回**操作数栈来工作的。
+*   **局部变量表**：栈帧中还有一个**局部变量表**，用于存储方法的参数和局部变量。
+
+#### 示例分析
+看一个简单的 Java 代码及其对应的字节码。
+
+**Java 源码:**
+```java
+public int add(int a, int b) {
+    return a + b;
+}
+```
+
+**使用 `javap -c` 反编译后的字节码:**
+```
+public int add(int, int);
+  Code:
+     0: iload_1   // 将局部变量表索引为1（即参数a）的int值加载到操作数栈
+     1: iload_2   // 将局部变量表索引为2（即参数b）的int值加载到操作数栈
+     2: iadd      // 从栈顶弹出两个int值，相加，然后将结果压回栈顶
+     3: ireturn   // 从栈顶弹出int值，并将其作为方法返回值
+```
+
+**执行过程图解:**
+1.  初始状态：操作数栈为空。局部变量表索引 0 是 `this`，索引 1 是 `a`，索引 2 是 `b`。
+2.  `iload_1`：将 `a` 的值压入栈。 -> 栈: [a]
+3.  `iload_2`：将 `b` 的值压入栈。 -> 栈: [a, b]
+4.  `iadd`：弹出 `a` 和 `b`，计算 `a+b`，将结果 `c` 压入栈。 -> 栈: [c]
+5.  `ireturn`：弹出 `c` 并返回。
+
+---
+### 如何查看字节码
+``` bash
+# 最简单的反编译，显示方法签名和字节码指令
+javap -c YourClassName
+
+# 显示更详细的信息，包括常量池、行号表等
+javap -v YourClassName
+
+# 显示私有成员和所有内部信息
+javap -p -v YourClassName
+```
+此外，还有一些优秀的图形化工具，如**JD-GUI, CFR, IntelliJ IDEA 的 ASM Bytecode Viewer 插件**等，它们可以更直观地展示字节码。
+
+---
+
+### 字节码的重要性与应用
+
+1.  **跨平台性的基础**：这是字节码最核心的价值。
+2.  **性能优化**：理解字节码可以帮助开发者编写出性能更高的代码，因为可以直观地看到代码在 JVM 层面的开销。
+3.  **动态语言与框架**：许多基于 JVM 的语言（如 Groovy, Scala, Kotlin）和框架（如 Spring, Hibernate）在运行时通过操作字节码（使用 ASM, Javassist 等库）来实现高级功能，如 AOP、代理、懒加载等。
+4.  **程序分析与安全**：静态分析工具可以通过分析字节码来发现潜在的 bug 或安全漏洞。
+5.  **深入理解 Java**：学习字节码是深入理解 Java 语言特性（如异常处理、同步、内部类、Lambda 表达式）背后原理的最佳途径。
+
 
 Java JVM：
 Java虚拟机(Jvm)是可运行Java代码的假想计算机。Java虚拟机包括一套字节码指令集、一组寄存器、一个栈、一个垃圾回收堆和一个存储方法域。
 JVM让Java成为跨平台语言，Java有JVM从软件层面屏蔽了底层硬件、指令层面的细节让他兼容各种系统。
 
 
-传统编程语言编写的程序是如何在计算机系统底层运行的？
+>传统编程语言编写的程序是如何在计算机系统底层运行的？
 
 一、源代码的编写与预处理
 编辑与编写源代码：
