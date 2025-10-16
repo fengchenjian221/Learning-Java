@@ -328,9 +328,16 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
 
 ### [J2EE应用程序开发技术](./Java知识体系.md/#J2EE应用程序开发技术)
 ### ①[Web前端技术](./Java知识体系.md/#Web前端技术) 
-  - HTML  
+  - HTML 
+    - HTML语言比Java、python等语言语法都不严格，是因为浏览器的编译强大吗？
+  - CSS 
+    - 阐述CSS
+    - CSS三大选择器
+    - CSS的定位方式
+    - CSS盒子模型
   - JavaScript 
   - JSP 
+  - JQuery
   - JSON  
   - AJAX  
   - Cookie  
@@ -338,7 +345,12 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
   - VUE  
     - Vue的一些主要特点和概念  
     - VUE简单实现（Vue3）  
-    - 对比Vue3，创建一个选项试API Vue2  
+    - 对比Vue3，创建一个选项试API Vue2
+  - 前端中的UI和UX
+  - 有哪些前端展示的场景  
+  - 微信小程序、安卓开发、IOS开发和原生HTML、CSS、JavaScript在语法上的对比 
+  - 前端网页端是如何将源代码隐藏的
+  - 前端工程师如何在不同应用上进行适配  
 
 ### ② [Web后端技术](./Java知识体系.md/#Web后端技术) 
   - Servlet  
