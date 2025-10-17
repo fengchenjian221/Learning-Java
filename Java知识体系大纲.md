@@ -324,10 +324,10 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
     - 线上Java程序如何快速排查并找出问题？
 ---
 
-## Web开发后端知识体系（框架）
+## Web开发知识体系（框架）
 
-### [J2EE应用程序开发技术](./Java知识体系.md/#J2EE应用程序开发技术)
-### ①[Web前端技术](./Java知识体系.md/#Web前端技术) 
+### [J2EE应用程序开发技术](./JavaWeb知识体系.md/#J2EE应用程序开发技术)
+### ①[Web前端技术](./JavaWeb知识体系.md/#Web前端技术) 
   - HTML 
     - HTML语言比Java、python等语言语法都不严格，是因为浏览器的编译强大吗？
   - CSS 
@@ -352,9 +352,10 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
   - 前端网页端是如何将源代码隐藏的
   - 前端工程师如何在不同应用上进行适配  
 
-### ② [Web后端技术](./Java知识体系.md/#Web后端技术) 
+### ② [Web后端技术](./JavaWeb知识体系.md/#Web后端技术) 
   - Servlet  
     - Servlet的工作原理  
+    - 为什么需要Servlet，比Servlet更早的技术是什么？
     - Servlet接口中定义的方法  
     - 在静态资源中的`Content-type`是如何体现的？  
     - Servlet设置`Content-type`  
@@ -372,13 +373,13 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
   -Spring Boot
    Spring Boot响应式编程
 
-### ③ [数据库连接技术](./Java知识体系.md/#数据库连接技术) 
+### ③ [数据库连接技术](./JavaWeb知识体系.md/#数据库连接技术) 
   - JDBC
   - Mybatis
     MybatisPlus
   - Hibernate
 
-### ④ [数据库及持久层技术以及多种数据库的应用](./Java知识体系.md/#Java数据库及持久层技术以及多种数据库的应用)
+### ④ [数据库及持久层技术以及多种数据库的应用](./JavaWeb知识体系.md/#Java数据库及持久层技术以及多种数据库的应用)
   - MYSQL
   - ORACLE
   - 数据库连接池Druid
@@ -389,24 +390,24 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
   - ShardingSphere
   - Mycat
 
-### ⑤ [容器技术](./Java知识体系.md/#容器技术) 
+### ⑤ [容器技术](./JavaWeb知识体系.md/#容器技术) 
   - Docker
   - k8s
 
-### ⑥ [分布式中间件](./Java知识体系.md/#分布式中间件)
+### ⑥ [分布式中间件](./JavaWeb知识体系.md/#分布式中间件)
   - 消息队列RabbitMQ
   - 消息队列RocketMQ
   - 缓存中间件Redis
   - 数据库中间件Mycat
 
-### ⑦ [分布式微服务框架](./Java知识体系.md/#分布式微服务框架)
+### ⑦ [分布式微服务框架](./JavaWeb知识体系.md/#分布式微服务框架)
   - Spring Cloud
   - Dubbo
   - 分布式服务跟踪ELK
   - 分布式搜索引擎Elasticsearch
   - 分布式版本控制系统Git
 
-### ⑧ [安全](./Java知识体系.md/#安全)
+### ⑧ [安全](./JavaWeb知识体系.md/#安全)
   - Spring Security
     - SpringSecurity的实现原理是什么，基于哪些核心设计模式去实现的？
   - Shiro
@@ -422,7 +423,7 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
   - 网络安全威胁
     - 阐述网络安全威胁  
 
-### ⑨ [大数据](./Java知识体系.md/#分布式计算-大数据)
+### ⑨ [大数据](./JavaWeb知识体系.md/#分布式计算-大数据)
   - 底层原理Hadoop
   - 大数据资源管理系统YARN
   - 数据仓库工具Hive
@@ -436,12 +437,12 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
   - 大数据元数据管理Atlas
   - 大数据监控系统Prometheus
 
-### ⑩ [人工智能AIGC](./Java知识体系.md/#人工智能AIGC)
+### ⑩ [人工智能AIGC](./JavaWeb知识体系.md/#人工智能AIGC)
   - Java整合AGI
   
-### ⑩ [分布式账本](./Java知识体系.md/#分布式账本)
-- 区块链
-- 区块链的加密技术
+### ⑩ [分布式账本](./JavaWeb知识体系.md/#分布式账本)
+  - 区块链
+  - 区块链的加密技术
 
 ---
 
