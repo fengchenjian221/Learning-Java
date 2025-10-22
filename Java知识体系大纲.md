@@ -336,12 +336,21 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
     - CSS的定位方式
     - CSS盒子模型
   - JavaScript 
-  - JSP 
+    - JavaScript语法
+    - JavaScript事件
+    - BOM
+    - DOM
+  - JSP
+    - JSP为什么采用在HTML中写Java？而不是HTML中写C++？HTML中写python？ 
   - JQuery
+  - React
   - JSON  
-  - AJAX  
-  - Cookie  
-  - Session  
+  - AJAX
+  - 用户身份认证机制  
+    - Cookie  
+    - Session 
+    - JWT
+  - Node.js 
   - VUE  
     - Vue的一些主要特点和概念  
     - VUE简单实现（Vue3）  
@@ -353,6 +362,8 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
   - 前端工程师如何在不同应用上进行适配  
 
 ### ② [Web后端技术](./JavaWeb知识体系.md/#Web后端技术) 
+  - Thymeleaf
+  - FreeMarker
   - Servlet  
     - Servlet的工作原理  
     - 为什么需要Servlet，比Servlet更早的技术是什么？
