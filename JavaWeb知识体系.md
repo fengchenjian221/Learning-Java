@@ -2202,19 +2202,14 @@ DOM是JavaScript与网页交互的核心桥梁，通过它开发者可以动态�
 
 
 JSP：
-好的，我们来系统地阐述一下JSP。
-
-### 一、JSP 是什么？
-
 **JSP** 的全称是 **JavaServer Pages**，即 **Java服务器页面**。它是由Sun Microsystems（现属Oracle）公司于1999年主导建立的一种技术标准。
-
 简单来说，JSP是一个用于开发包含动态内容的Web页面的技术。它允许你将Java代码嵌入到HTML页面中。当用户请求这个页面时，服务器会执行其中的Java代码，生成最终的纯HTML页面，再发送给用户的浏览器。
 
 **核心定位**：JSP是 **Java EE**（现在叫 **Jakarta EE**）平台中用于**服务端渲染** 的视图层技术。
 
 ---
 
-### 二、JSP 的核心思想与工作原理
+### 一、JSP 的核心思想与工作原理
 
 #### 1. 核心思想：“在HTML中写Java”
 
@@ -2246,7 +2241,7 @@ flowchart TD
 
 ---
 
-### 三、JSP 的基本语法
+### 二、JSP 的基本语法
 
 JSP提供了几种主要的元素来在HTML中嵌入Java代码：
 
@@ -2303,7 +2298,7 @@ JSP提供了几种主要的元素来在HTML中嵌入Java代码：
 
 ---
 
-### 四、示例代码
+### 三、示例代码
 ``` html
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -2341,7 +2336,7 @@ JSP提供了几种主要的元素来在HTML中嵌入Java代码：
 ```
 
 ---
-### 五、JSP 的优缺点
+### 四、JSP 的优缺点
 
 #### 优点（在其所处的时代）：
 1.  **开发效率高**：相比纯Servlet用`out.println()`输出HTML，JSP编写动态页面直观、快速。
@@ -2356,7 +2351,7 @@ JSP提供了几种主要的元素来在HTML中嵌入Java代码：
 
 ---
 
-### 六、JSP 的现状与现代替代方案
+### 五、JSP 的现状与现代替代方案
 
 **现状**：
 JSP目前主要存在于大量的**遗留系统**中，尤其是在金融、电信、政府等领域的老旧企业级应用里。由于其稳定性和历史原因，这些系统仍在运行和维护。然而，在新的项目和技术选型中，**JSP已经很少被作为首选**。
@@ -2457,6 +2452,7 @@ JSP是Web开发早期阶段一个非常重要的**服务端动态网页技术**�
 *   **Python、Ruby** 等语言则选择了更优雅的 **“模板引擎”** 道路（Jinja2, ERB），将代码逻辑和HTML展示更清晰地进行分离，这可以看作是JSP思想的进化版。
 
 所以，JSP是那个特定时代背景下，Java给出的一个非常成功的“HTML中写代码”的答案。
+
 
 JQuery：
 如果说JSP是后端演进的一个里程碑，那jQuery就是**前端发展史上的一场革命**，它几乎以一己之力改变了开发者编写JavaScript的方式。
@@ -2596,7 +2592,201 @@ $('#myBox')
 
 ---
 
-### 六、jQuery 的现状与现代替代方案
+### 六、示例代码
+``` html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery 待办事项列表</title>
+    <!-- 引入 jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        #todo-input {
+            width: 70%;
+            padding: 10px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        #add-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        li {
+            padding: 12px;
+            margin: 8px 0;
+            background-color: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+            border-left-color: #ccc;
+        }
+        .delete-btn {
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .loading {
+            text-align: center;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>我的待办事项</h1>
+    
+    <div>
+        <input type="text" id="todo-input" placeholder="添加新任务...">
+        <button id="add-btn">添加</button>
+    </div>
+    
+    <!-- 加载状态提示 -->
+    <div id="loading" class="loading" style="display: none;">加载中...</div>
+    
+    <!-- 待办事项列表 -->
+    <ul id="todo-list"></ul>
+
+    <script>
+        // 页面加载完成后执行
+        $(document).ready(function() {
+            // 从服务器加载初始待办事项
+            loadTodos();
+            
+            // 添加按钮点击事件
+            $('#add-btn').click(function() {
+                addTodo();
+            });
+            
+            // 输入框回车键事件
+            $('#todo-input').keypress(function(e) {
+                if (e.which === 13) { // 13 是回车键的键码
+                    addTodo();
+                }
+            });
+            
+            // 添加新待办事项的函数
+            function addTodo() {
+                const todoText = $('#todo-input').val().trim();
+                
+                if (todoText === '') {
+                    alert('请输入待办事项内容！');
+                    return;
+                }
+                
+                // 显示加载状态
+                $('#loading').show();
+                
+                // 模拟向服务器发送 Ajax 请求
+                setTimeout(function() {
+                    // 创建新的列表项
+                    const newItem = $('<li></li>')
+                        .html(`
+                            <span>${todoText}</span>
+                            <button class="delete-btn">删除</button>
+                        `)
+                        .hide() // 先隐藏
+                        .appendTo('#todo-list')
+                        .fadeIn(500); // 淡入动画
+                    
+                    // 点击任务标记为完成/未完成
+                    newItem.find('span').click(function() {
+                        $(this).parent().toggleClass('completed');
+                    });
+                    
+                    // 删除按钮事件
+                    newItem.find('.delete-btn').click(function() {
+                        const listItem = $(this).parent();
+                        
+                        // 添加删除动画
+                        listItem.fadeOut(500, function() {
+                            $(this).remove();
+                        });
+                    });
+                    
+                    // 清空输入框并隐藏加载状态
+                    $('#todo-input').val('');
+                    $('#loading').hide();
+                    
+                    console.log('已添加待办事项:', todoText);
+                }, 800); // 模拟网络延迟
+            }
+            
+            // 从服务器加载待办事项的函数
+            function loadTodos() {
+                $('#loading').show();
+                
+                // 模拟 Ajax 请求获取数据
+                setTimeout(function() {
+                    // 模拟从服务器返回的数据
+                    const initialTodos = [
+                        '学习 jQuery 基础知识',
+                        '完成项目提案',
+                        '准备会议材料',
+                        '回复重要邮件'
+                    ];
+                    
+                    // 清空现有列表
+                    $('#todo-list').empty();
+                    
+                    // 遍历数据创建列表项
+                    $.each(initialTodos, function(index, todoText) {
+                        const listItem = $('<li></li>')
+                            .html(`
+                                <span>${todoText}</span>
+                                <button class="delete-btn">删除</button>
+                            `)
+                            .appendTo('#todo-list');
+                        
+                        // 点击任务标记为完成/未完成
+                        listItem.find('span').click(function() {
+                            $(this).parent().toggleClass('completed');
+                        });
+                        
+                        // 删除按钮事件
+                        listItem.find('.delete-btn').click(function() {
+                            const itemToRemove = $(this).parent();
+                            itemToRemove.fadeOut(500, function() {
+                                $(this).remove();
+                            });
+                        });
+                    });
+                    
+                    $('#loading').hide();
+                    console.log('待办事项加载完成！');
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
+```
+
+---
+
+### 七、jQuery 的现状与现代替代方案
 
 **现状**：
 jQuery目前仍然被**数百万个网站**所使用，尤其是在以下场景：
@@ -2624,6 +2814,330 @@ jQuery是Web前端发展史上一个具有里程碑意义的技术。在浏览�
 *   **理解和维护大量现存的老代码**。
 *   **深刻理解DOM操作和事件处理等前端基础概念**。
 *   体会一个伟大的库如何解决一个时代的核心痛点。
+
+
+React：
+React 是一个用于构建用户界面的 **JavaScript 库**（而非一个完整的框架）。它由 Facebook 开发并维护，自 2013 年发布以来，已成为前端领域最流行和最具影响力的技术之一。
+
+### 一、核心思想与设计理念
+
+React 的成功源于其几个核心的设计理念：
+
+1.  **组件化**
+    React 将用户界面拆分成一个个独立、可复用的“组件”。每个组件管理自己的状态和视图，然后像搭积木一样组合成复杂的 UI。这带来了代码的高复用性、可维护性和清晰的职责划分。
+
+2.  **声明式编程**
+    与传统的**命令式**编程（一步步告诉浏览器如何操作 DOM）不同，React 采用**声明式**。
+    - **命令式**：*“找到这个 div，清空它的内容，创建一个新的 p 标签，设置文本为 ‘Hello’，把它添加到 div 里。”*
+    - **声明式**：*“当数据是 ‘Hello’ 时，UI 就应该长这样。”*
+    你只需要**描述 UI 在任意给定状态下的应该呈现的样子**，而不用关心具体如何实现过渡。当状态发生变化时，React 会自动高效地更新和渲染组件。这使得代码更可预测，更容易调试。
+
+3.  **虚拟 DOM**
+    这是 React 实现高性能的核心机制。
+    - **什么是虚拟 DOM？**：它是一个存在于内存中的 JavaScript 对象，是真实 DOM 的轻量级表示。
+    - **工作流程**：
+        1.  当组件的状态改变时，React 会重新构建一个新的虚拟 DOM 树。
+        2.  React 使用 **“Diffing”算法** 比较新的虚拟 DOM 和旧的虚拟 DOM，找出两者之间的最小差异。
+        3.  然后，React 将这些差异**批量**地、**高效地**应用到真实 DOM 上。
+    - **好处**：避免了直接操作真实 DOM 带来的昂贵性能开销，极大地提升了应用性能。
+
+4.  **单向数据流**
+    数据在 React 应用中沿着一个方向流动：从父组件通过 **props** 向下传递到子组件。这使数据流变得简单、可预测，便于理解和调试应用状态。
+
+---
+
+### 二、核心概念详解
+
+要使用 React，必须理解以下几个基本概念：
+
+1.  **JSX**
+    - 一种 JavaScript 的语法扩展，允许你在 JavaScript 代码中编写类似 HTML 的结构。
+    - 它使得编写组件模板更直观。JSX 最终会被编译成普通的 `React.createElement()` 函数调用。
+
+    ```jsx
+    // 这是 JSX
+    const element = <h1 className="greeting">Hello, {name}!</h1>;
+
+    // 它会被编译成类似这样：
+    const element = React.createElement(
+      'h1',
+      { className: 'greeting' },
+      'Hello, ', 
+      name
+    );
+    ```
+
+2.  **组件**
+    - **函数组件**（现代推荐）：使用 JavaScript 函数定义，简洁明了。配合 Hooks 可以拥有全部功能。
+      ```jsx
+      function Welcome(props) {
+        return <h1>Hello, {props.name}</h1>;
+      }
+      // 或使用箭头函数
+      const Welcome = (props) => <h1>Hello, {props.name}</h1>;
+      ```
+    - **类组件**：使用 ES6 class 定义，在过去是管理状态和生命周期的唯一方式。
+      ```jsx
+      class Welcome extends React.Component {
+        render() {
+          return <h1>Hello, {this.props.name}</h1>;
+        }
+      }
+      ```
+
+3.  **Props**
+    - 是组件的输入，从父组件传递给子组件。
+    - 是只读的，组件不能修改自己的 props。
+
+4.  **State**
+    - 是组件内部管理的、可以变化的数据。
+    - 当 state 发生变化时，组件会重新渲染。
+    - 在函数组件中，使用 **`useState` Hook** 来管理状态。
+      ```jsx
+      import { useState } from 'react';
+
+      function Counter() {
+        const [count, setCount] = useState(0); // useState 返回当前状态和更新状态的函数
+
+        return (
+          <div>
+            <p>You clicked {count} times</p>
+            <button onClick={() => setCount(count + 1)}>
+              Click me
+            </button>
+          </div>
+        );
+      }
+      ```
+
+5.  **Hooks**
+    - 自 React 16.8 引入，允许你在函数组件中使用 state 和其他 React 特性。
+    - 常用 Hooks：
+        - **`useState`**：在函数组件中添加状态。
+        - **`useEffect`**：处理副作用（如数据获取、订阅、手动修改 DOM）。
+        - **`useContext`**：订阅 React 的 Context。
+        - **`useReducer`**：用于更复杂的状态逻辑。
+
+---
+
+### 三、生态系统
+
+React 的强大离不开其繁荣的生态系统：
+
+- **状态管理**：对于大型应用，组件间的状态共享变得复杂，常用库有 Redux, Zustand, MobX, Recoil。
+- **路由**：用于构建单页应用（SPA），实现页面间的无刷新跳转。最常用的是 **React Router**。
+- **构建工具**：**Create React App**, **Vite**, Next.js 等可以快速搭建 React 开发环境。
+- **服务端渲染/元框架**：为了更好的 SEO 和首屏加载性能，出现了 **Next.js**, **Remix**, **Gatsby** 等基于 React 的“元框架”，它们提供了开箱即用的全栈能力。
+- **UI 组件库**：**Ant Design**, **Material-UI**, **Chakra UI** 等提供了丰富的预制组件，加速开发。
+
+---
+
+### 四、优点与缺点
+
+**优点：**
+- **高效性能**：虚拟 DOM 和 Diffing 算法保证了出色的渲染性能。
+- **灵活性强**：只关注视图层，可以轻松地与其它库或现有项目集成。
+- **可重用性高**：组件化开发模式极大提高了代码的复用性。
+- **强大的社区和生态**：拥有海量的学习资源、第三方库和工具。
+- **良好的开发者体验**：丰富的开发工具（如 React DevTools）。
+
+**缺点：**
+- **陡峭的学习曲线**：需要学习 JSX、组件化思维、状态管理、Hooks 等概念，对初学者有一定门槛。
+- **快速变化的生态**：虽然 React 本身很稳定，但其周边工具和最佳实践更新很快，需要持续学习。
+- **只是一个视图库**：要构建完整应用，需要自行选择路由、状态管理等其他库。
+
+### 总结
+
+React 通过其**组件化**、**声明式**和**虚拟 DOM** 的核心思想，彻底改变了前端开发的模式。它让开发者能够高效地构建大规模、高性能的 Web 应用。尽管有学习成本，但其带来的开发效率、代码可维护性和庞大的生态系统，使其成为当今前端开发者的首选技术之一。
+
+>相比于JQuery，React有哪些优点？
+好的，这是一个非常经典且重要的问题。jQuery 和 React 代表了两个不同的前端开发时代和哲学。相比于 jQuery，React 的核心优势在于它提供了一个**结构化、可扩展和高性能**的方式来构建复杂的、数据驱动的用户界面。
+
+下面我们从几个关键维度进行对比：
+
+### 核心范式：声明式 vs. 命令式
+
+这是最根本的区别，决定了开发思维模式的不同。
+
+- **jQuery（命令式）**：
+    - **“如何做”**：你需要一步步详细地指示浏览器如何操作 DOM。
+    - **例子**：“当我点击这个按钮时，找到那个文本框，获取它的值，然后创建一个新的 `<li>` 元素，把值设为其文本内容，最后把它追加到 `<ul>` 列表里。”
+    - **代码体现**：你直接使用 `$(‘#button’).click()`, `$(‘#input’).val()`, `$(‘<li>’)`, `.append()` 等一系列方法。
+
+- **React（声明式）**：
+    - **“做什么”**：你只需要**描述 UI 在任意给定状态下的应该是什么样子**。
+    - **例子**：“UI 的样子取决于数据。列表 `items` 是什么，UI 就渲染什么。当用户点击按钮并输入文本后，我们更新 `items` 状态。UI 会自动变成新状态对应的样子。”
+    - **代码体现**：你定义组件的视图如何渲染（JSX），并管理状态 (`useState`)。状态改变，视图自动更新。
+
+**比喻**：
+- **jQuery 像用画笔作画**：你告诉手（浏览器）“这里用红色，画一条线；那里用蓝色，画一个圆”。
+- **React 像拼乐高**：你有一个设计图（组件结构）和一堆标准零件（组件），你只需要声明最终模型应该长什么样，它会自动组装。
+
+---
+
+### 具体优点对比
+
+| 特性 | jQuery | React | React 的优势 |
+| :--- | :--- | :--- | :--- |
+| **数据与UI同步** | **手动**。数据变了，你需要写代码去找到对应的DOM元素并更新它。容易出错，产生不同步。 | **自动**。你只需更新数据（状态），UI会自动同步到该状态。**单向数据流**保证了可预测性。 | **更少的 Bug，开发更省心**。无需担心“忘记更新某个地方的UI”。 |
+| **性能与DOM操作** | **直接操作真实DOM**。频繁或复杂的DOM操作非常消耗性能。 | **使用虚拟DOM**。在内存中计算差异，然后批量、高效地更新真实DOM。最小化了昂贵的直接操作。 | **高性能**，尤其在频繁更新的复杂应用中。开发者无需手动优化。 |
+| **代码组织与可复用性** | **容易变成“意大利面条式”代码**。事件监听、数据操作、DOM更新混杂在一起，难以维护和测试。 | **基于组件**。将UI和逻辑封装成独立的、可复用的组件。代码结构清晰，职责分明。 | **极高的可维护性和可扩展性**，适合大型项目和团队协作。 |
+| **开发体验与现代化** | **传统**。本身只是一个工具库，构建复杂应用需要依赖大量其他插件和自主架构。 | **现代**。拥有完整的**生态系统**（路由、状态管理、SSR框架等）。配合 **JSX**，编写UI更直观。 | **强大的开发者工具**、**丰富的社区资源**、**成熟的工程化流程**。 |
+| **状态管理** | **分散**。状态可能存储在DOM本身（如 `data-*` 属性）、全局变量或闭包中，难以追踪。 | **集中**。状态被明确地定义和管理在组件内部或外部的状态库（如Redux）。数据流清晰。 | **易于调试和追踪状态变化**。 |
+
+---
+
+### 一个简单的例子：添加一个待办事项
+
+假设我们有一个输入框、一个按钮和一个待办列表。
+
+**jQuery 实现（命令式）:**
+
+```javascript
+// 1. 监听按钮点击
+$('#addButton').click(function() {
+  // 2. 获取输入框的值
+  var newItemText = $('#inputField').val();
+  
+  // 3. 如果值不为空
+  if (newItemText) {
+    // 4. 创建一个新的列表项 <li> 元素
+    var $newItem = $('<li>').text(newItemText);
+    
+    // 5. 将新元素追加到列表 <ul> 中
+    $('#todoList').append($newItem);
+    
+    // 6. 清空输入框
+    $('#inputField').val('');
+  }
+});
+```
+*问题：如果我想删除一个待办项，或者将已完成的项标记为灰色，我需要再写一套查找元素、修改属性或移除元素的命令式代码。逻辑会越来越分散。*
+
+**React 实现（声明式）:**
+
+```jsx
+import { useState } from 'react';
+
+function TodoList() {
+  // 1. 定义状态（数据）
+  const [items, setItems] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+
+  // 2. 定义行为
+  const addItem = () => {
+    if (inputValue) {
+      // 更新状态，而不是更新DOM
+      setItems([...items, { text: inputValue, id: Date.now() }]);
+      setInputValue(''); // 清空输入框也是通过更新状态实现
+    }
+  };
+
+  // 3. 描述UI（JSX）。UI是状态的映射。
+  return (
+    <div>
+      <input 
+        value={inputValue} 
+        onChange={(e) => setInputValue(e.target.value)} 
+      />
+      <button onClick={addItem}>Add</button>
+      <ul>
+        {items.map(item => (
+          <li key={item.id}>{item.text}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+*优势：*
+- *删除一个项？* 只需要 `setItems(items.filter(i => i.id !== idToDelete))`，列表会自动重新渲染。
+- *标记完成？* 在状态里给每个 item 加一个 `completed: boolean` 属性，然后在 JSX 中根据这个属性决定样式。UI 永远与状态保持一致。
+
+### 总结：何时选择？
+
+- **选择 jQuery**：
+    - 简单的网站，需要一些交互增强（如轮播图、模态框）。
+    - 与传统服务端渲染（如PHP、Rails）项目集成，添加动态效果。
+    - 项目非常小，引入整个 React 生态是杀鸡用牛刀。
+
+- **选择 React**：
+    - **复杂的单页应用**，有大量的用户交互和状态变化。
+    - **数据驱动的界面**，UI 需要频繁、高效地更新。
+    - 需要良好的**可维护性、可测试性和团队协作**的大型项目。
+    - 追求**现代化、组件化**的开发流程。
+
+总而言之，**React 的核心优势在于它通过声明式、组件化和虚拟DOM，将开发者从繁琐、易错的手动 DOM 操作中解放出来，使得构建和维护复杂前端应用变得可控和高效。** 而 jQuery 作为一个工具库，在解决特定 DOM 操作和兼容性问题时依然有用，但在构建现代大型 Web 应用方面，已经被 React、Vue 等框架全面超越。
+
+
+AJAX(Asynchronous JavaScript and XML)：
+传统的web交互是用户触发一个http请求服务器，然后服务器收到之后，在做出响应到用户，并且返回一个新的页面。
+每当服务器处理客户端提交的请求时，客户都只能空闲等待，并且哪怕只是一次很小的交互、只需从服务器端得到很简单的一个数据，都要返回一个完整的HTML页，而用户每次都要浪费时间和带宽去重新读取整个页面。
+这个做法浪费了许多带宽，由于每次应用的交互都需要向服务器发送请求，应用的响应时间就依赖于服务器的响应时间，这导致了用户界面的响应比本地应用慢得多。
+AJAX 的出现,刚好解决了传统方法的缺陷，AJAX 是一种用于创建快速动态网页的技术，通过在后台与服务器进行少量数据交换，AJAX 可以使网页实现异步更新，这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。
+
+AJAX的XMLHttpRequest对象：
+AJAX 的核心是 XMLHttpRequest 对象。 所有现代浏览器都支持 XMLHttpRequest 对象。
+XMLHttpRequest 对象用于幕后同服务器交换数据，这意味着可以更新网页的部分，而不需要重新加载整个页面。
+所有现代浏览器（Chrom、IE7+、Firefox、Safari 以及 Opera）都有内建的 XMLHttpRequest 对象。
+
+创建 XMLHttpRequest 的语法是：
+variable = new XMLHttpRequest();
+
+为了应对所有浏览器，包括 IE5 和 IE6，请检查浏览器是否支持 XMLHttpRequest 对象。
+如果支持，创建 XMLHttpRequest 对象，如果不支持，则创建 ActiveX 对象：
+var xhttp;
+if (window.XMLHttpRequest) {
+    xhttp = new XMLHttpRequest();
+} else {
+    // code for IE6, IE5
+    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+}
+
+AJAX的请求整合：
+JSON：
+[
+  {"name":"孙悟空","age":18,"gender":"男"},
+  {"name":"猪八戒","age":19,"gender":"男"},
+  {"name":"唐僧","age":20,"gender":"男"},
+  {"name":"沙和尚","age":21,"gender":"男"}
+]
+
+index.html:
+var Ajax = {
+    get: function (url, fn) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200 || xhr.status == 304) {
+                fn.call(this, xhr.responseText);
+            }
+        };
+        xhr.send();
+    },
+    post: function (url, data, fn) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 304)) {
+                fn.call(this, xhr.responseText);
+            }
+        };
+        xhr.send(data);
+    }
+};
+
+// 演示GET请求
+Ajax.get("users.json", function (response) {
+    console.log(response);
+});
+
+// 演示POST请求
+Ajax.post("users.json", "", function (response) {
+    console.log(response);
+});
+
 
 
 Json：
@@ -2734,73 +3248,6 @@ JS对象转换为Json字符串：
 </script>
 
 
-AJAX(Asynchronous JavaScript and XML)：
-传统的web交互是用户触发一个http请求服务器，然后服务器收到之后，在做出响应到用户，并且返回一个新的页面。
-每当服务器处理客户端提交的请求时，客户都只能空闲等待，并且哪怕只是一次很小的交互、只需从服务器端得到很简单的一个数据，都要返回一个完整的HTML页，而用户每次都要浪费时间和带宽去重新读取整个页面。
-这个做法浪费了许多带宽，由于每次应用的交互都需要向服务器发送请求，应用的响应时间就依赖于服务器的响应时间，这导致了用户界面的响应比本地应用慢得多。
-AJAX 的出现,刚好解决了传统方法的缺陷，AJAX 是一种用于创建快速动态网页的技术，通过在后台与服务器进行少量数据交换，AJAX 可以使网页实现异步更新，这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。
-
-AJAX的XMLHttpRequest对象：
-AJAX 的核心是 XMLHttpRequest 对象。 所有现代浏览器都支持 XMLHttpRequest 对象。
-XMLHttpRequest 对象用于幕后同服务器交换数据，这意味着可以更新网页的部分，而不需要重新加载整个页面。
-所有现代浏览器（Chrom、IE7+、Firefox、Safari 以及 Opera）都有内建的 XMLHttpRequest 对象。
-
-创建 XMLHttpRequest 的语法是：
-variable = new XMLHttpRequest();
-
-为了应对所有浏览器，包括 IE5 和 IE6，请检查浏览器是否支持 XMLHttpRequest 对象。
-如果支持，创建 XMLHttpRequest 对象，如果不支持，则创建 ActiveX 对象：
-var xhttp;
-if (window.XMLHttpRequest) {
-    xhttp = new XMLHttpRequest();
-} else {
-    // code for IE6, IE5
-    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-}
-
-AJAX的请求整合：
-JSON：
-[
-  {"name":"孙悟空","age":18,"gender":"男"},
-  {"name":"猪八戒","age":19,"gender":"男"},
-  {"name":"唐僧","age":20,"gender":"男"},
-  {"name":"沙和尚","age":21,"gender":"男"}
-]
-
-index.html:
-var Ajax = {
-    get: function (url, fn) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200 || xhr.status == 304) {
-                fn.call(this, xhr.responseText);
-            }
-        };
-        xhr.send();
-    },
-    post: function (url, data, fn) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 304)) {
-                fn.call(this, xhr.responseText);
-            }
-        };
-        xhr.send(data);
-    }
-};
-
-// 演示GET请求
-Ajax.get("users.json", function (response) {
-    console.log(response);
-});
-
-// 演示POST请求
-Ajax.post("users.json", "", function (response) {
-    console.log(response);
-});
 
 Cookie:
 Cookie 是一些数据，存储于你电脑上的文本文件中，当 web 服务器向浏览器发送 web 页面时，在连接关闭后，服务端不会记录用户的信息，Cookie 的作用就是用于解决 “如何记录客户端的用户信息”：
@@ -18610,6 +19057,7 @@ Shiro是一个Java安全框架，它提供了身份验证、授权、密码和�
 使用Shiro进行登录身份验证：
 
 1.创建Shiro的认证类
+``` java
 package com.yourcompany.yourapp.yourpackage;  
   
 import org.apache.shiro.authc.*;  
@@ -18629,8 +19077,9 @@ public class CustomAuthenticationRealm extends AuthenticatingRealm {
         }   
     }   
 }
-
+```
 2.使用Shiro进行安全验证
+``` java
 @RestController  
 public class MyController {  
     @RequestMapping("/secure")  
@@ -18640,14 +19089,14 @@ public class MyController {
         return "This is a secure page.";  
     }  
 }
-
+```
 使用Shiro进行密码管理：
 
 
 1. 配置Shiro Realm：
 创建一个自定义的Shiro Realm，这个Realm负责处理认证和授权的逻辑，包括密码的验证和存储。
 扩展 AuthorizingRealm 类，并实现 doGetAuthenticationInfo 方法来处理密码验证。
-
+``` java
    public class CustomRealm extends AuthorizingRealm {
        // 实现认证逻辑
        @Override
@@ -18671,30 +19120,32 @@ public class MyController {
            return "hashed_password"; // 替换为实际的密码
        }
    }
+```
 
 2. 存储密码安全：
 在实际应用中，开发者应该存储用户密码的哈希值而不是明文密码。
 Shiro本身不提供密码哈希功能，所以你可以使用其他库如BCrypt或PBKDF2来安全地存储密码。以下是一个示例使用BCrypt的方法：
-
+``` java
 import org.mindrot.jbcrypt.BCrypt;
 
 // 生成并存储BCrypt哈希密码
 String plainPassword = "password";
 String hashedPassword = BCrypt.hashpw(plainPassword, BCrypt.gensalt());
 // 存储hashedPassword到数据库
-
+```
 
 3. 配置Shiro SecurityManager：
    在Shiro配置中，创建 SecurityManager 并将自定义的Realm添加到 SecurityManager 中。
-
+``` java
 DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 securityManager.setRealm(yourCustomRealm);
 SecurityUtils.setSecurityManager(securityManager);
-   
+```   
    
 4. 使用Shiro验证密码：
    在用户登录时，使用Shiro来验证用户提供的密码。Shiro会自动从Realm中获取用户的密码进行验证。
 
+``` java
 UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 try {
     SecurityUtils.getSubject().login(token);
@@ -18702,12 +19153,12 @@ try {
 } catch (AuthenticationException e) {
     // 登录失败
 }
-   
+```   
 
 这是一个基本的使用Shiro进行密码管理的示例。在实际应用中，开发者需要根据具体需求来配置Shiro的Realm、密码哈希算法、密码策略等。
 确保密码存储和验证的安全性，以保护用户的凭据。
 
-Java在处理敏感数据的时候如何实现数据的安全性？
+>Java在处理敏感数据的时候如何实现数据的安全性？
 
 使用加密算法：Java提供了多种加密算法，如AES、DES、RSA等，可以对敏感数据进行加密，保护数据不被非法获取。
 使用安全协议：Java提供了SSL/TLS协议，可以用于实现加密通信，保证数据在传输过程中的安全性。
@@ -18715,45 +19166,180 @@ Java在处理敏感数据的时候如何实现数据的安全性？
 权限控制：Java可以通过权限控制机制，如Java安全管理器（Security Manager），对敏感数据进行访问控制，防止非法访问和操作。
 数据备份：对于重要的敏感数据，应该定期备份，并存储到安全的地方，以防止数据丢失或损坏。
 
-Java安全编码指南：
-安全编码指南
-安全编码指南为开发人员提供了一组在编写代码时应遵循的建议,以最大程度地减少安全漏洞并减轻常见威胁。
 
-1、输入验证和输出编码
->验证和清理所有用户输入,以防止SQL注入和跨站,点脚本(XSS)等攻击。
->使用参数化查询或预准备语句来防止SQL注入。
->显示用户生成的内容时应用适当的输出编码或转义技术以防止XSS攻击。
->使用强大的数据类型和长度验证来确保输入数据符合预期的格式。
 
-2、认证与授权
->实施强大且安全的身份验证机制,例如多重身份验证(MFA)或强密码策略。
->使用安全密码存储技术(例如盐散列)来保护用户凭据。
->实施适当的授权检查,确保只有授权用户才能访问敏感资源原或执行特权操作。
->实施最小权限原则,仅向每个用户或角色授予必要的权限。
+>Java后端是如何对密文数据进行存储、使用的？
 
-3、安全会话管理
->生成强大的随机会话标识符并安全地处理它们,例如使用仅HTTP和安全cookie。
->实施会话超时和适当的会话终止机制。
->通过在身份验证时生成新的会话标识符来避免会话固定漏洞。
->通过加密或使用服务器端而不是客户端存储来保护敏感会话数据。
+### 核心原则：数据安全分层
 
-4、安全的错误处理和日志记录
->避免在错误消息中暴露可能为攻击者提供帮助的敏感信息。
->实施适当的错误处理机制以防止信息泄露。
->安全地记录与安全相关的事件和异常,避免日志中敏感数据的暴露。
->定期检查和监控应用程序日志是否存在安全事件或异常活动。
+后端对敏感数据的处理，遵循“**传输中加密**”和“**存储中加密/脱敏**”相结合的原则。处理方式取决于数据的**使用场景**。
 
-5、安全通讯
->使用安全通信协议(例如HTTPS)来保护传输中的数据。
->实施适当的证书验证并避免使用自签名或过期的证书。
->在传输和存储过程中对密码或个人信息等敏感数据进行加密。
->避免通过不安全的渠道(例如电子邮件或未加密的HTTP)传输敏感数据。
+---
 
-6、安全文件和资源处理
->验证和清理文件上传,以防止任意文件执行或目录遍历攻击。
->避免将敏感信息存储在明文或不安全的存储位置。
->设置适当的文件和目录权限以限制仅授权用户的访问。
->谨防不安全的文件操作,例如文件删除或重命名,这可能会导致安全漏洞。
+### 场景一：数据用于“比对”而非“展示”（最经典：密码）
+
+这是最经典、最安全的场景。**密码**是典型的“只需要比对，不需要知道具体是什么”的数据。
+
+*   **后端存储方式：哈希（Hashing）**
+    *   **流程：**
+        1.  用户注册时，前端将密码加密传输到后端。
+        2.  后端对密码进行一次**不可逆的哈希计算**（例如使用 bcrypt, Argon2 等强哈希算法），并加上一个随机的“盐值”以抵御彩虹表攻击。
+        3.  后端只存储最终的**哈希值**，**绝对不存储明文密码或其加密后的密文**。
+    *   **登录校验流程：**
+        1.  用户登录，输入密码，前端加密传输。
+        2.  后端收到加密的密码后，进行解密（在内存中进行），然后对解密后的密码**进行完全相同的哈希计算**。
+        3.  将计算出的哈希值与数据库中存储的哈希值进行**比对**。
+        4.  如果一致，则密码正确；否则，错误。
+        5.  **关键点：** 比对完成后，内存中的明文密码会被立即清除。服务器**从未**将用户的明文密码持久化到硬盘或数据库中。
+
+*   **为什么用哈希？**
+    *   **绝对安全：** 即使是数据库管理员或攻击者入侵了数据库，他们拿到的也只是哈希值，无法反推出原始密码。
+    *   **不可逆：** 哈希是单向函数，设计上就无法解密。
+
+---
+
+### 场景二：数据需要“还原”或“展示”（例如：身份证号、银行卡号、真实姓名）
+
+身份证号在某些业务中（例如金融、实名认证）需要与官方渠道进行核验，或者需要向用户完整展示。因此，不能使用不可逆的哈希，因为后端需要知道它的“原文”。
+
+*   **后端存储方式：加密（Encryption）**
+    *   **流程：**
+        1.  用户提交身份证号，前端加密传输到后端。
+        2.  后端接收到数据后，使用一个**只有后端知道的、高度保密的密钥** 对身份证号进行**对称加密**（例如使用 AES-256-GCM 算法），生成密文。
+        3.  将密文存储到数据库中。
+    *   **登录校验流程：**
+        1.  用户登录时，输入身份证号，前端加密传输。
+        2.  后端收到数据后，先解密得到明文A（在内存中）。
+        3.  后端去数据库取出对应账号的身份证密文，用相同的密钥解密，得到明文B（在内存中）。
+        4.  在内存中对比明文A和明文B是否一致。
+        5.  比对完成后，立即从内存中清除两个明文。
+    *   **关键点：**
+        *   **密钥管理是关键：** 加密密钥的安全性至关重要。它必须与数据库分开存储（例如使用硬件安全模块 HSM、云服务商的密钥管理服务 KMS，或配置在服务器的环境变量中），绝不能写在代码里或放在数据库里。
+        *   **内存安全：** 加解密操作都在内存中进行，且明文在内存中的存活时间应尽可能短。
+
+---
+
+### 场景三：数据用于“搜索”或“索引”
+
+这是一个更复杂的场景。如果数据被加密存储，如何对它进行模糊查询（如“姓张的人”）或精确查询？
+
+*   **解决方案：**
+    1.  **可搜索加密：** 一种前沿密码学技术，允许在密文上进行计算和搜索，但性能开销大，尚未大规模应用。
+    2.  **在应用层处理：** 将所有数据加载到应用内存中解密，然后进行查询。这仅适用于极小数据集，不现实。
+    3.  ** token化：** 用一个无意义的、可逆的令牌（Token）代替原始数据存储和搜索。令牌本身不暴露信息，需要时再通过安全的令牌化服务换取真实数据。
+    4.  **最常用方案：密文索引/哈希前缀（权衡安全与性能）：**
+        *   在存储完整加密数据的同时，**额外存储一个不可逆的哈希值**（例如对身份证号前6位和后4位进行哈希）作为索引。
+        *   查询时，用户输入完整信息，后端用同样的方式计算哈希值，然后在数据库里匹配这个哈希索引。这可以实现**精确匹配查询**，但无法进行模糊查询。这是一种安全与功能的折衷。
+
+
+>如何对上传文件做必要的安全管理？
+对上传文件进行安全管理是Web应用开发中至关重要的一环，处理不当可能导致严重的安全漏洞，例如服务器被植入恶意脚本、病毒传播、数据泄露等。
+一个健壮的文件上传安全管理策略应该是**多层次、纵深防御**的，涵盖了从客户端到服务器端，再到最终存储和访问的每一个环节。
+
+---
+
+### 第一层：前端控制（用户体验，非安全依赖）
+
+前端控制主要是为了提升用户体验，减轻服务器压力，**绝不能**作为安全防御的手段，因为它可以被轻易绕过。
+
+1.  **文件类型限制**：通过 `accept` 属性限制用户可选择文件的类型。
+    ```html
+    <input type="file" accept=".jpg,.jpeg,.png,.pdf">
+    ```
+2.  **文件大小限制**：在提交前通过JavaScript检查文件大小，并给用户即时反馈。
+
+**核心原则**：所有前端验证都必须在后端**再次、严格地**进行验证。
+
+---
+
+### 第二层：后端核心安全校验（安全关键）
+
+这是文件上传安全的核心，所有检查都必须在服务器端进行。
+
+#### 1. 文件大小限制
+*   在服务器端（如Nginx、应用服务器）配置最大文件上传大小，防止攻击者通过超大文件耗尽服务器资源（DoS攻击）。
+
+#### 2. 文件类型验证（多重校验）
+不要相信客户端传来的任何信息，包括文件名和MIME类型。
+
+*   **检查MIME类型**：读取文件内容的头部字节，判断其真实的MIME类型，而不是依赖 `Content-Type` 请求头。
+    *   例如，一个JPEG文件的开头字节总是 `FF D8 FF E0`。
+*   **检查文件扩展名**：使用一个**白名单**机制，只允许预定义的安全扩展名（如 `.jpg`, `.png`, `.pdf`）。**绝对不要使用黑名单**，因为很容易被绕过。
+    *   例如，如果一个文件被检测为JPEG图像，那么它的扩展名也必须是 `.jpg` 或 `.jpeg`。
+
+#### 3. 文件名安全处理
+*   **重命名文件**：永远不要使用用户上传的文件名。应为文件生成一个随机的、唯一的文件名（如UUID），并保留正确的扩展名。
+    *   `a1b2c3d4e5f6.jpg` 比 `我的照片.jpg` 或 `../../../malware.php.jpg` 安全得多。
+*   **过滤特殊字符**：如果必须保留原文件名，务必严格过滤 `../`, `NULL` 字节、路径分隔符等，防止路径遍历攻击。
+
+#### 4. 文件内容安全检查
+这是最后一道，也是极其重要的一道防线。
+
+*   **病毒/恶意软件扫描**：
+    *   对上传的文件进行病毒扫描。可以使用ClamAV等开源工具或商业杀毒软件的API。这对于允许上传文档（如PDF、DOCX）的应用尤为重要，因为这些文件可能包含恶意宏或脚本。
+*   **图片文件处理**：
+    *   对图片进行**重采样/重压缩**。这个过程可以剥离掉嵌入在图片元数据（如EXIF）中的恶意脚本。
+    *   使用图像处理库（如GD、ImageMagick）将图片调整到所需尺寸。一个被成功处理的图片，其是恶意代码的可能性会大大降低。
+*   **防止WebShell**：
+    *   如果上传目录被设置为可执行，攻击者上传一个恶意脚本文件（如 `.php`, `.jsp`）并访问它，就能控制服务器。
+    *   **最佳实践**：将文件上传到一个**Web根目录之外**的专用目录。然后通过一个无法直接访问的脚本（如PHP的 `readfile()`）或一个**静态资源服务器**来代理访问这些文件，确保文件内容被安全地发送给用户，而不会在服务器上执行。
+
+---
+
+### 第三层：存储与访问策略
+
+#### 1. 存储路径隔离
+*   如上所述，将用户上传的文件存储在Web服务器无法直接执行的路径下。例如：
+    *   Web根目录：`/var/www/html/`
+    *   上传文件目录：`/var/app_uploads/` (此目录不应包含任何可执行脚本)
+
+#### 2. 访问控制
+*   实现权限验证。在提供下载/访问服务的前端脚本中，检查当前用户是否有权限查看该文件。
+*   设置正确的HTTP头：
+    *   `Content-Disposition: attachment`：强制浏览器下载而非执行文件。
+    *   正确的 `Content-Type` 头，防止浏览器错误地解析文件（如将文本文件当作HTML执行）。
+
+#### 3. 静态资源服务
+*   使用Nginx/Apache的 `X-Accel-Redirect` (Nginx) 或 `X-Sendfile` (Apache) 特性，由Web服务器高效、安全地提供已授权文件，同时将业务逻辑与文件服务解耦。
+
+---
+
+### 第四层：运维与监控
+
+#### 1. 权限最小化
+*   运行Web服务器的用户对上传目录应只有**写入**权限，而**没有执行**权限。
+
+#### 2. 日志记录
+*   详细记录所有文件上传操作：谁、什么时候、上传了什么文件（原文件名和新文件名）、文件大小、IP地址等。这对于安全审计和事故追踪至关重要。
+
+#### 3. 定期安全审计与清理
+*   定期检查上传目录，清理未被引用的“孤儿文件”。
+*   保持服务器、图像处理库、病毒库等所有相关组件的更新。
+
+---
+
+### 总结：一个安全的上传流程示例
+
+1.  **用户选择**：用户通过前端 `<input type="file">` 选择文件。
+2.  **前端检查**：（可选）检查文件大小和类型，给出友好提示。
+3.  **上传至服务器**：文件被发送到后端API。
+4.  **后端校验**：
+    *   检查文件大小是否在限制内。
+    *   检查文件扩展名是否在白名单内。
+    *   读取文件头，验证真实的MIME类型是否与扩展名匹配。
+5.  **深度检测**：
+    *   对文件进行病毒扫描。
+    *   （如果是图片）使用图像库进行缩放/重压缩。
+6.  **安全存储**：
+    *   生成一个随机文件名（如 `uuid.jpg`）。
+    *   将文件保存到Web根目录之外的指定路径（如 `/app/uploads/uuid.jpg`）。
+    *   在数据库中记录原始文件名、随机文件名、上传者等信息。
+7.  **安全访问**：
+    *   当用户请求查看文件时，后端先验证用户权限。
+    *   通过一个安全的文件服务脚本（或Nginx的 `X-Accel-Redirect`）从隔离目录中读取文件流，并设置正确的HTTP头，返回给用户。
+
+通过遵循这套多层次、纵深防御的策略，您可以极大地降低因文件上传功能而引入的安全风险。
+
 
 
 常用的密码加密方式：
