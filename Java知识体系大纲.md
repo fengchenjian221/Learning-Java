@@ -340,30 +340,40 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
     - JavaScript事件
     - BOM
     - DOM
-  - JSP
-    - JSP为什么采用在HTML中写Java？而不是HTML中写C++？HTML中写python？ 
+    - ES6+新特性 
+  - 前端中的UI和UX  
+  - npm  
   - JQuery
   - React
-  - JSON  
+    - 阐述React
+    - 什么是React中的路由（React Router）
+    - 什么是React的状态管理？
+    - 相比于JQuery，React有哪些优点？
+  - VUE  
+    - 阐述Vue  
+    - 什么是Vue的声明式指令？  
+    - 相比Vue2，Vue3有哪些改进？ 
+    - Vue的设计在React的基础上做了哪些改进？
+  - UniApp  
   - AJAX
+  - JSON 
+  - 前端安全基础
+  - TypeScript
   - 用户身份认证机制  
     - Cookie  
     - Session 
     - JWT
-  - Node.js 
-  - VUE  
-    - Vue的一些主要特点和概念  
-    - VUE简单实现（Vue3）  
-    - 对比Vue3，创建一个选项试API Vue2
-  - 前端中的UI和UX
-  - 有哪些前端展示的场景  
+  - 有哪些前端展示的场景
   - 微信小程序、安卓开发、IOS开发和原生HTML、CSS、JavaScript在语法上的对比 
   - 前端网页端是如何将源代码隐藏的
   - 前端工程师如何在不同应用上进行适配  
 
 ### ② [Web后端技术](./JavaWeb知识体系.md/#Web后端技术) 
+  - JSP
+    - JSP为什么采用在HTML中写Java？而不是HTML中写C++？HTML中写python？
   - Thymeleaf
   - FreeMarker
+  - Node.js 
   - Servlet  
     - Servlet的工作原理  
     - 为什么需要Servlet，比Servlet更早的技术是什么？
@@ -422,7 +432,9 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
   - Spring Security
     - SpringSecurity的实现原理是什么，基于哪些核心设计模式去实现的？
   - Shiro
-  - Java安全编码指南
+  - Java在处理敏感数据的时候如何实现数据的安全性？
+  - Java后端是如何对密文数据进行存储、使用的？
+  - 如何对上传文件做必要的安全管理？
   - 密码加密方式
     - 哈希算法加密
     - 盐值
