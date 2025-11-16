@@ -357,7 +357,7 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
   - UniApp  
   - AJAX
   - JSON 
-  - 前端安全基础
+  - 前端安全防护
   - TypeScript
   - 用户身份认证机制  
     - Cookie  
@@ -402,6 +402,10 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
 
 ### ④ [数据库及持久层技术以及多种数据库的应用](./JavaWeb知识体系.md/#Java数据库及持久层技术以及多种数据库的应用)
   - MYSQL
+    - MYSQL的核心概念：数据库、表和数据
+    - MYSQL的SQL语言
+    - SQL语句中DROP和TRANCATE有什么不同？
+    - MYSQL是关系型数据库，关系型数据库的特点是什么？
   - ORACLE
   - 数据库连接池Druid
   - ClickHouse
