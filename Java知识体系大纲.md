@@ -406,6 +406,9 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
     - MYSQL的SQL语言
     - SQL语句中DROP和TRANCATE有什么不同？
     - MYSQL是关系型数据库，关系型数据库的特点是什么？
+    - SQL的基本数据类型
+    - SQL 语句在 MySQL 中的执行过程
+    - Mysql的调优方法有哪些？
   - ORACLE
   - 数据库连接池Druid
   - ClickHouse
