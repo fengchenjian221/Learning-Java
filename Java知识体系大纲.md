@@ -341,8 +341,9 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
     - BOM
     - DOM
     - ES6+新特性 
+  - TypeScript  
   - 前端中的UI和UX  
-  - npm  
+    - 主流的UI和UX工具 
   - JQuery
   - React
     - 阐述React
@@ -353,16 +354,23 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
     - 阐述Vue  
     - 什么是Vue的声明式指令？  
     - 相比Vue2，Vue3有哪些改进？ 
-    - Vue的设计在React的基础上做了哪些改进？
-  - UniApp  
-  - AJAX
+    - Vue的设计在React的基础上做了哪些改进？  
+  - Element Plus  
+  - AJAX 
   - JSON 
+  - Axios 
   - 前端安全防护
-  - TypeScript
   - 用户身份认证机制  
     - Cookie  
     - Session 
     - JWT
+  - 大前端技术 
+    - 跨端/多端开发技术
+      - Hybrid
+      - Flutter 
+      - UniApp  
+    - 包管理工具
+      - Npm
   - 有哪些前端展示的场景
   - 微信小程序、安卓开发、IOS开发和原生HTML、CSS、JavaScript在语法上的对比 
   - 前端网页端是如何将源代码隐藏的
@@ -385,14 +393,14 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
     - `ServletConfig`接口  
     - `GenericServlet`抽象类  
     - `HttpServlet`抽象类
-  -Java WEB 中前后端不分离和前后端分离的区别是什么？  
-  -Struts2
-  -SSH
-  -SSM
-  -Spring
-  -Spring MVC
-  -Spring Boot
-   Spring Boot响应式编程
+  - Java WEB 中前后端不分离和前后端分离的区别是什么？  
+  - Struts2
+  - SSH
+  - SSM
+  - Spring
+  - Spring MVC
+  - Spring Boot
+  - Spring Boot响应式编程
 
 ### ③ [数据库连接技术](./JavaWeb知识体系.md/#数据库连接技术) 
   - JDBC
