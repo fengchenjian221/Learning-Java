@@ -10358,6 +10358,7 @@ public class HibernateDemo1 {
 	
 }
 
+# 程序设计：
 MVC设计模式：MVC指MVC模式的某种框架，它强制性地使应用程序的输入、处理和输出分开。
 使用MVC应用程序被分成三个核心部件：模型、视图、控制器。
 
@@ -18183,6 +18184,279 @@ rootfs是Docker容器的根目录，在启动时Docker容器可见到的文件�
 镜像技术是虚拟化、容器化和云计算等计算机领域的重要技术，在微服务架构、云部署等场景中被广泛使用。
 常见的镜像技术有Docker镜像、Kubernetes镜像、OpenShift镜像等。
 
+>Docker 中容器和镜像的关系
+在 Docker 中，镜像（Image）和容器（Container）是两个核心概念，它们之间的关系类似于“模板”和“实例”，或者类比编程中的“类”和“对象”。下面我一步步阐述它们的关系，帮助你理解。
+
+#### 1. **镜像（Image）的定义和作用**
+   - 镜像是一个**静态的、不可变的软件包**，它包含了运行一个应用程序所需的一切：应用程序代码、运行时环境（Runtime）、系统库、配置文件、环境变量等。
+   - 镜像像是一个“蓝图”或“快照”，它不运行任何代码，只是存储了所有必要的文件和元数据。
+   - 镜像可以通过 Dockerfile 构建，或者从 Docker Hub 等仓库拉取（pull）。例如，官方的 Ubuntu 镜像就是一个基础的 Linux 系统镜像。
+   - 镜像具有分层（Layered）结构：每个镜像由多个只读层组成，这使得镜像高效且可复用。
+
+#### 2. **容器（Container）的定义和作用**
+   - 容器是镜像的**运行时实例**。当你基于一个镜像启动一个容器时，它会创建一个可写的层（Writable Layer）在镜像的只读层之上，从而允许容器运行、修改数据。
+   - 容器是动态的：它可以启动（run）、停止（stop）、重启（restart）、删除（delete），并且在运行时可以执行进程、访问网络、挂载卷等。
+   - 容器是隔离的：每个容器运行在自己的命名空间中，与宿主机和其他容器隔离，但共享内核。
+
+#### 3. **容器和镜像的关系**
+   - **从镜像创建容器**：容器总是从一个镜像启动而来。没有镜像，就无法创建容器。例如，使用命令 `docker run -it ubuntu:latest` 会从 `ubuntu:latest` 镜像创建一个容器，并进入交互模式。
+     - 一个镜像可以创建多个容器：这些容器共享相同的镜像层，但每个容器有自己的可写层，因此它们可以独立运行而不互相干扰。例如，你可以从同一个 Nginx 镜像启动多个 Web 服务器容器。
+     - 反之，容器不能直接存在于镜像之外：容器的生命周期依赖于镜像。
+   - **镜像的不可变性 vs. 容器的可变性**：
+     - 镜像一旦构建，就不能修改（immutable）。如果需要更新，你必须构建一个新镜像。
+     - 容器在运行时可以修改文件、安装软件等，但这些修改只存在于容器的可写层中，不会影响原始镜像。如果你停止并删除容器，这些修改会丢失，除非你使用数据卷（Volume）或提交（commit）成新镜像。
+   - **提交容器为新镜像**：你可以将一个运行中的容器“提交”（commit）成一个新镜像，使用命令如 `docker commit <container_id> new_image_name`。这会将容器的可写层转换为新镜像的层，从而创建一个新的镜像版本。这体现了从容器“反馈”到镜像的循环关系。
+   - **生命周期关系**：
+     - 镜像 -> 容器：拉取/构建镜像 -> 运行容器。
+     - 容器 -> 镜像：修改容器 -> 提交成新镜像 -> 重复使用。
+     - 删除容器不会删除镜像，但删除镜像会使基于它的容器无法启动（如果镜像已被删除）。
+
+#### 4. **实际示例**
+   - 假设你有一个自定义的 Python 应用镜像 `myapp:latest`。
+     - 运行 `docker run myapp:latest` 创建一个容器，应用开始执行。
+     - 如果你在容器中安装了一个新包（如 pip install requests），这个修改只在该容器中生效。
+     - 要持久化这个修改，你可以 commit 成新镜像 `myapp:with-requests`，然后基于新镜像创建更多容器。
+
+#### 5. **为什么这种关系重要？**
+   - 这种设计使得 Docker 高效、可移植：镜像可以轻松分享和部署，容器则提供轻量级、快速启动的运行环境。
+   - 它促进了 DevOps 实践，如 CI/CD：构建镜像 -> 测试容器 -> 部署到生产环境。
+
+
+Docker仓库：
+Docker 仓库（Docker Registry）是 Docker 生态系统中用于存储、管理和分发 Docker 镜像的核心组件。它类似于一个镜像的“仓库”或“库”，允许开发者上传、下载和共享容器镜像，从而实现容器化应用的快速部署和复用。下面我从几个方面阐述 Docker 仓库的概念、类型、工作原理以及使用注意事项。
+
+#### 1. **定义和作用**
+   - **定义**：Docker 仓库是一个服务，用于托管 Docker 镜像的存储和分发。它可以是公共的（如 Docker Hub）或私有的，支持版本控制和访问权限管理。镜像（Image）是 Docker 的核心产物，包含了应用程序及其依赖环境，而仓库则负责这些镜像的集中管理。
+   - **作用**：
+     - **存储**：保存镜像文件，包括不同版本和标签（Tag）。
+     - **分发**：允许用户通过 `docker pull` 命令从仓库拉取镜像，或 `docker push` 推送镜像。
+     - **协作**：便于团队共享镜像，支持 CI/CD 管道集成。
+     - **安全性**：支持镜像扫描、签名和访问控制，防止恶意镜像传播。
+
+#### 2. **类型**
+Docker 仓库主要分为两种：
+   - **公共仓库**：
+     - 最常见的是 Docker Hub（hub.docker.com），由 Docker 官方维护，免费提供基本服务。
+     - 其他公共选项包括 Quay.io、Google Container Registry (GCR，现在更名为 Artifact Registry)、Amazon ECR Public 等。
+     - 适合开源项目或通用镜像（如 Alpine、Ubuntu、Nginx 的官方镜像）。
+   - **私有仓库**：
+     - 用于企业内部或敏感应用，不对外公开。
+     - 可以自建，使用 Docker Registry 开源项目搭建（例如运行 `docker run -d -p 5000:5000 --restart=always --name registry registry:2`）。
+     - 云服务提供商的私有选项：AWS ECR、Azure Container Registry (ACR)、阿里云容器镜像服务等。
+     - 优势：支持自定义访问控制、集成 LDAP/AD 等身份验证。
+
+#### 3. **工作原理**
+   - **架构**：Docker 仓库基于 RESTful API 工作，通常使用 HTTP/HTTPS 协议。镜像以层（Layer）形式存储，每层是文件系统的增量变化，支持高效的推送和拉取（只传输差异部分）。
+   - **基本流程**：
+     1. **构建镜像**：使用 Dockerfile 通过 `docker build` 命令创建镜像，并打上标签（如 `myapp:v1`）。
+     2. **推送镜像**：登录仓库（`docker login`），然后 `docker push registry.example.com/myapp:v1`。
+     3. **拉取镜像**：在其他机器上 `docker pull registry.example.com/myapp:v1`，Docker Daemon 会从仓库下载镜像层并组装。
+     4. **版本管理**：使用标签（如 `latest`、`v1.0`）管理版本，支持多架构镜像（Multi-Arch，如 amd64 和 arm64）。
+   - **认证与安全**：公共仓库需用户名/密码登录；私有仓库可配置 TLS 证书、RBAC（角色-based 访问控制）和 webhook 验证。
+   - **缓存与优化**：许多仓库支持镜像缓存（如 Docker Hub 的代理），减少网络传输。
+
+#### 4. **常见命令和示例**
+   - **搜索镜像**：`docker search nginx`（在 Docker Hub 上搜索）。
+   - **拉取**：`docker pull nginx:latest`。
+   - **推送**：先打标签 `docker tag myimage:latest myrepo/myimage:v1`，然后推送。
+   - **自建私有仓库示例**：
+     ```
+     # 启动仓库容器
+     docker run -d -p 5000:5000 --name registry registry:2
+
+     # 配置 Docker 使用不安全仓库（开发环境）
+     # 编辑 /etc/docker/daemon.json 添加 "insecure-registries": ["localhost:5000"]
+
+     # 推送镜像
+     docker tag alpine localhost:5000/my-alpine
+     docker push localhost:5000/my-alpine
+     ```
+
+#### 5. **注意事项和最佳实践**
+   - **安全性**：始终使用官方或可信镜像，避免未知来源；启用内容信任（Docker Content Trust）以验证镜像签名。
+   - **性能**：大型镜像推送/拉取可能耗时，使用多层构建和缓存优化 Dockerfile。
+   - **成本**：公共仓库免费层有限（例如 Docker Hub 限制免费推送速率），私有仓库可能涉及存储费用。
+   - **集成**：与 Kubernetes、Helm 等工具结合使用，支持自动化部署。
+
+>docker容器如果想和运行在服务器（俗称宿主机）上的程序建立连接，该怎么做？
+### Docker 容器连接宿主机程序的方法
+
+Docker 容器默认运行在隔离的网络命名空间中，与宿主机（服务器）的网络环境分离。这意味着容器不能直接通过 `localhost` 或 `127.0.0.1` 访问宿主机上的程序（因为这些在容器内指向容器自身）。要实现容器与宿主机程序的连接，通常假设宿主机程序是一个服务器（如监听某个端口的 HTTP 服务、数据库等），容器作为客户端发起连接。下面我阐述几种常见方法，从简单到高级，按适用场景分类。选择方法取决于你的安全需求、性能要求和程序类型。
+
+#### 1. **使用宿主机的 IP 地址（推荐入门级方法）**
+   - **原理**：容器可以通过 Docker 的桥接网络（默认 `bridge` 模式）访问宿主机的外部 IP 或 Docker 网桥 IP。宿主机程序需监听在可访问的接口上（例如 `0.0.0.0` 而非仅 `127.0.0.1`）。
+   - **步骤**：
+     1. 在宿主机上运行程序，确保它监听所有接口（例如 Python 的简单 HTTP 服务器：`python -m http.server 8000 --bind 0.0.0.0`）。
+     2. 找出宿主机的 IP：
+        - Docker 默认网桥 IP：通常是 `172.17.0.1`（运行 `ip addr show docker0` 查看）。
+        - 宿主机本地 IP：如 `192.168.x.x`（用 `ifconfig` 或 `ip addr` 查看）。
+     3. 运行容器：在容器内使用该 IP 连接宿主机程序。例如，假设宿主机程序监听 8000 端口：
+        ```
+        docker run -it --rm alpine sh  # 进入容器 shell
+        wget http://172.17.0.1:8000    # 或 curl，使用实际 IP
+        ```
+   - **优点**：简单，无需修改容器启动参数。
+   - **缺点**：IP 可能动态变化（重启 Docker 服务后）；不适合生产环境的安全性。
+   - **适用场景**：测试环境，宿主机程序是网络服务。
+
+#### 2. **使用 Host 网络模式（--network host）**
+   - **原理**：容器与宿主机共享相同的网络栈，这样容器可以直接使用 `localhost` 或 `127.0.0.1` 访问宿主机程序，就像在宿主机上运行一样。
+   - **步骤**：
+     1. 宿主机运行程序（如监听 8000 端口）。
+     2. 启动容器时添加 `--network host`：
+        ```
+        docker run -it --rm --network host alpine sh
+        curl http://localhost:8000  # 直接访问
+        ```
+   - **优点**：最简单，性能高，无网络隔离开销。
+   - **缺点**：降低了容器的网络隔离（容器可访问宿主机所有端口），不推荐用于生产多容器环境，可能有端口冲突。
+   - **适用场景**：开发调试，或容器需要访问宿主机所有网络资源（如 GPU 驱动等）。
+
+#### 3. **通过 Volume 挂载 Unix Socket（适用于本地文件 socket）**
+   - **原理**：如果宿主机程序使用 Unix Domain Socket（UDS，如许多数据库或服务使用 `/var/run/program.sock`），可以通过 Docker 的 volume 机制挂载 socket 文件到容器内，实现连接。
+   - **步骤**：
+     1. 宿主机程序使用 socket（如 MySQL 的 `/var/run/mysqld/mysqld.sock`）。
+     2. 启动容器时挂载：
+        ```
+        docker run -it --rm -v /var/run/mysqld/mysqld.sock:/tmp/mysqld.sock mysql mysql -S /tmp/mysqld.sock
+        ```
+     3. 在容器内通过挂载路径连接。
+   - **优点**：高效，无需网络端口；适用于非 TCP/IP 的本地通信。
+   - **缺点**：仅限 UDS，不适用于 TCP 程序；权限需匹配（可能需 --user 或 chown）。
+   - **适用场景**：数据库、IPC（进程间通信）等使用 socket 的程序。
+
+#### 4. **暴露宿主机端口或使用代理（高级方法）**
+   - **原理**：如果宿主机程序只监听 `127.0.0.1`，可以通过 socat 或 nginx 等工具在宿主机上代理到可访问 IP，然后容器连接代理。
+   - **步骤**（以 socat 示例）：
+     1. 在宿主机安装 socat：`apt install socat`。
+     2. 代理端口：`socat TCP-LISTEN:8001,fork TCP:127.0.0.1:8000`（将本地 8000 代理到 8001）。
+     3. 容器内连接：`curl http://172.17.0.1:8001`。
+   - **优点**：灵活，适用于受限程序。
+   - **缺点**：引入额外工具，增加复杂性。
+   - **适用场景**：遗留程序或安全限制。
+
+#### 5. **自定义网络或 Docker Compose（多容器场景）**
+   - 如果涉及多个容器，推荐使用自定义网络：
+     ```
+     docker network create mynet
+     docker run -d --network mynet --name host-service myimage  # 模拟宿主机服务，但实际在容器中
+     ```
+     但对于纯宿主机程序，仍需结合上述方法。
+   - 在 Docker Compose 中，可以定义服务并使用 `network_mode: host`。
+
+#### 注意事项和最佳实践
+- **安全性**：避免暴露不必要的端口；使用 `--network host` 时评估风险；考虑 firewall（如 ufw 或 iptables）规则。
+- **端口冲突**：Host 模式下，容器端口可能与宿主机冲突。
+- **调试**：在容器内用 `ping`、`telnet` 或 `nc` 测试连接；查看日志 `docker logs`。
+- **平台差异**：在 macOS/Windows 的 Docker Desktop 中，宿主机 IP 可能是 `host.docker.internal`（特殊别名）。
+- **性能**：Host 模式最快，但隔离最差；桥接模式有轻微开销。
+- **更新**：Docker 版本（如 26.x）支持更多网络插件，如 macvlan（容器有独立 MAC/IP），但配置复杂。
+
+>docker-compose.yml 文件
+### Docker Compose 和 docker-compose.yml 文件概述
+
+Docker Compose 是 Docker 的一个官方工具，用于简化多容器应用程序的定义、管理和运行。它允许你通过一个配置文件来 orchestration（编排）多个 Docker 容器，而不是手动运行每个容器的命令。核心文件就是 **docker-compose.yml**（有时也写作 docker-compose.yaml），这是一个 YAML 格式的配置文件，用于描述整个应用程序的结构，包括服务（services）、网络（networks）、卷（volumes）等。
+
+#### 为什么使用 docker-compose.yml？
+- **简化部署**：单个文件定义所有容器及其依赖关系，避免了手动 docker run 命令的繁琐。
+- **可重复性**：便于在开发、测试和生产环境中一致性部署。
+- **多容器协作**：轻松处理如 Web 服务器 + 数据库 + 缓存的组合。
+- **版本控制友好**：YAML 格式易读、可 git 管理。
+- **命令行集成**：通过 `docker-compose` 命令（如 up、down、build）操作整个栈。
+
+Docker Compose 需要安装（在 Docker Desktop 中通常内置），命令行工具是 `docker compose`（注意：从 Docker Compose v2 开始，命令从 `docker-compose` 改为 `docker compose`，但旧命令仍兼容）。
+
+#### docker-compose.yml 的基本结构
+文件采用 YAML 语法，缩进敏感（通常用 2 或 4 个空格）。顶级键包括：
+
+- **version**：指定 Compose 文件格式版本（推荐使用 '3.x' 或更高，如 '3.8'，以支持最新特性）。例如：
+  ```
+  version: '3.8'
+  ```
+
+- **services**：定义应用程序的核心组件，每个服务对应一个容器。每个服务下可以配置镜像、端口映射、环境变量、依赖等。
+  示例：
+  ```
+  services:
+    web:  # 服务名称
+      image: nginx:latest  # 使用镜像
+      ports:
+        - "80:80"  # 主机端口:容器端口
+      environment:
+        - DEBUG=true  # 环境变量
+      depends_on:
+        - db  # 依赖其他服务
+    db:
+      image: mysql:5.7
+      volumes:
+        - db-data:/var/lib/mysql  # 挂载卷
+      environment:
+        MYSQL_ROOT_PASSWORD: example
+  ```
+
+- **volumes**：定义持久化数据卷，避免容器重启数据丢失。可以是命名卷或主机路径。
+  示例：
+  ```
+  volumes:
+    db-data:  # 命名卷
+  ```
+
+- **networks**：定义自定义网络，实现服务间隔离通信。
+  示例：
+  ```
+  networks:
+    backend:  # 网络名称
+  ```
+  服务中可以指定 `networks: - backend` 来加入。
+
+- **其他可选键**：
+  - **configs** 和 **secrets**：管理配置和敏感数据。
+  - **build**：如果不使用现成镜像，可以指定 Dockerfile 路径来构建自定义镜像。
+    示例：
+    ```
+    web:
+      build: ./path/to/dockerfile/dir
+    ```
+  - **deploy**：在 Swarm 模式下配置部署选项，如 replicas（副本数）。
+
+完整示例文件（一个简单的 Web + DB 应用）：
+```
+version: '3.8'
+services:
+  web:
+    image: nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: example
+volumes:
+  db-data:
+networks:
+  default:
+```
+
+#### 如何使用 docker-compose.yml？
+1. **创建文件**：在项目根目录下编写 docker-compose.yml。
+2. **运行**：在文件目录下执行 `docker compose up`（后台运行加 `-d`）。这会拉取镜像、创建容器、网络等。
+3. **停止**：`docker compose down`（加 `--volumes` 删除卷）。
+4. **其他命令**：
+   - `docker compose build`：构建镜像。
+   - `docker compose ps`：查看运行容器。
+   - `docker compose logs`：查看日志。
+   - `docker compose exec web sh`：进入容器 shell。
+
+#### 注意事项和最佳实践
+- **环境变量**：使用 `.env` 文件存储变量（如密码），Compose 会自动加载。
+- **版本兼容**：检查 Docker 文档，确保 version 与你的 Docker 版本匹配（2026 年当前主流是 v3.9+）。
+- **扩展文件**：对于复杂项目，可以用 `docker-compose.override.yml` 覆盖默认配置，或用 `-f` 指定多个文件。
+- **安全性**：避免在 yml 中硬编码敏感信息，使用 secrets。
+- **常见错误**：缩进不对、端口冲突、镜像不存在。调试时用 `docker compose config` 验证文件语法。
+- **与 Docker Swarm/Kubernetes 的区别**：Compose 适合本地/小型部署；大规模用 Swarm 或 K8s。
+
 
 CI/CD流水线：
 CI/CD是持续集成和持续交付或持续部署的软件开发流程模型。CI/CD旨在通过自动化和持续性的构建、测试、部署和交付过程，来提高软件开发和发布的效率和质量。
@@ -18306,8 +18580,7 @@ spec:
 前端项目的部署流程：
 1.链接服务器：通过ssh @root[ipaddress]命令链接你的服务器（将ipaddress替换成你服务器的公网IP地址）。
 2.配置服务器：在服务器上配置Apache或Nginx的静态文件目录，以及反向代理，将客户端请求转发到前端项目的访问入口文件index.html。
-3.自动化部署：使用自动化工具，如Jenkins、Travis CI等，在Github中托管代码，Travis CI将自动触发构建和部署流程，
-生成可运行的前端代码并部署到服务器上。
+3.自动化部署：使用自动化工具，如Jenkins、Travis CI等，在Github中托管代码，Travis CI将自动触发构建和部署流程，生成可运行的前端代码并部署到服务器上。
 
 
 后端项目如何部署？
