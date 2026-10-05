@@ -23815,6 +23815,51 @@ MapReduce 核心功能是将用户编写的业务逻辑代码和自带默认组�
 相当于YARN集群的客户端，用于提交我们整个程序到YARN集群，提交的是
 封装了MapReduce程序相关运行参数的job对象
 
+### MapReduce Shuffle：Map 输出如何变成 Reduce 输入
+
+Shuffle 不是一个独立的 API，而是 **Map 输出被分区、排序、拷贝、合并，最终变成 Reduce 输入** 的全过程。面试里说「Shuffle 很重」，指的就是这段 **磁盘 IO + 网络传输 + 排序**，不是 map() 或 reduce() 里的业务代码。
+
+整体可以拆成 Map 端和 Reduce 端两截：
+
+```
+MapTask
+  map() 写出 <k,v>
+    → 先写内存环形缓冲区（默认约 100MB）
+    → 缓冲区达到阈值（约 80%）开始溢写（spill）到本地磁盘
+    → 溢写前按分区（Partitioner，默认 HashPartitioner）切分
+    → 每个分区内按 key 排序，可选择跑 Combiner 做局部聚合
+    → 多个溢写文件 merge 成一个按分区有序的大文件
+
+ReduceTask
+    → 通过 HTTP 从各个 MapTask 拉取属于自己分区的数据（copy）
+    → 内存不够就落盘，多路归并成有序片段（merge）
+    → 相同 key 的 value 组成一组，调用一次 reduce()
+```
+
+**1. 分区（Partition）**  
+同一个 key 必须进同一个 Reduce，否则 WordCount 会把同一个单词拆到多个 Reduce，结果是错的。默认 `HashPartitioner`：`hash(key) % reduceTask 数`。自定义分区通常是为了解决 **数据倾斜**（某个 key 特别热，拖死一个 Reduce）。
+
+**2. 排序（Sort）**  
+Map 溢写和 Reduce 归并都按 key 排序。这就是为什么 Reducer 能「一组相同 k 调一次 reduce()」：数据到 Reduce 时已经有序，相邻的相同 key 可以直接收成一组。
+
+**3. Combiner**  
+Map 端的「迷你 Reduce」，在溢写前先局部聚合，减少网络上的 KV 量。要求必须是 **可结合、可交换** 的运算（sum、max 可以，平均值、去重后的精确 count 要小心）。Combiner 的输入输出类型必须和 Reducer 一致。
+
+**4. 为什么 Shuffle 容易成为瓶颈**  
+- 缓冲区小、spill 次数多：频繁落盘。  
+- Reduce 太多或太少：网络连接爆炸，或单 Reduce 过载。  
+- 没有 Combiner / 倾斜：热 key 把一个 Reduce 撑爆。  
+- 小文件过多：MapTask 数量爆炸，Shuffle 连接数跟着爆炸。
+
+Spark 的 Shuffle 和 MapReduce 是同一类问题：宽依赖（`reduceByKey`、`groupByKey`、`join`、`repartition`）会切 Stage，并走网络交换。Spark 里优先 `reduceByKey` / `aggregateByKey`（Map 端可预聚合），慎用 `groupByKey`（把所有 value 拉到一起再算）。调优手段类似：合理分区、处理倾斜、增大 shuffle 内存、必要时两阶段聚合。
+
+#### 常见面试题
+
+- Shuffle 发生在哪两端？Map 端做了什么，Reduce 端做了什么？  
+- Combiner 和 Reducer 的区别？什么情况不能用 Combiner？  
+- 数据倾斜在 Shuffle 里怎么表现，怎么打（加盐、两阶段聚合、自定义分区）？  
+- Spark 为什么按宽依赖切 Stage？和 MapReduce Shuffle 是什么关系？
+
 大数据资源管理系统YARN：
 Yarn是Hadoop的分布式资源调度平台，负责为集群的运算提供运算资源。
 如果把分布式计算机和单个计算机相对应的话，HDFS就相当于计算机的文件系统，Yarn就是计算机的操作系统，MapReduce就是计算机上的应用程序。
@@ -23995,6 +24040,54 @@ Container，container-launch-specification信息包含了能够让Container和Ap
   - 使用Grafana、Tableau等工具将数据以实时仪表盘和报表的形式展示给用户。
 
 这种架构确保了实时数据能够快速被处理和分析，支持实时决策和动态报告。
+
+### 数仓分层：ODS / DWD / DWS / ADS
+
+架构图解决的是「数据从哪进、在哪存、谁来算」。分层解决的是 **同一份业务数据为什么要做成四张（类）表，而不是一张宽表用到底**。分层不是强制技术组件，是为了复用、可回溯、避免每个报表都从原始日志重做一遍 ETL。
+
+**ODS（Operational Data Store，贴源层）**  
+- 尽量保持和业务系统一致：字段名、粒度、脏数据都先原样进来。  
+- 常见来源：MySQL 全量/增量（Sqoop、DataX、Flink CDC、Canal）、日志（Flume/Kafka）、埋点。  
+- 只做最轻的活：编码统一、时间戳规范、分区（按天）。**不在这一层做业务口径。**  
+- 目的：业务库挂了还能回溯；下游算错了可以重跑。
+
+**DWD（Data Warehouse Detail，明细层）**  
+- 在 ODS 上做清洗、脱敏、维度退化、统一字典（男女、订单状态）。  
+- 粒度仍然是明细：一笔订单、一次点击、一条日志，不预先聚合。  
+- 事实表 + 维度表在这里成型。后续所有指标都应该能从 DWD 重算出来。
+
+**DWS（Data Warehouse Summary，汇总层）**  
+- 按主题轻度/中度聚合：用户日活、SKU 日销、门店小时 GMV。  
+- 为的是 ADS 和即席查询不用每次扫明细。  
+- 聚合键要稳定（用户、商品、时间），口径写进文档，否则两个报表对不上。
+
+**ADS（Application Data Store，应用层）**  
+- 面向具体产品：看板、推荐候选、风控名单、导出给业务的宽表。  
+- 可以是 ClickHouse / MySQL / Redis / ES，不一定还在 Hive。  
+- 允许冗余、允许为接口定制字段。
+
+落地时常见约束：
+
+- 不要跳层：ADS 直接扫 ODS，口径散、每次改报表都重做清洗。  
+- 不要在 ODS 里做「本月成交额」这种业务指标。  
+- 分区字段（`dt`）贯穿四层，重跑某一天只动对应分区。  
+- Hive 表：外部表管 ODS（源文件还在 HDFS/对象存储），内部表可以用于完全由数仓自己管理的中间表；**分区**降低扫描量，**分桶**利于 join 和抽样，两者不是一回事。
+
+### Lambda 与 Kappa：批流两套还是流统一
+
+离线数仓 + 实时数仓同时存在时，就会碰到架构选型。
+
+**Lambda**  
+- 批通道：T+1，Spark/Hive 算历史全量，口径准、可重跑。  
+- 流通道：Flink/Spark Streaming 算当天增量，追求低延迟。  
+- 服务层把两边结果合并（例如 Redis 里「实时」覆盖「离线」的当天分区）。  
+- 优点：批处理成熟、补数简单。缺点：**同一套业务逻辑写两遍**，对不齐是常态。
+
+**Kappa**  
+- 以日志/Kafka 为唯一事实来源，主要用流计算。历史重算 = 从 Kafka/对象存储 **重放**。  
+- 优点：一套代码。缺点：流引擎要扛回放、状态要能重置，长周期指标（年 GMV）用流并不自然。
+
+实践里很少纯 Kappa：明细和天级报表仍走 Hive/Spark（批），当天大屏和风控走 Flink（流），用 **同一套 DWD 口径文档** 约束两边。湖仓（Iceberg / Hudi / Paimon）想解决的是：在同一份表上既支持批式 upsert，也支持增量消费，减少「Hive 一张表、ClickHouse 再导一张表」的分裂。
 
 列式存储系统Hbase：
 HBase是一个分布式的、面向列的开源数据库，它构建在Hadoop的HDFS（Hadoop Distributed File System）之上，主要用于大规模数据的存储和处理。
@@ -26399,6 +26492,55 @@ globalWindow()：将数据分成一个全局窗口，每个全局窗口内的数
 
 总之，Flink 是一个强大的大数据处理框架，适用于批量数据和实时数据处理。它提供了低延迟处理、容错性、可扩展性
 
+### Flink Watermark、Checkpoint 与精确一次（exactly-once）
+
+窗口和时间前面已经说了：业务统计通常用 **Event Time**。乱序到达时，Flink 用 **Watermark** 判断「这个时间之前的数据可以关窗了」。
+
+**Watermark**  
+- 本质是插在流里的一个时间标记：`Watermark = 目前观察到的最大事件时间 - 允许乱序时长`。  
+- 窗口的 end 被 Watermark 盖过，才会触发计算。乱序等太久：延迟大；等太短：迟到数据进不了窗。  
+- 迟到数据：`allowedLateness` 还能再更新一次结果；再晚就进侧输出流，避免静默丢失。
+
+```java
+DataStream<Event> stream = env.addSource(consumer);
+stream.assignTimestampsAndWatermarks(
+        WatermarkStrategy
+                .<Event>forBoundedOutOfOrderness(Duration.ofSeconds(5))
+                .withTimestampAssigner((e, ts) -> e.getEventTime()));
+```
+
+**Checkpoint vs Savepoint**  
+- Checkpoint：引擎自动、周期性把状态拍到 HDFS/S3，失败从最近一次恢复。作业正常取消后一般不留作「版本」。  
+- Savepoint：人为触发的有名字的快照，用来停机升级、改并行度、从某个业务点重放。  
+- StateBackend：状态不大用 HashMapStateBackend（堆内，快）；大状态用 EmbeddedRocksDBStateBackend（本地 RocksDB，容量大、checkpoint 可增量）。
+
+**端到端精确一次（和 Kafka 最常见）**  
+Flink 自己的算子状态在 checkpoint 成功后可以做到 exactly-once：**每条记录的状态效果只体现一次**。但端到端还取决于 Source 和 Sink。
+
+和 Kafka 组合时走 **两阶段提交（2PC）** 思路：
+
+1. checkpoint 开始：Sink 开一个 Kafka 事务（或等价的 pending 文件）。  
+2. 算子把状态写入 checkpoint。  
+3. checkpoint 成功：JobManager 通知 Sink **commit** 事务，消息对下游可见。  
+4. 失败：事务 abort，消费者看不到这批数据；恢复后从上次提交的 offset 重放。
+
+因此要同时满足：
+
+- Source：Kafka 消费，checkpoint 里保存 offset（不要只靠手动 `enable.auto.commit`）。  
+- 算子：checkpoint 开启，下游是幂等或事务型 Sink。  
+- Sink：Kafka 用 `exactly_once` / 事务生产者（`transaction.timeout.ms` 要大于 checkpoint 间隔）；写数据库则用幂等主键或 XA。  
+- 并行度和 Kafka 分区、事务超时要匹配，否则会出现 commit 超时、空事务堆积。
+
+**at-least-once vs exactly-once vs at-most-once**  
+- at-most-once：丢了不重放，延迟最低，对账不行。  
+- at-least-once：失败重放，可能重复，下游必须幂等。  
+- exactly-once：状态和输出一起提交，成本最高（barrier 对齐、事务）。指标大屏常常 at-least-once 就够；资金、库存扣减才值得上 exactly-once + 幂等表。
+
+**和 Spark Streaming 怎么选**  
+- 老 Spark Streaming 是微批，延迟一般在秒级；Structured Streaming 仍是微批驱动，连续模式用得少。  
+- Flink 是算子级流水线，窗口、状态、CEP、和 Kafka 的事务 Sink 更顺。  
+- 离线 ETL、SQL 分析、机器学习特征：Spark 更熟。需要秒内、大状态、精确一次进 Kafka/数仓：优先 Flink。
+
 ClickHouse 大数据列式存储：
 ClickHouse是一个开源的，用于联机分析（OLAP）的列式数据库管理系统（DBMS-database manager system）, 它是面向列的，并允许使用SQL查询，实时生成分析报告。
 ClickHouse最初是一款名为Yandex.Metrica的产品，主要用于WEB流量分析。ClickHouse的全称是Click Stream，Data WareHouse，简称ClickHouse。
@@ -26764,6 +26906,58 @@ Redis，RethinkDB，Rsyslog 等等。
 而对于 Prometheus 来说，使用 Prometheus 的 client library 的输出格式不止支持Prometheus 的格式化数据，
 也可以输出支持其它监控系统的格式化数据，比如 Graphite。
 因此你甚至可以在不使用 Prometheus 的情况下，采用 Prometheus 的 client library 来让你的应用程序支持监控数据采集。
+
+### 一条端到端大数据链路（把组件串起来）
+
+上面每个组件单独看都「能存、能算」。业务里真正要设计的是 **数据从业务库到看板/风控/RAG 怎么走**，以及批和流在哪汇合。一条常见的 Java 后端可落地链路：
+
+```
+业务 MySQL / 应用日志 / 埋点
+        │
+        ├─ 离线：DataX / Sqoop / 每日分区 dump
+        └─ 实时：Canal / Flink CDC  →  Kafka（分区键=业务主键，保证同订单有序）
+                    │
+                    ▼
+              Flink 作业
+              · 清洗、脱敏、对齐 DWD 口径
+              · 窗口聚合（当天 GMV、实时 UV）
+              · checkpoint + Kafka exactly-once（对账类）或至少一次 + 幂等 Sink（大屏类）
+                    │
+        ┌───────────┼───────────┐
+        ▼           ▼           ▼
+   ClickHouse    Hive/Iceberg   Redis / ES
+   （实时分析）   （ODS/DWD/DWS） （热点、检索）
+        │           │
+        │           ▼
+        │      Spark 批作业（T+1 补数、对账、特征）
+        │           │
+        └────► ADS / 报表 / 风控名单
+                    │
+                    ▼
+         Prometheus + Grafana 盯延迟、积压、checkpoint 失败
+         Atlas 看表血缘；调度用 DolphinScheduler（Azkaban 多见于老集群）
+```
+
+怎么选组件（面试也能直接答）：
+
+- **消息队列用 Kafka 而不是 RabbitMQ**：日志和 CDC 要高吞吐、可回放、按分区有序；RabbitMQ 更适合同步业务解耦。  
+- **实时计算用 Flink 而不是再写一个微服务去扫库**：窗口、状态、乱序、精确一次是流引擎的工作。  
+- **明细进 Hive/Iceberg，看板进 ClickHouse**：前者管历史和重跑，后者管宽表即席查询。  
+- **HBase**：点查海量宽表（用户画像、订单全量），不是拿来做 GROUP BY。  
+- **不要把 LLM 塞进每个 Spark Task**：离线用 Spark 切块、embedding 入库；在线问答走 Spring + LangChain4j 检索（见后文 RAG）。
+
+调度和过时组件：Pig、Storm 基本退出新项目；Azkaban 仍能见到，新集群更多 **DolphinScheduler / Airflow**。采集侧 DataX 做异构库批同步，Flink CDC 做增量。
+
+#### 常见的大数据面试题
+
+- MapReduce Shuffle 的过程？Combiner 能不能替代 Reducer？  
+- ODS、DWD、DWS、ADS 各放什么，为什么不能一层打天下？  
+- Lambda 和 Kappa 的差别？你们线上实际是哪一种？  
+- Spark 宽依赖如何切 Stage？为什么不推荐 `groupByKey`？  
+- Flink Watermark 是什么？迟到数据怎么办？  
+- Flink 精确一次和 Kafka 事务的关系？Checkpoint 和 Savepoint 的区别？  
+- 实时数仓从 Binlog 到 ClickHouse，Kafka 的 key 怎么选？  
+- Hive 分区和分桶的区别？HBase RowKey 热点怎么避免？
 
 # 人工智能AIGC：
 
@@ -27958,6 +28152,7 @@ Apache Spark
 - **离线训练**：使用 MLlib 或 TensorFlow 在大规模数据上训练模型，保存为 TF SavedModel 或 ONNX 模型。
 - **批量推理**：在离线任务中对历史数据进行预测，生成报表、推荐结果或风控评分。
 - **模型监控**：监控模型性能、漂移和数据分布变化。
+- 若需求是「根据数仓/文档问答」而不是训练分类模型：离线 Spark 切块写入向量库，在线用 LangChain4j 做 RAG（见下文），不要在每个 Spark Task 里调 LLM。
 
 **应用示例**：
 
@@ -27992,48 +28187,257 @@ TensorFlow Serving / ONNX Runtime
 
 ---
 
-### LangChain4j 快速入门
+### LangChain4j：Java 里把 LLM 做成应用
 
-LangChain4j 是 LangChain 的 Java 版本，简化了 LLM 应用开发。
+LangChain4j 是 LangChain 的 Java 实现。它要解决的不是「再包一层 HTTP 调模型」，而是把 **多轮对话、工具调用、检索增强（RAG）、结构化输出** 收成 Java 接口。Python 侧现在讲 LCEL / LangGraph；Java 侧对应的核心入口是 **`AiServices`（接口 + 注解生成代理）**，不是手写一长串 Chain。
 
-#### 安装
+依赖按模块拆，版本用 1.x（旧文里的 `0.21.0` 和 `ChatLanguageModel.generate()` 已经过时）：
 
 ```xml
 <dependency>
     <groupId>dev.langchain4j</groupId>
-    <artifactId>langchain4j-core</artifactId>
-    <version>0.21.0</version>
+    <artifactId>langchain4j</artifactId>
+    <version>1.0.1</version>
 </dependency>
 <dependency>
     <groupId>dev.langchain4j</groupId>
     <artifactId>langchain4j-open-ai</artifactId>
-    <version>0.21.0</version>
+    <version>1.0.1</version>
 </dependency>
+<!-- 通义千问等国内模型用 community 模块，例如 dashscope -->
 ```
 
-#### 基础例子
+Spring 项目再加对应的 `langchain4j-open-ai-spring-boot-starter`（或 dashscope starter），不要把 API Key 写进代码。
+
+#### 一、和 SDK / Spring AI 怎么选
+
+| 方式 | 适合 | 不适合 |
+| --- | --- | --- |
+| OpenAI / DashScope SDK | 单次聊天、流式输出、自己拼 Prompt | 多轮、RAG、多工具编排，样板代码会爆炸 |
+| **LangChain4j** | Java 后端要上 RAG、`@Tool`、按用户隔离的 Memory、换模型 | 训练/微调大模型；和 Spring AI 抢同一套抽象时不要两套都上 |
+| Spring AI | 已经 All-in Spring AI 生态（Advisor、AdvisorChain） | 需要 LangChain4j 更成熟的 EmbeddingStore 适配时再评估 |
+
+判断标准：只调一次 `chat.completions` 用 SDK；出现「查知识库再答」「让模型调 Java 方法」「按会话记住上下文」，上 LangChain4j。
+
+最小调用（仍只是 SDK 层，**还没体现框架价值**）：
 
 ```java
-import dev.langchain4j.model.openai.OpenAiChatModel;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+ChatModel model = OpenAiChatModel.builder()
+        .apiKey(System.getenv("OPENAI_API_KEY"))
+        .modelName("gpt-4o")
+        .temperature(0.2)
+        .build();
 
-public class LangChain4jExample {
-    public static void main(String[] args) {
-        // 初始化模型
-        ChatLanguageModel model = OpenAiChatModel.builder()
-                .apiKey(System.getenv("OPENAI_API_KEY"))
-                .modelName("gpt-4o")
-                .build();
+String reply = model.chat("用三句话说明 HashMap 为啥不是线程安全的");
+```
 
-        // 简单对话
-        String response = model.generate("用 Java 怎样读取文件？");
-        System.out.println(response);
+国内模型把 `OpenAiChatModel` 换成 DashScope / Qwen 的 ChatModel 即可，**AiServices 以下的写法不用改**。这就是框架相对裸 SDK 的第一点好处：换模型换实现，不换业务接口。
 
-        // 结构化输出（强大特性）
-        // ...（需要额外配置，参考官方文档）
+#### 二、AiServices（Java 最该写的 API）
+
+把「系统提示词 + 用户输入 + 输出类型」收成一个接口，框架用 JDK 动态代理生成实现：请求时组消息，响应时把 JSON 填进 POJO。
+
+```java
+interface Tutor {
+
+    @SystemMessage("你是 Java 面试官。只根据用户问题作答，不知道就说不知道。")
+    String chat(@UserMessage String question);
+
+    @UserMessage("请把下面这段话总结成一条面试回答，控制在 80 字内：{{text}}")
+    String summarize(@V("text") String text);
+
+    @UserMessage("从这段日志里提取错误码和可疑类名：{{log}}")
+    ErrorHint extract(@V("log") String log);
+}
+
+record ErrorHint(String errorCode, String className, String advice) {}
+
+Tutor tutor = AiServices.builder(Tutor.class)
+        .chatModel(model)
+        .build();
+
+ErrorHint hint = tutor.extract(logText);
+```
+
+结构化输出要点：
+
+- 返回 `record` / JavaBean / `enum` / `List<X>`，让模型按 schema 填，比「自己正则抠 JSON」稳。  
+- 字段加 `@Description("订单状态，只能是 PAID/CANCELLED")` 能明显降幻觉。  
+- 温度调低（0～0.3）；解析失败要重试或降级成原文，不要把半截 JSON 扔给前端。  
+- 这就是旧示例里「结构化输出需要额外配置」真正该写的内容：配的是 **返回类型 + 描述**，不是再找另一套文档。
+
+和 Spring 集成：把 `Tutor` 注册成 `@Bean`，Controller 只依赖接口，测试时可以 mock。
+
+#### 三、ChatMemory（多轮对话存在哪）
+
+一次 `chat()` 模型看不到上次的问题。Memory 把历史消息拼回请求，但 **token 窗口有限**，必须截断。
+
+```java
+ChatMemory memory = MessageWindowChatMemory.builder()
+        .id("user-10086")          // 每个会话一个 id，切勿全局单例
+        .maxMessages(20)
+        .build();
+
+Tutor tutor = AiServices.builder(Tutor.class)
+        .chatModel(model)
+        .chatMemory(memory)
+        .build();
+```
+
+生产注意：
+
+- **按用户 / 会话隔离**。用 `ChatMemoryProvider`：`memId -> MessageWindowChatMemory.builder().id(memId).maxMessages(20).build()`，Controller 传入 `chatId`。  
+- `MessageWindowChatMemory` 按条数截；更严的用 `TokenWindowChatMemory` 按 token 截，避免一次请求超模。  
+- 进程内 Memory 重启即丢。实现 `ChatMemoryStore`，把消息序列化进 **Redis**（key = `chat:{id}`，TTL 和对客会话一致）。  
+- 系统提示词占用窗口：历史变长时优先丢最旧的 user/ai 对，尽量留 system。  
+- 敏感内容不要进 Memory（证件号、验证码），写入前脱敏。
+
+#### 四、Tools（Function Calling）
+
+模型不会真的查库，它只生成「要调哪个函数、参数是什么」。LangChain4j 把带 `@Tool` 的 Java 方法暴露给模型，拿到调用后再在 JVM 里执行，把结果送回模型组织自然语言。
+
+```java
+class OrderTools {
+
+    private final OrderService orderService;
+
+    @Tool("根据订单号查询订单状态和金额，订单号形如 OD 开头")
+    public String queryOrder(String orderId) {
+        Order o = orderService.find(orderId);
+        if (o == null) {
+            return "找不到该订单";
+        }
+        return "状态=" + o.getStatus() + ", 金额=" + o.getAmount();
     }
 }
+
+interface SupportAgent {
+    @SystemMessage("你是客服。需要订单信息时必须调用 queryOrder，不要编造。")
+    String chat(@UserMessage String userMessage);
+}
+
+SupportAgent agent = AiServices.builder(SupportAgent.class)
+        .chatModel(model)
+        .tools(new OrderTools(orderService))
+        .chatMemoryProvider(id -> MessageWindowChatMemory.withMaxMessages(10))
+        .build();
 ```
+
+和自己「解析 JSON 再 if-else 调方法」的差别：多工具、多轮（先问单号再查）由模型选工具，你只保证工具 **幂等、鉴权、超时**。
+
+硬约束：
+
+- 工具内部校验 `orderId` 是否属于当前登录用户，**不要让模型决定权限**。  
+- 设置执行超时；禁止暴露删库、发短信、转账这类工具，或加人工确认。  
+- `@Tool` 描述写成「何时该调、参数格式」，描述越具体误调越少。  
+- 工具返回给模型的是短文本/JSON，不要把整张表 dump 进去。
+
+#### 五、RAG（检索增强：先搜后答）
+
+上下文窗口装不下整个知识库，也容易幻觉。RAG 把「相关片段」检索出来再塞进 Prompt。分成 **入库** 和 **查询** 两条流水线。
+
+**入库（离线，可批处理）**
+
+```
+文档（Markdown / PDF / 数仓导出的说明）
+  → DocumentLoader 加载
+  → DocumentSplitter 切块（chunk size + overlap）
+  → EmbeddingModel 向量化
+  → EmbeddingStore 写入（PGVector / Redis / Milvus / ES）
+```
+
+```java
+Document doc = FileSystemDocumentLoader.loadDocument("/data/kb/hashmap.md");
+
+EmbeddingStoreIngestor.builder()
+        .documentSplitter(DocumentSplitters.recursive(500, 80))
+        .embeddingModel(embeddingModel)
+        .embeddingStore(embeddingStore)
+        .build()
+        .ingest(doc);
+```
+
+切块经验：
+
+- 太小（几十 token）：检索碎、没有完整论点。  
+- 太大（好几千）：召回的噪声多，也更费 embedding 钱。  
+- overlap（50～100）避免句子在块边界被切断。  
+- metadata 带上 `source`、`dt`、`product`，查询时过滤，避免把过期文档召回来。
+
+**查询（在线）**
+
+```
+用户问题 → 同样的 EmbeddingModel
+  → EmbeddingStore 搜 TopK（可加 metadata 过滤、混合检索）
+  → 把片段拼进系统提示：「只根据下列资料回答，没有就说没有」
+  → ChatModel 生成
+```
+
+```java
+ContentRetriever retriever = EmbeddingStoreContentRetriever.builder()
+        .embeddingStore(embeddingStore)
+        .embeddingModel(embeddingModel)
+        .maxResults(5)
+        .minScore(0.7)
+        .build();
+
+Tutor tutor = AiServices.builder(Tutor.class)
+        .chatModel(model)
+        .contentRetriever(retriever)
+        .build();
+```
+
+向量库怎么选：起步 PGVector（和业务库一起）；高并发检索 Milvus / Qdrant；已经有 ES 可以走 kNN + 关键词的混合检索。Embedding 模型维度必须和建库时一致，换模型要重建索引。
+
+降幻觉：`minScore` 以下直接拒答；Prompt 要求引用资料编号；生成温度低；检索为空不要让模型「凭印象」补。
+
+**和大数据怎么接（不要把 LLM 塞进 Spark Task）**
+
+```
+Hive / Iceberg 文档、工单、Wiki
+  → Spark / Flink 清洗、按条切块（离线）
+  → 批量调用 Embedding 写入 Milvus
+  → 在线：Spring Boot + LangChain4j AiServices 检索问答
+Flink 实时告警文本 → 向量化 → 相似工单（在线小流量，不是每个 map 调一次 GPT）
+```
+
+离线算 embedding、在线只做 TopK + 一次 chat。每条 Spark 记录打一次大模型，成本和延迟都会崩。
+
+#### 六、Spring Boot 落地（流式、限流、安全）
+
+配置（示意）：
+
+```yaml
+langchain4j:
+  open-ai:
+    chat-model:
+      api-key: ${OPENAI_API_KEY}
+      model-name: gpt-4o
+      timeout: 30s
+      log-requests: false
+```
+
+Controller 只依赖 `AiServices` 接口；流式用 `TokenStream` / SSE，对接前面「流式响应」那一节，不要等整段生成完再返回。
+
+上线清单：
+
+- **限流**：按用户、按 IP 限制 QPS，网关或 Resilience4j；模型账单按 token。  
+- **缓存**：完全相同的问题可短 TTL 缓存（前面 Caffeine 示例），RAG 场景缓存 key 要带知识库版本。  
+- **脱敏**：身份证、手机号、Cookie 进模型前打码。  
+- **Prompt 注入**：用户输入当数据，不当指令；工具层鉴权。  
+- **超时与重试**：只对幂等的 chat 重试；Tool 里写库不要盲目重试。  
+- **观测**：打日志（chatId、耗时、token、检索命中条数），指标进 Prometheus。Key 走环境变量或密钥服务。
+
+#### 常见的 LangChain4j 面试题
+
+- LangChain4j 和直接调 OpenAI SDK 的差别？什么时候值得上框架？  
+- `AiServices` 是怎么工作的？结构化输出靠什么约束模型？  
+- 多轮对话 Memory 存在哪？窗口满了怎么办？重启后怎么恢复？  
+- 什么是 RAG？为什么不能把整个知识库塞进 Prompt？  
+- chunk size、overlap 怎么定？换 Embedding 模型为什么要重建向量库？  
+- `@Tool` 和自己解析 JSON 再调 Java 方法有什么不同？权限放哪一层？  
+- 如何减少幻觉：检索阈值、拒答、温度、引用原文。  
+- 大数据离线切块和在线 LangChain4j 问答如何分工？
 
 ---
 

@@ -574,21 +574,40 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
 ### 十、[大数据](./JavaWeb知识体系.md/#分布式计算-大数据)
 
 - 底层原理Hadoop
+  - HDFS / MapReduce / YARN
+  - MapReduce Shuffle（分区、排序、Combiner、数据倾斜）
 - 大数据资源管理系统YARN
+- 数仓分层与架构
+  - 离线数仓 / 实时数仓
+  - ODS / DWD / DWS / ADS 各层放什么
+  - Lambda 与 Kappa
 - 数据仓库工具Hive
+  - 分区与分桶、内部表与外部表
 - Spark 批处理运算/Spark Streaming流式运输
+  - 宽依赖切 Stage、`reduceByKey` vs `groupByKey`
 - Flink 批处理运算+流式运算
+  - Watermark 与迟到数据
+  - Checkpoint vs Savepoint
+  - 和 Kafka 的端到端精确一次（两阶段提交）
 - 大数据列式存储ClickHouse
 - 大数据分布式协调服务Zookeeper
 - 大数据数据采集Flume
 - 大数据消息队列Kafka
-- 大数据任务调度Azkaban
+- 大数据任务调度Azkaban（新集群多见 DolphinScheduler / Airflow）
 - 大数据元数据管理Atlas
 - 大数据监控系统Prometheus
+- 一条端到端链路：CDC → Kafka → Flink → Hive/ClickHouse
 
 ### 十一、[人工智能AIGC](./JavaWeb知识体系.md/#人工智能AIGC)
 
 - Java整合AGI
+- LangChain4j 与 SDK / Spring AI 的区别
+- AiServices 与结构化输出
+- ChatMemory（会话隔离、Redis 持久化）
+- Tools / Function Calling
+- RAG 入库与检索（切块、向量库、降幻觉）
+- Spring Boot 集成（流式、限流、脱敏）
+- 大数据 + RAG：离线 Spark 切块，在线 LangChain4j 问答
 
 ### 十二、[分布式账本](./JavaWeb知识体系.md/#分布式账本)
 
