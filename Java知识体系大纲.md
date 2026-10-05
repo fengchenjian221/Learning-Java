@@ -1,132 +1,146 @@
 # Java知识体系大纲
+
 [Java知识体系](./Java知识体系.md)
+[Java后端四方向面试题](./Java后端四方向面试题.md)（分布式 / 消息队列 / SQL优化 / 线程池）
 
 ## [Java介绍](./Java知识体系.md/#java介绍)
+
 Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概念。本文旨在汇总Java语法、Java语法特点、与计算机交互、优化、数据库、安全领域，囊括主流的开源框架、一些解决方案和一些前沿的技术，在web和大数据上的应用（不涉及桌面端GUI）。
 本文主要在软件开发方面进行总结，不涉及嵌入式开发等硬件领域。
 
-### ① [基本语法](./Java知识体系.md/#基本语法)
+### 一、[基本语法](./Java知识体系.md/#基本语法)
+
 - **48个关键字**  
   Java关键字是电脑语言里事先定义的，有特别意义的标识符，有时又叫保留字，还有特别意义的变量。
   
 - **Java保留字**  
   C语言里用到但是Java里没有用到的关键字：`goto`、`const`
-
+  
 - **3个特殊直接量**  
   `true`、`false`、`null`
-
+  
 - **标识符**  
   关于Java中的名称命名规范
-
+  
 - **变量**  
-  数据类型、基本数据类型大小、字符型数据类型、String类型特点、String的实例化方式、基础数据类型的转换、强制类型转换
-
+  数据类型、基本数据类型大小、字符型数据类型、String类型特点、String的实例化方式、基础数据类型的转换、强制类型转换  
+  String为什么不可变？  
+  字面量和`new`创建String有什么区别？  
+  String、StringBuilder、StringBuffer的区别？
+  
 - **运算符**  
   算术运算符、关系运算符、逻辑运算符、位运算符、移位运算符、条件运算符  
   `==`和`equals`的区别？ 
   为什么需要同时重写equals和hashCode？ 
   Java比较器
-
+  
 - **注释、文档注释**  
   单行注释、多行注释、文档注释
-
+  
 - **注解与元注解**  
   `@Document`、`@Retention`、`@Target`
-
+  
 - **Java数组**  
   数组的声明方法、数组的初始化方法  
   一维数组、二维数组
-
+  
 - **异常处理**  
-  `try`、`catch`、`finally`、`throw`、`throws`
+  `try`、`catch`、`finally`、`throw`、`throws`  
+  `throw`和`throws`的区别？  
+  受检异常和非受检异常的区别？  
+  `finally`一定会执行吗？
+  
 
-### ② [面向对象](./Java知识体系.md/#Java编程范式-面向对象)
+### 二、[面向对象](./Java知识体系.md/#Java编程范式-面向对象)
+
 - **类**  
   是一组相关属性和行为的集合。可以看成是一类事物的模板，使用事物的属性特征和行为特征来描述该类事物
-
+  
 - **对象**  
   是一类事物的具体体现。对象是类的一个实例，必然具备该类事物的属性和行为
-
+  
 - **属性**  
   具有静态描述的特征称之为属性
-
+  
 - **方法**  
   具有动态动作的行为（做事情）称之为方法
-
+  
 - **成员变量**  
   在方法外部，直接写在类当中
-
+  
 - **局部变量**  
   只有方法当中才可以使用，出了方法就不能再用
-
-- **修饰符**  
-  - `private`：同类下访问  
-  - 缺省：同包下访问  
-  - `protected`：子包下可以访问，同包也可以访问。不同包下的子类，访问`protected`修饰的，需要使用子类的对象访问，不能使用父类的对象访问  
+  
+- **修饰符**
+  
+  - `private`：同类下访问
+  - 缺省：同包下访问
+  - `protected`：子包下可以访问，同包也可以访问。不同包下的子类，访问`protected`修饰的，需要使用子类的对象访问，不能使用父类的对象访问
   - `public`：项目中所有类都可以访问
-
 - **方法的重载**  
   在Java类中可以定义多个名称相同的方法，若只是参数不同，功能类似，那么可以将这类方法称为同名方法，也可以叫做方法重载  
-  Java里面值传递机制只有一种：值传递。即将实际参数值的副本（复制）传入方法内，而参数本身不受影响。
-
+  Java里面值传递机制只有一种：值传递。即将实际参数值的副本（复制）传入方法内，而参数本身不受影响。  
+  方法重载和重写的区别？
+  
 - **封装**  
   通常，应禁止直接访问一个对象中数据的实际表示，而是应该通过操作接口来访问，这叫信息隐藏。  
   封装的体现
-
+  
 - **构造器/构造方法**  
   在Java中，构造器（Constructor）是一种特殊的方法，用于在创建对象时初始化对象的状态。  
   构造器的声明  
   构造器的作用  
   Java属性赋值的先后顺序  
   在Java中，`new`一个对象是给怎么样的一个过程？
-
+  
 - **this关键字**  
   在Java中，`this`关键字是一个引用变量，它引用当前对象（即调用方法或构造器的那个对象）
-
+  
 - **package关键字**  
   在Java中，`package`关键字用于声明一个类所在的包（package）
-
+  
 - **import关键字**  
   在Java中，`import`关键字用于导入类或其他类型，使得在当前Java文件中可以不必使用完全限定名（即包括包名）就可以引用它们。
-
+  
 - **继承**  
   在Java中，继承（Inheritance）是一种面向对象编程（OOP）的核心概念，它允许一个类（称为子类或派生类）获取另一个类（称为父类或基类）的属性和方法。  
   Java继承的特点  
   继承之`super`关键字：它主要用于引用子类的父类（或称为超类、基类）的成员（包括属性和方法）。  
   继承之执行顺序  
+  有继承和无继承时，静态块、实例块、构造器的执行顺序是什么？  
   Java中的`Object`类（所有类的父类）
-
+  
 - **方法的重写**  
   在Java中，方法的重写允许子类提供一个与父类相同方法签名（即方法名、参数列表和返回类型都相同）但实现不同的方法。当子类对象调用该方法时，将执行子类中的方法实现，而不是父类中的方法。  
   方法重写的规则
-
+  
 - **多态**  
   多态性意味着一个引用变量（如方法参数、返回值或实例变量）可以指向多种实际类型，并在运行时确定到底应该执行哪个类的方法。  
   如何在内存的层面理解多态性？
-
+  
 - **instanceof关键字**  
   判断对象`a`是否是类`A`的一个实例，如果是，返回`true`（如果是多态对象，也会返回`true`）；如果不是，返回`false`
-
+  
 - **Java包装类**  
   针对八种基本数据类型定义相应的引用类型（具有类的特征）
-
+  
 - **static关键字**  
   `static`关键字是一个修饰符，它用于声明属性（变量）、方法、代码块、内部类和嵌套类，用于定义类级别的变量、方法和代码块，以支持各种与类本身相关但不依赖于类实例的功能和模式  
   `static`关键字用法  
   开发中，如何确定一个属性是否要声明为`static`？
-
+  
 - **final关键字**  
   在Java中，`final`关键字是一个修饰符，它可以用于变量、方法和类，表示这些实体是“最终的”或“不可变的”  
   `final`关键字的用法
-
+  
 - **abstract关键字**  
   在Java中，`abstract`关键字用于声明一个类、方法或接口为抽象的  
   `abstract`关键字用法
-
+  
 - **接口**  
   抽象类和接口的对比  
   接口和抽象类的区别？
-
+  
 - **JDK不同版本的特性**
   Jdk8和之前版本的对比
   至今为止，Java发布了多少个版本？有哪些版本有划时代的技术？
@@ -134,42 +148,57 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
 - **Java的面向对象特性**
   为什么Java不是纯面向对象语言？
   面向对象和面向过程的区别？
-
-### ③ [Java高级应用](./Java知识体系.md/#Java高级应用) 
+  
+  ### 三、[Java高级应用](./Java知识体系.md/#Java高级应用)
+  
 - **多线程**  
   Java的多线程不是直接调用操作系统的线程操作  
   线程的状态  
+  线程有哪些状态？`sleep`和`wait`的区别？  
   多线程的实现方式  
   实际工作过程中，Java创建多线程的方式大多数使用实现`Runnable`接口而不是继承`Thread`类的方式。  
+  创建线程有哪几种方式？为什么更常用`Runnable`？  
   `synchronized`关键字解决线程安全问题  
+  `synchronized`锁的是谁？  
   `lock`方法与`synchronized`关键字解决线程安全问题的区别  
   Java多线程实现线程通讯的方法  
-  为什么多线程能解决高并发问题
-  Java内存模型(JMM)
-
+  为什么多线程能解决高并发问题  
+  Java内存模型(JMM)  
+  `volatile`的作用是什么？DCL单例为什么要加`volatile`？
+  
 - **异步**  
   线程异步需要考虑原子性  
   异步的实现方式
   缓存和线程池在实际应用上有什么区别？
   Java异步如何实现线程通信、线程同步
-
+  
 - **JUC**  
   线程池  
+  线程池的七个参数是什么？任务进来怎么走？  
+  线程池有哪些拒绝策略？为什么不推荐使用`Executors`创建线程池？  
   并发集合  
+  `ConcurrentHashMap`在JDK 7和JDK 8的实现有什么区别？  
   同步工具类  
   锁和条件  
   原子变量  
   Fork/Join框架  
   Java中哪些集合类型是线程安全的  
   Java并发是否用了操作系统并发
-
+  
 - **集合**  
   `Collection`接口  
   `Map`接口  
   `ArrayList`的源码分析/`JDK 8`中`ArrayList`的变化  
+  `ArrayList`和`LinkedList`的区别？  
+  `ArrayList`的扩容机制是什么？  
   `LinkedList`的源码分析  
   `List`常用方法  
-  `HashMap`的底层实现原理
+  `HashMap`的底层实现原理  
+  `HashMap`的`put`流程是什么？  
+  `HashMap`的扩容机制是什么？JDK 7头插有什么问题？  
+  JDK 7和JDK 8中`HashMap`有什么区别？  
+  为什么负载因子是0.75、树化阈值是8？  
+  `HashMap`、`Hashtable`、`ConcurrentHashMap`的区别？  
   线程安全的Java集合
   
 - **泛型**  
@@ -179,95 +208,96 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
   泛型的上限和下限
   泛型的桥方法
   泛型的使用注意事项
-
-- **IO（File类、IO流、网络编程、序列化与反序列化）**  
-  - Java `File`类  
-  - Java IO流  
-  - 流的体系结构  
-    - 抽象基类  
-    - 节点流（或文件流）  
-    - 缓冲流（处理流的一种）  
-    - 文件专属字符流`FileReader`/文件专属字节流`FileInputStream`  
+  
+- **IO（File类、IO流、网络编程、序列化与反序列化）**
+  
+  - Java `File`类
+  - Java IO流
+  - 流的体系结构
+    - 抽象基类
+    - 节点流（或文件流）
+    - 缓冲流（处理流的一种）
+    - 文件专属字符流`FileReader`/文件专属字节流`FileInputStream`
     - Java I/O中字节流可以处理一切数据，为什么还要设计字符流？
     - Java I/O流在哪些设计中使用了装饰者模式？
-  - 序列化/反序列化 
-    - 序列化与反序列化的方式 
+  - 序列化/反序列化
+    - 序列化与反序列化的方式
     - Java I/O涉及到哪些数据结构与算法？
   - RandomAccessFile
-  - 磁盘IO  
-    - 磁盘类型  
-    - IO操作类型  
-    - IO性能指标  
-    - 磁盘调度算法  
-    - 缓存和预读  
-    - RAID技术  
+  - 磁盘IO
+    - 磁盘类型
+    - IO操作类型
+    - IO性能指标
+    - 磁盘调度算法
+    - 缓存和预读
+    - RAID技术
     - 文件系统
-  - Java NIO  
-    - Java NIO详解  
+  - Java NIO
+    - Java NIO详解
     - 为什么Java NIO能直接创建缓冲区流进行数据传输，而传统的BIO只能用装饰者模式创建缓冲流
     - CPU密集型和I/O密集型任务对Java NIO的影响
     - Java NIO和多线程有什么联系？
     - Java NIO的核心API调用了JVM还是操作系统？
     - Java NIO是基于I/O多路复用设计的
-  - 网络编程  
-    - 网络七层架构的作用与协议  
-    - 一些网络编程概念    
-  - Socket编程  
+  - 网络编程
+    - 网络七层架构的作用与协议
+    - 一些网络编程概念
+  - Socket编程
     - 阐述Socket
     - Socket中的双全工数据交换是什么？
-    - 代码实现  
-  - TCP  
+    - 代码实现
+  - TCP
     - 阐述TCP
-    - 两台计算机之间使用套接字建立TCP连接时的步骤  
+    - 两台计算机之间使用套接字建立TCP连接时的步骤
     - Java实现TCP网络程序设计
-  - UDP    
+  - UDP
     - 阐述UDP
-    - Java实现UDP编程  
+    - Java实现UDP编程
     - 实现UDP的时候如何确保数据不丢失？
     - 一个实现可靠UDP的例子：QUIC协议
-  - URL  
-    - Java实现URL网络编程 
-  - C/S架构和B/S架构 
-  - HTTP协议/HTTPS协议    
-    - 什么是HTTP协议？  
-    - 什么是HTTPS协议？  
+  - URL
+    - Java实现URL网络编程
+  - C/S架构和B/S架构
+  - HTTP协议/HTTPS协议
+    - 什么是HTTP协议？
+    - 什么是HTTPS协议？
     - 在HTTPS中，什么是对称加密（AES）和非对称加密（RSA）
     - 在使用HTTPS协议时，最初的服务器中RSA私钥是怎么来的？
     - 考虑到系统的防护性，HTTPS如何做到有效防护？
-    - HTTP请求和HTTPS请求有什么区别   
-    - 描述一个HTTPS请求从客户端到服务器的网络传输过程 
+    - HTTP请求和HTTPS请求有什么区别
+    - 描述一个HTTPS请求从客户端到服务器的网络传输过程
     - 如果两个服务器的物理距离横跨数千公里，这时我使用TCP连接，由于TCP的三次握手机制，传输层要传输三次才能建立连接吗？
-  - CDN  
-    - 关于CDN  
+  - CDN
+    - 关于CDN
   - P2P
-    - 关于P2P  
+    - 关于P2P
   - PCDN
     - 关于PCDN
   - 网络负载均衡
     - 什么是负载均衡？
     - 如何实现集群负载均衡？
     - 如何在分布式系统实现负载均衡？
-    - 关于不同的负载均衡  
-  - Tomcat  
-    - Tomcat的系统架构 
+    - 关于不同的负载均衡
+  - Tomcat
+    - Tomcat的系统架构
     - Tomcat的工作原理
-    - Tomcat的优缺点 
+    - Tomcat的优缺点
     - Tomcat与其他服务器对比
     - Tomcat的其他组件
-    - Tomcat中的`webapps`目录 
-  - Nginx  
-    - 关于Nginx  
-    - Nginx做资源的动静分离  
+    - Tomcat中的`webapps`目录
+  - Nginx
+    - 关于Nginx
+    - Nginx做资源的动静分离
     - Nginx的配置
     - Nginx的配置项有哪些
-    - 项目中使用了Nginx做反向代理，还需要网关做映射吗？ 
+    - 项目中使用了Nginx做反向代理，还需要网关做映射吗？
     - Nginx作用在网络架构的哪一层？
     - Nginx实现负载均衡
     - Nginx是如何实现反向代理的？
     - Nginx实现反向代理的实现原理是什么？
     - SpringCloudGateWay和Nginx相比，Nginx有哪些优势，有哪些不足Spring CloudGateWay的地方
-  - Netty  
-    - 关于Netty  
+  - Netty
+    - 关于Netty
     - Netty的主要特点
     - Netty是如何实现Reactor模式的
     - Netty中的Handle有什么作用
@@ -275,216 +305,300 @@ Java知识体系是一个广泛而深入的主题，涵盖了多个领域和概�
     - Netty的心跳机制
     - Netty示例代码
     - Netty是如何处理TCP粘包拆包问题的
-  - Jetty  
+  - Jetty
     - 关于Jetty
-  - 在实际生活中有哪些因素影响网络传输？  
+  - 在实际生活中有哪些因素影响网络传输？
   - 为什么Java比其他语言更适合开发Web应用程序？
-
-- **反射**    
-  - Java反射概述  
+- **反射**
+  
+  - Java反射概述
   - 反射和泛型擦除之间有什么关系
   - 反射的一些高级应用
-
-- **动态代理**  
+- **动态代理**
+  
   - Java动态代理代码实现
   - CGlib代理
   - CGlib实现原理是什么
+  - JDK动态代理和CGLIB的区别？
 
-### ④ [Java编译特点](./Java知识体系.md/#Java编译特点) 
-- **Javac**  
+### 四、[Java编译特点](./Java知识体系.md/#Java编译特点)
+
+- **Javac**
+  
   - Javac的编译过程
   - 阐述字节码
   - 程序经过Javac编译后，是如何在计算机底层运行的？
-
-- **JVM**  
+- **JVM**
+  
   - 传统编程语言编写的程序是如何在计算机系统底层运行的？
   - 为什么说JVM的设计仿造了计算机底层？
   - 在Java JVM中类生成对象的步骤是怎样的？
-  - Java类加载过程  
-    - 类加载器  
-    - 双亲委派机制  
-    - 沙箱安全机制 
-    - Java中的反射机制是否违反了沙箱安全机制  
+  - Java类加载过程
+    - 类加载器
+    - 双亲委派机制
+    - 双亲委派机制的作用是什么？为什么SPI要打破双亲委派？
+    - 沙箱安全机制
+    - Java中的反射机制是否违反了沙箱安全机制
   - JVM内存结构
-    - 阐述Java内存结构 
-    - JVM内存结构和数据存储分布详解      
-  - JVM的垃圾回收机制  
+    - 阐述Java内存结构
+    - JVM内存结构和数据存储分布详解
+    - JVM运行时内存如何划分？对象和引用分别存在哪里？
+    - JVM如何判断对象已死？为什么不用引用计数？
+  - JVM的垃圾回收机制
+    - Minor GC和Full GC的区别是什么？
+    - 常见的垃圾收集器有哪些？
     - 如果触发Full GC时扫描的实例对象都可用，这时对象空间不够怎么办？(JVM优化方案)
-  - JVM引用类型  
-    - JVM中的四种引用类型是什么？  
-  - JVM堆外内存  
+  - JVM引用类型
+    - JVM中的四种引用类型是什么？
+  - JVM堆外内存
     - 阐述JVM堆外内存
     - 如何预防JVM元空间发生内存泄漏？
     - PS：CPU如何调用内存去运行系统的？
-  - JVM PC寄存器  
-  - JVM虚拟机栈   
-  - JVM内存模型  
+  - JVM PC寄存器
+  - JVM虚拟机栈
+  - JVM内存模型
   - JVM监控工具
-  - JVM调优 
+  - JVM调优
     - 线上Java程序如何快速排查并找出问题？
+    - 如何解决线上OOM问题？
+
 ---
 
 ## Web开发知识体系（框架）
 
 ### [J2EE应用程序开发技术](./JavaWeb知识体系.md/#J2EE应用程序开发技术)
-### ①[Web前端技术](./JavaWeb知识体系.md/#Web前端技术) 
-  - HTML 
-    - HTML语言比Java、python等语言语法都不严格，是因为浏览器的编译强大吗？
-  - CSS 
-    - 阐述CSS
-    - CSS三大选择器
-    - CSS的定位方式
-    - CSS盒子模型
-  - JavaScript 
-    - JavaScript语法
-    - JavaScript事件
-    - BOM
-    - DOM
-    - ES6+新特性 
-  - TypeScript  
-  - 前端中的UI和UX  
-    - 主流的UI和UX工具 
-  - JQuery
-  - React
-    - 阐述React
-    - 什么是React中的路由（React Router）
-    - 什么是React的状态管理？
-    - 相比于JQuery，React有哪些优点？
-  - VUE  
-    - 阐述Vue  
-    - 什么是Vue的声明式指令？  
-    - 相比Vue2，Vue3有哪些改进？ 
-    - Vue的设计在React的基础上做了哪些改进？  
-  - Element Plus  
-  - AJAX 
-  - JSON 
-  - Axios 
-  - 前端安全防护
-  - 用户身份认证机制  
-    - Cookie  
-    - Session 
-    - JWT
-  - 大前端技术 
-    - 跨端/多端开发技术
-      - Hybrid
-      - Flutter 
-      - UniApp  
-    - 包管理工具
-      - Npm
-  - 有哪些前端展示的场景
-  - 微信小程序、安卓开发、IOS开发和原生HTML、CSS、JavaScript在语法上的对比 
-  - 前端网页端是如何将源代码隐藏的
-  - 前端工程师如何在不同应用上进行适配  
 
-### ② [Web后端技术](./JavaWeb知识体系.md/#Web后端技术) 
-  - JSP
-    - JSP为什么采用在HTML中写Java？而不是HTML中写C++？HTML中写python？
-  - Thymeleaf
-  - FreeMarker
-  - Node.js 
-  - Servlet  
-    - Servlet的工作原理  
-    - 为什么需要Servlet，比Servlet更早的技术是什么？
-    - Servlet接口中定义的方法  
-    - 在静态资源中的`Content-type`是如何体现的？  
-    - Servlet设置`Content-type`  
-    - `ServletResponse`接口  
-    - `ServletContext`对象  
-    - `ServletConfig`接口  
-    - `GenericServlet`抽象类  
-    - `HttpServlet`抽象类
-  - Java WEB 中前后端不分离和前后端分离的区别是什么？  
-  - Struts2
-  - SSH
-  - SSM
-  - Spring
-  - Spring MVC
-  - Spring Boot
+### 一、[Web前端技术](./JavaWeb知识体系.md/#Web前端技术)
+
+- HTML
+  - HTML语言比Java、python等语言语法都不严格，是因为浏览器的编译强大吗？
+- CSS
+  - 阐述CSS
+  - CSS三大选择器
+  - CSS的定位方式
+  - CSS盒子模型
+- JavaScript
+  - JavaScript语法
+  - JavaScript事件
+  - BOM
+  - DOM
+  - ES6+新特性
+- 前端中的UI和UX
+- npm
+- JQuery
+- AngularJS
+- React
+  - 阐述React
+  - 什么是React中的路由（React Router）
+  - 什么是React的状态管理？
+  - 相比于JQuery，React有哪些优点？
+- VUE
+  - 阐述Vue
+  - 什么是Vue的声明式指令？
+  - 相比Vue2，Vue3有哪些改进？
+  - Vue的设计在React的基础上做了哪些改进？
+- UniApp
+- AJAX
+- axios
+- JSON
+- 前端安全防护
+- TypeScript
+- 用户身份认证机制
+  - Cookie
+  - Session
+  - JWT
+  - Cookie和Session的区别？
+  - 为什么分布式场景更常用JWT而不是Session？
+- 有哪些前端展示的场景
+- 微信小程序、安卓开发、IOS开发和原生HTML、CSS、JavaScript在语法上的对比
+- 前端网页端是如何将源代码隐藏的
+- 前端工程师如何在不同应用上进行适配
+
+### 二、[Web后端技术](./JavaWeb知识体系.md/#Web后端技术)
+
+- JSP
+  - JSP为什么采用在HTML中写Java？而不是HTML中写C++？HTML中写python？
+- Node.js
+- Java web后端
+- Servlet
+  - Servlet的工作原理
+  - 为什么需要Servlet，比Servlet更早的技术是什么？
+  - Servlet接口中定义的方法
+  - 在静态资源中的`Content-type`是如何体现的？
+  - Servlet设置`Content-type`
+  - `ServletResponse`接口
+  - `ServletContext`对象
+  - `ServletConfig`接口
+  - `GenericServlet`抽象类
+  - `HttpServlet`抽象类
+    - 随后的Service方法
+  - Servlet的生命周期
+  - Servlet是单例多线程吗？为什么成员变量不是线程安全的？
+  - 在Servlet中，HttpServletRequest和ServletRequest HttpServletResponse和ServletResponse是什么关系？
+- 转发和重定向的区别
+- JSP和Servlet的区别
+- 浏览器渲染数据
+  - 前端渲染和后端渲染两者的好处和坏处
+  - 前端渲染与后端渲染对比
+- 什么是过滤器
+  - 使用Servlet创建过滤器
+  - 使用Spring Boot创建过滤器
+- 什么是监听器
+  - 使用Servlet创建一个监听器
+- 什么是拦截器
+  - 使用Spring MVC拦截器实现控制权限
+  - Filter、Listener、Interceptor的区别？
+- Java WEB 中前后端不分离和前后端分离的区别是什么？
+- Struts2
+  - Struts2被弃用原因：被爆出安全漏洞
+- SSH(Spring+Struts+Hibernates)
+- SSM(Spring+SpringMVC+Mybatis)
+- SSH和SSM的区别
+- Spring
+  - Spring的核心部分
+  - Spring IOC
+    - Spring IOC的底层实现机制
+    - 什么是IoC？Bean的生命周期是什么？
+    - Spring如何解决循环依赖？哪种循环依赖解不了？
+    - `@Autowired`和`@Resource`的区别？
+  - Spring AOP
+    - JDK动态代理和CGLIB如何选择？
+    - 自调用为什么切不到？
+    - Spring事务什么时候会失效？
+- Spring MVC
+  - `DispatcherServlet`的工作流程是什么？
+- Spring Boot
   - Spring Boot响应式编程
+  - Spring Boot自动配置原理是什么？
 
-### ③ [数据库连接技术](./JavaWeb知识体系.md/#数据库连接技术) 
-  - JDBC
-  - Mybatis
-    MybatisPlus
-  - Hibernate
+### 三、[数据库连接技术](./JavaWeb知识体系.md/#数据库连接技术)
 
-### ④ [数据库及持久层技术以及多种数据库的应用](./JavaWeb知识体系.md/#Java数据库及持久层技术以及多种数据库的应用)
-  - MYSQL
-    - MYSQL的核心概念：数据库、表和数据
-    - MYSQL的SQL语言
-    - SQL语句中DROP和TRANCATE有什么不同？
-    - MYSQL是关系型数据库，关系型数据库的特点是什么？
-    - SQL的基本数据类型
-    - SQL 语句在 MySQL 中的执行过程
-    - Mysql的调优方法有哪些？
-  - ORACLE
-  - 数据库连接池Druid
-  - ClickHouse
-  - Redis
-  - Memcache
-  - MongoDB
-  - ShardingSphere
-  - Mycat
+- JDBC
+  - JDBC为什么能连上数据库？
+- Mybatis
+  - MybatisPlus
+  - `#{}`和`${}`的区别？
+  - MyBatis一级缓存和二级缓存的区别？
+- Hibernate
 
-### ⑤ [容器技术](./JavaWeb知识体系.md/#容器技术) 
-  - Docker
-  - k8s
+### 四、[程序设计](./JavaWeb知识体系.md/#程序设计)
 
-### ⑥ [分布式中间件](./JavaWeb知识体系.md/#分布式中间件)
-  - 消息队列RabbitMQ
-  - 消息队列RocketMQ
-  - 缓存中间件Redis
-  - 数据库中间件Mycat
+- 设计模式
+  - 传统的MVC模式是如何做到松耦合的？
+  - Java程序通过设计模式、数据结构与算法等技术组成框架
+  - 设计模式的七大原则
+    - 开闭原则
+    - 单一职责原则
+    - 依赖倒置原则
+    - 迪米特原则
+    - 接口隔离原则
+    - 合成复用原则
+    - 里氏替换原则
+  - Java的23种设计模式
+    - 创造型模式
+    - 结构型模式
+    - 行为型模式
+- 数据结构与算法
 
-### ⑦ [分布式微服务框架](./JavaWeb知识体系.md/#分布式微服务框架)
-  - Spring Cloud
-  - Dubbo
-  - 分布式服务跟踪ELK
-  - 分布式搜索引擎Elasticsearch
-  - 分布式版本控制系统Git
+### 五、[数据库及持久层技术以及多种数据库的应用](./JavaWeb知识体系.md/#Java数据库及持久层技术以及多种数据库的应用)
 
-### ⑧ [安全](./JavaWeb知识体系.md/#安全)
-  - Spring Security
-    - SpringSecurity的实现原理是什么，基于哪些核心设计模式去实现的？
-  - Shiro
-  - Java在处理敏感数据的时候如何实现数据的安全性？
-  - Java后端是如何对密文数据进行存储、使用的？
-  - 如何对上传文件做必要的安全管理？
-  - 密码加密方式
-    - 哈希算法加密
-    - 盐值
-    - 对称加密
-    - 非对称加密
-  - 网络安全
-    - 如何保障网络安全？
-    - 如何在设计程序时保证网络安全？
-  - 网络安全威胁
-    - 阐述网络安全威胁  
+- MYSQL
+  - MYSQL的核心概念：数据库、表和数据
+  - MYSQL的SQL语言
+  - SQL语句中DROP和TRANCATE有什么不同？
+  - MYSQL是关系型数据库，关系型数据库的特点是什么？
+  - SQL的基本数据类型
+  - SQL 语句在 MySQL 中的执行过程
+  - Mysql的调优方法有哪些？
+  - 为什么用B+树做索引？聚簇索引、非聚簇索引、覆盖索引是什么？
+  - 什么是最左前缀原则？哪些情况索引会失效？
+  - 事务的ACID是什么？脏读、不可重复读、幻读是什么？
+  - MySQL默认隔离级别是什么？InnoDB如何避免幻读？
+  - InnoDB和MyISAM的区别？
+- ORACLE
+- PostgreSQL
+- NewSQL
+- PolarDB
+- 数据库连接池Druid
+- ClickHouse
+- HBase
+- Redis
+  - Redis有哪些数据类型？
+  - 缓存穿透、击穿、雪崩分别是什么？怎么防？
+  - RDB和AOF的区别？
+  - Redis如何实现分布式锁？
+- Memcache
+- MongoDB
+- ShardingSphere
+- Mycat
 
-### ⑨ [大数据](./JavaWeb知识体系.md/#分布式计算-大数据)
-  - 底层原理Hadoop
-  - 大数据资源管理系统YARN
-  - 数据仓库工具Hive
-  - Spark 批处理运算/Spark Streaming流式运输
-  - Flink 批处理运算+流式运算
-  - 大数据列式存储ClickHouse
-  - 大数据分布式协调服务Zookeeper
-  - 大数据数据采集Flume
-  - 大数据消息队列Kafka
-  - 大数据任务调度Azkaban
-  - 大数据元数据管理Atlas
-  - 大数据监控系统Prometheus
+### 六、[容器技术](./JavaWeb知识体系.md/#容器技术)
 
-### ⑩ [人工智能AIGC](./JavaWeb知识体系.md/#人工智能AIGC)
-  - Java整合AGI
-  
-### ⑩ [分布式账本](./JavaWeb知识体系.md/#分布式账本)
-  - 区块链
-  - 区块链的加密技术
+- Docker
+- k8s
+
+### 七、[分布式中间件](./JavaWeb知识体系.md/#分布式中间件)
+
+- 消息队列RabbitMQ
+- 消息队列RocketMQ
+- 缓存中间件Redis
+- 数据库中间件Mycat
+
+### 八、[分布式微服务框架](./JavaWeb知识体系.md/#分布式微服务框架)
+
+- Spring Cloud
+- Dubbo
+- 分布式服务跟踪ELK
+- 分布式搜索引擎Elasticsearch
+- 分布式版本控制系统Git
+
+### 九、[安全](./JavaWeb知识体系.md/#安全)
+
+- Spring Security
+  - SpringSecurity的实现原理是什么，基于哪些核心设计模式去实现的？
+- Shiro
+- Java在处理敏感数据的时候如何实现数据的安全性？
+- Java后端是如何对密文数据进行存储、使用的？
+- 如何对上传文件做必要的安全管理？
+- 密码加密方式
+  - 哈希算法加密
+  - 盐值
+  - 对称加密
+  - 非对称加密
+- 网络安全
+  - 如何保障网络安全？
+  - 如何在设计程序时保证网络安全？
+- 网络安全威胁
+  - 阐述网络安全威胁
+
+### 十、[大数据](./JavaWeb知识体系.md/#分布式计算-大数据)
+
+- 底层原理Hadoop
+- 大数据资源管理系统YARN
+- 数据仓库工具Hive
+- Spark 批处理运算/Spark Streaming流式运输
+- Flink 批处理运算+流式运算
+- 大数据列式存储ClickHouse
+- 大数据分布式协调服务Zookeeper
+- 大数据数据采集Flume
+- 大数据消息队列Kafka
+- 大数据任务调度Azkaban
+- 大数据元数据管理Atlas
+- 大数据监控系统Prometheus
+
+### 十一、[人工智能AIGC](./JavaWeb知识体系.md/#人工智能AIGC)
+
+- Java整合AGI
+
+### 十二、[分布式账本](./JavaWeb知识体系.md/#分布式账本)
+
+- 区块链
+- 区块链的加密技术
 
 ---
 
 ## 计算机四大知识体系
+
 1. 计算机组成原理
 2. 现代计算机操作系统
 3. 计算机网络
