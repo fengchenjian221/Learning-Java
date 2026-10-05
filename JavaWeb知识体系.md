@@ -1,4 +1,5 @@
 # J2EE应用程序开发技术：
+
 J2EE（Java 2 Platform, Enterprise Edition）是一个为企业级应用提供的一套标准规范，用于开发和部署可扩展、可移植、可靠且安全的服务器端Java应用程序。
 传统的J2EE（现在称为Jakarta EE）是一个为企业级应用设计的大型平台，它包含了一系列的技术和规范。
 
@@ -7,9 +8,10 @@ J2EE（Java 2 Platform, Enterprise Edition）是一个为企业级应用提供�
 ### 一、 核心概念与分层架构
 
 传统的J2EE应用通常采用**分层架构**，不同技术负责不同层面：
-1.  **Web层**：负责展示用户界面和处理HTTP请求。
-2.  **业务逻辑层**：负责实现核心业务规则和流程。
-3.  **数据持久层**：负责与数据库交互，完成数据的增删改查。
+
+1. **Web层**：负责展示用户界面和处理HTTP请求。
+2. **业务逻辑层**：负责实现核心业务规则和流程。
+3. **数据持久层**：负责与数据库交互，完成数据的增删改查。
 
 ---
 
@@ -19,136 +21,145 @@ J2EE（Java 2 Platform, Enterprise Edition）是一个为企业级应用提供�
 
 #### 1. Web层技术
 
-*   **Servlet**：
-    *   **角色**：J2EE Web技术的基石。它是运行在服务器端的Java程序，用于处理和响应客户端的HTTP请求。所有现代的Web框架（如Spring MVC）都构建在Servlet之上。
-    *   **功能**：接收请求、调用业务逻辑、生成动态内容（如HTML、JSON）。
-
-*   **JavaServer Pages (JSP)**：
-    *   **角色**：基于Servlet技术，用于简化动态网页的创建。它允许在HTML中嵌入Java代码。
-    *   **功能**：更方便地制作页面展示层。JSP在运行时会被编译成Servlet。
-
-*   **JavaServer Pages Standard Tag Library (JSTL)**：
-    *   **角色**：JSP的扩展，提供了一系列标准标签（如循环、判断、格式化），以避免在JSP页面中直接编写大量的Java代码，促进前后端分离。
-
-*   **JavaBeans (在Web层中)**：
-    *   一种遵循特定规范的Java类，用于在层与层之间封装和传递数据。
+- **Servlet**：
+  
+  - **角色**：J2EE Web技术的基石。它是运行在服务器端的Java程序，用于处理和响应客户端的HTTP请求。所有现代的Web框架（如Spring MVC）都构建在Servlet之上。
+  - **功能**：接收请求、调用业务逻辑、生成动态内容（如HTML、JSON）。
+- **JavaServer Pages (JSP)**：
+  
+  - **角色**：基于Servlet技术，用于简化动态网页的创建。它允许在HTML中嵌入Java代码。
+  - **功能**：更方便地制作页面展示层。JSP在运行时会被编译成Servlet。
+- **JavaServer Pages Standard Tag Library (JSTL)**：
+  
+  - **角色**：JSP的扩展，提供了一系列标准标签（如循环、判断、格式化），以避免在JSP页面中直接编写大量的Java代码，促进前后端分离。
+- **JavaBeans (在Web层中)**：
+  
+  - 一种遵循特定规范的Java类，用于在层与层之间封装和传递数据。
 
 #### 2. 业务逻辑层技术
 
-*   **Enterprise JavaBeans (EJB)**：
-    *   这是传统J2EE的核心和标志，用于封装复杂的业务逻辑。EJB又主要分为三种类型：
-    *   **Session Bean（会话Bean）**：
-        *   **无状态会话Bean**：不保留客户端的状态，适用于一次性操作，如用户验证、订单处理。
-        *   **有状态会话Bean**：会为每个客户端保留状态，适用于需要多步交互的场景，如购物车。
-    *   **Entity Bean（实体Bean）**：
-        *   **角色**：**早期**用于表示数据库中的持久化对象。
-        *   **现状**：**已被JPA完全取代**，因其过于笨重和复杂，现在已不推荐使用。
-    *   **Message-Driven Bean (MDB，消息驱动Bean)**：
-        *   **角色**：用于异步消息处理。它可以监听消息队列（如JMS）中的消息并做出响应，实现系统间的解耦。
+- **Enterprise JavaBeans (EJB)**：
+  - 这是传统J2EE的核心和标志，用于封装复杂的业务逻辑。EJB又主要分为三种类型：
+  - **Session Bean（会话Bean）**：
+    - **无状态会话Bean**：不保留客户端的状态，适用于一次性操作，如用户验证、订单处理。
+    - **有状态会话Bean**：会为每个客户端保留状态，适用于需要多步交互的场景，如购物车。
+  - **Entity Bean（实体Bean）**：
+    - **角色**：**早期**用于表示数据库中的持久化对象。
+    - **现状**：**已被JPA完全取代**，因其过于笨重和复杂，现在已不推荐使用。
+  - **Message-Driven Bean (MDB，消息驱动Bean)**：
+    - **角色**：用于异步消息处理。它可以监听消息队列（如JMS）中的消息并做出响应，实现系统间的解耦。
 
 #### 3. 数据持久层技术
 
-*   **Java Database Connectivity (JDBC)**：
-    *   **角色**：Java语言中访问数据库的基础API。它提供了一种与各种关系型数据库进行交互的标准方法。
-    *   **功能**：建立数据库连接、执行SQL语句、处理结果集。
-
-*   **Java Persistence API (JPA)**：
-    *   **注意**：JPA是**较晚**加入Java EE 5的技术，但它现在已成为持久层事实上的标准。它取代了笨重的Entity Bean。
-    *   **角色**：一个对象关系映射（ORM）规范，它将Java对象（POJO）与数据库表映射起来，开发者可以像操作Java对象一样操作数据库记录。
-    *   **实现**：Hibernate、EclipseLink等都是JPA的流行实现。
+- **Java Database Connectivity (JDBC)**：
+  
+  - **角色**：Java语言中访问数据库的基础API。它提供了一种与各种关系型数据库进行交互的标准方法。
+  - **功能**：建立数据库连接、执行SQL语句、处理结果集。
+- **Java Persistence API (JPA)**：
+  
+  - **注意**：JPA是**较晚**加入Java EE 5的技术，但它现在已成为持久层事实上的标准。它取代了笨重的Entity Bean。
+  - **角色**：一个对象关系映射（ORM）规范，它将Java对象（POJO）与数据库表映射起来，开发者可以像操作Java对象一样操作数据库记录。
+  - **实现**：Hibernate、EclipseLink等都是JPA的流行实现。
 
 #### 4. 其他重要服务与技术
 
-*   **Java Naming and Directory Interface (JNDI)**：
-    *   **角色**：提供一个统一的接口来查找和访问各种命名的和目录的服务。在J2EE中，常用于查找EJB、数据源等资源。
-
-*   **Java Message Service (JMS)**：
-    *   **角色**：一个消息中间件的API，允许应用程序组件基于消息队列或发布/订阅模型进行异步通信。
-
-*   **Java Transaction API (JTA)**：
-    *   **角色**：用于管理分布式事务的API。它可以确保跨越多个数据库或消息队列的操作作为一个原子单元执行（全部成功或全部回滚）。
-
-*   **JavaMail**：
-    *   **角色**：用于发送和接收电子邮件的API。
-
-*   **Java Authentication and Authorization Service (JAAS)**：
-    *   **角色**：用于对用户进行身份验证和授权。
+- **Java Naming and Directory Interface (JNDI)**：
+  
+  - **角色**：提供一个统一的接口来查找和访问各种命名的和目录的服务。在J2EE中，常用于查找EJB、数据源等资源。
+- **Java Message Service (JMS)**：
+  
+  - **角色**：一个消息中间件的API，允许应用程序组件基于消息队列或发布/订阅模型进行异步通信。
+- **Java Transaction API (JTA)**：
+  
+  - **角色**：用于管理分布式事务的API。它可以确保跨越多个数据库或消息队列的操作作为一个原子单元执行（全部成功或全部回滚）。
+- **JavaMail**：
+  
+  - **角色**：用于发送和接收电子邮件的API。
+- **Java Authentication and Authorization Service (JAAS)**：
+  
+  - **角色**：用于对用户进行身份验证和授权。
 
 ---
 
 ### 三、 总结与演变
 
 **传统的J2EE技术栈可以概括为：**
-*   **Web层**：**Servlet + JSP + JSTL**
-*   **业务层**：**EJB（主要是Session Bean和MDB）**
-*   **持久层**：**JDBC**（后期被**JPA/Hibernate**取代）
-*   **支撑服务**：**JNDI， JMS， JTA** 等
+
+- **Web层**：**Servlet + JSP + JSTL**
+- **业务层**：**EJB（主要是Session Bean和MDB）**
+- **持久层**：**JDBC**（后期被**JPA/Hibernate**取代）
+- **支撑服务**：**JNDI， JMS， JTA** 等
 
 **重要提示：**
 现代Java企业级开发已经发生了巨大变化。传统的“重量级”J2EE（尤其是EJB 2.x）因为配置复杂、侵入性强、测试困难而饱受诟病。随之兴起的是 **“轻量级”框架**，如 **Spring Framework**，它通过依赖注入和面向切面编程等理念，提供了更灵活、更易测试的替代方案。
 
 如今，典型的现代Java技术栈可能是：**Spring Boot + Spring MVC + Spring Data JPA (Hibernate)**，它吸收了J2EE的精华（如Servlet规范），但摒弃了其笨重的部分（如EJB），并极大地简化了开发。传统的J2EE也已演变为 **Jakarta EE**，其设计理念也变得更加现代和轻量。
 
-
 # Web前端技术：
+
 软件开发中的**前端**，是指直接与用户交互的可视化界面及交互逻辑层，它负责将后端提供的数据转化为用户能直观操作、浏览的内容，是用户感知软件功能的**直接入口**，核心目标是实现**流畅、美观、易用**的用户体验。
 
 ### 一、前端的核心职责
+
 1. **界面渲染与布局**
-    - 根据产品设计稿，构建符合需求的页面结构，实现响应式布局（兼容PC、手机、平板等多终端）。
-    - 例如：电商网站的商品列表页、支付页面的表单布局，都需要前端完成页面元素的排版与样式美化。
-
+  
+  - 根据产品设计稿，构建符合需求的页面结构，实现响应式布局（兼容PC、手机、平板等多终端）。
+  - 例如：电商网站的商品列表页、支付页面的表单布局，都需要前端完成页面元素的排版与样式美化。
 2. **交互逻辑实现**
-    - 处理用户的操作行为，如点击按钮、输入文本、下拉选择、滑动切换等，并给出即时反馈。
-    - 例如：用户点击“加入购物车”按钮时，前端会触发弹窗提示、更新购物车图标数量；表单输入时实时校验格式是否正确。
-
+  
+  - 处理用户的操作行为，如点击按钮、输入文本、下拉选择、滑动切换等，并给出即时反馈。
+  - 例如：用户点击“加入购物车”按钮时，前端会触发弹窗提示、更新购物车图标数量；表单输入时实时校验格式是否正确。
 3. **数据交互与状态管理**
-    - 通过调用后端提供的API接口（如RESTful、GraphQL），实现数据的请求、接收和展示。
-    - 管理页面状态，如用户登录状态、购物车数据、页面加载状态（loading效果），确保状态变化时页面同步更新。
-
+  
+  - 通过调用后端提供的API接口（如RESTful、GraphQL），实现数据的请求、接收和展示。
+  - 管理页面状态，如用户登录状态、购物车数据、页面加载状态（loading效果），确保状态变化时页面同步更新。
 4. **跨端与兼容性适配**
-    - 保证页面在不同浏览器（Chrome、Firefox、Safari、Edge等）、不同设备（手机、PC）上的正常显示和功能运行。
-    - 针对移动端做触控优化、适配不同屏幕分辨率，也可通过技术实现跨端开发（如同时支持Web和APP）。
-
+  
+  - 保证页面在不同浏览器（Chrome、Firefox、Safari、Edge等）、不同设备（手机、PC）上的正常显示和功能运行。
+  - 针对移动端做触控优化、适配不同屏幕分辨率，也可通过技术实现跨端开发（如同时支持Web和APP）。
 5. **性能与体验优化**
-    - 优化页面加载速度（如图片懒加载、资源压缩、缓存策略）、减少交互延迟。
-    - 处理动画效果、骨架屏加载、错误提示等细节，提升用户使用体验。
+  
+  - 优化页面加载速度（如图片懒加载、资源压缩、缓存策略）、减少交互延迟。
+  - 处理动画效果、骨架屏加载、错误提示等细节，提升用户使用体验。
 
 ### 二、前端开发的核心技术栈
+
 1. **基础技术（Web前端基石）**
-    - **HTML**：负责页面的结构搭建，定义文本、图片、按钮等元素的语义化标签。
-    - **CSS**：负责页面的样式美化，控制元素的颜色、大小、位置、动画等，主流扩展方案有Sass、Less。
-    - **JavaScript**：负责页面的交互逻辑，实现动态效果和数据处理，是前端的核心编程语言。
-
+  
+  - **HTML**：负责页面的结构搭建，定义文本、图片、按钮等元素的语义化标签。
+  - **CSS**：负责页面的样式美化，控制元素的颜色、大小、位置、动画等，主流扩展方案有Sass、Less。
+  - **JavaScript**：负责页面的交互逻辑，实现动态效果和数据处理，是前端的核心编程语言。
 2. **主流框架与库**
-    - **三大核心框架**：React（组件化、生态丰富，适合大型应用）、Vue.js（轻量易上手，适合快速开发）、Angular（全功能框架，适合企业级应用）。
-    - **辅助库**：jQuery（简化DOM操作，传统项目常用）、Axios（处理HTTP请求）、Tailwind CSS（原子化CSS框架，快速构建样式）。
-
+  
+  - **三大核心框架**：React（组件化、生态丰富，适合大型应用）、Vue.js（轻量易上手，适合快速开发）、Angular（全功能框架，适合企业级应用）。
+  - **辅助库**：jQuery（简化DOM操作，传统项目常用）、Axios（处理HTTP请求）、Tailwind CSS（原子化CSS框架，快速构建样式）。
 3. **跨端开发技术**
-    - **混合开发**：基于WebView的方案，如Cordova、Ionic，将Web页面打包成APP。
-    - **原生跨端**：React Native、Flutter，通过一套代码生成iOS和Android原生应用。
-    - **小程序开发**：微信小程序、支付宝小程序等，使用各平台的专属语法或框架（如Taro、UniApp）。
-
+  
+  - **混合开发**：基于WebView的方案，如Cordova、Ionic，将Web页面打包成APP。
+  - **原生跨端**：React Native、Flutter，通过一套代码生成iOS和Android原生应用。
+  - **小程序开发**：微信小程序、支付宝小程序等，使用各平台的专属语法或框架（如Taro、UniApp）。
 4. **工程化与工具**
-    - **构建工具**：Webpack、Vite（打包、编译前端资源，优化加载性能）。
-    - **包管理工具**：npm、yarn（管理项目依赖的第三方库）。
-    - **代码检查与格式化**：ESLint、Prettier（保证代码规范）。
-    - **版本控制**：Git（与后端开发共用，管理代码版本）。
+  
+  - **构建工具**：Webpack、Vite（打包、编译前端资源，优化加载性能）。
+  - **包管理工具**：npm、yarn（管理项目依赖的第三方库）。
+  - **代码检查与格式化**：ESLint、Prettier（保证代码规范）。
+  - **版本控制**：Git（与后端开发共用，管理代码版本）。
 
 ### 三、前端与后端的协作模式
+
 1. **前后端分离架构**：当前主流模式，前端和后端独立开发、独立部署。前端通过API接口获取数据，后端专注于数据处理和业务逻辑，两者通过接口文档（如Swagger、OpenAPI）约定数据格式。
 2. **协作流程**：
-   - 后端提供API接口文档，定义请求方式、参数、返回数据格式。
-   - 前端根据文档编写请求代码，获取数据后渲染到页面。
-   - 联调阶段共同排查接口问题，确保数据交互正常。
+  - 后端提供API接口文档，定义请求方式、参数、返回数据格式。
+  - 前端根据文档编写请求代码，获取数据后渲染到页面。
+  - 联调阶段共同排查接口问题，确保数据交互正常。
 
 ### 四、前端的发展趋势
+
 - **大前端概念**：前端技术不再局限于Web页面，延伸到移动端、桌面端（如Electron开发PC软件）、小程序等多终端。
 - **低代码/无代码平台**：通过可视化拖拽降低开发门槛，前端开发者可参与平台搭建。
 - **AI 赋能前端**：利用AI工具生成页面代码、优化交互逻辑、辅助测试等。
 
 简单来说，前端的工作就是让用户“看得懂、用得顺”，它是软件与用户之间的桥梁，直接决定了用户对软件的第一印象和使用体验。
-
 
 HTML：(主要用于网页主体结构的搭建)
 HTML 指的是**超文本标记语言: HyperText Markup Language**，是一种用于创建网页的标准标记语言，它通过一系列标签将网络上的文档格式统一，使得分散的Internet资源能够连接成一个逻辑整体。
@@ -176,20 +187,25 @@ HTML文本由HTML命令组成，这些命令用于说明网页中的各种元素
 ## HTML标签结构详解
 
 ### 1. 文档类型声明
+
 ```html
 <!DOCTYPE html>
 ```
+
 - 声明文档类型为HTML5
 - 必须是HTML文档的第一行
 
 ### 2. 根元素
+
 ```html
 <html lang="zh-CN">
 ```
+
 - HTML文档的根元素
 - `lang`属性指定文档语言
 
 ### 3. 头部区域
+
 ```html
 <head>
     <!-- 元数据和页面信息 -->
@@ -197,6 +213,7 @@ HTML文本由HTML命令组成，这些命令用于说明网页中的各种元素
 ```
 
 ### 4. 主体区域
+
 ```html
 <body>
     <!-- 页面可见内容 -->
@@ -208,6 +225,7 @@ HTML文本由HTML命令组成，这些命令用于说明网页中的各种元素
 ### 1. 结构标签
 
 #### 文档结构
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -220,6 +238,7 @@ HTML文本由HTML命令组成，这些命令用于说明网页中的各种元素
 ```
 
 #### 语义化结构标签（HTML5新增）
+
 ```html
 <header>页面头部</header>
 <nav>导航区域</nav>
@@ -233,6 +252,7 @@ HTML文本由HTML命令组成，这些命令用于说明网页中的各种元素
 ### 2. 文本内容标签
 
 #### 标题标签
+
 ```html
 <h1>一级标题</h1>
 <h2>二级标题</h2>
@@ -243,6 +263,7 @@ HTML文本由HTML命令组成，这些命令用于说明网页中的各种元素
 ```
 
 #### 段落和文本格式
+
 ```html
 <p>段落文本</p>
 <br> <!-- 换行 -->
@@ -277,16 +298,19 @@ HTML文本由HTML命令组成，这些命令用于说明网页中的各种元素
 ### 4. 链接和媒体标签
 
 #### 链接
+
 ```html
 <a href="https://example.com" target="_blank">链接文本</a>
 ```
 
 #### 图片
+
 ```html
 <img src="image.jpg" alt="图片描述" width="300" height="200">
 ```
 
 #### 音频和视频
+
 ```html
 <audio controls>
     <source src="audio.mp3" type="audio/mpeg">
@@ -323,26 +347,26 @@ HTML文本由HTML命令组成，这些命令用于说明网页中的各种元素
 <form action="/submit" method="post">
     <label for="name">姓名：</label>
     <input type="text" id="name" name="name" required>
-    
+
     <label for="email">邮箱：</label>
     <input type="email" id="email" name="email">
-    
+
     <label for="password">密码：</label>
     <input type="password" id="password" name="password">
-    
+
     <select name="gender">
         <option value="male">男</option>
         <option value="female">女</option>
     </select>
-    
+
     <textarea name="message" rows="4" cols="50"></textarea>
-    
+
     <input type="checkbox" id="agree" name="agree">
     <label for="agree">我同意条款</label>
-    
+
     <input type="radio" id="option1" name="option" value="1">
     <label for="option1">选项1</label>
-    
+
     <input type="submit" value="提交">
     <button type="reset">重置</button>
 </form>
@@ -393,46 +417,45 @@ HTML文本由HTML命令组成，这些命令用于说明网页中的各种元素
             <a href="#contact">联系</a>
         </nav>
     </header>
-    
+
     <main>
         <section>
             <h2>主要内容</h2>
             <p>这是一个段落文本，包含<strong>重要内容</strong>和<em>强调文本</em>。</p>
-            
+
             <ul>
                 <li>无序列表项1</li>
                 <li>无序列表项2</li>
             </ul>
-            
+
             <img src="example.jpg" alt="示例图片" width="200">
         </section>
     </main>
-    
+
     <footer>
-        <p>&copy; 2023 我的网站</p>
+        <p>© 2023 我的网站</p>
     </footer>
 </body>
 </html>
 ```
 
->HTML语言比Java、python等语言语法都不严格，是因为浏览器的编译强大吗？
-HTML语言（HyperText Markup Language，超文本标记语言）与Java、Python等编程语言在设计和用途上存在本质区别，这种差异直接影响了它们在语法严格性方面的表现。
+> HTML语言比Java、python等语言语法都不严格，是因为浏览器的编译强大吗？
+> HTML语言（HyperText Markup Language，超文本标记语言）与Java、Python等编程语言在设计和用途上存在本质区别，这种差异直接影响了它们在语法严格性方面的表现。
 
 具体分析如下：
 
 1. **设计目的不同**
-   - HTML是一种**标记语言**，主要用于构建网页结构和内容呈现。其语法设计简单直观，便于开发人员通过标记（tags）定义内容布局与样式。
-   - Java和Python属于**编程语言**，用于实现复杂程序逻辑，如算法设计、数据处理和系统操作等，因此语法必须更为严格和精确，以确保程序的正确性与可靠性。
-
+  
+  - HTML是一种**标记语言**，主要用于构建网页结构和内容呈现。其语法设计简单直观，便于开发人员通过标记（tags）定义内容布局与样式。
+  - Java和Python属于**编程语言**，用于实现复杂程序逻辑，如算法设计、数据处理和系统操作等，因此语法必须更为严格和精确，以确保程序的正确性与可靠性。
 2. **浏览器编译过程的定位**
-   - 浏览器具备强大的解析与渲染能力，能够处理HTML、CSS及JavaScript等前端技术，但其主要任务是将标记语言转换为可视化内容，而非执行类似Java或Python的复杂程序逻辑。
-
+  
+  - 浏览器具备强大的解析与渲染能力，能够处理HTML、CSS及JavaScript等前端技术，但其主要任务是将标记语言转换为可视化内容，而非执行类似Java或Python的复杂程序逻辑。
 3. **HTML的语法设计初衷**
-   - HTML以易读、易写为目标，允许开发人员通过简单标记控制内容展示方式。这种设计降低了使用门槛，使其成为非专业开发者也能够快速掌握的工具。
+  
+  - HTML以易读、易写为目标，允许开发人员通过简单标记控制内容展示方式。这种设计降低了使用门槛，使其成为非专业开发者也能够快速掌握的工具。
 
 综上所述，HTML语言在语法上不如Java、Python等编程语言严格，根本原因在于其设计目标与应用场景不同，而非浏览器的编译能力。各类语言均有其适用场景与优势，开发时需根据具体需求做出选择。
-
-
 
 CSS：
 **CSS**，全称为 **层叠样式表**，是一种用于**描述网页表现样式**的样式表语言。简单来说，HTML定义了网页的结构与内容，而CSS则控制这些内容的视觉样式与布局。它的核心目标是实现**内容与表现的分离**。
@@ -441,18 +464,19 @@ CSS：
 
 ### CSS的核心思想与优势
 
-1.  **内容与表现分离**
-    *   **HTML只负责结构和内容**（如标题、段落、图片）。
-    *   **CSS只负责外观和样式**（如颜色、字体、间距、布局）。
-    *   这样做的好处是：一份HTML内容，可以通过不同的CSS样式表，呈现出完全不同的视觉风格（比如网站的日间模式和夜间模式）。
-
-2.  **层叠性**
-    *   “层叠”是CSS的核心机制。它指的是**多条样式规则可以应用于同一个元素，这些规则会根据其来源、优先级和顺序进行层层叠加和计算**，最终确定一个唯一的样式值。
-    *   它解决了样式冲突的问题。例如，一个`<p>`标签可能同时被浏览器默认样式、开发者写的样式表、以及内联样式所影响，层叠规则会决定最终哪个样式生效。
-
-3.  **继承性**
-    *   一些CSS属性（主要是文本相关的属性，如`color`, `font-family`, `line-height`）会从父元素传递给子元素。
-    *   例如，如果你给`<body>`标签设置了字体颜色`color: blue;`，那么body内所有的子元素（如`<p>`, `<span>`）默认都会继承这个蓝色，除非你单独为它们指定了其他颜色。这大大提高了代码的效率和可维护性。
+1. **内容与表现分离**
+  
+  - **HTML只负责结构和内容**（如标题、段落、图片）。
+  - **CSS只负责外观和样式**（如颜色、字体、间距、布局）。
+  - 这样做的好处是：一份HTML内容，可以通过不同的CSS样式表，呈现出完全不同的视觉风格（比如网站的日间模式和夜间模式）。
+2. **层叠性**
+  
+  - “层叠”是CSS的核心机制。它指的是**多条样式规则可以应用于同一个元素，这些规则会根据其来源、优先级和顺序进行层层叠加和计算**，最终确定一个唯一的样式值。
+  - 它解决了样式冲突的问题。例如，一个`<p>`标签可能同时被浏览器默认样式、开发者写的样式表、以及内联样式所影响，层叠规则会决定最终哪个样式生效。
+3. **继承性**
+  
+  - 一些CSS属性（主要是文本相关的属性，如`color`, `font-family`, `line-height`）会从父元素传递给子元素。
+  - 例如，如果你给`<body>`标签设置了字体颜色`color: blue;`，那么body内所有的子元素（如`<p>`, `<span>`）默认都会继承这个蓝色，除非你单独为它们指定了其他颜色。这大大提高了代码的效率和可维护性。
 
 ---
 
@@ -468,14 +492,14 @@ p {
 }
 ```
 
-*   **选择器：** `p`
-    *   用于“选中”你想要样式化的一个或一组HTML元素。这里选中了所有的`<p>`段落标签。
-*   **声明块：** `{ color: red; font-size: 16px; }`
-    *   由一对大括号 `{}` 包裹。
-*   **声明：** `color: red;`
-    *   每个声明由一个**属性**和一个**值**组成，中间用冒号 `:` 分隔，并以分号 `;` 结尾。
-    *   **属性：** 是你希望改变的样式名称，如 `color`（颜色）、`width`（宽度）。
-    *   **值：** 是你赋予该属性的具体设置，如 `red`（红色）、`200px`（200像素）。
+- **选择器：** `p`
+  - 用于“选中”你想要样式化的一个或一组HTML元素。这里选中了所有的`<p>`段落标签。
+- **声明块：** `{ color: red; font-size: 16px; }`
+  - 由一对大括号 `{}` 包裹。
+- **声明：** `color: red;`
+  - 每个声明由一个**属性**和一个**值**组成，中间用冒号 `:` 分隔，并以分号 `;` 结尾。
+  - **属性：** 是你希望改变的样式名称，如 `color`（颜色）、`width`（宽度）。
+  - **值：** 是你赋予该属性的具体设置，如 `red`（红色）、`200px`（200像素）。
 
 ---
 
@@ -484,27 +508,33 @@ p {
 CSS的强大功能主要体现在以下三个方面：
 
 #### 1. 丰富的样式控制
+
 CSS可以控制几乎所有你能想到的视觉样式：
-*   **文本样式：** 字体 (`font-family`)、大小 (`font-size`)、粗细 (`font-weight`)、颜色 (`color`)、行高 (`line-height`)等。
-*   **盒模型：** 这是CSS布局的基石。每个元素都被看作一个盒子，包含：
-    *   `width` / `height`（内容宽高）
-    *   `padding`（内边距）
-    *   `border`（边框）
-    *   `margin`（外边距）
-*   **背景与边框：** 背景颜色 (`background-color`)、背景图片 (`background-image`)、圆角 (`border-radius`)、阴影 (`box-shadow`)。
-*   **颜色与透明度：** 支持各种颜色模式（十六进制、RGB、HSL），以及透明度 (`opacity`)控制。
+
+- **文本样式：** 字体 (`font-family`)、大小 (`font-size`)、粗细 (`font-weight`)、颜色 (`color`)、行高 (`line-height`)等。
+- **盒模型：** 这是CSS布局的基石。每个元素都被看作一个盒子，包含：
+  - `width` / `height`（内容宽高）
+  - `padding`（内边距）
+  - `border`（边框）
+  - `margin`（外边距）
+- **背景与边框：** 背景颜色 (`background-color`)、背景图片 (`background-image`)、圆角 (`border-radius`)、阴影 (`box-shadow`)。
+- **颜色与透明度：** 支持各种颜色模式（十六进制、RGB、HSL），以及透明度 (`opacity`)控制。
 
 #### 2. 强大的布局系统
+
 CSS提供了多种现代布局技术，用于安排页面元素的位置和关系：
-*   **传统布局：** `display`（块、内联、内联块）、`position`（定位）、`float`（浮动）。
-*   **Flexbox布局（弹性盒子）：** **一维布局**的神器，非常适合组件内、单行或单列的布局，能轻松实现居中、均分、对齐等复杂需求。
-*   **Grid布局（网格布局）：** **二维布局**的终极方案，将整个页面划分为行和列，可以精准地控制元素在网格中的位置，非常适合整个页面的宏观布局。
+
+- **传统布局：** `display`（块、内联、内联块）、`position`（定位）、`float`（浮动）。
+- **Flexbox布局（弹性盒子）：** **一维布局**的神器，非常适合组件内、单行或单列的布局，能轻松实现居中、均分、对齐等复杂需求。
+- **Grid布局（网格布局）：** **二维布局**的终极方案，将整个页面划分为行和列，可以精准地控制元素在网格中的位置，非常适合整个页面的宏观布局。
 
 #### 3. 交互与动画
+
 CSS不仅可以定义静态样式，还能创造动态效果：
-*   **过渡：** `transition` 属性可以让元素样式的变化（如鼠标悬停时颜色改变）不是瞬间完成，而是有一个平滑的过渡过程。
-*   **动画：** `@keyframes` 规则可以创建复杂的动画序列，让元素在多个关键帧之间移动、旋转、缩放等，无需使用JavaScript。
-*   **变换：** `transform` 属性可以对元素进行旋转、缩放、倾斜或平移。
+
+- **过渡：** `transition` 属性可以让元素样式的变化（如鼠标悬停时颜色改变）不是瞬间完成，而是有一个平滑的过渡过程。
+- **动画：** `@keyframes` 规则可以创建复杂的动画序列，让元素在多个关键帧之间移动、旋转、缩放等，无需使用JavaScript。
+- **变换：** `transform` 属性可以对元素进行旋转、缩放、倾斜或平移。
 
 ---
 
@@ -512,37 +542,40 @@ CSS不仅可以定义静态样式，还能创造动态效果：
 
 有三种主要方式将CSS引入到HTML中：
 
-1.  **外部样式表（最佳实践）**
-    将CSS代码写在一个独立的`.css`文件中，然后在HTML的`<head>`部分通过`<link>`标签引入。
-    ```html
-    <head>
-      <link rel="stylesheet" href="styles.css">
-    </head>
-    ```
-    *   **优点：** 实现了内容与样式的完全分离，易于维护，可以被多个页面复用。
-
-2.  **内部样式表**
-    将CSS代码写在HTML文档的`<style>`标签内，该标签通常放在`<head>`中。
-    ```html
-    <head>
-      <style>
-        p { color: blue; }
-      </style>
-    </head>
-    ```
-    *   **适用场景：** 适用于单页面或小项目，但不利于复用和维护。
-
-3.  **内联样式（应尽量避免）**
-    直接在HTML元素的`style`属性中编写CSS。
-    ```html
-    <p style="color: green;">这是一个绿色的段落。</p>
-    ```
-    *   **缺点：** 优先级最高，会覆盖其他样式，导致代码混乱，难以维护，违背了内容与表现分离的原则。
+1. **外部样式表（最佳实践）**
+  将CSS代码写在一个独立的`.css`文件中，然后在HTML的`<head>`部分通过`<link>`标签引入。
+  
+  ```html
+  <head>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  ```
+  
+  - **优点：** 实现了内容与样式的完全分离，易于维护，可以被多个页面复用。
+2. **内部样式表**
+  将CSS代码写在HTML文档的`<style>`标签内，该标签通常放在`<head>`中。
+  
+  ```html
+  <head>
+    <style>
+      p { color: blue; }
+    </style>
+  </head>
+  ```
+  
+  - **适用场景：** 适用于单页面或小项目，但不利于复用和维护。
+3. **内联样式（应尽量避免）**
+  直接在HTML元素的`style`属性中编写CSS。
+  
+  ```html
+  <p style="color: green;">这是一个绿色的段落。</p>
+  ```
+  
+  - **缺点：** 优先级最高，会覆盖其他样式，导致代码混乱，难以维护，违背了内容与表现分离的原则。
 
 ### 总结
 
 **CSS是一门用于控制网页视觉表现和布局的强大语言。** 它通过**选择器**精准地选中元素，通过**层叠**与**继承**机制高效地管理样式规则，并赋予开发者控制**样式、布局和动画**的能力。它与HTML和JavaScript共同构成了现代前端开发的三大基石，分别负责**结构、表现和行为**。
-
 
 CSS选择器：
 
@@ -552,9 +585,9 @@ CSS选择器：
 
 CSS选择器主要由以下核心部分组成：
 
-1.  **选择器**：规则中用于指定目标元素的部分。
-2.  **声明块**：跟在选择器后面，由一对大括号 `{}` 包裹。
-3.  **声明**：声明块中包含的一条条具体样式指令，由 `属性: 值;` 的形式组成。
+1. **选择器**：规则中用于指定目标元素的部分。
+2. **声明块**：跟在选择器后面，由一对大括号 `{}` 包裹。
+3. **声明**：声明块中包含的一条条具体样式指令，由 `属性: 值;` 的形式组成。
 
 最基础和常用的三大选择器是：**元素选择器**、**类选择器**和**ID选择器**。
 
@@ -562,54 +595,54 @@ CSS选择器主要由以下核心部分组成：
 
 以下是一些最重要和最常用的选择器类型：
 
-*   **基本选择器**
-    *   **通用选择器**：`*`
-        *   匹配文档中的所有元素。
-        *   示例：`* { margin: 0; }` （将所有元素的外边距设为0）
-    *   **元素选择器**：`elementname`
-        *   根据HTML标签名匹配元素。
-        *   示例：`p { color: blue; }` （将所有 `<p>` 元素的文本颜色设为蓝色）
-    *   **类选择器**：`.classname`
-        *   匹配所有在其 `class` 属性中包含指定类名的元素。
-        *   示例：`.warning { background-color: yellow; }` （将所有 `class` 包含 "warning" 的元素的背景色设为黄色）
-    *   **ID选择器**：`#idname`
-        *   匹配 `id` 属性为指定值的元素。在一个文档中，ID应该是唯一的。
-        *   示例：`#header { height: 100px; }` （将 `id` 为 "header" 的元素的高度设为100像素）
-    *   **属性选择器**：`[attr]`， `[attr=value]` 等
-        *   匹配拥有特定属性，或属性等于、包含、以某值开头/结尾的元素。
-        *   示例：`[target="_blank"] { border: 1px solid red; }` （将所有 `target` 属性为 "_blank" 的元素加上红色边框）
-
-*   **组合器**
-    *   这些选择器通过描述元素之间的特定关系来组合多个简单选择器。
-    *   **后代组合器**：`A B` （空格）
-        *   匹配所有是元素A后代的元素B（B嵌套在A内部，无论层级多深）。
-        *   示例：`article p { font-size: 14px; }` （匹配所有在 `<article>` 元素内部的 `<p>` 元素）
-    *   **子组合器**：`A > B`
-        *   匹配所有是元素A**直接子元素**的元素B（仅下一级）。
-        *   示例：`ul > li { list-style-type: none; }` （只匹配 `<ul>` 直接子级的 `<li>`，不匹配嵌套在更深层的 `<li>`）
-    *   **相邻兄弟组合器**：`A + B`
-        *   匹配紧接在元素A**之后**的兄弟元素B（A和B拥有相同的父元素，且B紧跟在A后面）。
-        *   示例：`h2 + p { margin-top: 0; }` （匹配紧跟在 `<h2>` 后面的第一个 `<p>` 元素）
-    *   **通用兄弟组合器**：`A ~ B`
-        *   匹配元素A**之后**的所有兄弟元素B（A和B拥有相同的父元素，B在A之后即可，不必紧邻）。
-        *   示例：`h2 ~ p { color: grey; }` （匹配所有在 `<h2>` 之后的兄弟 `<p>` 元素）
-
-*   **伪类**
-    *   用于匹配处于特定**状态**的元素，而不是基于文档结构。
-    *   语法以单冒号 `:` 开头。
-    *   示例：
-        *   `a:hover { color: red; }` （当鼠标悬停在链接上时改变颜色）
-        *   `input:focus { outline: 2px solid blue; }` （当输入框获得焦点时添加轮廓）
-        *   `li:nth-child(2) { background: lightgreen; }` （匹配其父元素下的第二个 `<li>` 子元素）
-
-*   **伪元素**
-    *   用于匹配元素的**特定部分**，而不是元素本身。
-    *   语法以双冒号 `::` 开头（为了与伪类区分，但单冒号 `:` 也兼容旧语法）。
-    *   示例：
-        *   `p::first-line { font-weight: bold; }` （匹配每个 `<p>` 元素的第一行）
-        *   `p::before { content: ">> "; }` （在每个 `<p>` 元素的内容之前插入 ">> "）
-        *   `::selection { background: yellow; }` （匹配被用户高亮选中的文本部分）
-
+- **基本选择器**
+  
+  - **通用选择器**：`*`
+    - 匹配文档中的所有元素。
+    - 示例：`* { margin: 0; }` （将所有元素的外边距设为0）
+  - **元素选择器**：`elementname`
+    - 根据HTML标签名匹配元素。
+    - 示例：`p { color: blue; }` （将所有 `<p>` 元素的文本颜色设为蓝色）
+  - **类选择器**：`.classname`
+    - 匹配所有在其 `class` 属性中包含指定类名的元素。
+    - 示例：`.warning { background-color: yellow; }` （将所有 `class` 包含 "warning" 的元素的背景色设为黄色）
+  - **ID选择器**：`#idname`
+    - 匹配 `id` 属性为指定值的元素。在一个文档中，ID应该是唯一的。
+    - 示例：`#header { height: 100px; }` （将 `id` 为 "header" 的元素的高度设为100像素）
+  - **属性选择器**：`[attr]`， `[attr=value]` 等
+    - 匹配拥有特定属性，或属性等于、包含、以某值开头/结尾的元素。
+    - 示例：`[target="_blank"] { border: 1px solid red; }` （将所有 `target` 属性为 "_blank" 的元素加上红色边框）
+- **组合器**
+  
+  - 这些选择器通过描述元素之间的特定关系来组合多个简单选择器。
+  - **后代组合器**：`A B` （空格）
+    - 匹配所有是元素A后代的元素B（B嵌套在A内部，无论层级多深）。
+    - 示例：`article p { font-size: 14px; }` （匹配所有在 `<article>` 元素内部的 `<p>` 元素）
+  - **子组合器**：`A > B`
+    - 匹配所有是元素A**直接子元素**的元素B（仅下一级）。
+    - 示例：`ul > li { list-style-type: none; }` （只匹配 `<ul>` 直接子级的 `<li>`，不匹配嵌套在更深层的 `<li>`）
+  - **相邻兄弟组合器**：`A + B`
+    - 匹配紧接在元素A**之后**的兄弟元素B（A和B拥有相同的父元素，且B紧跟在A后面）。
+    - 示例：`h2 + p { margin-top: 0; }` （匹配紧跟在 `<h2>` 后面的第一个 `<p>` 元素）
+  - **通用兄弟组合器**：`A ~ B`
+    - 匹配元素A**之后**的所有兄弟元素B（A和B拥有相同的父元素，B在A之后即可，不必紧邻）。
+    - 示例：`h2 ~ p { color: grey; }` （匹配所有在 `<h2>` 之后的兄弟 `<p>` 元素）
+- **伪类**
+  
+  - 用于匹配处于特定**状态**的元素，而不是基于文档结构。
+  - 语法以单冒号 `:` 开头。
+  - 示例：
+    - `a:hover { color: red; }` （当鼠标悬停在链接上时改变颜色）
+    - `input:focus { outline: 2px solid blue; }` （当输入框获得焦点时添加轮廓）
+    - `li:nth-child(2) { background: lightgreen; }` （匹配其父元素下的第二个 `<li>` 子元素）
+- **伪元素**
+  
+  - 用于匹配元素的**特定部分**，而不是元素本身。
+  - 语法以双冒号 `::` 开头（为了与伪类区分，但单冒号 `:` 也兼容旧语法）。
+  - 示例：
+    - `p::first-line { font-weight: bold; }` （匹配每个 `<p>` 元素的第一行）
+    - `p::before { content: ">> "; }` （在每个 `<p>` 元素的内容之前插入 ">> "）
+    - `::selection { background: yellow; }` （匹配被用户高亮选中的文本部分）
 
 ### 一个可视化示例：
 
@@ -627,7 +660,7 @@ CSS选择器主要由以下核心部分组成：
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
@@ -635,12 +668,12 @@ CSS选择器主要由以下核心部分组成：
             color: #333;
             line-height: 1.6;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
         }
-        
+
         .demo-section {
             background: white;
             padding: 30px;
@@ -648,20 +681,20 @@ CSS选择器主要由以下核心部分组成：
             margin-top: 30px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
         }
-        
+
         .demo-title {
             text-align: center;
             margin-bottom: 30px;
             color: #2c3e50;
             font-size: 2rem;
         }
-        
+
         .demo-container {
             display: flex;
             flex-wrap: wrap;
             gap: 30px;
         }
-        
+
         .demo-box {
             flex: 1;
             min-width: 300px;
@@ -669,13 +702,13 @@ CSS选择器主要由以下核心部分组成：
             border-radius: 10px;
             background: #f8f9fa;
         }
-        
+
         .demo-box h3 {
             margin-bottom: 15px;
             color: #2c3e50;
             text-align: center;
         }
-        
+
         /* 元素选择器示例 */
         p {
             padding: 10px;
@@ -683,7 +716,7 @@ CSS选择器主要由以下核心部分组成：
             margin-bottom: 10px;
             background-color: #ffeaa7;
         }
-        
+
         /* 类选择器示例 */
         .highlight {
             background-color: #a29bfe;
@@ -692,13 +725,13 @@ CSS选择器主要由以下核心部分组成：
             border-radius: 5px;
             margin-bottom: 10px;
         }
-        
+
         .special {
             font-weight: bold;
             border-left: 4px solid #e17055;
             padding-left: 10px;
         }
-        
+
         /* ID选择器示例 */
         #unique-element {
             background-color: #fd79a8;
@@ -709,14 +742,14 @@ CSS选择器主要由以下核心部分组成：
             font-weight: bold;
             margin-bottom: 10px;
         }
-        
+
         #main-title {
             color: #e17055;
             text-align: center;
             padding: 10px;
             margin-bottom: 15px;
         }
-        
+
         .comparison {
             margin-top: 50px;
             background: white;
@@ -724,62 +757,62 @@ CSS选择器主要由以下核心部分组成：
             border-radius: 15px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
         }
-        
+
         .comparison h2 {
             text-align: center;
             margin-bottom: 30px;
             color: #2c3e50;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        
+
         th, td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #e0e0e0;
         }
-        
+
         th {
             background: #f8f9fa;
             font-weight: bold;
             color: #2c3e50;
         }
-        
+
         tr:last-child td {
             border-bottom: none;
         }
-        
+
         .priority {
             font-weight: bold;
         }
-        
+
         .high {
             color: #e74c3c;
         }
-        
+
         .medium {
             color: #f39c12;
         }
-        
+
         .low {
             color: #27ae60;
         }
-        
+
         footer {
             text-align: center;
             margin-top: 50px;
             padding: 20px;
             color: #7f8c8d;
         }
-        
+
         @media (max-width: 768px) {
             .cards-container, .demo-container {
                 flex-direction: column;
             }
-            
+
             .card, .demo-box {
                 min-width: 100%;
             }
@@ -788,17 +821,17 @@ CSS选择器主要由以下核心部分组成：
 </head>
 <body>
     <div class="container">
-        
+
         <div class="demo-section">
             <h2 class="demo-title">选择器效果演示</h2>
             <div class="demo-container">
                 <div class="demo-box">
                     <h3>元素选择器效果</h3>
                     <p>这个段落使用了元素选择器样式。</p>
-                    <p>所有 &lt;p&gt; 元素都会应用相同的样式。</p>
+                    <p>所有 <p> 元素都会应用相同的样式。</p>
                     <p>注意这些段落都有相同的背景色。</p>
                 </div>
-                
+
                 <div class="demo-box">
                     <h3>类选择器效果</h3>
                     <div class="highlight">这个元素有 highlight 类</div>
@@ -806,7 +839,7 @@ CSS选择器主要由以下核心部分组成：
                     <div class="special">这个元素只有 special 类</div>
                     <p>普通段落，没有应用类样式</p>
                 </div>
-                
+
                 <div class="demo-box">
                     <h3>ID选择器效果</h3>
                     <div id="main-title">这是页面主标题 (ID: main-title)</div>
@@ -815,7 +848,7 @@ CSS选择器主要由以下核心部分组成：
                 </div>
             </div>
         </div>
-        
+
     </div>
 </body>
 </html>
@@ -824,22 +857,23 @@ CSS选择器主要由以下核心部分组成：
 ## 三大选择器总结
 
 1. **元素选择器**
-   - 通过HTML元素名称选择
-   - 语法：`元素名 { 样式规则 }`
-   - 优先级最低
-   - 适合设置基础样式
-
+  
+  - 通过HTML元素名称选择
+  - 语法：`元素名 { 样式规则 }`
+  - 优先级最低
+  - 适合设置基础样式
 2. **类选择器**
-   - 通过class属性选择
-   - 语法：`.类名 { 样式规则 }`
-   - 优先级中等
-   - 适合创建可复用的样式组件
-
+  
+  - 通过class属性选择
+  - 语法：`.类名 { 样式规则 }`
+  - 优先级中等
+  - 适合创建可复用的样式组件
 3. **ID选择器**
-   - 通过id属性选择
-   - 语法：`#id名 { 样式规则 }`
-   - 优先级最高
-   - 适合选择页面中的唯一元素
+  
+  - 通过id属性选择
+  - 语法：`#id名 { 样式规则 }`
+  - 优先级最高
+  - 适合选择页面中的唯一元素
 
 ## 使用建议
 
@@ -847,7 +881,6 @@ CSS选择器主要由以下核心部分组成：
 - 谨慎使用ID选择器，因为其高优先级可能导致样式难以覆盖
 - 使用元素选择器设置基础样式和重置样式
 - 在实际项目中，通常会组合使用这些选择器来创建复杂的样式规则
-
 
 CSS的定位方式：
 好的，我们来把这段关于CSS定位的描述扩展得更加丰富和详细，使其不仅包含定义，还包含工作原理、常见用途和它们之间的相互关系。
@@ -859,90 +892,110 @@ CSS的定位方式：
 在网页布局中，`position` 属性是CSS最基础也最强大的工具之一。它决定了元素在文档中的定位方式，是实现复杂布局和动态效果的关键。`position` 属性主要有五个值：`static`, `relative`, `absolute`, `fixed`, 以及较新的 `sticky`。
 
 #### **1. Static（静态定位）**
-*   **定义**：这是所有元素的**默认值**。元素按照正常的文档流进行排列。
-*   **行为**：设置 `top`, `right`, `bottom`, `left` 和 `z-index` 属性对静态定位的元素**无效**。它就像在流水线上一样，一个接一个地摆放，不会被特殊地“定位”。
-*   **使用场景**：当你需要重置其他定位方式，让元素回归正常流时使用。
+
+- **定义**：这是所有元素的**默认值**。元素按照正常的文档流进行排列。
+- **行为**：设置 `top`, `right`, `bottom`, `left` 和 `z-index` 属性对静态定位的元素**无效**。它就像在流水线上一样，一个接一个地摆放，不会被特殊地“定位”。
+- **使用场景**：当你需要重置其他定位方式，让元素回归正常流时使用。
 
 #### **2. Relative（相对定位）**
-*   **定义**：元素**相对于其自身原本在正常文档流中的位置**进行偏移。
-*   **行为**：
-    1.  它首先在正常流中占据位置（会为原本该在的位置留白）。
-    2.  然后，通过 `top`, `right`, `bottom`, `left` 属性进行调整时，是相对于这个“原本的位置”进行移动。
-    3.  它一个非常重要的特性是会**为其内部绝对定位的子元素提供一个定位上下文**（见下文）。
-*   **使用场景**：微调元素位置（如图标稍微偏移）、作为绝对定位子元素的容器。
 
-    **示例**：
-    ```css
-    .box {
-      position: relative;
-      top: 20px; /* 向下移动20px */
-      left: 10px; /* 向右移动10px */
-    }
-    ```
+- **定义**：元素**相对于其自身原本在正常文档流中的位置**进行偏移。
+  
+- **行为**：
+  
+  1. 它首先在正常流中占据位置（会为原本该在的位置留白）。
+  2. 然后，通过 `top`, `right`, `bottom`, `left` 属性进行调整时，是相对于这个“原本的位置”进行移动。
+  3. 它一个非常重要的特性是会**为其内部绝对定位的子元素提供一个定位上下文**（见下文）。
+- **使用场景**：微调元素位置（如图标稍微偏移）、作为绝对定位子元素的容器。
+  
+  **示例**：
+  
+  ```css
+  .box {
+    position: relative;
+    top: 20px; /* 向下移动20px */
+    left: 10px; /* 向右移动10px */
+  }
+  ```
+  
 
 #### **3. Absolute（绝对定位）**
-*   **定义**：元素**脱离正常的文档流**，不再占据空间，然后相对于其**最近的、非 `static` 定位的祖先元素**进行定位。
-*   **行为**：
-    1.  元素会被“从流中取出”，后面的元素会占据它原来的位置。
-    2.  它的定位基准不是自己，而是向上层层查找祖先元素，直到找到一个 `position` 值为 `relative`, `absolute`, `fixed` 或 `sticky` 的元素。如果找不到，则相对于**初始包含块**（通常是 `<html>` 根元素）进行定位。
-    3.  常与 `top`, `right`, `bottom`, `left` 一起使用，精确控制元素的位置。
-*   **使用场景**：创建弹出层、模态框、自定义下拉菜单、在特定容器内精确放置元素（如图标角标）。
 
-    **示例**：
-    ```css
-    .container {
-      position: relative; /* 为内部的 .absolute-box 提供定位基准 */
-    }
-    .absolute-box {
-      position: absolute;
-      top: 0;
-      right: 0; /* 定位在 .container 的右上角 */
-    }
-    ```
+- **定义**：元素**脱离正常的文档流**，不再占据空间，然后相对于其**最近的、非 `static` 定位的祖先元素**进行定位。
+  
+- **行为**：
+  
+  1. 元素会被“从流中取出”，后面的元素会占据它原来的位置。
+  2. 它的定位基准不是自己，而是向上层层查找祖先元素，直到找到一个 `position` 值为 `relative`, `absolute`, `fixed` 或 `sticky` 的元素。如果找不到，则相对于**初始包含块**（通常是 `<html>` 根元素）进行定位。
+  3. 常与 `top`, `right`, `bottom`, `left` 一起使用，精确控制元素的位置。
+- **使用场景**：创建弹出层、模态框、自定义下拉菜单、在特定容器内精确放置元素（如图标角标）。
+  
+  **示例**：
+  
+  ```css
+  .container {
+    position: relative; /* 为内部的 .absolute-box 提供定位基准 */
+  }
+  .absolute-box {
+    position: absolute;
+    top: 0;
+    right: 0; /* 定位在 .container 的右上角 */
+  }
+  ```
+  
 
 #### **4. Fixed（固定定位）**
-*   **定义**：元素**脱离正常的文档流**，并相对于**浏览器视口（viewport）** 进行定位。
-*   **行为**：
-    1.  和绝对定位一样，不占据文档流空间。
-    2.  它的定位基准永远是浏览器窗口。即使页面滚动，它也会**固定在屏幕的同一个位置**。
-    3.  同样使用 `top`, `right`, `bottom`, `left` 来控制位置。
-*   **使用场景**：固定导航栏、悬浮按钮、回到顶部按钮、页脚版权信息等需要始终可见的元素。
 
-    **示例**：
-    ```css
-    .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%; /* 固定在页面顶部 */
-    }
-    ```
+- **定义**：元素**脱离正常的文档流**，并相对于**浏览器视口（viewport）** 进行定位。
+  
+- **行为**：
+  
+  1. 和绝对定位一样，不占据文档流空间。
+  2. 它的定位基准永远是浏览器窗口。即使页面滚动，它也会**固定在屏幕的同一个位置**。
+  3. 同样使用 `top`, `right`, `bottom`, `left` 来控制位置。
+- **使用场景**：固定导航栏、悬浮按钮、回到顶部按钮、页脚版权信息等需要始终可见的元素。
+  
+  **示例**：
+  
+  ```css
+  .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%; /* 固定在页面顶部 */
+  }
+  ```
+  
 
 #### **5. Sticky（粘性定位）**
-*   **定义**：可以看作是 `relative` 和 `fixed` 的混合体。元素在跨越特定阈值前表现为相对定位，之后变为固定定位。
-*   **行为**：
-    1.  它首先在正常流中占据位置（像 `relative`）。
-    2.  当页面滚动，元素即将移出视口时，它会根据设定的阈值“粘”在视口的某个位置，表现得像 `fixed` 定位。
-    3.  必须至少指定 `top`, `right`, `bottom`, 或 `left` 中的一个值，否则其行为会与相对定位相同。
-*   **使用场景**：表格的表头在滚动时固定在顶部、侧边栏导航在滚动到一定位置时固定。
 
-    **示例**：
-    ```css
-    .table-header {
-      position: sticky;
-      top: 0; /* 当滚动到离视口顶部0px时，固定住 */
-    }
-    ```
+- **定义**：可以看作是 `relative` 和 `fixed` 的混合体。元素在跨越特定阈值前表现为相对定位，之后变为固定定位。
+  
+- **行为**：
+  
+  1. 它首先在正常流中占据位置（像 `relative`）。
+  2. 当页面滚动，元素即将移出视口时，它会根据设定的阈值“粘”在视口的某个位置，表现得像 `fixed` 定位。
+  3. 必须至少指定 `top`, `right`, `bottom`, 或 `left` 中的一个值，否则其行为会与相对定位相同。
+- **使用场景**：表格的表头在滚动时固定在顶部、侧边栏导航在滚动到一定位置时固定。
+  
+  **示例**：
+  
+  ```css
+  .table-header {
+    position: sticky;
+    top: 0; /* 当滚动到离视口顶部0px时，固定住 */
+  }
+  ```
+  
 
 ### **总结与关系**
 
 | 定位方式 | 定位基准 | 是否脱离文档流 | 常见用途 |
-| :--- | :--- | :--- | :--- |
-| **`static`** | 正常文档流 | 否 | 默认布局 |
+| --- | --- | --- | --- |
+| **`static`** | 正常文档流 | 否   | 默认布局 |
 | **`relative`** | **自身原位置** | 否（但会留白） | 微调位置，作为绝对定位的父级 |
-| **`absolute`** | **最近的非static祖先** | 是 | 弹出层，精准定位 |
-| **`fixed`** | **浏览器视口** | 是 | 固定导航，悬浮按钮 |
+| **`absolute`** | **最近的非static祖先** | 是   | 弹出层，精准定位 |
+| **`fixed`** | **浏览器视口** | 是   | 固定导航，悬浮按钮 |
 | **`sticky`** | **最近滚动祖先 & 视口** | 否（直到固定） | 滚动时粘性固定的元素 |
-
 
 CSS的盒子模型：
 CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内容、内边距、边框和外边距的方式。每个HTML元素都可以看作是由内容、内边距（padding）、边框（border）和外边距（margin）组成的矩形盒子。
@@ -965,7 +1018,7 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
 其中，padding和margin不限定padding/margin - xx 时有默认值，例如margin 10px 20 px 30 px 40 px这四个值按照顺时针方向（上、右、下、左）指定了元素的外边距。
 这种简写方式使得你可以在一个属性中一次性设置四个方向的外边距，提高了编写CSS的效率。
 
-``` html
+```html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -979,7 +1032,7 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
@@ -987,12 +1040,12 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
             color: #333;
             line-height: 1.6;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
         }
-        
+
         header {
             text-align: center;
             margin-bottom: 40px;
@@ -1001,27 +1054,27 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
             border-radius: 15px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         }
-        
+
         h1 {
             color: #2c3e50;
             margin-bottom: 15px;
             font-size: 2.8rem;
         }
-        
+
         .subtitle {
             color: #7f8c8d;
             font-size: 1.3rem;
             max-width: 800px;
             margin: 0 auto;
         }
-        
+
         .box-model-container {
             display: flex;
             flex-wrap: wrap;
             gap: 40px;
             margin-bottom: 40px;
         }
-        
+
         .visualization {
             flex: 2;
             min-width: 500px;
@@ -1033,7 +1086,7 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
             flex-direction: column;
             align-items: center;
         }
-        
+
         .controls {
             flex: 1;
             min-width: 300px;
@@ -1042,14 +1095,14 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
-        
+
         .box-model {
             position: relative;
             width: 400px;
             height: 400px;
             margin: 30px auto;
         }
-        
+
         .margin {
             position: absolute;
             top: 0;
@@ -1062,7 +1115,7 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
             align-items: center;
             justify-content: center;
         }
-        
+
         .border {
             position: absolute;
             top: 50px;
@@ -1075,7 +1128,7 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
             align-items: center;
             justify-content: center;
         }
-        
+
         .padding {
             position: absolute;
             top: 70px;
@@ -1087,7 +1140,7 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
             align-items: center;
             justify-content: center;
         }
-        
+
         .content {
             position: absolute;
             top: 90px;
@@ -1103,7 +1156,7 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
             font-weight: bold;
             text-align: center;
         }
-        
+
         .label {
             position: absolute;
             font-weight: bold;
@@ -1113,63 +1166,63 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
             padding: 3px 8px;
             border-radius: 4px;
         }
-        
+
         .margin-label {
             top: -25px;
             left: 50%;
             transform: translateX(-50%);
         }
-        
+
         .border-label {
             top: 35px;
             left: 50%;
             transform: translateX(-50%);
         }
-        
+
         .padding-label {
             top: 65px;
             left: 50%;
             transform: translateX(-50%);
         }
-        
+
         .content-label {
             top: 100px;
             left: 50%;
             transform: translateX(-50%);
         }
-        
+
         .controls h2 {
             color: #2c3e50;
             margin-bottom: 20px;
             text-align: center;
         }
-        
+
         .control-group {
             margin-bottom: 25px;
         }
-        
+
         .control-group h3 {
             color: #2c3e50;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
         }
-        
+
         .control-group h3 i {
             margin-right: 10px;
             color: #3498db;
         }
-        
+
         .slider-container {
             margin-bottom: 15px;
         }
-        
+
         .slider-container label {
             display: block;
             margin-bottom: 5px;
             font-weight: 500;
         }
-        
+
         .slider {
             width: 100%;
             height: 8px;
@@ -1178,7 +1231,7 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
             border-radius: 4px;
             outline: none;
         }
-        
+
         .slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 18px;
@@ -1187,7 +1240,7 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
             background: #3498db;
             cursor: pointer;
         }
-        
+
         .value-display {
             display: inline-block;
             width: 50px;
@@ -1195,7 +1248,7 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
             font-weight: bold;
             color: #2c3e50;
         }
-        
+
         .formula {
             background: #2c3e50;
             color: white;
@@ -1205,7 +1258,7 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
             margin-top: 10px;
             text-align: center;
         }
-                
+
         .code-example {
             background: #2c3e50;
             color: white;
@@ -1214,32 +1267,32 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
             font-family: 'Courier New', monospace;
             margin-top: 10px;
         }
-        
+
         .highlight {
             color: #f1c40f;
         }
-        
+
         footer {
             text-align: center;
             margin-top: 50px;
             padding: 20px;
             color: #7f8c8d;
         }
-        
+
         @media (max-width: 768px) {
             .box-model-container {
                 flex-direction: column;
             }
-            
+
             .visualization, .controls {
                 min-width: 100%;
             }
-            
+
             .box-model {
                 width: 300px;
                 height: 300px;
             }
-            
+
             .border {
                 top: 30px;
                 left: 30px;
@@ -1247,14 +1300,14 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
                 height: 240px;
                 border-width: 15px;
             }
-            
+
             .padding {
                 top: 45px;
                 left: 45px;
                 width: 210px;
                 height: 210px;
             }
-            
+
             .content {
                 top: 60px;
                 left: 60px;
@@ -1269,7 +1322,7 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
         <header>
             <h1>CSS盒子模型</h1>
         </header>
-        
+
         <div class="box-model-container">
             <div class="visualization">
                 <h2>盒子模型可视化</h2>
@@ -1290,10 +1343,10 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
                 </div>
                 <p>调整右侧滑块查看不同属性对盒子模型的影响</p>
             </div>
-            
+
             <div class="controls">
                 <h2>属性控制器</h2>
-                
+
                 <div class="control-group">
                     <h3><i>📏</i> 内容尺寸</h3>
                     <div class="slider-container">
@@ -1305,7 +1358,7 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
                         <input type="range" min="100" max="300" value="220" class="slider" id="height-slider">
                     </div>
                 </div>
-                
+
                 <div class="control-group">
                     <h3><i>🔄</i> 内边距</h3>
                     <div class="slider-container">
@@ -1313,7 +1366,7 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
                         <input type="range" min="0" max="50" value="20" class="slider" id="padding-slider">
                     </div>
                 </div>
-                
+
                 <div class="control-group">
                     <h3><i>🔲</i> 边框</h3>
                     <div class="slider-container">
@@ -1321,7 +1374,7 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
                         <input type="range" min="0" max="40" value="20" class="slider" id="border-slider">
                     </div>
                 </div>
-                
+
                 <div class="control-group">
                     <h3><i>↔️</i> 外边距</h3>
                     <div class="slider-container">
@@ -1331,7 +1384,7 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
                 </div>
             </div>
         </div>
-        
+
     </div>
 
     <script>
@@ -1340,26 +1393,26 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
         const padding = document.querySelector('.padding');
         const border = document.querySelector('.border');
         const margin = document.querySelector('.margin');
-        
+
         const widthSlider = document.getElementById('width-slider');
         const heightSlider = document.getElementById('height-slider');
         const paddingSlider = document.getElementById('padding-slider');
         const borderSlider = document.getElementById('border-slider');
         const marginSlider = document.getElementById('margin-slider');
-        
+
         const widthValue = document.getElementById('width-value');
         const heightValue = document.getElementById('height-value');
         const paddingValue = document.getElementById('padding-value');
         const borderValue = document.getElementById('border-value');
         const marginValue = document.getElementById('margin-value');
-        
+
         const contentWidth = document.getElementById('content-width');
         const contentHeight = document.getElementById('content-height');
         const totalWidth = document.getElementById('total-width');
         const totalHeight = document.getElementById('total-height');
         const occupiedWidth = document.getElementById('occupied-width');
         const occupiedHeight = document.getElementById('occupied-height');
-        
+
         // 更新盒子模型
         function updateBoxModel() {
             const width = parseInt(widthSlider.value);
@@ -1367,63 +1420,63 @@ CSS的盒子模型是CSS布局的基础，它规定了元素框处理元素内�
             const paddingSize = parseInt(paddingSlider.value);
             const borderSize = parseInt(borderSlider.value);
             const marginSize = parseInt(marginSlider.value);
-            
+
             // 更新显示值
             widthValue.textContent = `${width}px`;
             heightValue.textContent = `${height}px`;
             paddingValue.textContent = `${paddingSize}px`;
             borderValue.textContent = `${borderSize}px`;
             marginValue.textContent = `${marginSize}px`;
-            
+
             // 更新内容区域
             content.style.width = `${width}px`;
             content.style.height = `${height}px`;
             content.style.top = `${marginSize + borderSize + paddingSize}px`;
             content.style.left = `${marginSize + borderSize + paddingSize}px`;
-            
+
             // 更新内边距区域
             padding.style.width = `${width + paddingSize * 2}px`;
             padding.style.height = `${height + paddingSize * 2}px`;
             padding.style.top = `${marginSize + borderSize}px`;
             padding.style.left = `${marginSize + borderSize}px`;
-            
+
             // 更新边框区域
             border.style.width = `${width + paddingSize * 2 + borderSize * 2}px`;
             border.style.height = `${height + paddingSize * 2 + borderSize * 2}px`;
             border.style.top = `${marginSize}px`;
             border.style.left = `${marginSize}px`;
             border.style.borderWidth = `${borderSize}px`;
-            
+
             // 更新外边距区域
             margin.style.width = `${width + paddingSize * 2 + borderSize * 2 + marginSize * 2}px`;
             margin.style.height = `${height + paddingSize * 2 + borderSize * 2 + marginSize * 2}px`;
-            
+
             // 更新标签位置
             document.querySelector('.margin-label').style.top = `-25px`;
             document.querySelector('.border-label').style.top = `${marginSize - 15}px`;
             document.querySelector('.padding-label').style.top = `${marginSize + borderSize - 5}px`;
             document.querySelector('.content-label').style.top = `${marginSize + borderSize + paddingSize + 10}px`;
-            
+
             // 更新尺寸计算
             contentWidth.textContent = width;
             contentHeight.textContent = height;
-            
+
             const totalW = width + paddingSize * 2 + borderSize * 2;
             const totalH = height + paddingSize * 2 + borderSize * 2;
             totalWidth.textContent = totalW;
             totalHeight.textContent = totalH;
-            
+
             occupiedWidth.textContent = totalW + marginSize * 2;
             occupiedHeight.textContent = totalH + marginSize * 2;
         }
-        
+
         // 添加事件监听器
         widthSlider.addEventListener('input', updateBoxModel);
         heightSlider.addEventListener('input', updateBoxModel);
         paddingSlider.addEventListener('input', updateBoxModel);
         borderSlider.addEventListener('input', updateBoxModel);
         marginSlider.addEventListener('input', updateBoxModel);
-        
+
         // 初始化
         updateBoxModel();
     </script>
@@ -1438,9 +1491,9 @@ JavaScript（简称 JS）是一门高级的、多范式的、解释型或即时�
 
 ### 1. 核心定位与历史
 
-*   **初衷：** 由 Brendan Eich 在 1995 年为网景公司（Netscape）发明，最初名为 Mocha，后改为 LiveScript，最终在与 Sun 公司（Java 的持有者）合作后定名为 JavaScript。其初衷是为了在浏览器端实现简单的表单验证和页面交互，弥补 HTML 和 CSS 在动态行为上的不足。
-*   **与 Java 的关系：** 除了名字和语法上有一些相似之处外，JavaScript 与 Java 是**完全不同的两种语言**。取名 JavaScript 更多是当时的市场策略。
-*   **标准化：** 为了避免不同浏览器之间的兼容性问题，JavaScript 被提交给 ECMA 国际组织进行标准化，由此产生了 **ECMAScript** 标准。我们常说的 ES6（ES2015）、ES7 等，就是指 ECMAScript 标准的第 6 版、第 7 版。
+- **初衷：** 由 Brendan Eich 在 1995 年为网景公司（Netscape）发明，最初名为 Mocha，后改为 LiveScript，最终在与 Sun 公司（Java 的持有者）合作后定名为 JavaScript。其初衷是为了在浏览器端实现简单的表单验证和页面交互，弥补 HTML 和 CSS 在动态行为上的不足。
+- **与 Java 的关系：** 除了名字和语法上有一些相似之处外，JavaScript 与 Java 是**完全不同的两种语言**。取名 JavaScript 更多是当时的市场策略。
+- **标准化：** 为了避免不同浏览器之间的兼容性问题，JavaScript 被提交给 ECMA 国际组织进行标准化，由此产生了 **ECMAScript** 标准。我们常说的 ES6（ES2015）、ES7 等，就是指 ECMAScript 标准的第 6 版、第 7 版。
 
 ---
 
@@ -1448,43 +1501,48 @@ JavaScript（简称 JS）是一门高级的、多范式的、解释型或即时�
 
 JavaScript 拥有一些使其强大而灵活的特性：
 
-1.  **解释型 / 即时编译：** 代码无需预先编译成二进制文件，浏览器或 Node.js 的 JS 引擎（如 V8）会直接读取源代码并执行。现代引擎会先将 JS 编译成高效的机器码再执行。
-2.  **动态类型：** 变量在声明时不需要指定数据类型，其类型在运行时才被确定，并且可以改变。
-    ```javascript
-    let foo = 42;    // foo 现在是一个数字
-    foo = "bar";     // foo 现在是一个字符串
-    ```
-3.  **单线程与事件循环：** JavaScript 主要运行在单线程环境中，但它通过 **“事件循环”** 机制来处理异步操作（如点击事件、网络请求、定时器），避免了阻塞，实现了“非阻塞 I/O”。
-4.  **基于原型的面向对象：** 与 Java/C++ 的基于“类”的继承不同，JS 使用“原型链”来实现对象的继承和属性共享。
-5.  **函数是一等公民：** 函数在 JS 中与其他数据类型（如数字、字符串）地位相同，可以被赋值给变量、作为参数传递、作为另一个函数的返回值。这是函数式编程的基础。
-6.  **弱类型：** 变量可以被隐式地转换为另一种类型。
-    ```javascript
-    console.log("10" - 5); // 5 (字符串 "10" 被转换为数字 10)
-    console.log("10" + 5); // "105" (数字 5 被转换为字符串 "5")
-    ```
+1. **解释型 / 即时编译：** 代码无需预先编译成二进制文件，浏览器或 Node.js 的 JS 引擎（如 V8）会直接读取源代码并执行。现代引擎会先将 JS 编译成高效的机器码再执行。
+2. **动态类型：** 变量在声明时不需要指定数据类型，其类型在运行时才被确定，并且可以改变。
+  
+  ```javascript
+  let foo = 42;    // foo 现在是一个数字
+  foo = "bar";     // foo 现在是一个字符串
+  ```
+  
+3. **单线程与事件循环：** JavaScript 主要运行在单线程环境中，但它通过 **“事件循环”** 机制来处理异步操作（如点击事件、网络请求、定时器），避免了阻塞，实现了“非阻塞 I/O”。
+4. **基于原型的面向对象：** 与 Java/C++ 的基于“类”的继承不同，JS 使用“原型链”来实现对象的继承和属性共享。
+5. **函数是一等公民：** 函数在 JS 中与其他数据类型（如数字、字符串）地位相同，可以被赋值给变量、作为参数传递、作为另一个函数的返回值。这是函数式编程的基础。
+6. **弱类型：** 变量可以被隐式地转换为另一种类型。
+  
+  ```javascript
+  console.log("10" - 5); // 5 (字符串 "10" 被转换为数字 10)
+  console.log("10" + 5); // "105" (数字 5 被转换为字符串 "5")
+  ```
+  
 
 ---
 
 ### 3. 主要应用领域
 
-1.  **Web 前端开发（核心领域）：**
-    *   **DOM 操作：** 动态地获取、添加、删除、修改 HTML 元素和内容。
-    *   **事件处理：** 响应用户的点击、滚动、键盘输入等交互行为。
-    *   **数据验证：** 在表单提交到服务器前进行客户端验证。
-    *   **动画与特效：** 创建复杂的页面动画和过渡效果。
-    *   **异步通信：** 通过 AJAX 或 Fetch API 与服务器通信，在不刷新页面的情况下更新部分内容。这是现代单页应用（SPA）的基础。
-
-2.  **服务器端开发：**
-    *   借助 **Node.js** 这个运行时环境，JavaScript 可以脱离浏览器，在服务器端运行。开发者可以用 JS 编写后端应用、API 接口、微服务等。著名的框架有 Express.js、Koa、NestJS 等。
-
-3.  **移动应用开发：**
-    *   使用 **React Native**、**Ionic**、**Capacitor** 等框架，可以用 JavaScript 和前端技术栈来开发原生或接近原生体验的移动应用。
-
-4.  **桌面应用开发：**
-    *   使用 **Electron** 框架，可以用 HTML、CSS 和 JavaScript 构建跨平台的桌面应用，如 VS Code、Slack、Discord 等。
-
-5.  **游戏开发：**
-    *   可用于开发网页游戏，常与 HTML5 Canvas 或 WebGL 结合使用。也有一些优秀的游戏引擎，如 Phaser、Babylon.js。
+1. **Web 前端开发（核心领域）：**
+  
+  - **DOM 操作：** 动态地获取、添加、删除、修改 HTML 元素和内容。
+  - **事件处理：** 响应用户的点击、滚动、键盘输入等交互行为。
+  - **数据验证：** 在表单提交到服务器前进行客户端验证。
+  - **动画与特效：** 创建复杂的页面动画和过渡效果。
+  - **异步通信：** 通过 AJAX 或 Fetch API 与服务器通信，在不刷新页面的情况下更新部分内容。这是现代单页应用（SPA）的基础。
+2. **服务器端开发：**
+  
+  - 借助 **Node.js** 这个运行时环境，JavaScript 可以脱离浏览器，在服务器端运行。开发者可以用 JS 编写后端应用、API 接口、微服务等。著名的框架有 Express.js、Koa、NestJS 等。
+3. **移动应用开发：**
+  
+  - 使用 **React Native**、**Ionic**、**Capacitor** 等框架，可以用 JavaScript 和前端技术栈来开发原生或接近原生体验的移动应用。
+4. **桌面应用开发：**
+  
+  - 使用 **Electron** 框架，可以用 HTML、CSS 和 JavaScript 构建跨平台的桌面应用，如 VS Code、Slack、Discord 等。
+5. **游戏开发：**
+  
+  - 可用于开发网页游戏，常与 HTML5 Canvas 或 WebGL 结合使用。也有一些优秀的游戏引擎，如 Phaser、Babylon.js。
 
 ---
 
@@ -1492,12 +1550,12 @@ JavaScript 拥有一些使其强大而灵活的特性：
 
 JavaScript 拥有一个极其庞大和活跃的生态系统，这主要归功于 **npm**。
 
-*   **npm：** 是全球最大的软件注册表，包含了数百万个开源代码包（库、框架、工具）。开发者可以轻松地将这些第三方模块引入自己的项目，极大地提高了开发效率。
-*   **框架和库：**
-    *   **React：** 由 Facebook 开发，用于构建用户界面，特别是单页应用。核心是组件化。
-    *   **Vue：** 一套渐进式框架，易于上手，功能强大。
-    *   **Angular：** 由 Google 维护的一个完整的、基于 TypeScript 的前端框架。
-*   **工具链：** 现代 JS 开发离不开强大的工具，如代码打包工具 **Webpack**、**Vite**，编译器 **Babel**（将新版 JS 代码转换为兼容旧浏览器的代码），以及 **TypeScript**（JS 的超集，添加了静态类型系统）。
+- **npm：** 是全球最大的软件注册表，包含了数百万个开源代码包（库、框架、工具）。开发者可以轻松地将这些第三方模块引入自己的项目，极大地提高了开发效率。
+- **框架和库：**
+  - **React：** 由 Facebook 开发，用于构建用户界面，特别是单页应用。核心是组件化。
+  - **Vue：** 一套渐进式框架，易于上手，功能强大。
+  - **Angular：** 由 Google 维护的一个完整的、基于 TypeScript 的前端框架。
+- **工具链：** 现代 JS 开发离不开强大的工具，如代码打包工具 **Webpack**、**Vite**，编译器 **Babel**（将新版 JS 代码转换为兼容旧浏览器的代码），以及 **TypeScript**（JS 的超集，添加了静态类型系统）。
 
 ---
 
@@ -1540,7 +1598,6 @@ JavaScript 拥有一个极其庞大和活跃的生态系统，这主要归功于
 
 JavaScript 已经从一门“玩具语言”演变为驱动现代 Web 和跨平台应用开发的“基石语言”。它的成功源于其**低门槛、高灵活性、强大的社区和生态系统**。尽管它存在一些因设计仓促而导致的“怪癖”，但通过 ES6+ 标准的不断演进和 TypeScript 等工具的辅助，它依然是当今世界最值得学习和掌握的编程语言之一。
 
-
 JavaScript语法：
 JavaScript 的语法在很大程度上受到了 C、Java 语言的影响，所以如果开发者有这些语言的基础，会感到非常熟悉。
 
@@ -1549,7 +1606,9 @@ JavaScript 的语法在很大程度上受到了 C、Java 语言的影响，所�
 ### 1. 基本语法规则
 
 #### 1.1 区分大小写
+
 JavaScript 是严格区分大小写的。
+
 ```javascript
 let myVariable = "hello";
 let myvariable = "world"; // 这是两个不同的变量
@@ -1558,7 +1617,9 @@ console.log(MYVARIABLE); // ReferenceError: MYVARIABLE is not defined
 ```
 
 #### 1.2 注释
+
 用于添加说明，不会被引擎执行。
+
 ```javascript
 // 这是单行注释
 
@@ -1570,16 +1631,21 @@ console.log(MYVARIABLE); // ReferenceError: MYVARIABLE is not defined
 ```
 
 #### 1.3 语句和分号
+
 - 语句通常以分号 `;` 结尾。
 - 如果语句各自独占一行，现代 JavaScript 引擎可以自动补全分号（称为 ASI, Automatic Semicolon Insertion），但**强烈建议手动添加分号**，以避免一些潜在的、难以调试的错误。
-```javascript
-let a = 1; // 语句以分号结束
-let b = 2
-let c = 3 // 虽然能运行，但不推荐
-```
+  
+  ```javascript
+  let a = 1; // 语句以分号结束
+  let b = 2
+  let c = 3 // 虽然能运行，但不推荐
+  ```
+  
 
 #### 1.4 代码块
+
 使用花括号 `{}` 来定义代码块，通常用于函数、循环和条件语句。
+
 ```javascript
 {
   // 这是一个代码块
@@ -1618,84 +1684,112 @@ person.name = "Bob"; // 正确：const 定义的是绑定，而不是值不可�
 JavaScript 是动态类型语言，变量类型在运行时确定。
 
 #### 3.1 原始类型（基本类型）
-1.  **`Number`**：数字（整数和浮点数）。
-    ```javascript
-    let age = 25;
-    let price = 99.99;
-    let infinity = Infinity;
-    ```
-2.  **`String`**：字符串，用单引号、双引号或反引号包裹。
-    ```javascript
-    let name1 = 'Alice';
-    let name2 = "Bob";
-    let greeting = `Hello, ${name1}!`; // 模板字符串，可以嵌入变量
-    ```
-3.  **`Boolean`**：布尔值，`true` 或 `false`。
-    ```javascript
-    let isLogged = true;
-    let isEmpty = false;
-    ```
-4.  **`Undefined`**：表示变量已声明但未赋值。
-    ```javascript
-    let notAssigned;
-    console.log(notAssigned); // undefined
-    ```
-5.  **`Null`**：表示一个空值或不存在的对象。
-    ```javascript
-    let emptyValue = null;
-    ```
-6.  **`Symbol`** (ES6)：表示唯一的、不可变的值，常用于对象的属性名。
-    ```javascript
-    let id = Symbol("id");
-    ```
-7.  **`BigInt`** (ES2020)：用于表示任意精度的整数。
-    ```javascript
-    let bigNumber = 1234567890123456789012345678901234567890n;
-    ```
+
+1. **`Number`**：数字（整数和浮点数）。
+  
+  ```javascript
+  let age = 25;
+  let price = 99.99;
+  let infinity = Infinity;
+  ```
+  
+2. **`String`**：字符串，用单引号、双引号或反引号包裹。
+  
+  ```javascript
+  let name1 = 'Alice';
+  let name2 = "Bob";
+  let greeting = `Hello, ${name1}!`; // 模板字符串，可以嵌入变量
+  ```
+  
+3. **`Boolean`**：布尔值，`true` 或 `false`。
+  
+  ```javascript
+  let isLogged = true;
+  let isEmpty = false;
+  ```
+  
+4. **`Undefined`**：表示变量已声明但未赋值。
+  
+  ```javascript
+  let notAssigned;
+  console.log(notAssigned); // undefined
+  ```
+  
+5. **`Null`**：表示一个空值或不存在的对象。
+  
+  ```javascript
+  let emptyValue = null;
+  ```
+  
+6. **`Symbol`** (ES6)：表示唯一的、不可变的值，常用于对象的属性名。
+  
+  ```javascript
+  let id = Symbol("id");
+  ```
+  
+7. **`BigInt`** (ES2020)：用于表示任意精度的整数。
+  
+  ```javascript
+  let bigNumber = 1234567890123456789012345678901234567890n;
+  ```
+  
 
 #### 3.2 引用类型
-1.  **`Object`**：对象，是键值对的集合。
-    ```javascript
-    let person = {
-      name: "John",
-      age: 30,
-      "favorite color": "blue" // 包含特殊字符的键名需要引号
-    };
-    console.log(person.name); // "John"
-    console.log(person["favorite color"]); // "blue"
-    ```
-2.  **`Array`**：数组，是有序的数据集合。
-    ```javascript
-    let fruits = ["Apple", "Banana", "Orange"];
-    console.log(fruits[0]); // "Apple"
-    ```
-3.  **`Function`**：函数，是可执行的对象。
-    ```javascript
-    function greet(name) {
-      return `Hello, ${name}!`;
-    }
-    ```
+
+1. **`Object`**：对象，是键值对的集合。
+  
+  ```javascript
+  let person = {
+    name: "John",
+    age: 30,
+    "favorite color": "blue" // 包含特殊字符的键名需要引号
+  };
+  console.log(person.name); // "John"
+  console.log(person["favorite color"]); // "blue"
+  ```
+  
+2. **`Array`**：数组，是有序的数据集合。
+  
+  ```javascript
+  let fruits = ["Apple", "Banana", "Orange"];
+  console.log(fruits[0]); // "Apple"
+  ```
+  
+3. **`Function`**：函数，是可执行的对象。
+  
+  ```javascript
+  function greet(name) {
+    return `Hello, ${name}!`;
+  }
+  ```
+  
 
 ---
 
 ### 4. 操作符
 
 #### 4.1 算术运算符
+
 `+`, `-`, `*`, `/`, `%` (取模), `**` (指数), `++`, `--`
+
 ```javascript
 let sum = 10 + 5; // 15
 let remainder = 10 % 3; // 1
 ```
 
 #### 4.2 比较运算符
+
 `==` (相等，会进行类型转换), `===` (严格相等，值和类型都必须相同), `!=`, `!==`, `>`, `<`, `>=`, `<=`
+
 ```javascript
 5 == "5";  // true (类型转换)
 5 === "5"; // false (类型不同)
 ```
 
 #### 4.3 逻辑运算符
+
 `&&` (与), `||` (或), `!` (非)
+
 ```javascript
 true && false; // false
 true || false; // true
@@ -1703,7 +1797,9 @@ true || false; // true
 ```
 
 #### 4.4 赋值运算符
+
 `=`, `+=`, `-=`, `*=`, `/=`
+
 ```javascript
 let x = 10;
 x += 5; // 等同于 x = x + 5; 现在 x 是 15
@@ -1714,6 +1810,7 @@ x += 5; // 等同于 x = x + 5; 现在 x 是 15
 ### 5. 控制流
 
 #### 5.1 条件语句
+
 ```javascript
 // if...else
 let score = 85;
@@ -1743,6 +1840,7 @@ switch (grade) {
 ```
 
 #### 5.2 循环语句
+
 ```javascript
 // for 循环
 for (let i = 0; i < 5; i++) {
@@ -1781,6 +1879,7 @@ for (let key in obj) {
 ### 6. 函数
 
 #### 6.1 函数声明
+
 ```javascript
 function multiply(a, b) {
   return a * b;
@@ -1788,6 +1887,7 @@ function multiply(a, b) {
 ```
 
 #### 6.2 函数表达式
+
 ```javascript
 const multiply = function(a, b) {
   return a * b;
@@ -1795,7 +1895,9 @@ const multiply = function(a, b) {
 ```
 
 #### 6.3 箭头函数 (ES6)
+
 简洁的语法，并且不绑定自己的 `this`。
+
 ```javascript
 const multiply = (a, b) => {
   return a * b;
@@ -1805,23 +1907,27 @@ const multiply = (a, b) => a * b;
 ```
 
 #### 6.4 参数
+
 - 函数参数可以有默认值。
 - 可以使用剩余参数 `...` 来接收不定数量的参数。
-```javascript
-function greet(name = "Guest", ...others) {
+  
+  ```javascript
+  function greet(name = "Guest", ...others) {
   console.log(`Hello, ${name}`);
   console.log(others); // 其他参数组成的数组
-}
-greet("Alice", "Bob", "Charlie");
-// Hello, Alice
-// ["Bob", "Charlie"]
-```
+  }
+  greet("Alice", "Bob", "Charlie");
+  // Hello, Alice
+  // ["Bob", "Charlie"]
+  ```
+  
 
 ---
 
 ### 7. 对象和数组的简写与增强 (ES6+)
 
 #### 7.1 对象字面量增强
+
 ```javascript
 const name = "Alice";
 const age = 25;
@@ -1845,6 +1951,7 @@ const person = {
 ```
 
 #### 7.2 数组和对象的解构赋值
+
 ```javascript
 // 数组解构
 const numbers = [1, 2, 3];
@@ -1862,6 +1969,7 @@ console.log(name); // "Bob"
 ### 8. 模板字符串 (ES6)
 
 使用反引号 `` ` `` 定义，可以嵌入变量和表达式。
+
 ```javascript
 const name = "Alice";
 const greeting = `Hello, ${name}!
@@ -1877,101 +1985,131 @@ console.log(greeting);
 
 JavaScript 的语法核心要点包括：
 
-1.  **变量声明**：优先使用 `const` 和 `let`，避免 `var`。
-2.  **数据类型**：理解 7 种原始类型和引用类型的区别（原始类型按值访问，引用类型按引用访问）。
-3.  **作用域**：`let` 和 `const` 是块级作用域。
-4.  **函数**：函数是一等公民，箭头函数是重要的现代语法。
-5.  **对象和数组**：掌握字面量、方法和解构等现代语法。
-6.  **控制流**：`if/else`、`for`、`while` 等与其他类 C 语言类似。
-7.  **操作符**：特别注意 `==` 和 `===` 的区别。
+1. **变量声明**：优先使用 `const` 和 `let`，避免 `var`。
+2. **数据类型**：理解 7 种原始类型和引用类型的区别（原始类型按值访问，引用类型按引用访问）。
+3. **作用域**：`let` 和 `const` 是块级作用域。
+4. **函数**：函数是一等公民，箭头函数是重要的现代语法。
+5. **对象和数组**：掌握字面量、方法和解构等现代语法。
+6. **控制流**：`if/else`、`for`、`while` 等与其他类 C 语言类似。
+7. **操作符**：特别注意 `==` 和 `===` 的区别。
 
 这套语法体系既包含了基础的编程结构，也通过 ES6+ 的现代化特性，让代码变得更加简洁、清晰和强大。
-
 
 JavaScript事件：
 JavaScript 中的“事件”并不是神秘概念，它只是**浏览器（或 Node）在某个特定时刻发出的一个信号**，告诉程序“有事情发生了”。  
 JS 通过**注册监听器（listener）**来捕获这个信号，并执行对应的回调函数——这套机制就是**事件驱动模型**的核心。
 
+---
 
-------------------------------------------------
 ### 一、浏览器事件：前端天天打交道的“信号源”
-1. 分类（按 W3C 标准）
-| 大类 | 常见事件名 | 触发场景 |
-|---|---|---|
-| 鼠标 | click / dblclick / mousedown / mouseup / mouseover / mouseout / mousemove / contextmenu | 按键、移动、右键菜单 |
-| 键盘 | keydown / keyup / keypress（已废弃） | 物理键按下/松开 |
-| 焦点 | focus / blur / focusin / focusout | 元素获得/失去焦点 |
-| 表单 | input / change / submit / reset / invalid | 输入、提交、校验失败 |
-| 文档/窗口 | load / DOMContentLoaded / beforeunload / unload / resize / scroll | 页面、资源、尺寸、滚动 |
-| 触摸/指针 | touchstart / touchmove / touchend / pointerdown / pointerup … | 移动端、手写笔 |
-| 媒体 | play / pause / ended / loadeddata / canplay | audio/video |
-| 动画/过渡 | animationstart / animationend / transitionend | CSS 动画钩子 |
-| 拖拽 | dragstart / drag / dragenter / drop / dragend | 原生拖拽 API |
-| 网络 | online / offline | 网络状态变化 |
-| 存储 | storage | 同一域名下其它窗口修改 localStorage |
 
+1. 分类（按 W3C 标准）
+  
+  | 大类  | 常见事件名 | 触发场景 |
+  | --- | --- | --- |
+  | 鼠标  | click / dblclick / mousedown / mouseup / mouseover / mouseout / mousemove / contextmenu | 按键、移动、右键菜单 |
+  | 键盘  | keydown / keyup / keypress（已废弃） | 物理键按下/松开 |
+  | 焦点  | focus / blur / focusin / focusout | 元素获得/失去焦点 |
+  | 表单  | input / change / submit / reset / invalid | 输入、提交、校验失败 |
+  | 文档/窗口 | load / DOMContentLoaded / beforeunload / unload / resize / scroll | 页面、资源、尺寸、滚动 |
+  | 触摸/指针 | touchstart / touchmove / touchend / pointerdown / pointerup … | 移动端、手写笔 |
+  | 媒体  | play / pause / ended / loadeddata / canplay | audio/video |
+  | 动画/过渡 | animationstart / animationend / transitionend | CSS 动画钩子 |
+  | 拖拽  | dragstart / drag / dragenter / drop / dragend | 原生拖拽 API |
+  | 网络  | online / offline | 网络状态变化 |
+  | 存储  | storage | 同一域名下其它窗口修改 localStorage |
+  
 2. 注册方式（3 种）
-① HTML 属性（古老，别用）
-```html
-<button onclick="alert('hi')">OK</button>
-```
-② DOM0 级属性（简单，但只能绑一个回调）
-```js
-btn.onclick = function () { /* 只能写一个，后者覆盖前者 */ };
-```
-③ DOM2 级 addEventListener（推荐）
-```js
-btn.addEventListener('click', handler, { once: false, passive: false, capture: false });
-```
-选项含义：
+  ① HTML 属性（古老，别用）
+  
+  ```html
+  <button onclick="alert('hi')">OK</button>
+  ```
+  
+  ② DOM0 级属性（简单，但只能绑一个回调）
+  
+  ```js
+  btn.onclick = function () { /* 只能写一个，后者覆盖前者 */ };
+  ```
+  
+  ③ DOM2 级 addEventListener（推荐）
+  
+  ```js
+  btn.addEventListener('click', handler, { once: false, passive: false, capture: false });
+  ```
+  
+  选项含义：
+  
+
 - capture: true → 在捕获阶段触发（下文解释）。
+  
 - once: true → 自动移除，常用于“只点一次”按钮。
+  
 - passive: true → 禁止调用 preventDefault()，用于滚动性能优化。
+  
 
 3. 事件流（捕获 → 目标 → 冒泡）
-```
-window → document → html → body → div → target（目标阶段）→ div → body → html → document → window
-```
+  
+  ```
+  window → document → html → body → div → target（目标阶段）→ div → body → html → document → window
+  ```
+  
+
 - 捕获阶段：父元素先收到事件。
+  
 - 冒泡阶段：子元素先收到事件。
+  
 - `stopPropagation()` 能阻断后续流；`stopImmediatePropagation()` 还能阻断同元素剩余监听器。
+  
 
 4. 事件委托（Event Delegation）
-把监听器绑在**公共父节点**上，通过 `event.target` 判断真实触发源。  
-优点：
+  把监听器绑在**公共父节点**上，通过 `event.target` 判断真实触发源。  
+  优点：
+  
+
 - 内存占用少（1 个监听器代替 N 个）。
+  
 - 动态插入的子节点无需重新绑定。
-```js
-ul.addEventListener('click', e => {
+  
+  ```js
+  ul.addEventListener('click', e => {
   if (e.target.matches('li.item')) {
     console.log('点击了第', e.target.dataset.index, '项');
   }
-});
-```
+  });
+  ```
+  
 
 5. 默认行为 & 阻止
-```js
-form.addEventListener('submit', e => {
+  
+  ```js
+  form.addEventListener('submit', e => {
   if (!valid) {
-    e.preventDefault();   // 阻止表单提交
-    e.stopPropagation();  // 可选：同时阻止冒泡
+   e.preventDefault();   // 阻止表单提交
+   e.stopPropagation();  // 可选：同时阻止冒泡
   }
-});
-```
+  });
+  ```
+  
 
-------------------------------------------------
+---
+
 ### 二、Node.js 事件：背对浏览器的“发布-订阅”
+
 浏览器事件源是 DOM，Node 里没有 DOM，但有**events 核心模块**。
 
 1. 基本用法
-```js
-const { EventEmitter } = require('events');
-const bus = new EventEmitter();
+  
+  ```js
+  const { EventEmitter } = require('events');
+  const bus = new EventEmitter();
+  ```
+  
 
 bus.on('data', chunk => console.log('收到:', chunk));
 bus.emit('data', Buffer.from('hello'));
-```
 
+````
 2. 典型内置实例
 - `process`：exit、uncaughtException、SIGINT …  
 - `fs`：流式读取 open、close、data、end …  
@@ -1999,52 +2137,66 @@ setTimeout(() => console.log(2), 0);
 Promise.resolve().then(() => console.log(3));
 console.log(4);
 // 输出：1 4 3 2
-```
+````
+
 解释：script 宏任务先跑，同步代码输出 1、4；Promise 回调进微任务，setTimeout 进宏任务，因此 3 先于 2。
 
 3. Node 事件循环（libuv）
-比浏览器多 6 个阶段：timers → pending callbacks → idle → poll → check → close。  
-同阶段内先执行当前队列全部回调，再进下一阶段；**process.nextTick 不在任何阶段，位于各阶段末尾优先执行**，优先级高于 Promise。
+  比浏览器多 6 个阶段：timers → pending callbacks → idle → poll → check → close。  
+  同阶段内先执行当前队列全部回调，再进下一阶段；**process.nextTick 不在任何阶段，位于各阶段末尾优先执行**，优先级高于 Promise。
 
-------------------------------------------------
+---
+
 ### 四、高频陷阱 & 调试技巧
-1. 重复绑定
-```js
-btn.addEventListener('click', handler);
-btn.addEventListener('click', handler); // 不会覆盖，会绑两次！
-```
-解决：先 `removeEventListener` 或加 `{ once: true }` / 用 `AbortSignal`。
 
+1. 重复绑定
+  
+  ```js
+  btn.addEventListener('click', handler);
+  btn.addEventListener('click', handler); // 不会覆盖，会绑两次！
+  ```
+  
+  解决：先 `removeEventListener` 或加 `{ once: true }` / 用 `AbortSignal`。
+  
 2. 内存泄漏
-长寿命对象（如 window）上绑了短寿命子对象的监听器，却忘记移除 → 子对象无法被 GC。  
-最佳实践：
-- 在 `componentWillUnmount` / `disconnect` / `beforeunload` 中统一 `removeEventListener`。  
+  长寿命对象（如 window）上绑了短寿命子对象的监听器，却忘记移除 → 子对象无法被 GC。  
+  最佳实践：
+  
+
+- 在 `componentWillUnmount` / `disconnect` / `beforeunload` 中统一 `removeEventListener`。
+  
 - 大型 SPA 使用 `AbortController` 批量取消：
-```js
-const ac = new AbortController();
-window.addEventListener('resize', handler, { signal: ac.signal });
-// 离开时
-ac.abort(); // 一键移除
-```
+  
+  ```js
+  const ac = new AbortController();
+  window.addEventListener('resize', handler, { signal: ac.signal });
+  // 离开时
+  ac.abort(); // 一键移除
+  ```
+  
 
 3. passive 与 preventDefault 冲突
-```js
-document.addEventListener('wheel', e => e.preventDefault(), { passive: true });
-// 报错：Unable to preventDefault inside passive listener
-```
-解决：如果必须阻止滚动，就不要设 passive:true；或者只在需要时动态移除 passive。
-
+  
+  ```js
+  document.addEventListener('wheel', e => e.preventDefault(), { passive: true });
+  // 报错：Unable to preventDefault inside passive listener
+  ```
+  
+  解决：如果必须阻止滚动，就不要设 passive:true；或者只在需要时动态移除 passive。
+  
 4. 事件合成（React 补充）
-React 并非把 onclick 直接绑到 DOM，而是**在根节点统一委托**（17 之前是 document，17 之后是 render 容器），用**合成事件对象**（SyntheticEvent）池化复用，减少内存分配。  
-注意：合成事件是**异步引用会被回收**，若要异步访问需 `e.persist()`（v17 已移除，需手动缓存值）。
+  React 并非把 onclick 直接绑到 DOM，而是**在根节点统一委托**（17 之前是 document，17 之后是 render 容器），用**合成事件对象**（SyntheticEvent）池化复用，减少内存分配。  
+  注意：合成事件是**异步引用会被回收**，若要异步访问需 `e.persist()`（v17 已移除，需手动缓存值）。
+  
 
+---
 
-------------------------------------------------
 ### 总结
+
 所谓“JavaScript 事件”，就是**运行时在特定时机发出的信号，通过注册监听器把异步回调插入事件循环，最终达成非阻塞、高并发的单线程交互模型**——搞清**事件流、委托、循环、泄漏**四件事，就能在前端/Node 里对“事件”游刃有余。
 
-
 BOM：
+
 # JavaScript中的BOM（浏览器对象模型）
 
 BOM（Browser Object Model）是JavaScript与浏览器交互的核心API集合，它允许开发者控制浏览器窗口、导航、屏幕、历史记录等浏览器层面的功能。
@@ -2056,6 +2208,7 @@ BOM不是一个官方标准，而是浏览器厂商实现的一组对象，用�
 ## BOM的主要组件
 
 ### 1. window对象
+
 window对象是BOM的顶层对象，代表浏览器窗口。
 
 ```javascript
@@ -2071,6 +2224,7 @@ const newWindow = window.open('https://example.com', 'example', 'width=600,heigh
 ```
 
 ### 2. navigator对象
+
 提供有关浏览器和操作系统的信息。
 
 ```javascript
@@ -2088,6 +2242,7 @@ if ('geolocation' in navigator) {
 ```
 
 ### 3. location对象
+
 包含当前URL的信息，并可用于页面重定向。
 
 ```javascript
@@ -2105,6 +2260,7 @@ console.log('哈希:', location.hash);
 ```
 
 ### 4. history对象
+
 管理浏览器的历史记录。
 
 ```javascript
@@ -2121,6 +2277,7 @@ console.log('历史记录长度:', history.length);
 ```
 
 ### 5. screen对象
+
 提供用户屏幕的信息。
 
 ```javascript
@@ -2136,25 +2293,28 @@ console.log('像素深度:', screen.pixelDepth);
 
 BOM提供了丰富的API，使JavaScript能够与浏览器环境进行交互。虽然BOM不是官方标准，但现代浏览器都实现了相似的功能。掌握BOM对于开发复杂的Web应用至关重要，特别是需要控制浏览器行为、处理导航或获取设备信息的场景。
 
-
 DOM：
 在JavaScript中，**DOM（文档对象模型）** 是一个重要的编程接口，它允许JavaScript与HTML文档进行交互。下面详细阐述DOM的概念、结构和功能：
 
 ---
 
 ### 1. **DOM的定义**
+
 DOM是浏览器将HTML或XML文档解析成的一个**树形结构模型**。通过DOM，开发者可以使用JavaScript动态地访问、修改、添加或删除文档的内容、结构和样式。
 
 ---
 
 ### 2. **DOM的树形结构**
+
 DOM将文档表示为节点（Node）的层次化树结构：
+
 - **文档节点（Document）**：整个文档的根节点。
 - **元素节点（Element）**：HTML标签（如 `<div>`、`<p>`）。
 - **文本节点（Text）**：元素内的文本内容。
 - **属性节点（Attr）**：元素的属性（如 `class="title"`）。
 
 **示例：**
+
 ```html
 <html>
   <head>
@@ -2165,7 +2325,9 @@ DOM将文档表示为节点（Node）的层次化树结构：
   </body>
 </html>
 ```
+
 对应的DOM树：
+
 ```
 Document
 └── html
@@ -2180,9 +2342,11 @@ Document
 ---
 
 ### 3. **DOM的用途**
+
 通过JavaScript操作DOM，可以实现以下功能：
 
 #### **① 访问元素**
+
 ```javascript
 // 通过ID获取元素
 const header = document.getElementById("header");
@@ -2192,6 +2356,7 @@ const title = document.querySelector("h1");
 ```
 
 #### **② 修改内容与样式**
+
 ```javascript
 // 修改文本内容
 header.textContent = "你好，DOM！";
@@ -2205,6 +2370,7 @@ header.style.fontSize = "24px";
 ```
 
 #### **③ 修改属性**
+
 ```javascript
 // 设置或获取属性
 header.setAttribute("class", "title");
@@ -2212,6 +2378,7 @@ const id = header.getAttribute("id");
 ```
 
 #### **④ 添加或删除元素**
+
 ```javascript
 // 创建新元素
 const newParagraph = document.createElement("p");
@@ -2226,6 +2393,7 @@ oldElement.remove();
 ```
 
 #### **⑤ 事件处理**
+
 ```javascript
 // 添加点击事件
 header.addEventListener("click", function() {
@@ -2236,6 +2404,7 @@ header.addEventListener("click", function() {
 ---
 
 ### 4. **DOM与浏览器渲染**
+
 - 当HTML被加载时，浏览器会构建DOM树。
 - 对DOM的修改会触发浏览器的**重绘（Repaint）** 或**重排（Reflow）**，影响性能。
 - 优化建议：减少频繁的DOM操作，使用文档片段（`DocumentFragment`）或虚拟DOM（如React/Vue中的实现）。
@@ -2243,18 +2412,21 @@ header.addEventListener("click", function() {
 ---
 
 ### 5. **DOM与其他相关概念**
+
 - **BOM（浏览器对象模型）**：操作浏览器窗口（如 `window`、`navigator`）。
 - **CSSOM（CSS对象模型）**：用于操作CSS样式。
 
 ---
 
 ### 6. **DOM的兼容性**
+
 - 现代浏览器遵循W3C DOM标准，但早期浏览器（如IE）存在差异。
 - 开发者需注意兼容性问题，或使用库（如jQuery）简化DOM操作。
 
 ---
 
 ### 总结
+
 DOM是JavaScript与网页交互的核心桥梁，通过它开发者可以动态控制网页内容，实现丰富的用户交互体验。理解DOM的结构和操作方法，是前端开发的基础技能。
 
 JavaScript ES6+新特性：
@@ -2263,6 +2435,7 @@ ES6（ECMAScript 2015）及后续版本为 JavaScript 引入了许多重要特�
 ## ES6 (ES2015) 核心特性
 
 ### 1. 变量声明
+
 ```javascript
 // let 和 const
 let name = "John"; // 块级作用域
@@ -2270,6 +2443,7 @@ const PI = 3.14;   // 常量
 ```
 
 ### 2. 箭头函数
+
 ```javascript
 // 传统函数
 function add(a, b) {
@@ -2282,6 +2456,7 @@ const square = x => x * x;
 ```
 
 ### 3. 模板字符串
+
 ```javascript
 const name = "Alice";
 const message = `Hello, ${name}!
@@ -2289,6 +2464,7 @@ Welcome to our website.`;
 ```
 
 ### 4. 解构赋值
+
 ```javascript
 // 数组解构
 const [first, second] = [1, 2, 3];
@@ -2299,6 +2475,7 @@ const { name: userName, age: userAge } = person;
 ```
 
 ### 5. 默认参数
+
 ```javascript
 function greet(name = "Guest", age = 18) {
   return `Hello ${name}, you are ${age} years old`;
@@ -2306,6 +2483,7 @@ function greet(name = "Guest", age = 18) {
 ```
 
 ### 6. 扩展运算符
+
 ```javascript
 // 数组
 const arr1 = [1, 2, 3];
@@ -2317,13 +2495,14 @@ const obj2 = { ...obj1, c: 3 };
 ```
 
 ### 7. 类和继承
+
 ```javascript
 class Person {
   constructor(name, age) {
     this.name = name;
     this.age = age;
   }
-  
+
   greet() {
     return `Hello, I'm ${this.name}`;
   }
@@ -2338,6 +2517,7 @@ class Student extends Person {
 ```
 
 ### 8. 模块化
+
 ```javascript
 // export
 export const PI = 3.14;
@@ -2351,6 +2531,7 @@ import * as Math from './math.js';
 ```
 
 ### 9. Promise
+
 ```javascript
 const fetchData = () => {
   return new Promise((resolve, reject) => {
@@ -2368,12 +2549,14 @@ fetchData()
 ## ES7 (ES2016)
 
 ### 1. Array.prototype.includes()
+
 ```javascript
 const arr = [1, 2, 3];
 console.log(arr.includes(2)); // true
 ```
 
 ### 2. 指数运算符
+
 ```javascript
 console.log(2 ** 3); // 8
 console.log(2 ** 10); // 1024
@@ -2382,6 +2565,7 @@ console.log(2 ** 10); // 1024
 ## ES8 (ES2017)
 
 ### 1. async/await
+
 ```javascript
 async function fetchUser() {
   try {
@@ -2395,6 +2579,7 @@ async function fetchUser() {
 ```
 
 ### 2. Object.values() / Object.entries()
+
 ```javascript
 const obj = { a: 1, b: 2, c: 3 };
 Object.values(obj); // [1, 2, 3]
@@ -2402,6 +2587,7 @@ Object.entries(obj); // [['a', 1], ['b', 2], ['c', 3]]
 ```
 
 ### 3. 字符串填充
+
 ```javascript
 '5'.padStart(2, '0'); // '05'
 'hello'.padEnd(10, '!'); // 'hello!!!!!'
@@ -2410,6 +2596,7 @@ Object.entries(obj); // [['a', 1], ['b', 2], ['c', 3]]
 ## ES9 (ES2018)
 
 ### 1. 异步迭代
+
 ```javascript
 for await (const line of readLines(filePath)) {
   console.log(line);
@@ -2417,6 +2604,7 @@ for await (const line of readLines(filePath)) {
 ```
 
 ### 2. Promise.finally()
+
 ```javascript
 fetch('/api/data')
   .then(data => console.log(data))
@@ -2425,6 +2613,7 @@ fetch('/api/data')
 ```
 
 ### 3. Rest/Spread 属性
+
 ```javascript
 // 对象展开
 const { a, b, ...rest } = { a: 1, b: 2, c: 3, d: 4 };
@@ -2438,6 +2627,7 @@ function logProps({ name, age, ...details }) {
 ## ES10 (ES2019)
 
 ### 1. Array.flat() / Array.flatMap()
+
 ```javascript
 const arr = [1, [2, [3, [4]]]];
 arr.flat(); // [1, 2, [3, [4]]]
@@ -2447,12 +2637,14 @@ arr.flat(2); // [1, 2, 3, [4]]
 ```
 
 ### 2. Object.fromEntries()
+
 ```javascript
 const entries = [['a', 1], ['b', 2]];
 const obj = Object.fromEntries(entries); // { a: 1, b: 2 }
 ```
 
 ### 3. 字符串方法
+
 ```javascript
 '   hello   '.trimStart(); // 'hello   '
 '   hello   '.trimEnd();   // '   hello'
@@ -2461,6 +2653,7 @@ const obj = Object.fromEntries(entries); // { a: 1, b: 2 }
 ## ES11 (ES2020)
 
 ### 1. 可选链操作符
+
 ```javascript
 const user = {};
 console.log(user?.profile?.name); // undefined
@@ -2468,17 +2661,20 @@ console.log(user?.profile?.getName?.()); // undefined
 ```
 
 ### 2. 空值合并运算符
+
 ```javascript
 const name = null ?? 'Default Name'; // 'Default Name'
 const age = 0 ?? 25; // 0
 ```
 
 ### 3. 动态导入
+
 ```javascript
 const module = await import('./module.js');
 ```
 
 ### 4. BigInt
+
 ```javascript
 const bigNumber = 9007199254740991n;
 const bigger = bigNumber + 1n;
@@ -2487,6 +2683,7 @@ const bigger = bigNumber + 1n;
 ## ES12 (ES2021) 及更新版本
 
 ### 1. 逻辑赋值运算符
+
 ```javascript
 // 逻辑或赋值
 a ||= b; // a = a || b
@@ -2499,6 +2696,7 @@ a ??= b; // a = a ?? b
 ```
 
 ### 2. Promise.any()
+
 ```javascript
 const promises = [
   fetch('/api1'),
@@ -2511,6 +2709,7 @@ Promise.any(promises)
 ```
 
 ### 3. 数字分隔符
+
 ```javascript
 const billion = 1_000_000_000;
 const binary = 0b1010_0001_1000;
@@ -2518,12 +2717,13 @@ const binary = 0b1010_0001_1000;
 
 这些特性极大地提升了 JavaScript 的开发体验和代码质量，建议在实际项目中逐步应用这些现代语法。
 
-
 TypeScript：
 TypeScript（简称TS）是由微软开发并维护的**开源编程语言**，它是 JavaScript（JS）的**超集**（Superset）——这意味着所有合法的 JS 代码都可以直接在 TS 中运行，同时 TS 为 JS 增加了**静态类型系统**和一系列面向工程化的扩展特性。
 
 ### 一、核心定位：解决JS的核心痛点
+
 JavaScript 是动态弱类型语言，变量类型在运行时才确定，这导致：
+
 - 开发阶段难以发现类型错误（如字符串调用数组方法）；
 - 大型项目中代码可读性、可维护性差；
 - 编辑器/IDE 无法提供精准的代码提示和重构支持。
@@ -2531,10 +2731,13 @@ JavaScript 是动态弱类型语言，变量类型在运行时才确定，这导
 TypeScript 的核心目标是**在编译阶段（而非运行时）捕获类型错误**，同时保留 JS 的灵活性，最终编译为纯 JS 运行在任何支持 JS 的环境（浏览器、Node.js 等）。
 
 ### 二、核心特性
+
 #### 1. 静态类型系统（最核心）
+
 TS 允许开发者为变量、函数参数/返回值、对象属性等**显式声明类型**，编译器会在编译时校验类型一致性，提前暴露错误。
 
 ##### 基础类型（与JS对应，增加类型约束）
+
 ```typescript
 // 原始类型
 let num: number = 10; // 数字
@@ -2579,37 +2782,47 @@ function error(): never {
 ```
 
 ##### 复杂类型（面向工程化扩展）
+
 - **接口（Interface）**：描述对象/函数的结构，支持扩展、可选属性、只读属性：
+  
   ```typescript
   interface User {
     readonly id: number; // 只读属性
     name: string;
     age?: number; // 可选属性
   }
-
+  
   interface Admin extends User { // 扩展接口
     role: string;
   }
-
+  
   const admin: Admin = { id: 1, name: "张三", role: "admin" };
   ```
+  
 - **类型别名（Type Alias）**：自定义类型名称，支持联合类型、交叉类型：
+  
   ```typescript
   type ID = number | string; // 联合类型（二选一）
   type Person = { name: string } & { age: number }; // 交叉类型（合并）
-
+  
   let id: ID = 100;
   id = "abc"; // 合法
   ```
+  
 - **函数类型**：约束参数和返回值类型：
+  
   ```typescript
   type Add = (a: number, b: number) => number;
   const add: Add = (x, y) => x + y;
   ```
+  
 
 #### 2. 面向对象增强
+
 TS 完善了 JS 的面向对象能力，支持：
+
 - **类（Class）**：明确的访问修饰符（`public`/`private`/`protected`）、抽象类（`abstract`）、接口实现（`implements`）：
+  
   ```typescript
   abstract class Animal { // 抽象类，不能实例化
     protected name: string; // 受保护属性，子类可访问
@@ -2618,7 +2831,7 @@ TS 完善了 JS 的面向对象能力，支持：
     }
     abstract makeSound(): void; // 抽象方法，子类必须实现
   }
-
+  
   class Dog extends Animal {
     private age: number; // 私有属性，仅当前类访问
     constructor(name: string, age: number) {
@@ -2630,9 +2843,12 @@ TS 完善了 JS 的面向对象能力，支持：
     }
   }
   ```
+  
 
 #### 3. 泛型（Generic）
+
 解决“类型复用”问题，让函数/类/接口支持多种类型，同时保留类型安全：
+
 ```typescript
 // 泛型函数：支持任意类型的数组反转
 function reverse<T>(arr: T[]): T[] {
@@ -2644,15 +2860,20 @@ const strArr = reverse<string>(["a", "b"]); // ["b","a"]
 ```
 
 #### 4. 兼容ES新特性
+
 TS 内置对 ES6+ 所有特性的支持（如箭头函数、解构、Promise、模块），同时可通过配置编译为低版本 ES（如 ES5），兼容老旧环境。
 
 #### 5. 类型推断与类型守卫
+
 - **类型推断**：TS 会自动推导变量类型，无需显式声明：
+  
   ```typescript
   let num = 10; // 自动推断为number类型
   num = "abc"; // 编译报错
   ```
+  
 - **类型守卫**：通过逻辑判断缩小变量类型范围：
+  
   ```typescript
   function printValue(val: string | number) {
     if (typeof val === "string") {
@@ -2662,9 +2883,12 @@ TS 内置对 ES6+ 所有特性的支持（如箭头函数、解构、Promise、�
     }
   }
   ```
+  
 
 ### 三、编译与配置
+
 TS 代码无法直接运行，需通过 `tsc`（TypeScript 编译器）编译为 JS。核心配置文件是 `tsconfig.json`，常用配置项：
+
 ```json
 {
   "compilerOptions": {
@@ -2681,29 +2905,33 @@ TS 代码无法直接运行，需通过 `tsc`（TypeScript 编译器）编译为
 ```
 
 ### 四、TS的使用场景
+
 1. **大型前端项目**：React/Vue/Angular 等框架的工程化项目（如 React + TS、Vue3 + TS）；
 2. **Node.js 后端**：替代原生 JS 开发服务端，提升代码可维护性；
 3. **库/工具开发**：为第三方库提供类型声明（如 `@types/react`），提升开发者使用体验；
 4. **团队协作项目**：通过类型约束降低沟通成本，减少低级错误。
 
 ### 五、优势与局限性
+
 #### 优势
+
 - **提前发现错误**：编译阶段捕获类型错误，减少运行时 Bug；
 - **提升开发效率**：编辑器精准提示、自动补全、重构支持；
 - **增强代码可读性**：类型注解是“自文档”，便于理解变量/函数用途；
 - **工程化友好**：适配大型项目的模块化、面向对象开发。
 
 #### 局限性
+
 - **学习成本**：需掌握类型系统、泛型等新概念；
 - **额外编译步骤**：增加构建流程（可通过 ts-node、Vite 等工具简化）；
 - **少量冗余代码**：类型注解会增加代码量（但可通过类型推断减少）。
 
 ### 六、总结
+
 TypeScript 不是替代 JavaScript，而是**增强 JavaScript**——它保留了 JS 的灵活性，同时补充了静态类型系统，是大型前端/Node.js 项目的首选编程语言。如今，TS 已成为前端工程化的标配，主流框架（React 16+、Vue3、Angular）均深度支持 TypeScript，是前端开发者的核心技能之一。
 
-
->前端中的UI和UX
-对于前端开发者而言，深刻理解这两者的区别与联系，是构建出色产品的基石。
+> 前端中的UI和UX
+> 对于前端开发者而言，深刻理解这两者的区别与联系，是构建出色产品的基石。
 
 ---
 
@@ -2714,16 +2942,18 @@ UI，即**用户界面**，是用户与产品进行交互的**视觉层面**。�
 
 **2. 主要构成要素**
 UI 设计师主要负责：
-*   **视觉设计：** 色彩体系、字体排版、图标、图像、间距和对齐。
-*   **布局设计：** 页面如何组织，信息如何层级化地呈现。
-*   **交互元素的设计：** 按钮、输入框、下拉菜单、滑块、动画效果等组件的外观和状态（如默认、悬停、点击、禁用）。
-*   **风格指南/设计系统：** 确保整个产品视觉语言的一致性。
+
+- **视觉设计：** 色彩体系、字体排版、图标、图像、间距和对齐。
+- **布局设计：** 页面如何组织，信息如何层级化地呈现。
+- **交互元素的设计：** 按钮、输入框、下拉菜单、滑块、动画效果等组件的外观和状态（如默认、悬停、点击、禁用）。
+- **风格指南/设计系统：** 确保整个产品视觉语言的一致性。
 
 **3. 关键目标**
 UI 的目标是**美观、一致、品牌化**。一个好的 UI 应该是：
-*   **视觉吸引力：** 让人感觉舒服、专业、有品质感。
-*   **清晰明了：** 用户一眼就能看懂每个元素的功能。
-*   **一致性：** 整个产品的按钮、颜色、字体都遵循同一套规则，降低用户的学习成本。
+
+- **视觉吸引力：** 让人感觉舒服、专业、有品质感。
+- **清晰明了：** 用户一眼就能看懂每个元素的功能。
+- **一致性：** 整个产品的按钮、颜色、字体都遵循同一套规则，降低用户的学习成本。
 
 **4. 前端开发者的角色**
 前端开发者将 UI 设计师提供的设计稿（如 Figma, Sketch 文件）通过代码（HTML, CSS, JavaScript）**精确地还原**为可交互的网页或应用。这要求开发者对细节有极高的追求，确保最终产品与设计稿在像素级别上的一致。
@@ -2739,29 +2969,33 @@ UX，即**用户体验**，是用户在与产品交互的**整个过程**中产�
 
 **2. 主要构成要素**
 UX 设计师（或研究员）主要负责：
-*   **用户研究：** 了解目标用户是谁，他们的需求、痛点和行为模式。
-*   **信息架构：** 如何组织和管理内容，让用户能轻松找到他们需要的信息。
-*   **用户流程和线框图：** 规划用户完成某个任务（如注册、购买）需要经历的步骤。
-*   **可用性测试：** 通过原型让真实用户测试，发现流程中的问题并迭代优化。
-*   **交互设计：** 定义用户操作后系统的反馈（这常与 UI 有重叠，但 UX 更侧重逻辑流程）。
+
+- **用户研究：** 了解目标用户是谁，他们的需求、痛点和行为模式。
+- **信息架构：** 如何组织和管理内容，让用户能轻松找到他们需要的信息。
+- **用户流程和线框图：** 规划用户完成某个任务（如注册、购买）需要经历的步骤。
+- **可用性测试：** 通过原型让真实用户测试，发现流程中的问题并迭代优化。
+- **交互设计：** 定义用户操作后系统的反馈（这常与 UI 有重叠，但 UX 更侧重逻辑流程）。
 
 **3. 关键目标**
 UX 的目标是**有效、高效、令人满意**。一个好的 UX 应该是：
-*   **有用的：** 解决了用户的真实问题。
-*   **易用的：** 用户无需费力思考就能轻松完成任务。
-*   **合乎逻辑的：** 流程顺畅，没有令人困惑的步骤。
-*   **令人愉悦的：** 整个使用过程能给用户带来积极的情绪。
+
+- **有用的：** 解决了用户的真实问题。
+- **易用的：** 用户无需费力思考就能轻松完成任务。
+- **合乎逻辑的：** 流程顺畅，没有令人困惑的步骤。
+- **令人愉悦的：** 整个使用过程能给用户带来积极的情绪。
 
 **4. 前端开发者的角色**
 前端开发者是实现优秀 UX 的**关键执行者**。他们通过：
-*   **性能优化：** 确保页面加载速度快，交互响应及时（糟糕的性能是 UX 的杀手）。
-*   **可访问性：** 编写代码让残障人士（如使用屏幕阅读器）也能无障碍使用产品。
-*   **流畅的交互和动画：** 实现细腻的微交互和过渡动画，提升操作的反馈感和愉悦度。
-*   **响应式设计：** 确保在不同设备上都能提供一致的优秀体验。
+
+- **性能优化：** 确保页面加载速度快，交互响应及时（糟糕的性能是 UX 的杀手）。
+- **可访问性：** 编写代码让残障人士（如使用屏幕阅读器）也能无障碍使用产品。
+- **流畅的交互和动画：** 实现细腻的微交互和过渡动画，提升操作的反馈感和愉悦度。
+- **响应式设计：** 确保在不同设备上都能提供一致的优秀体验。
 
 ---
 
 ### 三、UI 与 UX 的关系
+
 UI（用户界面）和 UX（用户体验）是构成数字产品的两个不可或缺、相互依存的层面。它们共同决定了用户与产品交互的最终效果。
 
 **UI 是 UX 的视觉载体和实现手段。** 它包含了用户直接与之交互的所有视觉元素，如图标、按钮、布局和色彩。一个精心设计的 UI 是打造优秀 UX 的必要基础，因为它提供了直观、美观且符合品牌调性的交互触点。
@@ -2769,15 +3003,15 @@ UI（用户界面）和 UX（用户体验）是构成数字产品的两个不可
 
 两者的相互影响具体表现为：
 
-*   **出色的 UI 无法挽救糟糕的 UX。** 即使一个产品拥有惊艳的视觉设计，如果其核心功能难以使用、导航逻辑混乱或无法解决用户的实际问题（即糟糕的 UX），用户最终仍会感到失望并放弃使用。
-*   **优秀的 UX 会因平庸的 UI 而折损。** 反之，一个产品可能在功能流程上非常高效（即优秀的 UX），但如果其界面看起来粗糙、过时或不专业（即平庸的 UI），则会削弱用户的信任感，并难以在第一时间吸引用户。
+- **出色的 UI 无法挽救糟糕的 UX。** 即使一个产品拥有惊艳的视觉设计，如果其核心功能难以使用、导航逻辑混乱或无法解决用户的实际问题（即糟糕的 UX），用户最终仍会感到失望并放弃使用。
+- **优秀的 UX 会因平庸的 UI 而折损。** 反之，一个产品可能在功能流程上非常高效（即优秀的 UX），但如果其界面看起来粗糙、过时或不专业（即平庸的 UI），则会削弱用户的信任感，并难以在第一时间吸引用户。
 
 **结论：** **要打造真正成功的产品，必须将优秀的 UI 和 UX 紧密结合。** UI 负责吸引用户并传达品质感，而 UX 则确保产品真正实用、易用并能满足用户需求。二者相辅相成，缺一不可。
 
 ### 四、总结与对比表格
 
-| 特性 | UI - 用户界面 | UX - 用户体验 |
-| :--- | :--- | :--- |
+| 特性  | UI - 用户界面 | UX - 用户体验 |
+| --- | --- | --- |
 | **核心焦点** | **外观和感觉** | **整体感受和易用性** |
 | **范畴** | **视觉层面**，具体的屏幕元素 | **结构性层面**，贯穿整个使用过程 |
 | **设计对象** | 颜色、字体、布局、动画 | 用户流程、信息架构、用户研究 |
@@ -2785,30 +3019,30 @@ UI（用户界面）和 UX（用户体验）是构成数字产品的两个不可
 | **好比** | 餐厅的装修、餐具、菜单设计 | 从进门、点餐、上菜到结账的整个用餐体验 |
 | **前端职责** | **高保真还原**视觉设计 | **通过代码实现**流畅、可用、可访问的交互 |
 
-
 前端开发有哪些UI或UX设计工具？
 前端开发中UI工具侧重界面视觉与组件搭建，UX工具聚焦交互原型设计、用户体验测试等，不同工具适配从原型设计到落地开发的不同场景。以下是主流且实用的UI/UX设计工具分类介绍：
+
 1. **综合视觉与原型设计工具**
-    1.  **Figma**：云端协作型设计神器，是当前前端与设计协作的主流工具。支持UI视觉设计、交互原型制作，自带丰富组件库和插件生态，可快速搭建网页、移动端界面。能实时多人协作编辑，设计稿可一键分享给团队，还能通过插件实现与代码开发的联动，比如前端开发者可借助插件导出设计稿的CSS样式、切图等，专业版支持Figma文件导入v0等开发工具，适配各类中大型项目协作。
-    2.  **Sketch**：曾是Mac端UI设计的标杆工具，主打轻量化和高效性。拥有海量第三方UI组件库（如Material Design、Ant Design适配插件），支持矢量绘图、切片导出等功能，适合网页和移动端UI视觉设计。不过它仅支持Mac系统，且早期侧重单机设计，后来通过插件完善了团队协作和代码导出能力，适合习惯Mac端操作的设计师与前端配合开发。
-    3.  **Adobe XD**：Adobe生态下的UI/UX一体化工具，无缝衔接Photoshop、Illustrator等Adobe软件。既能完成UI视觉设计，也能制作交互原型，支持动效设计和响应式布局预览。适合本身熟悉Adobe操作逻辑的团队，前端开发者可通过其导出规范的切图和设计资源，适配多端界面开发需求。
-
-2.  **快速原型与交互设计工具**
-    1.  **Mockplus（摹客RP）**：主打快速上手的原型工具，适合制作中低保真原型。支持拖拽式组件搭建，自带海量预设组件和交互效果，5分钟就能完成简单页面的交互原型。还具备智能标注功能，前端开发者可直接查看组件的尺寸、间距等参数，且支持Sketch导入，适合快速迭代的小型项目或原型验证阶段。
-    2.  **InVision**：擅长将静态设计稿转为高保真交互原型，支持手势、转场动画等细节交互设置。基于云端协作，团队可在原型上直接评论反馈，还支持版本控制和多渠道分享。适合需要深度测试交互逻辑的移动端或Web项目，帮助前端提前明确交互实现细节。
-    3.  **Proto.io**：专注于高保真应用原型开发，内置大量UI库和交互组件，支持调整颜色、滤镜及多文件上传。可与DropBox同步实现团队实时协作，能精准还原复杂交互场景，适合需要模拟接近真实产品体验的原型设计，助力前端提前预判开发难度。
-
-3.  **AI辅助与开发联动工具**
-    1.  **v0**：Vercel推出的AI驱动前端工具，聚焦UI原型设计与自动化开发。支持拖放生成可复用UI组件，提供实时代码预览，AI还能智能推荐配色、布局等设计元素。支持Web和移动端UI适配，且可与GitHub集成同步代码，专业版能导入Figma文件，适合快速迭代的轻量级前端项目，降低UI到代码的转化成本。
-    2.  **Bolt.new**：StackBlitz的云端工具，虽为全栈开发工具，但对UI/UX开发友好。无需配置本地环境，支持JS、TS等语言，可实时预览UI界面效果，AI能生成常用UI代码片段。与GitHub等版本控制平台集成，适合远程团队快速开发原型并验证UI效果。
-
-4.  **辅助设计与体验优化工具**
-    1.  **Adobe Color CC**：专业配色工具，前端和设计师可通过它创建配色方案，也能从图片中提取颜色生成主题。提供多种配色模式，生成的色值可直接用于CSS编写，解决前端开发中配色不统一的问题。
-    2.  **MouseStats**：UX分析工具，可记录用户在网站上的操作行为，生成会话视频、滚动热图等数据。前端开发者可根据这些数据优化界面交互，比如调整按钮位置、优化页面滚动逻辑等，提升用户体验。
-    3.  **Wirify**：独特的线框图转换工具，能一键将现有网页转为线框图。前端开发者可借助它分析优秀网站的布局结构，快速借鉴合理的界面架构，辅助自身项目的UI布局设计。
-
-5.  **UI组件库类工具**：这类工具虽偏向开发组件库，但包含完整UI设计规范，兼具设计参考与开发复用价值。例如Element-UI适配Vue.js，Ant Design适配React，均提供成套的UI组件和设计规范，前端可直接复用组件代码，同时遵循其设计风格保证界面统一性；Bootstrap则提供响应式网格系统和预定义样式，快速搭建兼容多端的基础UI界面。
-
+  
+  1. **Figma**：云端协作型设计神器，是当前前端与设计协作的主流工具。支持UI视觉设计、交互原型制作，自带丰富组件库和插件生态，可快速搭建网页、移动端界面。能实时多人协作编辑，设计稿可一键分享给团队，还能通过插件实现与代码开发的联动，比如前端开发者可借助插件导出设计稿的CSS样式、切图等，专业版支持Figma文件导入v0等开发工具，适配各类中大型项目协作。
+  2. **Sketch**：曾是Mac端UI设计的标杆工具，主打轻量化和高效性。拥有海量第三方UI组件库（如Material Design、Ant Design适配插件），支持矢量绘图、切片导出等功能，适合网页和移动端UI视觉设计。不过它仅支持Mac系统，且早期侧重单机设计，后来通过插件完善了团队协作和代码导出能力，适合习惯Mac端操作的设计师与前端配合开发。
+  3. **Adobe XD**：Adobe生态下的UI/UX一体化工具，无缝衔接Photoshop、Illustrator等Adobe软件。既能完成UI视觉设计，也能制作交互原型，支持动效设计和响应式布局预览。适合本身熟悉Adobe操作逻辑的团队，前端开发者可通过其导出规范的切图和设计资源，适配多端界面开发需求。
+2. **快速原型与交互设计工具**
+  
+  1. **Mockplus（摹客RP）**：主打快速上手的原型工具，适合制作中低保真原型。支持拖拽式组件搭建，自带海量预设组件和交互效果，5分钟就能完成简单页面的交互原型。还具备智能标注功能，前端开发者可直接查看组件的尺寸、间距等参数，且支持Sketch导入，适合快速迭代的小型项目或原型验证阶段。
+  2. **InVision**：擅长将静态设计稿转为高保真交互原型，支持手势、转场动画等细节交互设置。基于云端协作，团队可在原型上直接评论反馈，还支持版本控制和多渠道分享。适合需要深度测试交互逻辑的移动端或Web项目，帮助前端提前明确交互实现细节。
+  3. **Proto.io**：专注于高保真应用原型开发，内置大量UI库和交互组件，支持调整颜色、滤镜及多文件上传。可与DropBox同步实现团队实时协作，能精准还原复杂交互场景，适合需要模拟接近真实产品体验的原型设计，助力前端提前预判开发难度。
+3. **AI辅助与开发联动工具**
+  
+  1. **v0**：Vercel推出的AI驱动前端工具，聚焦UI原型设计与自动化开发。支持拖放生成可复用UI组件，提供实时代码预览，AI还能智能推荐配色、布局等设计元素。支持Web和移动端UI适配，且可与GitHub集成同步代码，专业版能导入Figma文件，适合快速迭代的轻量级前端项目，降低UI到代码的转化成本。
+  2. **Bolt.new**：StackBlitz的云端工具，虽为全栈开发工具，但对UI/UX开发友好。无需配置本地环境，支持JS、TS等语言，可实时预览UI界面效果，AI能生成常用UI代码片段。与GitHub等版本控制平台集成，适合远程团队快速开发原型并验证UI效果。
+4. **辅助设计与体验优化工具**
+  
+  1. **Adobe Color CC**：专业配色工具，前端和设计师可通过它创建配色方案，也能从图片中提取颜色生成主题。提供多种配色模式，生成的色值可直接用于CSS编写，解决前端开发中配色不统一的问题。
+  2. **MouseStats**：UX分析工具，可记录用户在网站上的操作行为，生成会话视频、滚动热图等数据。前端开发者可根据这些数据优化界面交互，比如调整按钮位置、优化页面滚动逻辑等，提升用户体验。
+  3. **Wirify**：独特的线框图转换工具，能一键将现有网页转为线框图。前端开发者可借助它分析优秀网站的布局结构，快速借鉴合理的界面架构，辅助自身项目的UI布局设计。
+5. **UI组件库类工具**：这类工具虽偏向开发组件库，但包含完整UI设计规范，兼具设计参考与开发复用价值。例如Element-UI适配Vue.js，Ant Design适配React，均提供成套的UI组件和设计规范，前端可直接复用组件代码，同时遵循其设计风格保证界面统一性；Bootstrap则提供响应式网格系统和预定义样式，快速搭建兼容多端的基础UI界面。
+  
 
 JQuery：
 在前端发展史上，**jQuery无疑是一场划时代的革命**。它让DOM操作、事件处理和动画效果变得前所未有的简单，几乎以一己之力将开发者从浏览器兼容性的泥潭中解放出来，重塑了JavaScript开发的生态。
@@ -2821,9 +3055,9 @@ JQuery：
 
 它不是一个框架，而是一个**工具库**。它的出现，主要是为了解决21世纪初前端开发面临的三大核心痛点：
 
-1.  **复杂的浏览器兼容性问题**。
-2.  **繁琐冗长的DOM操作API**。
-3.  **不统一且难以使用的Ajax功能**。
+1. **复杂的浏览器兼容性问题**。
+2. **繁琐冗长的DOM操作API**。
+3. **不统一且难以使用的Ajax功能**。
 
 ---
 
@@ -2832,6 +3066,7 @@ JQuery：
 jQuery的核心理念可以概括为：**“选择某个东西，然后对它进行一些操作”**。
 
 这完美地体现在了它的链式语法上：
+
 ```javascript
 // 经典的jQuery三段式：选择 -> 操作 -> 链式调用
 $('#myButton')           // 1. 选择：找到ID为myButton的元素
@@ -2851,6 +3086,7 @@ $('#myButton')           // 1. 选择：找到ID为myButton的元素
 在2006年之前，不同浏览器（尤其是IE与Netscape/Mozilla系列）的JavaScript API存在大量差异。
 
 **原生JavaScript的噩梦：**
+
 ```javascript
 // 注册一个事件，需要判断浏览器支持哪种方式
 var addHandler = function(element, type, handler) {
@@ -2865,7 +3101,9 @@ var addHandler = function(element, type, handler) {
 
 // 使用Ajax更是噩梦，需要创建不同的ActiveXObject或XMLHttpRequest
 ```
+
 **jQuery的优雅解决：**
+
 ```javascript
 // jQuery 帮你处理了所有底层兼容性！
 $('#myElement').on('click', function() {
@@ -2887,6 +3125,7 @@ $.ajax({
 原生JavaScript的DOM操作非常冗长。
 
 **原生JavaScript：**
+
 ```javascript
 // 找到所有div，遍历它们，修改内容并添加类
 var divs = document.getElementsByTagName('div');
@@ -2895,11 +3134,14 @@ for (var i = 0; i < divs.length; i++) {
   divs[i].className += ' highlighted';
 }
 ```
+
 **jQuery：**
+
 ```javascript
 // 同样的功能，jQuery一行搞定，而且更清晰
 $('div').html('New Content').addClass('highlighted');
 ```
+
 jQuery的选择器 `$('div')` 几乎完全继承了CSS选择器的语法，使得元素查找变得极其直观和强大。
 
 #### 3. 便捷的动画效果 - “开箱即用的动画”
@@ -2907,6 +3149,7 @@ jQuery的选择器 `$('div')` 几乎完全继承了CSS选择器的语法，使�
 在jQuery之前，实现动画需要手动操作`setInterval`和CSS属性，非常复杂。
 
 **jQuery：**
+
 ```javascript
 // 轻松实现复杂的动画序列
 $('#myBox')
@@ -2919,14 +3162,16 @@ $('#myBox')
 
 ### 四、jQuery 的核心概念
 
-1.  **`$` 符号**：这是`jQuery`对象的别名，是jQuery的灵魂。`$(selector)`函数会返回一个包含匹配元素的jQuery对象。
-2.  **jQuery 对象**：当你使用`$()`选择元素时，返回的不是原生的DOM元素，而是一个**jQuery对象**。这个对象是一个包装集，包含了所有匹配的DOM元素以及所有jQuery的方法。你需要用`.get()`或下标`[0]`才能取出原生DOM元素。
-3.  **隐式迭代**：这是jQuery一个非常聪明的设计。当你对一个jQuery对象（包含多个DOM元素）进行操作时，jQuery会自动**遍历**所有元素并对它们执行相同的操作，无需你手动写`for`循环。
-    ```javascript
-    // 隐式迭代：所有p标签的文字都会被改变
-    $('p').text('Hello World');
-    ```
-4.  **插件体系**：jQuery拥有一个极其丰富的插件生态系统。你可以轻松地引入插件来实现轮播图、日期选择器、模态框等复杂UI组件，这极大地加速了开发进程。
+1. **`$` 符号**：这是`jQuery`对象的别名，是jQuery的灵魂。`$(selector)`函数会返回一个包含匹配元素的jQuery对象。
+2. **jQuery 对象**：当你使用`$()`选择元素时，返回的不是原生的DOM元素，而是一个**jQuery对象**。这个对象是一个包装集，包含了所有匹配的DOM元素以及所有jQuery的方法。你需要用`.get()`或下标`[0]`才能取出原生DOM元素。
+3. **隐式迭代**：这是jQuery一个非常聪明的设计。当你对一个jQuery对象（包含多个DOM元素）进行操作时，jQuery会自动**遍历**所有元素并对它们执行相同的操作，无需你手动写`for`循环。
+  
+  ```javascript
+  // 隐式迭代：所有p标签的文字都会被改变
+  $('p').text('Hello World');
+  ```
+  
+4. **插件体系**：jQuery拥有一个极其丰富的插件生态系统。你可以轻松地引入插件来实现轮播图、日期选择器、模态框等复杂UI组件，这极大地加速了开发进程。
 
 ---
 
@@ -2934,22 +3179,23 @@ $('#myBox')
 
 #### 优点（在其鼎盛时期）：
 
-*   **极大地提升了开发效率**：代码量锐减，逻辑更清晰。
-*   **出色地解决了浏览器兼容性**：让开发者能专注于业务逻辑。
-*   **降低了前端门槛**：让后端开发者甚至设计师都能快速实现交互效果。
-*   **强大的社区和插件生态**：几乎“只有你想不到，没有你找不到”的插件。
+- **极大地提升了开发效率**：代码量锐减，逻辑更清晰。
+- **出色地解决了浏览器兼容性**：让开发者能专注于业务逻辑。
+- **降低了前端门槛**：让后端开发者甚至设计师都能快速实现交互效果。
+- **强大的社区和插件生态**：几乎“只有你想不到，没有你找不到”的插件。
 
 #### 缺点（以现代视角看）：
 
-*   **性能开销**：jQuery是一个完整的库，即使你只用其中一个功能，也需要加载整个文件。在性能至关重要的移动端，这成为了负担。原生JavaScript可以直接操作API，性能更高。
-*   **“过时”的开发模式**：jQuery鼓励**命令式**的**直接DOM操作**。在现代复杂的前端应用中，这种模式容易导致代码结构混乱、数据与视图不同步，难以维护和测试，被称为“意大利面条式代码”。
-*   **浏览器标准的统一**：随着IE的逐渐消亡和现代浏览器对标准的大力支持，jQuery最大的价值——兼容性——正在急剧衰减。许多jQuery的功能现在用原生JS已经可以轻松实现。
-*   **与现代框架理念不符**：React、Vue等现代框架采用**声明式**和**组件化**的开发模式。它们通过管理“状态”来驱动视图更新，而不是直接操作DOM。在这种架构下，jQuery显得多余且容易引发冲突。
+- **性能开销**：jQuery是一个完整的库，即使你只用其中一个功能，也需要加载整个文件。在性能至关重要的移动端，这成为了负担。原生JavaScript可以直接操作API，性能更高。
+- **“过时”的开发模式**：jQuery鼓励**命令式**的**直接DOM操作**。在现代复杂的前端应用中，这种模式容易导致代码结构混乱、数据与视图不同步，难以维护和测试，被称为“意大利面条式代码”。
+- **浏览器标准的统一**：随着IE的逐渐消亡和现代浏览器对标准的大力支持，jQuery最大的价值——兼容性——正在急剧衰减。许多jQuery的功能现在用原生JS已经可以轻松实现。
+- **与现代框架理念不符**：React、Vue等现代框架采用**声明式**和**组件化**的开发模式。它们通过管理“状态”来驱动视图更新，而不是直接操作DOM。在这种架构下，jQuery显得多余且容易引发冲突。
 
 ---
 
 ### 六、示例代码
-``` html
+
+```html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -3013,15 +3259,15 @@ $('#myBox')
 </head>
 <body>
     <h1>我的待办事项</h1>
-    
+
     <div>
         <input type="text" id="todo-input" placeholder="添加新任务...">
         <button id="add-btn">添加</button>
     </div>
-    
+
     <!-- 加载状态提示 -->
     <div id="loading" class="loading" style="display: none;">加载中...</div>
-    
+
     <!-- 待办事项列表 -->
     <ul id="todo-list"></ul>
 
@@ -3030,31 +3276,31 @@ $('#myBox')
         $(document).ready(function() {
             // 从服务器加载初始待办事项
             loadTodos();
-            
+
             // 添加按钮点击事件
             $('#add-btn').click(function() {
                 addTodo();
             });
-            
+
             // 输入框回车键事件
             $('#todo-input').keypress(function(e) {
                 if (e.which === 13) { // 13 是回车键的键码
                     addTodo();
                 }
             });
-            
+
             // 添加新待办事项的函数
             function addTodo() {
                 const todoText = $('#todo-input').val().trim();
-                
+
                 if (todoText === '') {
                     alert('请输入待办事项内容！');
                     return;
                 }
-                
+
                 // 显示加载状态
                 $('#loading').show();
-                
+
                 // 模拟向服务器发送 Ajax 请求
                 setTimeout(function() {
                     // 创建新的列表项
@@ -3066,34 +3312,34 @@ $('#myBox')
                         .hide() // 先隐藏
                         .appendTo('#todo-list')
                         .fadeIn(500); // 淡入动画
-                    
+
                     // 点击任务标记为完成/未完成
                     newItem.find('span').click(function() {
                         $(this).parent().toggleClass('completed');
                     });
-                    
+
                     // 删除按钮事件
                     newItem.find('.delete-btn').click(function() {
                         const listItem = $(this).parent();
-                        
+
                         // 添加删除动画
                         listItem.fadeOut(500, function() {
                             $(this).remove();
                         });
                     });
-                    
+
                     // 清空输入框并隐藏加载状态
                     $('#todo-input').val('');
                     $('#loading').hide();
-                    
+
                     console.log('已添加待办事项:', todoText);
                 }, 800); // 模拟网络延迟
             }
-            
+
             // 从服务器加载待办事项的函数
             function loadTodos() {
                 $('#loading').show();
-                
+
                 // 模拟 Ajax 请求获取数据
                 setTimeout(function() {
                     // 模拟从服务器返回的数据
@@ -3103,10 +3349,10 @@ $('#myBox')
                         '准备会议材料',
                         '回复重要邮件'
                     ];
-                    
+
                     // 清空现有列表
                     $('#todo-list').empty();
-                    
+
                     // 遍历数据创建列表项
                     $.each(initialTodos, function(index, todoText) {
                         const listItem = $('<li></li>')
@@ -3115,12 +3361,12 @@ $('#myBox')
                                 <button class="delete-btn">删除</button>
                             `)
                             .appendTo('#todo-list');
-                        
+
                         // 点击任务标记为完成/未完成
                         listItem.find('span').click(function() {
                             $(this).parent().toggleClass('completed');
                         });
-                        
+
                         // 删除按钮事件
                         listItem.find('.delete-btn').click(function() {
                             const itemToRemove = $(this).parent();
@@ -3129,7 +3375,7 @@ $('#myBox')
                             });
                         });
                     });
-                    
+
                     $('#loading').hide();
                     console.log('待办事项加载完成！');
                 }, 1000);
@@ -3146,20 +3392,22 @@ $('#myBox')
 
 **现状**：
 jQuery目前仍然被**数百万个网站**所使用，尤其是在以下场景：
-*   **遗留的老项目**：特别是基于WordPress、Drupal等内容管理系统的网站。
-*   **简单的宣传展示类网站**：不需要复杂的状态管理，只需要一些简单的交互和动画。
-*   **快速原型开发**：对于一些快速验证想法的小项目，它依然高效。
+
+- **遗留的老项目**：特别是基于WordPress、Drupal等内容管理系统的网站。
+- **简单的宣传展示类网站**：不需要复杂的状态管理，只需要一些简单的交互和动画。
+- **快速原型开发**：对于一些快速验证想法的小项目，它依然高效。
 
 **现代替代方案**：
 
-1.  **原生 JavaScript (ES6+)**：
-    *   `document.querySelector` 和 `document.querySelectorAll` 提供了类似jQuery的选择能力。
-    *   `fetch` API 取代了 `$.ajax`。
-    *   `classList` API 方便地进行类名操作。
-    *   **建议**：对于简单的交互，**优先考虑使用原生JavaScript**。
-
-2.  **现代前端框架**：
-    *   **React / Vue / Angular / Svelte**：用于构建复杂的、数据驱动的单页面应用。它们采用组件化、声明式的开发模式，通过虚拟DOM等技术优化性能，是大型应用的首选。
+1. **原生 JavaScript (ES6+)**：
+  
+  - `document.querySelector` 和 `document.querySelectorAll` 提供了类似jQuery的选择能力。
+  - `fetch` API 取代了 `$.ajax`。
+  - `classList` API 方便地进行类名操作。
+  - **建议**：对于简单的交互，**优先考虑使用原生JavaScript**。
+2. **现代前端框架**：
+  
+  - **React / Vue / Angular / Svelte**：用于构建复杂的、数据驱动的单页面应用。它们采用组件化、声明式的开发模式，通过虚拟DOM等技术优化性能，是大型应用的首选。
 
 ### 总结
 
@@ -3167,10 +3415,10 @@ jQuery是Web前端发展史上一个具有里程碑意义的技术。在浏览�
 然而，随着技术的发展和环境的变迁（浏览器统一、硬件性能提升、应用复杂度飙升），它的历史使命已经基本完成。对于新项目，尤其是在构建复杂应用时，开发者应优先考虑**原生JavaScript**或**现代前端框架**。
 
 但**学习jQuery依然有价值**，因为它能帮助你：
-*   **理解和维护大量现存的老代码**。
-*   **深刻理解DOM操作和事件处理等前端基础概念**。
-*   体会一个伟大的库如何解决一个时代的核心痛点。
 
+- **理解和维护大量现存的老代码**。
+- **深刻理解DOM操作和事件处理等前端基础概念**。
+- 体会一个伟大的库如何解决一个时代的核心痛点。
 
 React：
 React 是一个用于构建用户界面的 **JavaScript 库**（而非一个完整的框架）。它由 Facebook 开发并维护，自 2013 年发布以来，已成为前端领域最流行和最具影响力的技术之一。
@@ -3179,26 +3427,27 @@ React 是一个用于构建用户界面的 **JavaScript 库**（而非一个完�
 
 React 的成功源于其几个核心的设计理念：
 
-1.  **组件化**
-    React 将用户界面拆分成一个个独立、可复用的“组件”。每个组件管理自己的状态和视图，然后像搭积木一样组合成复杂的 UI。这带来了代码的高复用性、可维护性和清晰的职责划分。
-
-2.  **声明式编程**
-    与传统的**命令式**编程（一步步告诉浏览器如何操作 DOM）不同，React 采用**声明式**。
-    - **命令式**：*“找到这个 div，清空它的内容，创建一个新的 p 标签，设置文本为 ‘Hello’，把它添加到 div 里。”*
-    - **声明式**：*“当数据是 ‘Hello’ 时，UI 就应该长这样。”*
+1. **组件化**
+  React 将用户界面拆分成一个个独立、可复用的“组件”。每个组件管理自己的状态和视图，然后像搭积木一样组合成复杂的 UI。这带来了代码的高复用性、可维护性和清晰的职责划分。
+  
+2. **声明式编程**
+  与传统的**命令式**编程（一步步告诉浏览器如何操作 DOM）不同，React 采用**声明式**。
+  
+  - **命令式**：*“找到这个 div，清空它的内容，创建一个新的 p 标签，设置文本为 ‘Hello’，把它添加到 div 里。”*
+  - **声明式**：*“当数据是 ‘Hello’ 时，UI 就应该长这样。”*
     你只需要**描述 UI 在任意给定状态下的应该呈现的样子**，而不用关心具体如何实现过渡。当状态发生变化时，React 会自动高效地更新和渲染组件。这使得代码更可预测，更容易调试。
-
-3.  **虚拟 DOM**
-    这是 React 实现高性能的核心机制。
-    - **什么是虚拟 DOM？**：它是一个存在于内存中的 JavaScript 对象，是真实 DOM 的轻量级表示。
-    - **工作流程**：
-        1.  当组件的状态改变时，React 会重新构建一个新的虚拟 DOM 树。
-        2.  React 使用 **“Diffing”算法** 比较新的虚拟 DOM 和旧的虚拟 DOM，找出两者之间的最小差异。
-        3.  然后，React 将这些差异**批量**地、**高效地**应用到真实 DOM 上。
-    - **好处**：避免了直接操作真实 DOM 带来的昂贵性能开销，极大地提升了应用性能。
-
-4.  **单向数据流**
-    数据在 React 应用中沿着一个方向流动：从父组件通过 **props** 向下传递到子组件。这使数据流变得简单、可预测，便于理解和调试应用状态。
+3. **虚拟 DOM**
+  这是 React 实现高性能的核心机制。
+  
+  - **什么是虚拟 DOM？**：它是一个存在于内存中的 JavaScript 对象，是真实 DOM 的轻量级表示。
+  - **工作流程**：
+    1. 当组件的状态改变时，React 会重新构建一个新的虚拟 DOM 树。
+    2. React 使用 **“Diffing”算法** 比较新的虚拟 DOM 和旧的虚拟 DOM，找出两者之间的最小差异。
+    3. 然后，React 将这些差异**批量**地、**高效地**应用到真实 DOM 上。
+  - **好处**：避免了直接操作真实 DOM 带来的昂贵性能开销，极大地提升了应用性能。
+4. **单向数据流**
+  数据在 React 应用中沿着一个方向流动：从父组件通过 **props** 向下传递到子组件。这使数据流变得简单、可预测，便于理解和调试应用状态。
+  
 
 ---
 
@@ -3206,73 +3455,83 @@ React 的成功源于其几个核心的设计理念：
 
 要使用 React，必须理解以下几个基本概念：
 
-1.  **JSX**
-    - 一种 JavaScript 的语法扩展，允许你在 JavaScript 代码中编写类似 HTML 的结构。
-    - 它使得编写组件模板更直观。JSX 最终会被编译成普通的 `React.createElement()` 函数调用。
-
+1. **JSX**
+  
+  - 一种 JavaScript 的语法扩展，允许你在 JavaScript 代码中编写类似 HTML 的结构。
+  - 它使得编写组件模板更直观。JSX 最终会被编译成普通的 `React.createElement()` 函数调用。
+  
+  ```jsx
+  // 这是 JSX
+  const element = <h1 className="greeting">Hello, {name}!</h1>;
+  
+  // 它会被编译成类似这样：
+  const element = React.createElement(
+    'h1',
+    { className: 'greeting' },
+    'Hello, ', 
+    name
+  );
+  ```
+  
+2. **组件**
+  
+  - **函数组件**（现代推荐）：使用 JavaScript 函数定义，简洁明了。配合 Hooks 可以拥有全部功能。
+    
     ```jsx
-    // 这是 JSX
-    const element = <h1 className="greeting">Hello, {name}!</h1>;
-
-    // 它会被编译成类似这样：
-    const element = React.createElement(
-      'h1',
-      { className: 'greeting' },
-      'Hello, ', 
-      name
-    );
+    function Welcome(props) {
+      return <h1>Hello, {props.name}</h1>;
+    }
+    // 或使用箭头函数
+    const Welcome = (props) => <h1>Hello, {props.name}</h1>;
     ```
-
-2.  **组件**
-    - **函数组件**（现代推荐）：使用 JavaScript 函数定义，简洁明了。配合 Hooks 可以拥有全部功能。
-      ```jsx
-      function Welcome(props) {
-        return <h1>Hello, {props.name}</h1>;
+    
+  - **类组件**：使用 ES6 class 定义，在过去是管理状态和生命周期的唯一方式。
+    
+    ```jsx
+    class Welcome extends React.Component {
+      render() {
+        return <h1>Hello, {this.props.name}</h1>;
       }
-      // 或使用箭头函数
-      const Welcome = (props) => <h1>Hello, {props.name}</h1>;
-      ```
-    - **类组件**：使用 ES6 class 定义，在过去是管理状态和生命周期的唯一方式。
-      ```jsx
-      class Welcome extends React.Component {
-        render() {
-          return <h1>Hello, {this.props.name}</h1>;
-        }
-      }
-      ```
-
-3.  **Props**
-    - 是组件的输入，从父组件传递给子组件。
-    - 是只读的，组件不能修改自己的 props。
-
-4.  **State**
-    - 是组件内部管理的、可以变化的数据。
-    - 当 state 发生变化时，组件会重新渲染。
-    - 在函数组件中，使用 **`useState` Hook** 来管理状态。
-      ```jsx
-      import { useState } from 'react';
-
-      function Counter() {
-        const [count, setCount] = useState(0); // useState 返回当前状态和更新状态的函数
-
-        return (
-          <div>
-            <p>You clicked {count} times</p>
-            <button onClick={() => setCount(count + 1)}>
-              Click me
-            </button>
-          </div>
-        );
-      }
-      ```
-
-5.  **Hooks**
-    - 自 React 16.8 引入，允许你在函数组件中使用 state 和其他 React 特性。
-    - 常用 Hooks：
-        - **`useState`**：在函数组件中添加状态。
-        - **`useEffect`**：处理副作用（如数据获取、订阅、手动修改 DOM）。
-        - **`useContext`**：订阅 React 的 Context。
-        - **`useReducer`**：用于更复杂的状态逻辑。
+    }
+    ```
+    
+3. **Props**
+  
+  - 是组件的输入，从父组件传递给子组件。
+  - 是只读的，组件不能修改自己的 props。
+4. **State**
+  
+  - 是组件内部管理的、可以变化的数据。
+    
+  - 当 state 发生变化时，组件会重新渲染。
+    
+  - 在函数组件中，使用 **`useState` Hook** 来管理状态。
+    
+    ```jsx
+    import { useState } from 'react';
+    
+    function Counter() {
+      const [count, setCount] = useState(0); // useState 返回当前状态和更新状态的函数
+    
+      return (
+        <div>
+          <p>You clicked {count} times</p>
+          <button onClick={() => setCount(count + 1)}>
+            Click me
+          </button>
+        </div>
+      );
+    }
+    ```
+    
+5. **Hooks**
+  
+  - 自 React 16.8 引入，允许你在函数组件中使用 state 和其他 React 特性。
+  - 常用 Hooks：
+    - **`useState`**：在函数组件中添加状态。
+    - **`useEffect`**：处理副作用（如数据获取、订阅、手动修改 DOM）。
+    - **`useContext`**：订阅 React 的 Context。
+    - **`useReducer`**：用于更复杂的状态逻辑。
 
 ---
 
@@ -3291,6 +3550,7 @@ React 的强大离不开其繁荣的生态系统：
 ### 四、优点与缺点
 
 **优点：**
+
 - **高效性能**：虚拟 DOM 和 Diffing 算法保证了出色的渲染性能。
 - **灵活性强**：只关注视图层，可以轻松地与其它库或现有项目集成。
 - **可重用性高**：组件化开发模式极大提高了代码的复用性。
@@ -3298,6 +3558,7 @@ React 的强大离不开其繁荣的生态系统：
 - **良好的开发者体验**：丰富的开发工具（如 React DevTools）。
 
 **缺点：**
+
 - **陡峭的学习曲线**：需要学习 JSX、组件化思维、状态管理、Hooks 等概念，对初学者有一定门槛。
 - **快速变化的生态**：虽然 React 本身很稳定，但其周边工具和最佳实践更新很快，需要持续学习。
 - **只是一个视图库**：要构建完整应用，需要自行选择路由、状态管理等其他库。
@@ -3306,10 +3567,9 @@ React 的强大离不开其繁荣的生态系统：
 
 React 通过其**组件化**、**声明式**和**虚拟 DOM** 的核心思想，彻底改变了前端开发的模式。它让开发者能够高效地构建大规模、高性能的 Web 应用。尽管有学习成本，但其带来的开发效率、代码可维护性和庞大的生态系统，使其成为当今前端开发者的首选技术之一。
 
-
->React中的路由（React Router）
-React Router 是 React 中用于处理路由的库，它允许我们在单页应用（SPA）中实现多个视图（页面）之间的切换，同时保持URL与视图的同步。
-以下是 React Router 的核心概念和功能详解：
+> React中的路由（React Router）
+> React Router 是 React 中用于处理路由的库，它允许我们在单页应用（SPA）中实现多个视图（页面）之间的切换，同时保持URL与视图的同步。
+> 以下是 React Router 的核心概念和功能详解：
 
 ## 1. 安装和基础设置
 
@@ -3336,7 +3596,9 @@ function App() {
 ## 2. 核心组件
 
 ### BrowserRouter
+
 提供基于 HTML5 History API 的路由功能
+
 ```jsx
 <BrowserRouter>
   <App />
@@ -3344,6 +3606,7 @@ function App() {
 ```
 
 ### Routes 和 Route
+
 - **Routes**: 路由容器，负责渲染匹配的 Route
 - **Route**: 定义路径和对应组件的映射关系
 
@@ -3356,14 +3619,18 @@ function App() {
 ```
 
 ### Link
+
 用于导航的链接组件，不会触发页面刷新
+
 ```jsx
 <Link to="/about">关于我们</Link>
 <Link to={`/user/${userId}`}>用户详情</Link>
 ```
 
 ### Navigate
+
 编程式导航组件
+
 ```jsx
 <Navigate to="/login" replace={true} />
 ```
@@ -3371,6 +3638,7 @@ function App() {
 ## 3. 路由参数和查询参数
 
 ### 动态路由参数
+
 ```jsx
 // 路由定义
 <Route path="/products/:id" element={<ProductDetail />} />
@@ -3385,17 +3653,18 @@ function ProductDetail() {
 ```
 
 ### 查询参数
+
 ```jsx
 import { useSearchParams } from 'react-router-dom';
 
 function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const keyword = searchParams.get('q');
-  
+
   const handleSearch = (newKeyword) => {
     setSearchParams({ q: newKeyword });
   };
-  
+
   return <div>搜索关键词: {keyword}</div>;
 }
 ```
@@ -3407,14 +3676,14 @@ import { useNavigate } from 'react-router-dom';
 
 function LoginButton() {
   const navigate = useNavigate();
-  
+
   const handleLogin = () => {
     // 执行登录逻辑...
     navigate('/dashboard'); // 跳转到仪表板
     // navigate(-1); // 返回上一页
     // navigate('/user', { replace: true }); // 替换当前历史记录
   };
-  
+
   return <button onClick={handleLogin}>登录</button>;
 }
 ```
@@ -3431,7 +3700,7 @@ function Dashboard() {
         <Link to="/dashboard/profile">个人资料</Link>
         <Link to="/dashboard/settings">设置</Link>
       </nav>
-      
+
       {/* 子路由出口 */}
       <Outlet />
     </div>
@@ -3455,11 +3724,11 @@ function Dashboard() {
 function ProtectedRoute({ children }) {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const location = useLocation();
-  
+
   if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
-  
+
   return children;
 }
 
@@ -3479,13 +3748,15 @@ function ProtectedRoute({ children }) {
 ## 7. 其他重要 Hook
 
 ### useLocation
+
 获取当前 location 对象
+
 ```jsx
 import { useLocation } from 'react-router-dom';
 
 function CurrentPath() {
   const location = useLocation();
-  
+
   return (
     <div>
       当前路径: {location.pathname}
@@ -3496,13 +3767,15 @@ function CurrentPath() {
 ```
 
 ### useMatch
+
 检查当前路径是否匹配指定模式
+
 ```jsx
 import { useMatch } from 'react-router-dom';
 
 function NavItem({ to, children }) {
   const match = useMatch(to);
-  
+
   return (
     <li className={match ? 'active' : ''}>
       {children}
@@ -3543,7 +3816,7 @@ function App() {
         <Link to="/about">关于</Link>
         <Link to="/users">用户</Link>
       </nav>
-      
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -3561,9 +3834,8 @@ function App() {
 
 React Router 提供了强大的客户端路由功能，让单页应用能够拥有类似多页应用的导航体验，同时保持应用的性能和用户体验。
 
-
->什么是React的状态管理？
-在 React 中，组件自身的状态使用 `useState` 或 `useReducer` 进行管理。当应用变得复杂时，一个状态可能需要被多个不同层级的组件共享（这种状态被称为“全局状态”或“共享状态”）。如果仅靠逐层传递 Props，会导致代码变得冗长、难以维护（称为“Prop Drilling”问题）。
+> 什么是React的状态管理？
+> 在 React 中，组件自身的状态使用 `useState` 或 `useReducer` 进行管理。当应用变得复杂时，一个状态可能需要被多个不同层级的组件共享（这种状态被称为“全局状态”或“共享状态”）。如果仅靠逐层传递 Props，会导致代码变得冗长、难以维护（称为“Prop Drilling”问题）。
 
 状态管理库就是为了解决这个问题的工具，它们提供了一个在组件树之外的中心化存储（Store），任何组件都可以直接连接到这个存储来读取或更新状态。
 
@@ -3575,9 +3847,9 @@ Context API 是 React 内置的功能，它本身**不是一个完整的状态�
 
 #### 核心概念：
 
-1.  **创建 Context：** 使用 `React.createContext()` 创建一个 Context 对象。这个对象包含两个关键组件：`Provider` 和 `Consumer`（现在常用 `useContext` Hook 代替 `Consumer`）。
-2.  **Provider（提供者）：** 你用 `<MyContext.Provider value={某个值}>` 包裹组件树的根部或一部分。所有被包裹的子组件都能“接触到”这个 Context。
-3.  **消费 Context：** 在子组件中，使用 `useContext(MyContext)` Hook 来获取 `Provider` 传递下来的值。
+1. **创建 Context：** 使用 `React.createContext()` 创建一个 Context 对象。这个对象包含两个关键组件：`Provider` 和 `Consumer`（现在常用 `useContext` Hook 代替 `Consumer`）。
+2. **Provider（提供者）：** 你用 `<MyContext.Provider value={某个值}>` 包裹组件树的根部或一部分。所有被包裹的子组件都能“接触到”这个 Context。
+3. **消费 Context：** 在子组件中，使用 `useContext(MyContext)` Hook 来获取 `Provider` 传递下来的值。
 
 #### 工作流程：
 
@@ -3603,12 +3875,14 @@ function MyComponent() {
 ```
 
 #### 优点：
-*   **内置支持：** 无需安装额外库。
-*   **简单场景适用：** 对于不频繁更新的数据（如主题、用户认证信息、语言偏好）非常合适。
+
+- **内置支持：** 无需安装额外库。
+- **简单场景适用：** 对于不频繁更新的数据（如主题、用户认证信息、语言偏好）非常合适。
 
 #### 缺点：
-*   **性能问题：** 当 Context 的值发生变化时，**所有**使用了 `useContext` 的组件都会重新渲染，即使它们只依赖于该值的未变化部分。你需要通过拆分 Context 来优化。
-*   **非“状态管理”本身：** Context 只负责“传递”状态，状态本身如何更新、如何组织逻辑（如异步操作），仍需开发者自己使用 `useState`、`useReducer` 来实现，容易导致逻辑分散。
+
+- **性能问题：** 当 Context 的值发生变化时，**所有**使用了 `useContext` 的组件都会重新渲染，即使它们只依赖于该值的未变化部分。你需要通过拆分 Context 来优化。
+- **非“状态管理”本身：** Context 只负责“传递”状态，状态本身如何更新、如何组织逻辑（如异步操作），仍需开发者自己使用 `useState`、`useReducer` 来实现，容易导致逻辑分散。
 
 ---
 
@@ -3618,62 +3892,65 @@ Redux 是一个独立的、可预测的状态容器库，它与 React 是解耦�
 
 #### 核心概念（三大原则）：
 
-1.  **单一数据源：**
-    整个应用的状态被存储在一个单一的 JavaScript 对象中，称为 **Store**。这使调试和理解应用状态变得容易。
-
-2.  **状态是只读的：**
-    你**不能直接修改** Store 中的状态。改变状态的唯一方式是**派发一个 Action**。Action 是一个普通的 JavaScript 对象，用于描述“发生了什么”。
-
-    ```javascript
-    // 这是一个 Action
-    { type: 'counter/incremented' }
-    ```
-
-3.  **使用纯函数进行更改：**
-    为了指定状态如何根据 Action 进行更新，你需要编写 **Reducers**。Reducer 是一个纯函数，它接收当前的 State 和一个 Action，并返回**新的 State**。
-
-    ```javascript
-    // 这是一个 Reducer
-    const counterReducer = (state = { value: 0 }, action) => {
-      switch (action.type) {
-        case 'counter/incremented':
-          return { ...state, value: state.value + 1 }; // 返回新对象，不修改原状态
-        default:
-          return state;
-      }
-    };
-    ```
+1. **单一数据源：**
+  整个应用的状态被存储在一个单一的 JavaScript 对象中，称为 **Store**。这使调试和理解应用状态变得容易。
+  
+2. **状态是只读的：**
+  你**不能直接修改** Store 中的状态。改变状态的唯一方式是**派发一个 Action**。Action 是一个普通的 JavaScript 对象，用于描述“发生了什么”。
+  
+  ```javascript
+  // 这是一个 Action
+  { type: 'counter/incremented' }
+  ```
+  
+3. **使用纯函数进行更改：**
+  为了指定状态如何根据 Action 进行更新，你需要编写 **Reducers**。Reducer 是一个纯函数，它接收当前的 State 和一个 Action，并返回**新的 State**。
+  
+  ```javascript
+  // 这是一个 Reducer
+  const counterReducer = (state = { value: 0 }, action) => {
+    switch (action.type) {
+      case 'counter/incremented':
+        return { ...state, value: state.value + 1 }; // 返回新对象，不修改原状态
+      default:
+        return state;
+    }
+  };
+  ```
+  
 
 #### 工作流程（数据流）：
 
-1.  **组件** 通过 `React-Redux` 提供的 `useSelector` Hook 从 Store 中读取需要的数据。
-2.  **组件** 中通过 `useDispatch` Hook 获取 `dispatch` 函数。
-3.  当用户交互发生时（如点击按钮），组件会 **`dispatch` 一个 Action**（例如 `{ type: 'counter/incremented' }`）。
-4.  **Store** 接收到这个 Action，并自动将其传递给 **Reducer** 函数。
-5.  **Reducer** 根据 Action 的类型，计算出**新的状态**。
-6.  **Store** 用新的状态替换旧的状态。
-7.  **Store** 通知所有通过 `useSelector` 订阅了状态变化的组件：“状态已更新”。
-8.  相关的组件使用新的状态重新渲染。
+1. **组件** 通过 `React-Redux` 提供的 `useSelector` Hook 从 Store 中读取需要的数据。
+2. **组件** 中通过 `useDispatch` Hook 获取 `dispatch` 函数。
+3. 当用户交互发生时（如点击按钮），组件会 **`dispatch` 一个 Action**（例如 `{ type: 'counter/incremented' }`）。
+4. **Store** 接收到这个 Action，并自动将其传递给 **Reducer** 函数。
+5. **Reducer** 根据 Action 的类型，计算出**新的状态**。
+6. **Store** 用新的状态替换旧的状态。
+7. **Store** 通知所有通过 `useSelector` 订阅了状态变化的组件：“状态已更新”。
+8. 相关的组件使用新的状态重新渲染。
 
 #### 优点：
-*   **可预测性：** 状态的变化严格遵循 `action -> reducer -> new state` 的流程，使得状态变化的原因和结果非常清晰。
-*   **强大的中间件：** 可以处理异步逻辑（最常用的是 Redux Toolkit 内置的 `createAsyncThunk` 或传统的 `redux-thunk`）、日志记录等。
-*   **强大的开发工具：** Redux DevTools 提供了时间旅行调试、状态快照等强大功能。
-*   **性能优化：** `React-Redux` 实现了精细的订阅机制，只有当组件订阅的特定数据片段真正发生变化时，组件才会重新渲染。
+
+- **可预测性：** 状态的变化严格遵循 `action -> reducer -> new state` 的流程，使得状态变化的原因和结果非常清晰。
+- **强大的中间件：** 可以处理异步逻辑（最常用的是 Redux Toolkit 内置的 `createAsyncThunk` 或传统的 `redux-thunk`）、日志记录等。
+- **强大的开发工具：** Redux DevTools 提供了时间旅行调试、状态快照等强大功能。
+- **性能优化：** `React-Redux` 实现了精细的订阅机制，只有当组件订阅的特定数据片段真正发生变化时，组件才会重新渲染。
 
 #### 缺点：
-*   **模板代码多：** 即使是传统 Redux，也需要编写大量的模板代码（Action Types, Action Creators, Reducers）。**但现代 Redux 强烈推荐使用 Redux Toolkit (RTK)**，它极大地简化了代码。
-*   **学习曲线：** 概念较多，需要理解函数式编程的思想（纯函数、不可变更新）。
+
+- **模板代码多：** 即使是传统 Redux，也需要编写大量的模板代码（Action Types, Action Creators, Reducers）。**但现代 Redux 强烈推荐使用 Redux Toolkit (RTK)**，它极大地简化了代码。
+- **学习曲线：** 概念较多，需要理解函数式编程的思想（纯函数、不可变更新）。
 
 ---
 
 ### 总结与选择
 
-| 特性 | Context API | Redux (with React-Redux) |
-| :--- | :--- | :--- |
+| 特性  | Context API | Redux (with React-Redux) |
+| --- | --- | --- |
 | **定位** | 内置的**状态传递**机制 | 完整的**状态容器**和管理库 |
-| **学习曲线** | 低 | 中到高 |
-| **模板代码** | 少 | 传统 Redux 多，**RTK 少** |
+| **学习曲线** | 低   | 中到高 |
+| **模板代码** | 少   | 传统 Redux 多，**RTK 少** |
 | **性能** | 需要手动优化（拆分 Context） | 内置精细更新，性能优异 |
 | **异步处理** | 需自行结合 `useEffect` 等 | 原生支持（通过中间件） |
 | **调试工具** | 无专门工具 | Redux DevTools（非常强大） |
@@ -3681,24 +3958,24 @@ Redux 是一个独立的、可预测的状态容器库，它与 React 是解耦�
 
 #### 如何选择？
 
-*   **使用 Context API：**
-    *   当你的状态更新不频繁时（如主题、用户信息）。
-    *   当你的应用规模较小，或只是想避免 Prop Drilling。
-    *   当你不想引入第三方库时。
-
-*   **使用 Redux（特别是 Redux Toolkit）：**
-    *   当应用有大量、复杂的交互和状态时。
-    *   当状态需要频繁、大规模地更新时。
-    *   当状态逻辑非常复杂，涉及大量的异步操作时。
-    *   当你需要强大的调试能力（时间旅行）来追踪状态变化时。
-    *   当多个不相关的组件需要共享和修改同一片状态时。
+- **使用 Context API：**
+  
+  - 当你的状态更新不频繁时（如主题、用户信息）。
+  - 当你的应用规模较小，或只是想避免 Prop Drilling。
+  - 当你不想引入第三方库时。
+- **使用 Redux（特别是 Redux Toolkit）：**
+  
+  - 当应用有大量、复杂的交互和状态时。
+  - 当状态需要频繁、大规模地更新时。
+  - 当状态逻辑非常复杂，涉及大量的异步操作时。
+  - 当你需要强大的调试能力（时间旅行）来追踪状态变化时。
+  - 当多个不相关的组件需要共享和修改同一片状态时。
 
 **现代 React 状态管理的最佳实践是：**
 将两者结合使用。使用 **Redux (RTK)** 管理复杂的、全局的、服务端状态，而使用 **Context API** 管理局部的、简单的、不频繁更新的 UI 状态（如一个模态框的开关）。
 
-
->相比于JQuery，React有哪些优点？
-好的，这是一个非常经典且重要的问题。jQuery 和 React 代表了两个不同的前端开发时代和哲学。相比于 jQuery，React 的核心优势在于它提供了一个**结构化、可扩展和高性能**的方式来构建复杂的、数据驱动的用户界面。
+> 相比于JQuery，React有哪些优点？
+> 好的，这是一个非常经典且重要的问题。jQuery 和 React 代表了两个不同的前端开发时代和哲学。相比于 jQuery，React 的核心优势在于它提供了一个**结构化、可扩展和高性能**的方式来构建复杂的、数据驱动的用户界面。
 
 下面我们从几个关键维度进行对比：
 
@@ -3707,21 +3984,22 @@ Redux 是一个独立的、可预测的状态容器库，它与 React 是解耦�
 这是最根本的区别，决定了开发思维模式的不同。
 
 - **jQuery（命令式）**：
-    - **“如何做”**：你需要一步步详细地指示浏览器如何操作 DOM。
-    - **例子**：“当我点击这个按钮时，找到那个文本框，获取它的值，然后创建一个新的 `<li>` 元素，把值设为其文本内容，最后把它追加到 `<ul>` 列表里。”
-    - **代码体现**：你直接使用 `$(‘#button’).click()`, `$(‘#input’).val()`, `$(‘<li>’)`, `.append()` 等一系列方法。
-
+  
+  - **“如何做”**：你需要一步步详细地指示浏览器如何操作 DOM。
+  - **例子**：“当我点击这个按钮时，找到那个文本框，获取它的值，然后创建一个新的 `<li>` 元素，把值设为其文本内容，最后把它追加到 `<ul>` 列表里。”
+  - **代码体现**：你直接使用 `$(‘#button’).click()`, `$(‘#input’).val()`, `$(‘<li>’)`, `.append()` 等一系列方法。
 - **React（声明式）**：
-    - **“做什么”**：你只需要**描述 UI 在任意给定状态下的应该是什么样子**。
-    - **例子**：“UI 的样子取决于数据。列表 `items` 是什么，UI 就渲染什么。当用户点击按钮并输入文本后，我们更新 `items` 状态。UI 会自动变成新状态对应的样子。”
-    - **代码体现**：你定义组件的视图如何渲染（JSX），并管理状态 (`useState`)。状态改变，视图自动更新。
+  
+  - **“做什么”**：你只需要**描述 UI 在任意给定状态下的应该是什么样子**。
+  - **例子**：“UI 的样子取决于数据。列表 `items` 是什么，UI 就渲染什么。当用户点击按钮并输入文本后，我们更新 `items` 状态。UI 会自动变成新状态对应的样子。”
+  - **代码体现**：你定义组件的视图如何渲染（JSX），并管理状态 (`useState`)。状态改变，视图自动更新。
 
 ---
 
 ### 具体优点对比
 
-| 特性 | jQuery | React | React 的优势 |
-| :--- | :--- | :--- | :--- |
+| 特性  | jQuery | React | React 的优势 |
+| --- | --- | --- | --- |
 | **数据与UI同步** | **手动**。数据变了，你需要写代码去找到对应的DOM元素并更新它。容易出错，产生不同步。 | **自动**。你只需更新数据（状态），UI会自动同步到该状态。**单向数据流**保证了可预测性。 | **更少的 Bug，开发更省心**。无需担心“忘记更新某个地方的UI”。 |
 | **性能与DOM操作** | **直接操作真实DOM**。频繁或复杂的DOM操作非常消耗性能。 | **使用虚拟DOM**。在内存中计算差异，然后批量、高效地更新真实DOM。最小化了昂贵的直接操作。 | **高性能**，尤其在频繁更新的复杂应用中。开发者无需手动优化。 |
 | **代码组织与可复用性** | **容易变成“意大利面条式”代码**。事件监听、数据操作、DOM更新混杂在一起，难以维护和测试。 | **基于组件**。将UI和逻辑封装成独立的、可复用的组件。代码结构清晰，职责分明。 | **极高的可维护性和可扩展性**，适合大型项目和团队协作。 |
@@ -3741,20 +4019,21 @@ Redux 是一个独立的、可预测的状态容器库，它与 React 是解耦�
 $('#addButton').click(function() {
   // 2. 获取输入框的值
   var newItemText = $('#inputField').val();
-  
+
   // 3. 如果值不为空
   if (newItemText) {
     // 4. 创建一个新的列表项 <li> 元素
     var $newItem = $('<li>').text(newItemText);
-    
+
     // 5. 将新元素追加到列表 <ul> 中
     $('#todoList').append($newItem);
-    
+
     // 6. 清空输入框
     $('#inputField').val('');
   }
 });
 ```
+
 *问题：如果我想删除一个待办项，或者将已完成的项标记为灰色，我需要再写一套查找元素、修改属性或移除元素的命令式代码。逻辑会越来越分散。*
 
 **React 实现（声明式）:**
@@ -3793,25 +4072,27 @@ function TodoList() {
   );
 }
 ```
+
 *优势：*
+
 - *删除一个项？* 只需要 `setItems(items.filter(i => i.id !== idToDelete))`，列表会自动重新渲染。
 - *标记完成？* 在状态里给每个 item 加一个 `completed: boolean` 属性，然后在 JSX 中根据这个属性决定样式。UI 永远与状态保持一致。
 
 ### 总结：何时选择？
 
 - **选择 jQuery**：
-    - 简单的网站，需要一些交互增强（如轮播图、模态框）。
-    - 与传统服务端渲染（如PHP、Rails）项目集成，添加动态效果。
-    - 项目非常小，引入整个 React 生态是杀鸡用牛刀。
-
+  
+  - 简单的网站，需要一些交互增强（如轮播图、模态框）。
+  - 与传统服务端渲染（如PHP、Rails）项目集成，添加动态效果。
+  - 项目非常小，引入整个 React 生态是杀鸡用牛刀。
 - **选择 React**：
-    - **复杂的单页应用**，有大量的用户交互和状态变化。
-    - **数据驱动的界面**，UI 需要频繁、高效地更新。
-    - 需要良好的**可维护性、可测试性和团队协作**的大型项目。
-    - 追求**现代化、组件化**的开发流程。
+  
+  - **复杂的单页应用**，有大量的用户交互和状态变化。
+  - **数据驱动的界面**，UI 需要频繁、高效地更新。
+  - 需要良好的**可维护性、可测试性和团队协作**的大型项目。
+  - 追求**现代化、组件化**的开发流程。
 
 总而言之，**React 的核心优势在于它通过声明式、组件化和虚拟DOM，将开发者从繁琐、易错的手动 DOM 操作中解放出来，使得构建和维护复杂前端应用变得可控和高效。** 而 jQuery 作为一个工具库，在解决特定 DOM 操作和兼容性问题时依然有用，但在构建现代大型 Web 应用方面，已经被 React、Vue 等框架全面超越。
-
 
 VUE：
 Vue.js（通常简称为Vue）是一个用于构建用户界面的**渐进式**JavaScript框架。它旨在通过简洁的API实现**响应的数据绑定**和组合的**视图组件**。
@@ -3820,126 +4101,135 @@ Vue被设计为可以**自底向上逐层应用**，其核心库只关注视图�
 ---
 
 ### 1. 响应式数据绑定：核心原理阐述
+
 Vue的响应式系统是其最引人注目的特性之一。它不仅仅是“数据变，视图就变”这么简单。
 
-*   **实现原理**：当你将一个普通的JavaScript对象传入Vue实例的 `data` 选项时，Vue会遍历此对象的所有属性，并使用 `Object.defineProperty`（Vue 2）或 `Proxy`（Vue 3）将它们转换为**getter/setter**。
-    *   **依赖收集**：在组件的渲染过程中，当接触到数据属性（即“获取”它的值）时，这个属性就会记住这个组件（具体是它的“渲染Watcher”）。
-    *   **派发更新**：当属性的setter被调用（即数据被修改）时，它会通知所有依赖它的Watcher。Watcher会重新执行，从而触发组件的重新渲染。
-*   **优势**：这种机制使得开发者完全摆脱了手动操作DOM的繁琐工作。你只需要关心数据的状态，视图会自动与之保持同步，极大地提升了开发效率和代码的可维护性。
+- **实现原理**：当你将一个普通的JavaScript对象传入Vue实例的 `data` 选项时，Vue会遍历此对象的所有属性，并使用 `Object.defineProperty`（Vue 2）或 `Proxy`（Vue 3）将它们转换为**getter/setter**。
+  - **依赖收集**：在组件的渲染过程中，当接触到数据属性（即“获取”它的值）时，这个属性就会记住这个组件（具体是它的“渲染Watcher”）。
+  - **派发更新**：当属性的setter被调用（即数据被修改）时，它会通知所有依赖它的Watcher。Watcher会重新执行，从而触发组件的重新渲染。
+- **优势**：这种机制使得开发者完全摆脱了手动操作DOM的繁琐工作。你只需要关心数据的状态，视图会自动与之保持同步，极大地提升了开发效率和代码的可维护性。
 
 ### 2. 组件化开发：构建大型应用的基石
+
 Vue的组件化不仅仅是代码复用，更是一种架构模式。
 
-*   **单文件组件**：这是Vue组件化开发的标志性特性。在一个以 `.vue` 为后缀的文件中，你可以集中管理一个组件的**模板（Template）、逻辑（Script）和样式（Style）**。
-    ```vue
-    <template>
-      <div class="greeting">{{ message }}</div>
-    </template>
-    
-    <script>
-    export default {
-      data() {
-        return {
-          message: 'Hello Vue!'
-        }
+- **单文件组件**：这是Vue组件化开发的标志性特性。在一个以 `.vue` 为后缀的文件中，你可以集中管理一个组件的**模板（Template）、逻辑（Script）和样式（Style）**。
+  
+  ```vue
+  <template>
+    <div class="greeting">{{ message }}</div>
+  </template>
+  
+  <script>
+  export default {
+    data() {
+      return {
+        message: 'Hello Vue!'
       }
     }
-    </script>
-    
-    <style scoped>
-    .greeting {
-      color: red;
-    }
-    </style>
-    ```
-    *   **`<style scoped>`** 中的 `scoped` 属性是一个关键特性，它确保这些样式只应用于当前组件，避免了全局CSS的样式污染问题。
-*   **组件通信**：Vue提供了清晰的组件间数据流方案。
-    *   **Props向下**：父组件通过 `props` 向子组件传递数据。
-    *   **Events向上**：子组件通过 `$emit` 触发事件，向父组件发送消息。
-    *   **Provide/Inject**：为深层嵌套的组件提供依赖注入，避免逐层传递props的麻烦。
-    *   **Vuex/Pinia**：对于复杂的应用级状态，推荐使用官方状态管理库（如Vue 3时代的Pinia），实现跨组件的集中式状态管理。
-
-*   用Vue来统计点击次数的例子
-    ``` vue
-    <template>  
-        <div>  
-            <p>Count: {{ count }}</p>  
-            <button @click="increment">Increment</button>  
-            <button @click="decrement">Decrement</button>  
-        </div>  
-    </template>  
-    
-    <script>  
-    import { ref } from 'vue';  
-    
-    export default {  
-      name: 'Counter',  
-      setup() {  
-        const count = ref(0);  
-    
-        const increment = () => {  
-          count.value++;  
-        };  
-    
-        const decrement = () => {  
-          count.value--;  
-        };  
-    
-        return {  
-          count,  
-          increment,  
-          decrement,  
-        };  
-      },  
-    };  
-    </script>  
-    ```
+  }
+  </script>
+  
+  <style scoped>
+  .greeting {
+    color: red;
+  }
+  </style>
+  ```
+  
+  - **`<style scoped>`** 中的 `scoped` 属性是一个关键特性，它确保这些样式只应用于当前组件，避免了全局CSS的样式污染问题。
+- **组件通信**：Vue提供了清晰的组件间数据流方案。
+  
+  - **Props向下**：父组件通过 `props` 向子组件传递数据。
+  - **Events向上**：子组件通过 `$emit` 触发事件，向父组件发送消息。
+  - **Provide/Inject**：为深层嵌套的组件提供依赖注入，避免逐层传递props的麻烦。
+  - **Vuex/Pinia**：对于复杂的应用级状态，推荐使用官方状态管理库（如Vue 3时代的Pinia），实现跨组件的集中式状态管理。
+- 用Vue来统计点击次数的例子
+  
+  ```vue
+  <template>  
+      <div>  
+          <p>Count: {{ count }}</p>  
+          <button @click="increment">Increment</button>  
+          <button @click="decrement">Decrement</button>  
+      </div>  
+  </template>  
+  
+  <script>  
+  import { ref } from 'vue';  
+  
+  export default {  
+    name: 'Counter',  
+    setup() {  
+      const count = ref(0);  
+  
+      const increment = () => {  
+        count.value++;  
+      };  
+  
+      const decrement = () => {  
+        count.value--;  
+      };  
+  
+      return {  
+        count,  
+        increment,  
+        decrement,  
+      };  
+    },  
+  };  
+  </script>  
+  ```
+  
 
 #### 3. 模板系统与指令：声明式的力量
+
 Vue的模板语法是对HTML的扩展，让你能够声明式地将数据渲染进DOM。
 
-*   **插值**：使用 “Mustache” 语法 `{{ }}` 进行文本插值。
-*   **指令**：指令是带有 `v-` 前缀的特殊属性，它们的值预期是**单个JavaScript表达式**。
-    *   **条件渲染**：`v-if`, `v-else-if`, `v-else`, `v-show`。`v-if` 是真正的条件渲染，它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建。`v-show` 只是简单地切换元素的 CSS `display` 属性。
-    *   **列表渲染**：`v-for`。应始终与 `key` 特殊属性配合使用，以便Vue可以跟踪每个节点的身份，从而重用和重新排序现有元素。
-    *   **属性绑定**：`v-bind:` 或简写为 `:`，用于动态绑定一个或多个属性。
-    *   **事件监听**：`v-on:` 或简写为 `@`，用于监听DOM事件。
-    *   **双向绑定**：`v-model`，它是语法糖，负责监听用户的输入事件以更新数据，并对一些极端场景进行一些特殊处理。它实质上是 `v-bind:value` 和 `v-on:input` 的结合。
+- **插值**：使用 “Mustache” 语法 `{{ }}` 进行文本插值。
+- **指令**：指令是带有 `v-` 前缀的特殊属性，它们的值预期是**单个JavaScript表达式**。
+  - **条件渲染**：`v-if`, `v-else-if`, `v-else`, `v-show`。`v-if` 是真正的条件渲染，它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建。`v-show` 只是简单地切换元素的 CSS `display` 属性。
+  - **列表渲染**：`v-for`。应始终与 `key` 特殊属性配合使用，以便Vue可以跟踪每个节点的身份，从而重用和重新排序现有元素。
+  - **属性绑定**：`v-bind:` 或简写为 `:`，用于动态绑定一个或多个属性。
+  - **事件监听**：`v-on:` 或简写为 `@`，用于监听DOM事件。
+  - **双向绑定**：`v-model`，它是语法糖，负责监听用户的输入事件以更新数据，并对一些极端场景进行一些特殊处理。它实质上是 `v-bind:value` 和 `v-on:input` 的结合。
 
 #### 4. 虚拟DOM与高效的渲染
+
 和React等现代框架一样，Vue也使用虚拟DOM（Virtual DOM）来提升性能。
 
-*   **工作流程**：当数据发生变化时，Vue会生成一个新的虚拟DOM树（一个轻量的JavaScript对象，描述整个UI结构），然后与旧的虚拟DOM树进行对比（这个过程叫做“Diffing”）。
-*   **高效更新**：通过高效的Diff算法，Vue能计算出最少需要更新的真实DOM节点，然后批量、精准地应用这些更新，而不是重新渲染整个页面。这保证了即使在复杂的数据变化下，应用也能保持高性能。
+- **工作流程**：当数据发生变化时，Vue会生成一个新的虚拟DOM树（一个轻量的JavaScript对象，描述整个UI结构），然后与旧的虚拟DOM树进行对比（这个过程叫做“Diffing”）。
+- **高效更新**：通过高效的Diff算法，Vue能计算出最少需要更新的真实DOM节点，然后批量、精准地应用这些更新，而不是重新渲染整个页面。这保证了即使在复杂的数据变化下，应用也能保持高性能。
 
 #### 5. 丰富的生态系统与工具链
+
 Vue的成功离不开其蓬勃发展的生态系统。
 
-*   **官方库**：
-    *   **Vue Router**：官方的路由管理器，用于构建单页面应用（SPA）。
-    *   **Vuex / Pinia**：官方的状态管理库。Pinia是Vue团队推荐的新一代状态管理工具，拥有更简洁的API和更好的TypeScript支持。
-*   **构建工具**：
-    *   **Vite**：新一代的前端构建工具，由Vue作者尤雨溪开发。它提供了极快的冷启动和模块热更新（HMR），已成为Vue项目默认的构建工具。
-    *   **Vue CLI**：成熟的、功能齐备的官方脚手架工具，虽然现在新项目更推荐Vite，但仍有大量项目在使用。
-*   **开发者工具**：Vue Devtools是一个浏览器扩展，提供了可视化地审查和调试Vue应用的能力，是开发Vue应用的必备利器。
+- **官方库**：
+  - **Vue Router**：官方的路由管理器，用于构建单页面应用（SPA）。
+  - **Vuex / Pinia**：官方的状态管理库。Pinia是Vue团队推荐的新一代状态管理工具，拥有更简洁的API和更好的TypeScript支持。
+- **构建工具**：
+  - **Vite**：新一代的前端构建工具，由Vue作者尤雨溪开发。它提供了极快的冷启动和模块热更新（HMR），已成为Vue项目默认的构建工具。
+  - **Vue CLI**：成熟的、功能齐备的官方脚手架工具，虽然现在新项目更推荐Vite，但仍有大量项目在使用。
+- **开发者工具**：Vue Devtools是一个浏览器扩展，提供了可视化地审查和调试Vue应用的能力，是开发Vue应用的必备利器。
 
 ### 总结：为什么Vue如此受欢迎？
 
-1.  **渐进式框架**：你可以从一个简单的脚本开始，逐步引入路由、状态管理、构建工具等，平滑地过渡到复杂的工程化项目。这种低门槛和高上限的特性吸引了大量开发者。
-2.  **友好的学习曲线**：Vue的API设计直观，文档清晰易懂，特别是对于有HTML/CSS/JavaScript基础的开发者，能够快速上手。
-3.  **性能与大小的平衡**：Vue的核心库非常轻量，同时通过虚拟DOM和智能的优化策略，提供了卓越的运行时性能。
-4.  **灵活性与集成能力**：Vue既可以用于开发全新的单页面应用，也可以作为渐进增强的脚本嵌入到现有项目中（如jQuery项目），与任何后端技术栈（如Django, Laravel, Node.js）都能很好地配合。
-5.  **活跃的社区与健全的生态**：强大的社区贡献了大量的第三方库、组件和解决方案，确保了开发者在遇到问题时能快速找到支持。
+1. **渐进式框架**：你可以从一个简单的脚本开始，逐步引入路由、状态管理、构建工具等，平滑地过渡到复杂的工程化项目。这种低门槛和高上限的特性吸引了大量开发者。
+2. **友好的学习曲线**：Vue的API设计直观，文档清晰易懂，特别是对于有HTML/CSS/JavaScript基础的开发者，能够快速上手。
+3. **性能与大小的平衡**：Vue的核心库非常轻量，同时通过虚拟DOM和智能的优化策略，提供了卓越的运行时性能。
+4. **灵活性与集成能力**：Vue既可以用于开发全新的单页面应用，也可以作为渐进增强的脚本嵌入到现有项目中（如jQuery项目），与任何后端技术栈（如Django, Laravel, Node.js）都能很好地配合。
+5. **活跃的社区与健全的生态**：强大的社区贡献了大量的第三方库、组件和解决方案，确保了开发者在遇到问题时能快速找到支持。
 
 综上所述，Vue.js以其**渐进式**的理念、**响应式**的核心、**组件化**的架构和**丰富**的生态，成功地成为了现代前端开发中最主流、最受青睐的框架之一。它完美地平衡了功能强大与易于使用之间的关系，使其无论是用于快速原型开发，还是构建大型企业级应用，都是一个绝佳的选择。
 
-
->什么是Vue的声明式指令？
-在 Vue 中，指令是带有 `v-` 前缀的特殊属性。指令属性的值预期是**单个 JavaScript 表达式**（`v-for` 和 `v-on` 是例外）。指令的职责是：当表达式的值改变时，将其产生的连带影响响应式地作用于 DOM。
+> 什么是Vue的声明式指令？
+> 在 Vue 中，指令是带有 `v-` 前缀的特殊属性。指令属性的值预期是**单个 JavaScript 表达式**（`v-for` 和 `v-on` 是例外）。指令的职责是：当表达式的值改变时，将其产生的连带影响响应式地作用于 DOM。
 
 “声明式”是 Vue 的核心哲学，它与“命令式”相对：
-*   **命令式：** 描述“如何做”（How）。你需要一步步写出详细的代码逻辑（例如：用 `document.querySelector` 找到元素，然后 `element.style.display = 'block'` 来显示它）。
-*   **声明式：** 描述“做什么”（What）。你只需要声明你想要的结果，而框架（Vue）会负责帮你完成底层的 DOM 操作。
+
+- **命令式：** 描述“如何做”（How）。你需要一步步写出详细的代码逻辑（例如：用 `document.querySelector` 找到元素，然后 `element.style.display = 'block'` 来显示它）。
+- **声明式：** 描述“做什么”（What）。你只需要声明你想要的结果，而框架（Vue）会负责帮你完成底层的 DOM 操作。
 
 Vue 的指令就是这种声明式哲学的体现。
 
@@ -3949,123 +4239,142 @@ Vue 的指令就是这种声明式哲学的体现。
 
 #### 1. 条件渲染 - `v-if`, `v-else-if`, `v-else`, `v-show`
 
-*   **`v-if`**
-    *   **作用：** 根据表达式的真假值，**条件性地渲染一块内容**。这块内容只会在指令的表达式返回真值时才被渲染。
-    *   **行为：** 如果条件为假，元素及其子组件会被**完全销毁和重建**（触发组件的生命周期钩子）。如果初始条件为假，则什么都不做。
-    *   **示例：**
-        ```vue
-        <p v-if="status === 'loading'">加载中...</p>
-        ```
-
-*   **`v-else-if`， `v-else`**
-    *   **作用：** 为 `v-if` 添加“else if 块”和“else 块”。
-    *   **限制：** 必须紧跟在 `v-if` 或者 `v-else-if` 元素之后。
-    *   **示例：**
-        ```vue
-        <div v-if="type === 'A'">A</div>
-        <div v-else-if="type === 'B'">B</div>
-        <div v-else>C</div>
-        ```
-
-*   **`v-show`**
-    *   **作用：** 根据表达式真假值，**切换元素的 `display` CSS 属性**。
-    *   **行为：** 元素始终会被渲染并保留在 DOM 中，只是简单地切换 CSS 的 `display: none` 样式。
-    *   **与 `v-if` 的区别：**
-        *   `v-if` 是“真正”的条件渲染，因为它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建。
-        *   `v-if` 也是**惰性的**：如果在初始渲染时条件为假，则什么也不做，直到条件第一次变为真时，才会开始渲染条件块。
-        *   `v-show` 简单得多，不管初始条件是什么，元素总是会被渲染，只是基于 CSS 进行切换。
-        *   **性能考量：** `v-if` 有更高的切换开销，而 `v-show` 有更高的初始渲染开销。因此，如果需要非常频繁地切换，则使用 `v-show` 较好；如果在运行时条件很少改变，则使用 `v-if` 更佳。
+- **`v-if`**
+  
+  - **作用：** 根据表达式的真假值，**条件性地渲染一块内容**。这块内容只会在指令的表达式返回真值时才被渲染。
+  - **行为：** 如果条件为假，元素及其子组件会被**完全销毁和重建**（触发组件的生命周期钩子）。如果初始条件为假，则什么都不做。
+  - **示例：**
+    
+    ```vue
+    <p v-if="status === 'loading'">加载中...</p>
+    ```
+    
+- **`v-else-if`， `v-else`**
+  
+  - **作用：** 为 `v-if` 添加“else if 块”和“else 块”。
+  - **限制：** 必须紧跟在 `v-if` 或者 `v-else-if` 元素之后。
+  - **示例：**
+    
+    ```vue
+    <div v-if="type === 'A'">A</div>
+    <div v-else-if="type === 'B'">B</div>
+    <div v-else>C</div>
+    ```
+    
+- **`v-show`**
+  
+  - **作用：** 根据表达式真假值，**切换元素的 `display` CSS 属性**。
+  - **行为：** 元素始终会被渲染并保留在 DOM 中，只是简单地切换 CSS 的 `display: none` 样式。
+  - **与 `v-if` 的区别：**
+    - `v-if` 是“真正”的条件渲染，因为它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建。
+    - `v-if` 也是**惰性的**：如果在初始渲染时条件为假，则什么也不做，直到条件第一次变为真时，才会开始渲染条件块。
+    - `v-show` 简单得多，不管初始条件是什么，元素总是会被渲染，只是基于 CSS 进行切换。
+    - **性能考量：** `v-if` 有更高的切换开销，而 `v-show` 有更高的初始渲染开销。因此，如果需要非常频繁地切换，则使用 `v-show` 较好；如果在运行时条件很少改变，则使用 `v-if` 更佳。
 
 #### 2. 列表渲染 - `v-for`
 
-*   **作用：** 基于源数据多次渲染一个元素或模板块。
-*   **语法：** `v-for="item in items"` 或 `v-for="(item, index) in items"`。
-*   **关键属性 `key`：**
-    *   为了给 Vue 一个提示，以便它能跟踪每个节点的身份，从而重用和重新排序现有元素，你需要为每项提供一个唯一的 `key` attribute。
-    *   `key` 应该绑定为一个字符串或数字类型的值。
-    *   **示例：**
-        ```vue
-        <ul>
-          <li v-for="item in items" :key="item.id">
-            {{ item.message }}
-          </li>
-        </ul>
-        ```
+- **作用：** 基于源数据多次渲染一个元素或模板块。
+- **语法：** `v-for="item in items"` 或 `v-for="(item, index) in items"`。
+- **关键属性 `key`：**
+  - 为了给 Vue 一个提示，以便它能跟踪每个节点的身份，从而重用和重新排序现有元素，你需要为每项提供一个唯一的 `key` attribute。
+  - `key` 应该绑定为一个字符串或数字类型的值。
+  - **示例：**
+    
+    ```vue
+    <ul>
+      <li v-for="item in items" :key="item.id">
+        {{ item.message }}
+      </li>
+    </ul>
+    ```
+    
 
 #### 3. 属性绑定 - `v-bind`
 
-*   **作用：** 动态地绑定一个或多个 attribute（属性），或一个组件 prop 到表达式。
-*   **缩写：** `:`
-*   **示例：**
-    ```vue
-    <!-- 绑定一个 attribute -->
-    <img v-bind:src="imageSrc">
-    <!-- 缩写 -->
-    <img :src="imageSrc">
-
-    <!-- 动态 attribute 名 (2.6.0+) -->
-    <button :[key]="value"></button>
-
-    <!-- 绑定一个对象的所有 property -->
-    <div v-bind="{ id: someProp, 'other-attr': otherProp }"></div>
-    ```
+- **作用：** 动态地绑定一个或多个 attribute（属性），或一个组件 prop 到表达式。
+  
+- **缩写：** `:`
+  
+- **示例：**
+  
+  ```vue
+  <!-- 绑定一个 attribute -->
+  <img v-bind:src="imageSrc">
+  <!-- 缩写 -->
+  <img :src="imageSrc">
+  
+  <!-- 动态 attribute 名 (2.6.0+) -->
+  <button :[key]="value"></button>
+  
+  <!-- 绑定一个对象的所有 property -->
+  <div v-bind="{ id: someProp, 'other-attr': otherProp }"></div>
+  ```
+  
 
 #### 4. 事件监听 - `v-on`
 
-*   **作用：** 绑定事件监听器。事件类型由参数指定。
-*   **缩写：** `@`
-*   **示例：**
-    ```vue
-    <!-- 处理方法 -->
-    <button v-on:click="doThis">点击</button>
-    <!-- 缩写 -->
-    <button @click="doThis">点击</button>
-
-    <!-- 内联语句 -->
-    <button @click="count = count + 1">增加 1</button>
-
-    <!-- 事件修饰符 -->
-    <form @submit.prevent="onSubmit">...</form>
-    ```
+- **作用：** 绑定事件监听器。事件类型由参数指定。
+  
+- **缩写：** `@`
+  
+- **示例：**
+  
+  ```vue
+  <!-- 处理方法 -->
+  <button v-on:click="doThis">点击</button>
+  <!-- 缩写 -->
+  <button @click="doThis">点击</button>
+  
+  <!-- 内联语句 -->
+  <button @click="count = count + 1">增加 1</button>
+  
+  <!-- 事件修饰符 -->
+  <form @submit.prevent="onSubmit">...</form>
+  ```
+  
 
 #### 5. 双向数据绑定 - `v-model`
 
-*   **作用：** 在表单控件（`<input>`, `<textarea>`, `<select>`）或者组件上创建**双向数据绑定**。它会根据控件类型自动选取正确的方法来更新元素。
-*   **本质：** 语法糖，它负责监听用户的输入事件以更新数据，并对一些极端场景进行一些特殊处理。
-*   **等价于：**
-    ```vue
-    <input
-      :value="text"
-      @input="text = $event.target.value"
-    >
-    ```
-*   **示例：**
-    ```vue
-    <input v-model="message" placeholder="edit me">
-    <p>Message is: {{ message }}</p>
-    ```
+- **作用：** 在表单控件（`<input>`, `<textarea>`, `<select>`）或者组件上创建**双向数据绑定**。它会根据控件类型自动选取正确的方法来更新元素。
+- **本质：** 语法糖，它负责监听用户的输入事件以更新数据，并对一些极端场景进行一些特殊处理。
+- **等价于：**
+  
+  ```vue
+  <input
+    :value="text"
+    @input="text = $event.target.value"
+  >
+  ```
+  
+- **示例：**
+  
+  ```vue
+  <input v-model="message" placeholder="edit me">
+  <p>Message is: {{ message }}</p>
+  ```
+  
 
 #### 6. 其他常用指令
 
-*   **`v-html`：** 更新元素的 `innerHTML`。**注意：** 内容按普通 HTML 插入，不会作为 Vue 模板进行编译。警惕 XSS 攻击。
-*   **`v-text`：** 更新元素的 `textContent`。
-*   **`v-once`：** 只渲染元素和组件**一次**。随后的重新渲染，元素/组件及其所有的子节点将被视为静态内容并跳过。这可以用于优化更新性能。
-*   **`v-cloak`：** 这个指令保持在元素上直到关联组件实例结束编译。可以和 CSS 规则如 `[v-cloak] { display: none }` 一起用时，可以隐藏未编译的 Mustache 标签直到组件实例准备完毕。
+- **`v-html`：** 更新元素的 `innerHTML`。**注意：** 内容按普通 HTML 插入，不会作为 Vue 模板进行编译。警惕 XSS 攻击。
+- **`v-text`：** 更新元素的 `textContent`。
+- **`v-once`：** 只渲染元素和组件**一次**。随后的重新渲染，元素/组件及其所有的子节点将被视为静态内容并跳过。这可以用于优化更新性能。
+- **`v-cloak`：** 这个指令保持在元素上直到关联组件实例结束编译。可以和 CSS 规则如 `[v-cloak] { display: none }` 一起用时，可以隐藏未编译的 Mustache 标签直到组件实例准备完毕。
 
 ---
 
 ### 总结
 
 Vue 的声明式指令系统是其核心特性之一，它允许开发者：
-1.  **以声明的方式**将 DOM 与底层组件实例的数据进行绑定。
-2.  **直接描述视图的状态**（如“如果 loading 就显示这个 div”，“把这个数组渲染成一个列表”），而无需手动操作 DOM。
-3.  **享受响应式的好处**：当数据发生变化时，Vue 会自动、高效地更新所有依赖于此数据的 DOM 部分。
+
+1. **以声明的方式**将 DOM 与底层组件实例的数据进行绑定。
+2. **直接描述视图的状态**（如“如果 loading 就显示这个 div”，“把这个数组渲染成一个列表”），而无需手动操作 DOM。
+3. **享受响应式的好处**：当数据发生变化时，Vue 会自动、高效地更新所有依赖于此数据的 DOM 部分。
 
 这种模式使得代码更易读、更易维护，并且极大地减少了直接进行繁琐 DOM 操作的样板代码。
 
-
->相比Vue2，Vue3有哪些改进?
-Vue 3是一次根本性的革新，它在性能、开发体验和工程化能力上都实现了巨大的飞跃。这些改进可以概括为**更快的性能、更优的代码组织、更好的扩展性和更完善的语言支持**。
+> 相比Vue2，Vue3有哪些改进?
+> Vue 3是一次根本性的革新，它在性能、开发体验和工程化能力上都实现了巨大的飞跃。这些改进可以概括为**更快的性能、更优的代码组织、更好的扩展性和更完善的语言支持**。
 
 ---
 
@@ -4073,30 +4382,32 @@ Vue 3是一次根本性的革新，它在性能、开发体验和工程化能力
 
 这是Vue 3最核心、最根本的改进，它解决了Vue 2中许多固有的痛点和限制。
 
-*   **Vue 2的 `Object.defineProperty` 机制：**
-    *   **局限性根源**：它只能劫持对象的**已有属性**。这就是为什么无法检测到对象属性的直接添加或删除，需要使用 `Vue.set` 和 `Vue.delete` 这种特殊的API。对于数组，它通过重写数组的七个变异方法（如 `push`, `pop`, `splice` 等）来实现响应式，但直接通过索引设置项（`arr[index] = newValue`）或修改数组长度是无效的。
-    *   **性能开销**：初始化时需要递归地遍历数据对象的所有属性并将其转换为getter/setter，如果数据嵌套很深，初始化性能成本较高。
-
-*   **Vue 3的 `Proxy` 机制：**
-    *   **工作原理**：Proxy可以理解为一个对象的“代理层”，它直接代理整个对象，而不是具体属性。当你访问、设置、添加、删除对象的任何属性时，都会先经过这个代理层。
-    *   **巨大优势**：
-        *   **全面的响应性**：可以检测到所有类型的操作，包括**属性的添加、删除、数组索引的修改、`length` 的修改**，以及对 `Map`, `Set`, `WeakMap`, `WeakSet` 等原生集合类型的支持。开发者彻底告别了 `Vue.set/Vue.delete`。
-        *   **惰性劫持**：只有在真正访问某个嵌套属性时，才会递归地将其转换为响应式。这大大减少了初始化的开销，尤其是在处理大型复杂对象时。
-        *   **更简洁的代码**：由于Proxy的能力更强，底层的响应式代码变得更加简洁和易于维护。
+- **Vue 2的 `Object.defineProperty` 机制：**
+  
+  - **局限性根源**：它只能劫持对象的**已有属性**。这就是为什么无法检测到对象属性的直接添加或删除，需要使用 `Vue.set` 和 `Vue.delete` 这种特殊的API。对于数组，它通过重写数组的七个变异方法（如 `push`, `pop`, `splice` 等）来实现响应式，但直接通过索引设置项（`arr[index] = newValue`）或修改数组长度是无效的。
+  - **性能开销**：初始化时需要递归地遍历数据对象的所有属性并将其转换为getter/setter，如果数据嵌套很深，初始化性能成本较高。
+- **Vue 3的 `Proxy` 机制：**
+  
+  - **工作原理**：Proxy可以理解为一个对象的“代理层”，它直接代理整个对象，而不是具体属性。当你访问、设置、添加、删除对象的任何属性时，都会先经过这个代理层。
+  - **巨大优势**：
+    - **全面的响应性**：可以检测到所有类型的操作，包括**属性的添加、删除、数组索引的修改、`length` 的修改**，以及对 `Map`, `Set`, `WeakMap`, `WeakSet` 等原生集合类型的支持。开发者彻底告别了 `Vue.set/Vue.delete`。
+    - **惰性劫持**：只有在真正访问某个嵌套属性时，才会递归地将其转换为响应式。这大大减少了初始化的开销，尤其是在处理大型复杂对象时。
+    - **更简洁的代码**：由于Proxy的能力更强，底层的响应式代码变得更加简洁和易于维护。
 
 ### 2. 组合式API：从“选项分治”到“逻辑关注点”
 
 这是对开发者心智模型和代码组织方式的一次重大变革。
 
-*   **Vue 2 Options API的痛点：**
-    *   **逻辑关注点分离**：当一个组件负责一个复杂功能时，与该功能相关的代码（数据 `data`、方法 `methods`、计算属性 `computed`、生命周期 `mounted` 等）会被拆分到不同的选项中。阅读代码时，需要在多个部分之间不断“跳跃”，尤其是在大型组件中，理解和维护都非常困难。
-    *   **逻辑复用困难**：虽然 `mixins` 是主要的逻辑复用方案，但它容易导致**命名冲突**、**数据来源不清晰**（多个mixin混合时，很难判断一个属性来自哪里），并且不是类型友好的。
-
-*   **Vue 3 Composition API的优势：**
-    *   **逻辑组合**：允许你将一个功能相关的所有代码（响应式数据、函数、生命周期等）组织在同一个地方。你可以将组件的逻辑看作一个个“功能函数”，而不是分散的选项。
-    *   **极致的可复用性**：任何组合式API的代码都可以轻松地提取到一个独立的**组合式函数**中。这类似于React的Hooks，但解决了Hooks的闭包陷阱和调用顺序限制等问题，通常能提供更好的TypeScript类型推断。
-    *   **更好的TypeScript集成**：因为一切都是声明的变量和函数，类型推断非常自然和完美，无需任何额外的类型体操。
-    *   **更灵活的代码组织**：你不再受限于Vue规定的几个选项，可以像写普通JavaScript函数一样，以最合理的方式组织你的组件逻辑。
+- **Vue 2 Options API的痛点：**
+  
+  - **逻辑关注点分离**：当一个组件负责一个复杂功能时，与该功能相关的代码（数据 `data`、方法 `methods`、计算属性 `computed`、生命周期 `mounted` 等）会被拆分到不同的选项中。阅读代码时，需要在多个部分之间不断“跳跃”，尤其是在大型组件中，理解和维护都非常困难。
+  - **逻辑复用困难**：虽然 `mixins` 是主要的逻辑复用方案，但它容易导致**命名冲突**、**数据来源不清晰**（多个mixin混合时，很难判断一个属性来自哪里），并且不是类型友好的。
+- **Vue 3 Composition API的优势：**
+  
+  - **逻辑组合**：允许你将一个功能相关的所有代码（响应式数据、函数、生命周期等）组织在同一个地方。你可以将组件的逻辑看作一个个“功能函数”，而不是分散的选项。
+  - **极致的可复用性**：任何组合式API的代码都可以轻松地提取到一个独立的**组合式函数**中。这类似于React的Hooks，但解决了Hooks的闭包陷阱和调用顺序限制等问题，通常能提供更好的TypeScript类型推断。
+  - **更好的TypeScript集成**：因为一切都是声明的变量和函数，类型推断非常自然和完美，无需任何额外的类型体操。
+  - **更灵活的代码组织**：你不再受限于Vue规定的几个选项，可以像写普通JavaScript函数一样，以最合理的方式组织你的组件逻辑。
 
 **示例对比：**
 一个处理鼠标位置的功能，在Vue 2中，`data`、`methods`、`mounted`、`beforeDestroy` 里都有相关代码。而在Vue 3中，可以提取为一个 `useMouse()` 组合式函数，在任何组件中一行代码引入即可，逻辑清晰且可复用。
@@ -4105,43 +4416,44 @@ Vue 3是一次根本性的革新，它在性能、开发体验和工程化能力
 
 Vue 3在编译时和运行时都做了大量优化，使得应用运行更快、体积更小。
 
-*   **编译时优化：**
-    *   **静态提升**：模板中的静态节点（即不依赖动态数据的部分）会被提升到渲染函数之外。这意味着它们只被创建一次，在后续的每次重新渲染时被复用，避免了不必要的创建开销。
-    *   **Patch Flag**：在生成虚拟DOM时，Vue 3会为动态节点打上一个“标记”，这个标记指明了这个节点具体是哪个部分是动态的（如只有`class`是动态的，或只有`textContent`是动态的）。这样在Diff算法运行时，就可以直接靶向更新有变化的部分，而无需对比整个节点。
-    *   **Tree-Shaking支持**：Vue 3的API被设计为可树摇的。如果你没有使用诸如 `v-model` 的某些修饰符或 `transition` 组件，这些相关的代码最终不会被打包到你的生产环境中。即使是像`watch`、`computed`这样的核心API，如果你不用，也会被摇掉。
-
-*   **运行时优化：**
-    *   **重写的虚拟DOM**：Diff算法被完全重写，利用了上述的Patch Flag等信息，更新效率更高。
-    *   **更快的组件实例化**：由于响应式系统的改进和内部代码的优化，Vue 3创建和挂载组件实例的速度比Vue 2快了约一倍。
+- **编译时优化：**
+  
+  - **静态提升**：模板中的静态节点（即不依赖动态数据的部分）会被提升到渲染函数之外。这意味着它们只被创建一次，在后续的每次重新渲染时被复用，避免了不必要的创建开销。
+  - **Patch Flag**：在生成虚拟DOM时，Vue 3会为动态节点打上一个“标记”，这个标记指明了这个节点具体是哪个部分是动态的（如只有`class`是动态的，或只有`textContent`是动态的）。这样在Diff算法运行时，就可以直接靶向更新有变化的部分，而无需对比整个节点。
+  - **Tree-Shaking支持**：Vue 3的API被设计为可树摇的。如果你没有使用诸如 `v-model` 的某些修饰符或 `transition` 组件，这些相关的代码最终不会被打包到你的生产环境中。即使是像`watch`、`computed`这样的核心API，如果你不用，也会被摇掉。
+- **运行时优化：**
+  
+  - **重写的虚拟DOM**：Diff算法被完全重写，利用了上述的Patch Flag等信息，更新效率更高。
+  - **更快的组件实例化**：由于响应式系统的改进和内部代码的优化，Vue 3创建和挂载组件实例的速度比Vue 2快了约一倍。
 
 ### 4. 扩展性与源码结构：从“ monolithic ”到“模块化”
 
 Vue 3被设计得更加开放和灵活。
 
-*   **模块化架构**：核心库被解耦成一个个独立的包（例如 `@vue/reactivity` 包就包含了完整的响应式系统）。这意味着你可以在非Vue环境中单独使用Vue的响应式系统，或者基于这些底层模块构建自己的渲染器。
-*   **自定义渲染器API**：提供了官方的、类型安全的自定义渲染器API。这使得将Vue用于非DOM环境变得异常简单，例如渲染到 **Canvas (WebGL)**、**原生移动端**（如Weex）甚至**命令行终端**。
+- **模块化架构**：核心库被解耦成一个个独立的包（例如 `@vue/reactivity` 包就包含了完整的响应式系统）。这意味着你可以在非Vue环境中单独使用Vue的响应式系统，或者基于这些底层模块构建自己的渲染器。
+- **自定义渲染器API**：提供了官方的、类型安全的自定义渲染器API。这使得将Vue用于非DOM环境变得异常简单，例如渲染到 **Canvas (WebGL)**、**原生移动端**（如Weex）甚至**命令行终端**。
 
 ### 5. 其他重要改进
 
-*   **Fragment**：组件可以拥有多个根节点，无需再用一个无用的父元素（如`<div>`）包裹。这简化了模板结构，特别是在渲染列表或Flex布局时。
-*   **Teleport**：可以将组件的一部分模板“传送”到DOM中其他位置，完美解决了模态框、弹窗、提示框等需要脱离当前组件层级渲染的场景，避免了z-index和样式嵌套带来的问题。
-*   **Suspense（实验性）**：提供了一种声明式的方式来处理组件的异步依赖（如异步组件或`setup()`函数中发生的异步操作）。它允许你在等待异步资源时显示一个后备内容（如loading动画），大大简化了异步组件的用户体验处理。
-*   **更好的TypeScript支持**：Vue 3本身就是用TypeScript重写的，提供了得天独厚的类型定义。与组合式API结合，提供了前所未有的类型安全和开发体验。
+- **Fragment**：组件可以拥有多个根节点，无需再用一个无用的父元素（如`<div>`）包裹。这简化了模板结构，特别是在渲染列表或Flex布局时。
+- **Teleport**：可以将组件的一部分模板“传送”到DOM中其他位置，完美解决了模态框、弹窗、提示框等需要脱离当前组件层级渲染的场景，避免了z-index和样式嵌套带来的问题。
+- **Suspense（实验性）**：提供了一种声明式的方式来处理组件的异步依赖（如异步组件或`setup()`函数中发生的异步操作）。它允许你在等待异步资源时显示一个后备内容（如loading动画），大大简化了异步组件的用户体验处理。
+- **更好的TypeScript支持**：Vue 3本身就是用TypeScript重写的，提供了得天独厚的类型定义。与组合式API结合，提供了前所未有的类型安全和开发体验。
 
 ### 总结
 
 Vue 3并非Vue 2的简单增量更新，而是一次全面的升级。它通过：
-*   **Proxy** 解决了响应式的根本性瓶颈。
-*   **组合式API** 解决了大型应用的代码组织和逻辑复用难题。
-*   **编译时优化** 带来了实实在在的性能提升和更小的体积。
-*   **模块化设计** 打开了框架的无限可能性。
+
+- **Proxy** 解决了响应式的根本性瓶颈。
+- **组合式API** 解决了大型应用的代码组织和逻辑复用难题。
+- **编译时优化** 带来了实实在在的性能提升和更小的体积。
+- **模块化设计** 打开了框架的无限可能性。
 
 这些改进使得Vue 3在性能、可维护性和可扩展性上都达到了新的高度，巩固了其作为现代前端开发主流框架的地位。同时，Vue 3保持了向下兼容的Options API，让老项目和初学者能够平滑过渡，体现了其“渐进式”框架的一贯哲学。
 
-
->Vue的设计在React的基础上做了哪些改进？
-简单来说，**Vue的设计确实受到了React的启发，并在其基础上进行了深刻的反思和改进，最终形成了自己独特的设计哲学和实现路径。** 它并非简单的“复制”或“改良”，而是一个吸收了React（以及Angular等框架）优点后，独立演化的产物。
-我们可以从以下几个层面来剖析Vue在React基础上的改进与创新：
+> Vue的设计在React的基础上做了哪些改进？
+> 简单来说，**Vue的设计确实受到了React的启发，并在其基础上进行了深刻的反思和改进，最终形成了自己独特的设计哲学和实现路径。** 它并非简单的“复制”或“改良”，而是一个吸收了React（以及Angular等框架）优点后，独立演化的产物。
+> 我们可以从以下几个层面来剖析Vue在React基础上的改进与创新：
 
 ---
 
@@ -4149,13 +4461,13 @@ Vue 3并非Vue 2的简单增量更新，而是一次全面的升级。它通过�
 
 这是两个框架最根本的区别，决定了它们的学习曲线、API设计和适用场景。
 
-*   **React：** 倡导**函数式编程**和**不可变性**。核心概念是“状态 -> 视图”的单向数据流。你通过 `setState` 或 `useState` hook 返回的 setter 函数来更新状态，从而触发重新渲染。React 告诉你：“这是最好的方式，请遵循这个范式来构建应用。”
-*   **Vue：** 定位为**渐进式框架**。它的核心是“响应式系统”和“基于依赖追踪的视图更新”。你可以像写普通JavaScript对象一样修改数据，视图会自动更新。Vue 提供给你一套易于理解和上手的工具，并允许你根据需要逐步添加更多能力。
+- **React：** 倡导**函数式编程**和**不可变性**。核心概念是“状态 -> 视图”的单向数据流。你通过 `setState` 或 `useState` hook 返回的 setter 函数来更新状态，从而触发重新渲染。React 告诉你：“这是最好的方式，请遵循这个范式来构建应用。”
+- **Vue：** 定位为**渐进式框架**。它的核心是“响应式系统”和“基于依赖追踪的视图更新”。你可以像写普通JavaScript对象一样修改数据，视图会自动更新。Vue 提供给你一套易于理解和上手的工具，并允许你根据需要逐步添加更多能力。
 
 **这个根本差异带来的直接影响：**
 
-*   **学习曲线：** Vue 的响应式系统对从 jQuery 或原生 JS 转来的开发者更友好，感觉更“自然”。React 的函数式理念和不可变性要求开发者进行思维转换，门槛稍高。
-*   **灵活性：** Vue 的渐进式特性使其能轻松地从简单的页面交互脚本，平滑地升级到复杂的单页应用。React 在一开始就要求你接受其完整的工具链和开发模式。
+- **学习曲线：** Vue 的响应式系统对从 jQuery 或原生 JS 转来的开发者更友好，感觉更“自然”。React 的函数式理念和不可变性要求开发者进行思维转换，门槛稍高。
+- **灵活性：** Vue 的渐进式特性使其能轻松地从简单的页面交互脚本，平滑地升级到复杂的单页应用。React 在一开始就要求你接受其完整的工具链和开发模式。
 
 ---
 
@@ -4165,44 +4477,45 @@ Vue 3并非Vue 2的简单增量更新，而是一次全面的升级。它通过�
 
 这是两者最核心的技术差异。
 
-*   **React：**
-    *   **机制：** 使用 `setState`/`useState` 来显式地、不可变地更新状态。每次更新都会创建一个新的状态引用。
-    *   **开发者需要：** 手动调用 setter 函数来触发更新，并时刻注意状态的不可变性。
-
-*   **Vue：**
-    *   **机制：** 基于 `Object.defineProperty` (Vue 2) 或 `Proxy` (Vue 3) 的响应式系统。数据是被“劫持”或“代理”的。
-    *   **改进：** **自动依赖追踪和触发更新**。你直接修改数据，Vue 会自动检测到变化并高效地更新与之相关的 DOM。这极大地减少了样板代码，让开发者更专注于业务逻辑。
+- **React：**
+  
+  - **机制：** 使用 `setState`/`useState` 来显式地、不可变地更新状态。每次更新都会创建一个新的状态引用。
+  - **开发者需要：** 手动调用 setter 函数来触发更新，并时刻注意状态的不可变性。
+- **Vue：**
+  
+  - **机制：** 基于 `Object.defineProperty` (Vue 2) 或 `Proxy` (Vue 3) 的响应式系统。数据是被“劫持”或“代理”的。
+  - **改进：** **自动依赖追踪和触发更新**。你直接修改数据，Vue 会自动检测到变化并高效地更新与之相关的 DOM。这极大地减少了样板代码，让开发者更专注于业务逻辑。
 
 #### 2. 模板系统 vs JSX
 
 这是视图层描述方式的差异。
 
-*   **React：** **所有都是 JavaScript**，使用 JSX。它非常灵活，因为你可以利用 JavaScript 的全部能力来构建视图。
-*   **Vue：**
-    *   **设计：** 默认推荐使用**基于 HTML 的模板语法**。
-    *   **改进与考量：**
-        *   **对设计师和传统开发者更友好**：模板看起来就是标准的 HTML，学习成本和迁移成本更低。
-        *   **语义化指令**：提供了 `v-if`, `v-for`, `v-bind` 等内置指令，这些指令为常见的 DOM 操作提供了声明式、语义化的抽象，让代码意图更清晰。
-        *   **编译时优化**：由于模板是编译时的，Vue 的编译器可以在构建阶段进行大量的优化（如 Vue 3 的静态提升、Patch Flag），从而提升运行时性能。JSX 由于其动态性，很难进行同等程度的优化。
+- **React：** **所有都是 JavaScript**，使用 JSX。它非常灵活，因为你可以利用 JavaScript 的全部能力来构建视图。
+- **Vue：**
+  - **设计：** 默认推荐使用**基于 HTML 的模板语法**。
+  - **改进与考量：**
+    - **对设计师和传统开发者更友好**：模板看起来就是标准的 HTML，学习成本和迁移成本更低。
+    - **语义化指令**：提供了 `v-if`, `v-for`, `v-bind` 等内置指令，这些指令为常见的 DOM 操作提供了声明式、语义化的抽象，让代码意图更清晰。
+    - **编译时优化**：由于模板是编译时的，Vue 的编译器可以在构建阶段进行大量的优化（如 Vue 3 的静态提升、Patch Flag），从而提升运行时性能。JSX 由于其动态性，很难进行同等程度的优化。
 
 #### 3. 逻辑组合：组合式 API vs Hooks
 
 这是 Vue 3 对 React Hooks 的一次成功回应与改进。
 
-*   **React Hooks：** 开创性地解决了类组件中逻辑复用困难、生命周期函数逻辑分散的问题。
-*   **Vue Composition API：**
-    *   **相似点：** 同样解决了 Options API 下逻辑关注点分离的问题，并提供了强大的逻辑复用能力。
-    *   **关键改进：**
-        *   **调用时机**：`setup()` 函数只在组件创建时运行一次，而 React Hooks 在每次渲染时都会调用。这避免了 Hooks 复杂的闭包陷阱问题。
-        *   **响应式系统的自动依赖追踪**：`computed` 和 `watch` 会自动收集它们的依赖，无需手动声明依赖数组（如 `useEffect` 的依赖数组），减少了因依赖项遗漏导致的 bug。
-        *   **更好的性能**：`setup` 只运行一次，其闭包也不会在每次渲染时重建，通常有更好的性能表现。
+- **React Hooks：** 开创性地解决了类组件中逻辑复用困难、生命周期函数逻辑分散的问题。
+- **Vue Composition API：**
+  - **相似点：** 同样解决了 Options API 下逻辑关注点分离的问题，并提供了强大的逻辑复用能力。
+  - **关键改进：**
+    - **调用时机**：`setup()` 函数只在组件创建时运行一次，而 React Hooks 在每次渲染时都会调用。这避免了 Hooks 复杂的闭包陷阱问题。
+    - **响应式系统的自动依赖追踪**：`computed` 和 `watch` 会自动收集它们的依赖，无需手动声明依赖数组（如 `useEffect` 的依赖数组），减少了因依赖项遗漏导致的 bug。
+    - **更好的性能**：`setup` 只运行一次，其闭包也不会在每次渲染时重建，通常有更好的性能表现。
 
 #### 4. 状态管理：内置响应式 vs 外部库
 
-*   **React：** 本身不提供复杂的状态管理方案，需要依赖外部库（如 Redux, Zustand）。Context API 用于解决 Prop Drilling，但并非状态管理库。
-*   **Vue：**
-    *   **设计：** 由于其响应式系统是核心，因此简单的跨组件状态共享可以通过 `provide/inject` 轻松实现。
-    *   **官方库 Vuex/Pinia：** 这些官方状态管理库本质上也是利用了 Vue 的响应式系统。特别是 **Pinia**，其 API 设计极其简洁，与 Composition API 完美融合，使用体验上比 Redux 要直观和轻量得多。
+- **React：** 本身不提供复杂的状态管理方案，需要依赖外部库（如 Redux, Zustand）。Context API 用于解决 Prop Drilling，但并非状态管理库。
+- **Vue：**
+  - **设计：** 由于其响应式系统是核心，因此简单的跨组件状态共享可以通过 `provide/inject` 轻松实现。
+  - **官方库 Vuex/Pinia：** 这些官方状态管理库本质上也是利用了 Vue 的响应式系统。特别是 **Pinia**，其 API 设计极其简洁，与 Composition API 完美融合，使用体验上比 Redux 要直观和轻量得多。
 
 ---
 
@@ -4210,28 +4523,28 @@ Vue 3并非Vue 2的简单增量更新，而是一次全面的升级。它通过�
 
 除了对 React 理念的改进，Vue 也引入了一些自身独有的、非常有价值的设计。
 
-1.  **指令系统：** 这是 Vue 模板的核心特性之一。除了内置指令，还支持**自定义指令**，允许开发者直接对普通 DOM 元素进行底层操作，这是一种高度可复用的机制。
-
-2.  **单文件组件：** 将模板、逻辑和样式封装在一个 `.vue` 文件中。这是一种非常符合直觉的组件化方式，通过 `<style scoped>` 实现了天然的 CSS 作用域隔离，这是 React 社区需要通过 CSS-in-JS 或 CSS Modules 等方案才能解决的问题。
-
-3.  **Teleport：** 允许将组件的模板部分“传送”到 DOM 中任何指定的位置。完美解决了模态框、弹窗等需要脱离当前组件层级的渲染问题，比 React 的 Portal 在 API 命名上更形象。
-
-4.  **编译时优化：** 如前所述，Vue 3 的编译器能够对模板进行静态提升、Patch Flag 标记等，这些是 Vue 基于其模板语法实现的、React 难以直接复制的性能优势。
+1. **指令系统：** 这是 Vue 模板的核心特性之一。除了内置指令，还支持**自定义指令**，允许开发者直接对普通 DOM 元素进行底层操作，这是一种高度可复用的机制。
+  
+2. **单文件组件：** 将模板、逻辑和样式封装在一个 `.vue` 文件中。这是一种非常符合直觉的组件化方式，通过 `<style scoped>` 实现了天然的 CSS 作用域隔离，这是 React 社区需要通过 CSS-in-JS 或 CSS Modules 等方案才能解决的问题。
+  
+3. **Teleport：** 允许将组件的模板部分“传送”到 DOM 中任何指定的位置。完美解决了模态框、弹窗等需要脱离当前组件层级的渲染问题，比 React 的 Portal 在 API 命名上更形象。
+  
+4. **编译时优化：** 如前所述，Vue 3 的编译器能够对模板进行静态提升、Patch Flag 标记等，这些是 Vue 基于其模板语法实现的、React 难以直接复制的性能优势。
+  
 
 ### 总结
 
-| 特性 | React | Vue (改进与创新) |
-| :--- | :--- | :--- |
+| 特性  | React | Vue (改进与创新) |
+| --- | --- | --- |
 | **核心哲学** | 函数式、不可变性 | **渐进式**、响应式 |
 | **数据更新** | 手动 `setState`/`useState` | **自动依赖追踪** |
 | **视图语法** | JSX (JavaScript) | **模板** (HTML-based) + **指令** |
 | **逻辑复用** | Hooks (渲染时) | **Composition API** (创建时，**无闭包陷阱**) |
 | **状态管理** | 依赖外部库 (Redux) | 官方库 (Vuex/Pinia)，与响应式深度集成 |
 | **样式方案** | CSS-in-JS, CSS Modules | **SFC 中的 `<style scoped>`** |
-| **独特设计** | - | **SFC**、**指令系统**、**编译时优化**、**Teleport** |
+| **独特设计** | -   | **SFC**、**指令系统**、**编译时优化**、**Teleport** |
 
 **结论：** Vue 的设计无疑站在了 React 这个“巨人”的肩膀上，敏锐地捕捉到了 React 在开发体验和性能上的一些痛点。但它并没有简单地跟随，而是基于 **“渐进式”** 和 **“响应式”** 这两个核心理念，走出了一条属于自己的路。它在**易用性、上手门槛和开发体验**上做出了显著的改进，并创新性地提出了 **SFC**、**指令系统** 等独特设计，使其成为与 React 并驾齐驱、各有千秋的优秀前端框架。
-
 
 Element Plus：
 Element Plus 是一个基于 **Vue 3** 和 **TypeScript** 的现代化 UI 组件库，它是 **Element UI**（基于 Vue 2）的升级版本，专为 Vue 3 设计。以下是它的核心特点与功能阐述：
@@ -4239,6 +4552,7 @@ Element Plus 是一个基于 **Vue 3** 和 **TypeScript** 的现代化 UI 组件
 ---
 
 ### **1. 核心定位**
+
 - **面向 Vue 3**：完全适配 Vue 3 的 Composition API，提供更好的性能与开发体验。
 - **企业级应用**：专注于后台管理系统、中后台项目的快速开发，提供丰富且高质量的组件。
 - **开源与社区驱动**：由团队和开源社区共同维护，持续更新迭代。
@@ -4246,6 +4560,7 @@ Element Plus 是一个基于 **Vue 3** 和 **TypeScript** 的现代化 UI 组件
 ---
 
 ### **2. 主要特性**
+
 - **全面组件化**：包含按钮、表单、表格、弹窗、导航等 60+ 常用组件，覆盖大部分业务场景。
 - **TypeScript 支持**：提供完整的类型定义，增强代码提示与类型安全。
 - **主题定制**：通过 SCSS 变量或在线主题编辑器，灵活定制全局样式。
@@ -4256,6 +4571,7 @@ Element Plus 是一个基于 **Vue 3** 和 **TypeScript** 的现代化 UI 组件
 ---
 
 ### **3. 技术亮点**
+
 - **性能优化**：利用 Vue 3 的响应式系统和 Tree-shaking 特性，减少打包体积。
 - **组合式 API 示例**：文档提供 Composition API 的使用示例，符合现代 Vue 开发习惯。
 - **Vite 友好**：默认支持 Vite 构建工具，开发体验更快捷。
@@ -4263,6 +4579,7 @@ Element Plus 是一个基于 **Vue 3** 和 **TypeScript** 的现代化 UI 组件
 ---
 
 ### **4. 生态与工具**
+
 - **官方工具**：
   - **Element Plus CLI**：快速生成项目模板。
   - **主题生成工具**：可视化定制主题色。
@@ -4270,8 +4587,8 @@ Element Plus 是一个基于 **Vue 3** 和 **TypeScript** 的现代化 UI 组件
 - **第三方适配**：可与 Vue Router、Pinia、Vite 等主流工具链无缝集成。
 
 ### **总结**
-Element Plus 是 **Vue 3 生态中最成熟的 UI 库之一**，适合从 Element UI 迁移或新启动的 Vue 3 项目。它的设计一致性、丰富组件和易用性，能显著提升开发效率。如果你熟悉 Vue 3 且需要构建中后台系统，它是一个可靠的选择。
 
+Element Plus 是 **Vue 3 生态中最成熟的 UI 库之一**，适合从 Element UI 迁移或新启动的 Vue 3 项目。它的设计一致性、丰富组件和易用性，能显著提升开发效率。如果你熟悉 Vue 3 且需要构建中后台系统，它是一个可靠的选择。
 
 AJAX(Asynchronous JavaScript and XML)：
 在早期的 Web 开发中，页面交互主要依赖于传统同步请求方式：用户触发一个 HTTP 请求到服务器，服务器接收并处理请求后，再返回一个全新的 HTML 页面给客户端。这种方式导致即使在执行非常简单的交互（例如验证表单或获取少量数据）时，也必须加载整个页面。用户每次操作后都需要等待服务器响应，并重新接收和渲染整个页面，这不仅浪费了大量的带宽，也显著降低了用户体验。由于每次交互都要重新请求服务器，用户界面的响应速度严重依赖于网络状况和服务器负载，导致 Web 应用的响应能力远不及本地应用。
@@ -4285,6 +4602,7 @@ AJAX 的 XMLHttpRequest 对象：
 AJAX 技术的核心是 XMLHttpRequest 对象（简称 XHR），所有现代浏览器都内置支持该对象。通过 XHR，JavaScript 可以在不重新加载页面的情况下向服务器发送 HTTP 请求并接收响应，从而实现数据的异步交换与动态内容更新。
 
 创建 XMLHttpRequest 对象的基本语法为：
+
 ```javascript
 var xhr = new XMLHttpRequest();
 ```
@@ -4337,6 +4655,7 @@ var Ajax = {
 ```
 
 假设我们有如下 JSON 数据（users.json）：
+
 ```json
 [
   {"name": "孙悟空", "age": 18, "gender": "男"},
@@ -4347,6 +4666,7 @@ var Ajax = {
 ```
 
 使用封装的 Ajax 对象发起请求：
+
 ```javascript
 // 发起 GET 请求获取用户数据
 Ajax.get('users.json', function(response) {
@@ -4359,15 +4679,14 @@ Ajax.post('users.json', '', function(response) {
 });
 ```
 
-
 Json：
 JSON（JavaScript Object Notation）是一种轻量级的数据交换格式。它基于 JavaScript 语法的子集，但独立于语言，这意味着任何编程语言都能读取和生成 JSON。在前端开发中，JSON 扮演着至关重要的角色，是连接前端与后端、以及前端内部数据管理的桥梁。
 
 ### 一、JSON 的核心特点
 
-1.  **轻量级**：相比于 XML，格式更加简洁，没有冗余的标签。
-2.  **易读易写**：结构清晰，是纯文本，人类和机器都容易理解。
-3.  **易于解析和生成**：JavaScript 提供了内置的方法来解析和序列化 JSON。
+1. **轻量级**：相比于 XML，格式更加简洁，没有冗余的标签。
+2. **易读易写**：结构清晰，是纯文本，人类和机器都容易理解。
+3. **易于解析和生成**：JavaScript 提供了内置的方法来解析和序列化 JSON。
 
 ---
 
@@ -4432,8 +4751,8 @@ fetch('https://api.example.com/users', {
 
 在构建工具（如 Webpack、Vite）或前端框架中，经常使用 `.json` 文件来存储配置或静态数据。
 
-*   **`package.json`**：Node.js 和前端项目的核心配置文件，定义了项目依赖、脚本等。
-*   **静态数据**：对于不经常变化的数据（如国家列表、菜单项），可以放在一个独立的 `.json` 文件中，然后在需要时导入。
+- **`package.json`**：Node.js 和前端项目的核心配置文件，定义了项目依赖、脚本等。
+- **静态数据**：对于不经常变化的数据（如国家列表、菜单项），可以放在一个独立的 `.json` 文件中，然后在需要时导入。
 
 ```javascript
 // 假设有一个 config.json 文件
@@ -4519,81 +4838,87 @@ function ProductList() {
 
 前端处理 JSON 主要依赖两个全局 `JSON` 对象的方法：
 
-1.  **`JSON.stringify(value[, replacer[, space]])`**
-    *   **作用**：将 JavaScript 值（对象、数组等）转换为 JSON 字符串。
-    *   **用途**：在向服务器发送数据或存入 `localStorage` 之前使用。
-    *   **参数**：
-        *   `value`：要序列化的值。
-        *   `replacer`（可选）：用于转换结果的函数或数组。
-        *   `space`（可选）：用于美化输出的缩进空格数。
-
-    ```javascript
-    const obj = { name: "John", age: 30, city: "New York" };
-    const jsonString = JSON.stringify(obj);
-    console.log(jsonString); // 输出：'{"name":"John","age":30,"city":"New York"}‘
-
-    // 美化输出
-    const prettyJsonString = JSON.stringify(obj, null, 2);
-    console.log(prettyJsonString);
-    // 输出：
-    // {
-    //   "name": "John",
-    //   "age": 30,
-    //   "city": "New York"
-    // }
-    ```
-
-2.  **`JSON.parse(text[, reviver])`**
-    *   **作用**：将 JSON 字符串解析为 JavaScript 值（对象、数组等）。
-    *   **用途**：在接收到来自服务器的响应或从 `localStorage` 读取数据后使用。
-    *   **参数**：
-        *   `text`：要解析的 JSON 字符串。
-        *   `reviver`（可选）：一个转换结果的函数。
-
-    ```javascript
-    const jsonString = '{"name":"John","age":30,"city":"New York"}';
-    const obj = JSON.parse(jsonString);
-    console.log(obj.name); // 输出：'John‘
-    console.log(obj.age);  // 输出：30
-    ```
+1. **`JSON.stringify(value[, replacer[, space]])`**
+  
+  - **作用**：将 JavaScript 值（对象、数组等）转换为 JSON 字符串。
+  - **用途**：在向服务器发送数据或存入 `localStorage` 之前使用。
+  - **参数**：
+    - `value`：要序列化的值。
+    - `replacer`（可选）：用于转换结果的函数或数组。
+    - `space`（可选）：用于美化输出的缩进空格数。
+  
+  ```javascript
+  const obj = { name: "John", age: 30, city: "New York" };
+  const jsonString = JSON.stringify(obj);
+  console.log(jsonString); // 输出：'{"name":"John","age":30,"city":"New York"}‘
+  
+  // 美化输出
+  const prettyJsonString = JSON.stringify(obj, null, 2);
+  console.log(prettyJsonString);
+  // 输出：
+  // {
+  //   "name": "John",
+  //   "age": 30,
+  //   "city": "New York"
+  // }
+  ```
+  
+2. **`JSON.parse(text[, reviver])`**
+  
+  - **作用**：将 JSON 字符串解析为 JavaScript 值（对象、数组等）。
+  - **用途**：在接收到来自服务器的响应或从 `localStorage` 读取数据后使用。
+  - **参数**：
+    - `text`：要解析的 JSON 字符串。
+    - `reviver`（可选）：一个转换结果的函数。
+  
+  ```javascript
+  const jsonString = '{"name":"John","age":30,"city":"New York"}';
+  const obj = JSON.parse(jsonString);
+  console.log(obj.name); // 输出：'John‘
+  console.log(obj.age);  // 输出：30
+  ```
+  
 
 ---
 
 ### 四、注意事项和最佳实践
 
-1.  **键名必须使用双引号**：有效的 JSON 要求所有键名都必须用双引号（`"`）括起来。JavaScript 对象字面量可以不用引号，但 JSON 不行。
-2.  **不能包含函数、Date 等特殊对象**：`JSON.stringify` 会忽略函数、`undefined` 和 `Symbol` 值。Date 对象会被序列化为 ISO 格式的字符串。
-3.  **错误处理**：使用 `JSON.parse` 时，如果传入的字符串不是有效的 JSON，会抛出 `SyntaxError`。务必使用 `try...catch` 进行包裹。
-
-    ```javascript
-    let data;
-    try {
-      data = JSON.parse(invalidJsonString);
-    } catch (error) {
-      console.error('Invalid JSON:', error);
-      data = {}; // 设置一个默认值
-    }
-    ```
-4.  **安全性**：虽然 JSON 本身是安全的，但解析来自不可信来源的 JSON 时，如果使用 `eval()`（**绝对不推荐**），可能导致代码执行漏洞。务必使用 `JSON.parse`。
-5.  **性能**：对于非常大的 JSON 数据，解析和序列化可能会阻塞主线程。可以考虑使用 Web Workers 在后台线程中进行处理。
+1. **键名必须使用双引号**：有效的 JSON 要求所有键名都必须用双引号（`"`）括起来。JavaScript 对象字面量可以不用引号，但 JSON 不行。
+  
+2. **不能包含函数、Date 等特殊对象**：`JSON.stringify` 会忽略函数、`undefined` 和 `Symbol` 值。Date 对象会被序列化为 ISO 格式的字符串。
+  
+3. **错误处理**：使用 `JSON.parse` 时，如果传入的字符串不是有效的 JSON，会抛出 `SyntaxError`。务必使用 `try...catch` 进行包裹。
+  
+  ```javascript
+  let data;
+  try {
+    data = JSON.parse(invalidJsonString);
+  } catch (error) {
+    console.error('Invalid JSON:', error);
+    data = {}; // 设置一个默认值
+  }
+  ```
+  
+4. **安全性**：虽然 JSON 本身是安全的，但解析来自不可信来源的 JSON 时，如果使用 `eval()`（**绝对不推荐**），可能导致代码执行漏洞。务必使用 `JSON.parse`。
+  
+5. **性能**：对于非常大的 JSON 数据，解析和序列化可能会阻塞主线程。可以考虑使用 Web Workers 在后台线程中进行处理。
+  
 
 ### 总结
 
 JSON 是现代前端开发的**生命线**。它作为一种通用、高效的数据格式，贯穿于前端与后端的通信、客户端的数据存储与管理、以及应用的配置等各个环节。熟练掌握 `JSON.stringify` 和 `JSON.parse` 的使用，并理解其在不同场景下的应用，是每一位前端开发者的必备技能。
-
 
 用户身份认证机制：
 前端用户认证机制是一套在前端应用中，用于**确认用户身份**、**安全地管理用户凭证（如Token）**，并**基于认证状态控制UI渲染与API访问**的完整流程。
 
 其核心工作通常包含以下几个环节：
 
-1.  **登录认证**：用户通过表单提交凭证（如用户名/密码），前端将其安全地发送到后端服务器进行验证。
-2.  **凭证管理**：登录成功后，前端会接收并安全地存储后端返回的认证凭证（最常见的是 **JWT Token** 或 **Session ID**）。
-3.  **状态维持**：前端需要有一个全局状态（如通过 Context、Redux、Vuex 等）来标记当前用户是否已登录，这个状态决定了UI的展示（例如，显示登录按钮还是用户头像）。
-4.  **请求携带**：在发起需要权限的API请求时，前端自动地将凭证（如在HTTP请求头`Authorization: Bearer <Token>`中）附加到请求上，以便后端识别用户身份。
-5.  **路由守卫**：对于需要登录才能访问的页面，前端会进行路由拦截，检查认证状态，未登录则跳转到登录页。
-6.  **凭证刷新与失效处理**：处理Token的自动刷新，以及在用户登出或Token过期时，安全地清除本地存储的凭证并更新应用状态。
-
+1. **登录认证**：用户通过表单提交凭证（如用户名/密码），前端将其安全地发送到后端服务器进行验证。
+2. **凭证管理**：登录成功后，前端会接收并安全地存储后端返回的认证凭证（最常见的是 **JWT Token** 或 **Session ID**）。
+3. **状态维持**：前端需要有一个全局状态（如通过 Context、Redux、Vuex 等）来标记当前用户是否已登录，这个状态决定了UI的展示（例如，显示登录按钮还是用户头像）。
+4. **请求携带**：在发起需要权限的API请求时，前端自动地将凭证（如在HTTP请求头`Authorization: Bearer <Token>`中）附加到请求上，以便后端识别用户身份。
+5. **路由守卫**：对于需要登录才能访问的页面，前端会进行路由拦截，检查认证状态，未登录则跳转到登录页。
+6. **凭证刷新与失效处理**：处理Token的自动刷新，以及在用户登出或Token过期时，安全地清除本地存储的凭证并更新应用状态。
 
 Cookie:
 Cookie 是一些数据，存储于你电脑上的文本文件中，当 web 服务器向浏览器发送 web 页面时，在连接关闭后，服务端不会记录用户的信息，Cookie 的作用就是用于解决 “如何记录客户端的用户信息”：
@@ -4605,7 +4930,6 @@ document.cookie = "username=zhangsan; expires=Thu, 18 Dec 2043 12:00:00 GMT; pat
 当我们请求某个URL路径时，浏览器会根据这个URL路径将符合条件的Cookie放在Request请求头中传回给服务端，服务端通过request.getCookies()来获取所有Cookie。
 Cookie是HTTP头中的一个字段，虽然HTTP本身对这个字段并没有多少限制，但是Cookie最终函数存储在浏览器里，所以不同的浏览器对Cookie的存储都有一些限制。
 
-
 Session：
 Session是在服务器端存储的用于跟踪用户状态的机制。
 
@@ -4615,7 +4939,6 @@ Session和Cookie的区别如下：
 安全性不同：由于Cookie存储在客户端，所以安全性相对较低，例如用户可以编辑或伪造Cookie信息。而Session存储在服务器上，相对较安全。
 有效期不同：Cookie的有效期一般为会话期间，当关闭浏览器窗口后，Cookie就会消失。而Session一般会在一定时间内保存在服务器上，当访问增多，会占用服务器性能。
 
-
 使用Session可以解决表单重复提交问题，其基本思想是在服务器端使用Session来记录用户提交表单的状态。
 当用户提交表单时，将表单的提交状态存储在Session中，同时将表单的提交按钮禁用，防止用户多次点击提交按钮。
 当表单处理完成后，将Session中的表单提交状态清除，并启用提交按钮，以便用户下一次提交表单。
@@ -4623,9 +4946,10 @@ Session和Cookie的区别如下：
 下面是一个使用Session解决表单重复提交问题的示例代码：
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+ pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <!DOCTYPE html>
+
 <html>
 <head>
 <meta charset="UTF-8">
@@ -4638,24 +4962,28 @@ Session和Cookie的区别如下：
     session.setAttribute("submitStatus", false);
   }
 
-  // 如果表单已经提交过，则显示相应的提示信息并禁用提交按钮
-  if(session.getAttribute("submitStatus") == true) {
-    out.println("表单已经提交过了，请等待处理完成！");
-    // 将提交按钮禁用
-    request.setAttribute("submitButton", "disabled");
-  } else {
-    // 如果表单未提交过，则处理表单数据并启用提交按钮
-    String name = request.getParameter("name");
-    String email = request.getParameter("email");
-    // 处理表单数据，例如插入到数据库中
-    // ...
+// 如果表单已经提交过，则显示相应的提示信息并禁用提交按钮
+ if(session.getAttribute("submitStatus") == true) {
+ out.println("表单已经提交过了，请等待处理完成！");
+ // 将提交按钮禁用
+ request.setAttribute("submitButton", "disabled");
+ } else {
+ // 如果表单未提交过，则处理表单数据并启用提交按钮
+ String name = request.getParameter("name");
+ String email = request.getParameter("email");
+ // 处理表单数据，例如插入到数据库中
+ // ...
 
-    // 将表单提交状态存储在Session中并启用提交按钮
-    session.setAttribute("submitStatus", true);
-    // 将提交按钮启用
-    request.setAttribute("submitButton", "");
-  }
+```
+// 将表单提交状态存储在Session中并启用提交按钮
+session.setAttribute("submitStatus", true);
+// 将提交按钮启用
+request.setAttribute("submitButton", "");
+```
+
+}
 %>
+
 <form action="" method="post">
   <label for="name">姓名：</label><br>
   <input type="text" name="name"><br>
@@ -4691,24 +5019,23 @@ Session和Cookie的区别如下：
 作用范围：仅在当前JSP页面中有效。
 用途：主要用于存储与单个JSP页面相关的数据。
 
-
 如何从请求域（Request Scope）、会话域（Session Scope）、应用程序域（Application Scope）和页面域（Page Scope）中获取数据的示例：
 
 请求域对象（Request Scope）
 在Servlet中设置属性到请求域：
 
 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
-    String data = "This is request scope data";  
-    request.setAttribute("requestData", data);  
-    // 转发请求到JSP页面  
-    RequestDispatcher dispatcher = request.getRequestDispatcher("result.jsp");  
-    dispatcher.forward(request, response);  
+ String data = "This is request scope data";  
+ request.setAttribute("requestData", data);  
+ // 转发请求到JSP页面  
+ RequestDispatcher dispatcher = request.getRequestDispatcher("result.jsp");  
+ dispatcher.forward(request, response);  
 }
 
 在JSP页面中获取请求域中的数据：
 
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>  
 <html>  
 <body>  
     <p>Request Scope Data: ${requestScope.requestData}</p>  
@@ -4722,17 +5049,15 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 会话域对象（Session Scope）
 在Servlet中设置属性到会话域：
 
-
 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
-    String data = "This is session scope data";  
-    HttpSession session = request.getSession();  
-    session.setAttribute("sessionData", data);  
-    // 转发请求到JSP页面  
-    RequestDispatcher dispatcher = request.getRequestDispatcher("result.jsp");  
-    dispatcher.forward(request, response);  
+ String data = "This is session scope data";  
+ HttpSession session = request.getSession();  
+ session.setAttribute("sessionData", data);  
+ // 转发请求到JSP页面  
+ RequestDispatcher dispatcher = request.getRequestDispatcher("result.jsp");  
+ dispatcher.forward(request, response);  
 }
 在JSP页面中获取会话域中的数据：
-
 
 <p>Session Scope Data: ${sessionScope.sessionData}</p>
 
@@ -4745,12 +5070,12 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 在Servlet中设置属性到应用程序域：
 
 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
-    String data = "This is application scope data";  
-    ServletContext context = request.getServletContext();  
-    context.setAttribute("applicationData", data);  
-    // 转发请求到JSP页面  
-    RequestDispatcher dispatcher = request.getRequestDispatcher("result.jsp");  
-    dispatcher.forward(request, response);  
+ String data = "This is application scope data";  
+ ServletContext context = request.getServletContext();  
+ context.setAttribute("applicationData", data);  
+ // 转发请求到JSP页面  
+ RequestDispatcher dispatcher = request.getRequestDispatcher("result.jsp");  
+ dispatcher.forward(request, response);  
 }
 
 在JSP页面中获取应用程序域中的数据：
@@ -4758,40 +5083,43 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 <p>Application Scope Data: ${applicationScope.applicationData}</p>
 
 或者使用脚本表达式：
+
 <p>Application Scope Data: <%= getServletContext().getAttribute("applicationData") %></p>
 页面域对象（Page Scope）
 
 页面域实际上是在JSP页面中定义的局部变量，这些变量在JSP页面的生命周期内有效。它们不是通过Servlet设置的，而是在JSP页面中直接定义的。例如：
 
 <%  
-    String pageData = "This is page scope data";  
-%>  
+ String pageData = "This is page scope data";  
+%>
+
 <p>Page Scope Data: <%= pageData %></p>
 注意，页面域中的变量实际上是在JSP页面被转换成Servlet时定义的局部变量，所以它们并不是真正的“域对象”。在Servlet中，没有直接的API可以设置或获取页面域数据，因为页面域仅在JSP页面执行期间存在。
-
 
 **JWT:**
 JSON Web Tokens（JWT）是一种用于在网络应用中传递信息的开放标准（RFC 7519），它以紧凑且自包含的方式表示数据，
 通常用于在身份验证和授权系统中进行安全传输信息。在前后端分离的Java Web架构中，使用JWT或其他类似的Token机制进行身份验证更为常见和推荐。
 
 JWT的具体作用如下：
+
 1. 身份验证：JWT可用于验证用户的身份。当用户登录成功后，服务器可以生成一个JWT令牌并将其返回给客户端。
-客户端在后续请求中可以携带这个令牌，服务器可以使用令牌来验证用户的身份，而无需在每个请求中再次提供用户名和密码。
-
+  客户端在后续请求中可以携带这个令牌，服务器可以使用令牌来验证用户的身份，而无需在每个请求中再次提供用户名和密码。
+  
 2. 授权：JWT可以包含有关用户的授权信息，例如用户的角色或权限。
-这使得服务器可以在接收到JWT后，轻松地确定用户是否有权限执行特定操作。
-
+  这使得服务器可以在接收到JWT后，轻松地确定用户是否有权限执行特定操作。
+  
 3. 信息交换：JWT是一种方便的方式来在不同组件或微服务之间安全地传递信息。
-例如，一个用户在一个身份验证服务登录后，可以生成一个JWT令牌，然后将其传递给其他服务，这些服务可以使用令牌来验证用户身份和访问权限。
-
+  例如，一个用户在一个身份验证服务登录后，可以生成一个JWT令牌，然后将其传递给其他服务，这些服务可以使用令牌来验证用户身份和访问权限。
+  
 4. 状态无关性：JWT是无状态的，令牌中包含了所有必要的信息，因此不需要在服务器上保留会话状态。这使得 JWT 适用于分布式应用程序和负载均衡环境。
-
+  
 5. 跨域通信：由于 JWT 可以在 HTTP 头或 URL 中传递，它们可以用于在不同域之间进行通信。这对于单点登录（Single Sign-On，SSO）等应用程序非常有用。
-
+  
 6. 安全性：JWT使用数字签名或加密来验证令牌的完整性和真实性。这意味着只有拥有正确密钥的人才能生成有效的令牌，从而防止伪造令牌。
+  
 
->认证登录为什么用JWT而不是用Session？
-在认证登录场景中，使用JSON Web Token（JWT）而不是传统的Session，主要基于以下几个关键原因：
+> 认证登录为什么用JWT而不是用Session？
+> 在认证登录场景中，使用JSON Web Token（JWT）而不是传统的Session，主要基于以下几个关键原因：
 
 1.服务器存储开销：
 Session：需要服务器存储每个用户的会话状态信息，包括登录状态、权限等。随着用户数量的增加，服务器需要分配更多的内存来存储这些信息，导致存储开销增大。
@@ -4815,34 +5143,46 @@ JWT：JWT包含了完整的认证和授权信息，且可以通过HTTP头部或�
 
 综上所述，使用JWT进行认证登录可以显著降低服务器的存储开销、提高系统的扩展性和安全性、提升效率并支持跨域操作。这些优势使得JWT在现代Web应用程序和微服务架构中得到了广泛应用。
 
+### 常见的身份认证面试题
+
+#### 1. Cookie和Session的区别？
+
+- Cookie 存在客户端，容量小、可被篡改，每次请求自动带上。Session 存在服务端，相对安全，靠 Cookie 里的 SessionId 关联。
+- Session 多了会占服务器内存；集群还要 Session 共享。关闭浏览器 Cookie 常消失（未设过期时间），Session 一般有服务端超时。
+
+#### 2. 为什么分布式场景更常用JWT而不是Session？
+
+- JWT 无状态，令牌里自带用户信息，服务端不用存会话，横向扩展、负载均衡更简单。
+- 注意：JWT 签发后很难主动作废，敏感信息不要放 Payload，要设过期时间，用 HTTPS 传输。
 
 JWT通常由三部分组成：
+
 - Header（头部）：包含了令牌类型和所用的签名算法等信息。
-内容：头部通常是一个JSON对象，它包含了关于生成该JWT的信息以及所使用的算法类型。具体来说，它通常包含两部分信息：
-    1.令牌类型：声明该令牌的类型为JWT。
-    2.签名算法：指定用于签名该JWT的算法，如HMAC SHA256或RSA等。
-编码：头部信息经过Base64编码后，形成JWT的第一部分。
-
+  内容：头部通常是一个JSON对象，它包含了关于生成该JWT的信息以及所使用的算法类型。具体来说，它通常包含两部分信息：
+   1.令牌类型：声明该令牌的类型为JWT。
+   2.签名算法：指定用于签名该JWT的算法，如HMAC SHA256或RSA等。
+  编码：头部信息经过Base64编码后，形成JWT的第一部分。
+  
 - Payload（负载）：包含了要传输的数据，如用户ID、过期时间、授权信息等。
-    1.注册声明：这些声明是预定义的，如iss（发行人）、exp（过期时间）、nbf（生效时间）、iat（签发时间）、jti（JWT ID）等。
-    2.公共声明：这些声明是自定义的，可以包含任何与业务相关的数据，如user_id、username等。
-    3.私有声明：虽然也可以使用，但通常不建议定义与注册声明和公共声明相同的名称，以避免混淆。
-编码：载荷也使用Base64编码进行序列化，形成JWT的第二部分。
-
+   1.注册声明：这些声明是预定义的，如iss（发行人）、exp（过期时间）、nbf（生效时间）、iat（签发时间）、jti（JWT ID）等。
+   2.公共声明：这些声明是自定义的，可以包含任何与业务相关的数据，如user_id、username等。
+   3.私有声明：虽然也可以使用，但通常不建议定义与注册声明和公共声明相同的名称，以避免混淆。
+  编码：载荷也使用Base64编码进行序列化，形成JWT的第二部分。
+  
 - Signature（签名）：用于验证令牌的真实性。通常由头部和负载中的信息以及密钥生成。
-内容：签名部分是对头部和载荷进行签名生成的，用于验证消息的完整性和来源。签名的生成需要使用密钥，只有拥有密钥的一方才能对消息进行签名和验证。
-作用：签名的目的是确保JWT在传输过程中没有被篡改，并且只能被服务器端识别和验证。
-编码：签名部分同样经过Base64编码，形成JWT的第三部分。
-
+  内容：签名部分是对头部和载荷进行签名生成的，用于验证消息的完整性和来源。签名的生成需要使用密钥，只有拥有密钥的一方才能对消息进行签名和验证。
+  作用：签名的目的是确保JWT在传输过程中没有被篡改，并且只能被服务器端识别和验证。
+  编码：签名部分同样经过Base64编码，形成JWT的第三部分。
+  
 
 **JWT工作原理：**
 当用户登录时，服务器端会验证用户名和密码的正确性。一旦验证成功，服务器会根据用户的信息（如用户ID和用户名称）以及服务器端存储的JWT秘钥来生成一个JWT字符串（即Token）。这个Token是经过编码的，包含了头部、载荷和签名三个部分。
 客户端在每次请求时都会将这个Token放在Header请求头中传递给服务器端。服务器端接收到Token后，会先对其进行解码，然后使用它本地存储的秘钥以及头部中的加密算法和载荷中的信息进行重新加密，得到一个新的签名。
 最后，服务器会判断Token的真伪，用上一步新生成的签名和解码得到的签名进行判断。如果二者一致，则说明当前的Token是有效的、完整的，可以执行后续的操作；否则，返回Token错误。
 
-
 使用Java创建一个JWT：
-``` java
+
+```java
 package boot.utils;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -4892,7 +5232,6 @@ public class JWTUtils {
 大前端技术：
 大前端是前端技术领域的延伸与扩展，核心是 “以 Web 前端技术为基础，覆盖多端开发场景” 的技术体系，不再局限于传统 PC 端网页开发，而是整合了多平台、多终端的开发能力。
 
-
 Hybrid:
 Hybrid（混合开发）是大前端领域中结合原生开发与Web 开发的跨端技术方案，核心思路是 “在原生应用壳（Native Shell）中嵌入 Web 页面（WebView），通过桥接层实现 Web 与原生能力的交互”，既复用 Web 技术的跨平台优势，又借助原生能力弥补 Web 的功能短板。
 
@@ -4905,11 +5244,13 @@ Hybrid 是一种将**Web技术（HTML5/CSS3/JavaScript）**与**原生应用技�
 ## **一、核心架构**
 
 ### **1. 技术栈组成**
+
 ```
 Hybrid App = WebView容器 + Web前端 + JSBridge + 原生能力
 ```
 
 ### **2. 关键组件**
+
 - **WebView容器**：原生应用的视图组件，用于加载和显示网页
   - iOS：WKWebView（iOS 8+）/ UIWebView（已废弃）
   - Android：WebView 组件
@@ -4922,6 +5263,7 @@ Hybrid App = WebView容器 + Web前端 + JSBridge + 原生能力
 ## **二、工作原理**
 
 ### **通信机制**
+
 ```javascript
 // 1. JavaScript 调用原生功能
 window.JSBridge.callNative('getLocation', {type: 'GPS'}, (result) => {
@@ -4937,8 +5279,9 @@ window.JSBridge.callNative('getLocation', {type: 'GPS'}, (result) => {
 ```
 
 ### **数据交互方式**
-| 方式 | 原理 | 特点 |
-|------|------|------|
+
+| 方式  | 原理  | 特点  |
+| --- | --- | --- |
 | **URL Scheme** | 通过 iframe.src 或 location.href 触发 | 兼容性好，早期常用 |
 | **JavaScriptCore** | iOS 7+ 的 JavaScript 引擎 | 性能好，直接调用 |
 | **addJavascriptInterface** | Android 的注入方式 | Android 专用 |
@@ -4950,6 +5293,7 @@ window.JSBridge.callNative('getLocation', {type: 'GPS'}, (result) => {
 ## **三、主流开发框架**
 
 ### **1. Cordova/PhoneGap**
+
 ```bash
 # 创建项目
 cordova create myapp com.example.myapp MyApp
@@ -4961,6 +5305,7 @@ navigator.camera.getPicture(onSuccess, onFail, options);
 ```
 
 ### **2. Ionic**
+
 ```typescript
 // Ionic + Angular/Capacitor
 import { Camera } from '@capacitor/camera';
@@ -4975,6 +5320,7 @@ const takePicture = async () => {
 ```
 
 ### **3. React Native（类Hybrid）**
+
 > 虽不是传统Hybrid，但理念相似：JavaScript + 原生渲染
 
 ---
@@ -4982,6 +5328,7 @@ const takePicture = async () => {
 ## **四、优势与劣势**
 
 ### **✅ 优势**
+
 1. **跨平台开发**：一套代码，多端部署（iOS/Android）
 2. **热更新能力**：绕过应用商店审核，实时更新业务逻辑
 3. **开发成本低**：复用 Web 开发技能和现有资源
@@ -4989,6 +5336,7 @@ const takePicture = async () => {
 5. **生态丰富**：可直接使用 NPM 海量 Web 包
 
 ### **❌ 劣势**
+
 1. **性能瓶颈**：复杂动画/大量DOM操作时卡顿
 2. **体验差异**：与纯原生应用仍有差距
 3. **WebView兼容性**：不同系统/版本 WebView 表现不一
@@ -5000,6 +5348,7 @@ const takePicture = async () => {
 ## **五、适用场景**
 
 ### **推荐使用场景**
+
 1. **内容展示型应用**：新闻、电商、企业门户
 2. **中低频工具**：银行、政务、CRM等内部应用
 3. **MVP产品验证**：快速验证产品概念
@@ -5007,6 +5356,7 @@ const takePicture = async () => {
 5. **活动页面**：需要频繁更新的营销活动
 
 ### **不推荐场景**
+
 1. **高性能游戏**：需要复杂图形渲染
 2. **强交互应用**：如复杂绘图工具、视频编辑器
 3. **对流畅度要求极高**：如60FPS动画、连续滚动列表
@@ -5016,6 +5366,7 @@ const takePicture = async () => {
 ## **六、性能优化策略**
 
 ### **1. 加载优化**
+
 ```javascript
 // 预加载 WebView
 // 缓存静态资源
@@ -5023,6 +5374,7 @@ const takePicture = async () => {
 ```
 
 ### **2. 渲染优化**
+
 ```css
 /* 开启 GPU 加速 */
 .transform3d {
@@ -5034,6 +5386,7 @@ const takePicture = async () => {
 ```
 
 ### **3. 通信优化**
+
 - 合并 JSBridge 调用
 - 使用批处理减少通信次数
 - 建立长连接通道
@@ -5043,12 +5396,15 @@ const takePicture = async () => {
 ## **七、现代演进：WebView 增强方案**
 
 ### **1. 小程序技术**
+
 > 微信、支付宝小程序本质是增强型 Hybrid 方案
+
 - 更严格的沙箱环境
 - 自定义渲染引擎
 - 丰富的原生 API 支持
 
 ### **2. Flutter WebView**
+
 ```dart
 // Flutter 中嵌入 WebView
 WebView(
@@ -5061,7 +5417,9 @@ WebView(
 ```
 
 ### **3. 渐进式 Web App（PWA）**
+
 > 浏览器增强方案，类似 Hybrid
+
 - Service Worker 离线缓存
 - Web App Manifest 桌面入口
 - 逐渐接近原生体验
@@ -5071,6 +5429,7 @@ WebView(
 ## **八、开发建议**
 
 ### **架构选择策略**
+
 ```
 ┌─────────────────────────────────────────┐
 │       评估维度                          │
@@ -5084,6 +5443,7 @@ WebView(
 ```
 
 ### **技术选型参考**
+
 - **简单展示应用**：Cordova + Vue/React
 - **企业级应用**：Ionic + Angular
 - **需要热更新**：Hybrid 核心模块
@@ -5096,6 +5456,7 @@ WebView(
 Hybrid 是一种**平衡开发效率与用户体验**的折中方案。随着 Web 技术（WebAssembly、WebGPU）和 WebView 性能的提升，Hybrid 的能力边界仍在扩展。
 
 在以下情况下 Hybrid 是明智选择：
+
 - 资源有限需要快速跨平台
 - 业务变化频繁需要热更新
 - 已有 Web 团队和代码资源
@@ -5103,27 +5464,33 @@ Hybrid 是一种**平衡开发效率与用户体验**的折中方案。随着 We
 
 但随着 React Native、Flutter 等跨平台框架的成熟，以及 PWA 能力的增强，Hybrid 也需要不断演进，与现代技术栈结合（如微前端、WebAssembly），才能在移动开发生态中保持竞争力。
 
-
 Flutter:
 Flutter是Google推出的**跨平台UI开发框架**，核心定位是“一套代码构建多端高性能、高保真的原生级应用”，区别于Hybrid（WebView渲染）和React Native（桥接原生组件），Flutter采用**自绘渲染引擎**，彻底摆脱对平台原生组件的依赖，是目前跨端开发中性能和体验最接近原生的方案之一。
 
 ### 一、Flutter的核心特性
+
 #### 1. 跨端覆盖极致
+
 一套Dart代码可直接编译为：
+
 - 移动端：iOS（ARM架构）、Android（ARM/x86架构）；
 - 桌面端：Windows、macOS、Linux；
 - 网页端：Web（通过WebAssembly/Canvas渲染）；
 - 嵌入式设备：如智能手表、车载系统（Flutter Embedded）；
-甚至可对接IoT设备，真正实现“一次开发，多端部署”。
+  甚至可对接IoT设备，真正实现“一次开发，多端部署”。
 
 #### 2. 自绘渲染引擎（核心差异化）
+
 Flutter的核心是**Skia引擎**（Google开源的2D图形库，也是Chrome、Android的默认渲染引擎）：
+
 - 不依赖平台原生组件（如iOS的UIKit、Android的View系统），而是直接在系统画布上绘制所有UI元素；
 - 渲染流程完全由Flutter控制，避免了RN/Hybrid的“JS-原生桥接”性能损耗，动画、滑动等交互的帧率可稳定保持60fps（甚至120fps）；
 - 跨平台UI一致性极高，无需适配不同平台的原生组件样式，从视觉到交互完全统一。
 
 #### 3. 编程语言：Dart
+
 Flutter采用Google自研的Dart语言，而非JavaScript，核心优势：
+
 - **强类型+面向对象**：兼顾开发效率和代码健壮性，减少运行时错误；
 - **JIT+AOT双编译模式**：
   - 开发阶段（JIT）：即时编译，支持“热重载（Hot Reload）”，修改代码后毫秒级刷新界面，大幅提升开发效率；
@@ -5131,21 +5498,25 @@ Flutter采用Google自研的Dart语言，而非JavaScript，核心优势：
 - **单线程事件循环**：类似JS，但内置Isolate（独立线程）处理耗时任务，避免主线程阻塞，且语法贴近C/Java，前端/原生开发者易上手。
 
 #### 4. 响应式编程模型
+
 Flutter基于“状态驱动UI”的核心思想，采用**Widget（组件）化**设计：
+
 - 一切皆Widget：UI元素（按钮、文本）、布局（Row/Column）、样式（Theme）、甚至动画/路由，都封装为Widget；
 - 不可变Widget：Widget本身是“配置描述”，状态变化时会重建Widget树（但Flutter通过Diff算法优化，仅更新变化的节点）；
 - 状态管理：提供多种方案（setState、Provider、Bloc、GetX等），适配不同复杂度的业务场景。
 
 ### 二、Flutter的核心架构
+
 Flutter采用分层设计，从下到上分为4层，职责清晰：
-| 层级         | 核心作用                                                                 |
+| 层级 | 核心作用 |
 |--------------|--------------------------------------------------------------------------|
 | 引擎层（Engine） | 基于C/C++开发，包含Skia渲染引擎、Dart运行时、事件处理（触摸/手势）、图形渲染； |
-| 框架层（Framework） | 基于Dart开发，提供基础组件（Widget）、布局、动画、手势、路由等核心能力；     |
-| 应用层（App）| 开发者基于框架层封装的业务组件、页面逻辑，构建具体应用；                   |
-| 嵌入层（Embedder） | 适配不同平台的“容器”，负责将Flutter引擎嵌入到iOS/Android/桌面等平台中；     |
+| 框架层（Framework） | 基于Dart开发，提供基础组件（Widget）、布局、动画、手势、路由等核心能力； |
+| 应用层（App）| 开发者基于框架层封装的业务组件、页面逻辑，构建具体应用； |
+| 嵌入层（Embedder） | 适配不同平台的“容器”，负责将Flutter引擎嵌入到iOS/Android/桌面等平台中； |
 
 ### 三、Flutter的优势
+
 1. **性能接近原生**：自绘引擎+AOT编译，无桥接损耗，复杂动画、列表滑动无卡顿，中低端设备表现依然稳定；
 2. **UI一致性极高**：跨平台视觉/交互完全统一，无需为iOS/Android分别适配样式（如按钮、输入框的原生差异）；
 3. **开发效率高**：热重载实时刷新，Dart语法简洁，组件化复用性强，迭代速度远超纯原生；
@@ -5154,6 +5525,7 @@ Flutter采用分层设计，从下到上分为4层，职责清晰：
 6. **轻量化部署**：编译后的应用体积可控（基础包约5-10MB），远小于Electron等桌面端方案。
 
 ### 四、Flutter的短板
+
 1. **学习成本**：需掌握Dart语言（虽易上手，但不同于JS/原生语言），且Flutter的Widget体系、布局逻辑（如Constraint-based布局）与前端/原生开发思维差异较大；
 2. **包体积略大**：相比纯原生，Flutter应用需包含Skia引擎和Dart运行时，基础包体积比原生大2-5MB（但可通过混淆、裁剪优化）；
 3. **原生集成复杂度**：若需深度集成原生应用（如Flutter作为原生App的一个页面），需处理通道通信、生命周期同步等问题，复杂度高于RN；
@@ -5161,6 +5533,7 @@ Flutter采用分层设计，从下到上分为4层，职责清晰：
 5. **人才成本**：相比前端/原生开发者，熟练的Flutter工程师数量仍较少，团队组建成本略高。
 
 ### 五、Flutter的典型应用场景
+
 1. **中大型跨端应用**：电商、社交、工具类App（如闲鱼、腾讯会议、字节跳动多款产品），追求性能与跨端一致性；
 2. **桌面端应用**：轻量级工具（如代码编辑器、数据可视化工具），替代Electron实现更轻量化的桌面应用；
 3. **嵌入式/车载系统**：智能手表、车载大屏（如比亚迪DiLink系统），利用Flutter的高性能渲染适配嵌入式设备；
@@ -5168,23 +5541,26 @@ Flutter采用分层设计，从下到上分为4层，职责清晰：
 5. **快速迭代的创业项目**：一套代码覆盖多端，降低初期开发成本，验证市场后可按需优化。
 
 ### 六、Flutter与其他跨端方案的核心对比
-| 维度         | Flutter                | React Native           | Hybrid（Cordova/Ionic） | 纯原生开发            |
-|--------------|------------------------|------------------------|-------------------------|-----------------------|
-| 渲染方式     | 自绘（Skia引擎）       | 桥接原生组件           | WebView渲染             | 平台原生渲染          |
-| 性能         | 接近原生（60/120fps）  | 中（桥接有损耗）       | 一般（WebView瓶颈）     | 最优                  |
-| 跨端一致性   | 极高（完全统一）       | 中（需适配原生组件）   | 中（WebView内核差异）   | 低（双平台独立设计）  |
-| 开发效率     | 高（热重载）           | 高（热重载）           | 极高（Web技术复用）     | 低（双平台单独开发）  |
-| 包体积       | 中（5-10MB基础包）     | 中（依赖原生组件）     | 小（仅原生壳+Web资源）  | 小（仅原生代码）      |
-| 学习成本     | 中（Dart+Widget体系）  | 低（JS+React语法）     | 极低（Web技术栈）       | 高（双平台语言）      |
+
+| 维度  | Flutter | React Native | Hybrid（Cordova/Ionic） | 纯原生开发 |
+| --- | --- | --- | --- | --- |
+| 渲染方式 | 自绘（Skia引擎） | 桥接原生组件 | WebView渲染 | 平台原生渲染 |
+| 性能  | 接近原生（60/120fps） | 中（桥接有损耗） | 一般（WebView瓶颈） | 最优  |
+| 跨端一致性 | 极高（完全统一） | 中（需适配原生组件） | 中（WebView内核差异） | 低（双平台独立设计） |
+| 开发效率 | 高（热重载） | 高（热重载） | 极高（Web技术复用） | 低（双平台单独开发） |
+| 包体积 | 中（5-10MB基础包） | 中（依赖原生组件） | 小（仅原生壳+Web资源） | 小（仅原生代码） |
+| 学习成本 | 中（Dart+Widget体系） | 低（JS+React语法） | 极低（Web技术栈） | 高（双平台语言） |
 
 ### 七、Flutter的发展趋势
+
 1. **性能持续优化**：Google推出Impeller（新一代渲染引擎），替代Skia的部分逻辑，进一步提升动画帧率和启动速度；
 2. **AI集成深化**：Flutter官方推出Flutter AI Tools，支持通过大模型生成组件/代码，降低开发门槛；
 3. **低代码融合**：基于Flutter构建低代码平台（如AppGyver），实现可视化拖拽开发；
 4. **跨端能力扩展**：逐步完善对AR/VR、IoT设备的支持，覆盖更多边缘场景。
 
 ### 八、示例代码
-``` java
+
+```java
 import 'package:flutter/material.dart';
 
 void main() {
@@ -5360,33 +5736,33 @@ class TodoItem {
 ```
 
 这个示例覆盖了Flutter的核心知识点：
-1. **Widget分类**：
-   - 无状态Widget（`StatelessWidget`）：`MyApp`，仅展示静态UI；
-   - 有状态Widget（`StatefulWidget`）：`TodoListPage`，管理待办列表的动态状态。
-2. **核心布局Widget**：
-   - `Scaffold`：页面骨架（包含AppBar、Body）；
-   - `Column`/`Row`：垂直/水平布局；
-   - `Expanded`：占满剩余空间；
-   - `ListView.builder`：懒加载列表（适合长列表，性能优化）；
-   - `ListTile`：列表项快捷组件。
-3. **状态管理**：
-   - `setState`：更新状态并触发UI重建；
-   - `TextEditingController`：控制输入框内容，需手动释放资源（`dispose`）。
-4. **交互能力**：
-   - 按钮点击（`onPressed`）；
-   - 复选框切换（`onChanged`）；
-   - 列表项点击（`onTap`）；
-   - 回车提交输入（`onSubmitted`）。
-5. **基础样式**：
-   - 主题配置（`ThemeData`）；
-   - 文本样式（划线、颜色）；
-   - 间距（`SizedBox`）；
-   - 输入框装饰（`InputDecoration`）。
 
+1. **Widget分类**：
+  - 无状态Widget（`StatelessWidget`）：`MyApp`，仅展示静态UI；
+  - 有状态Widget（`StatefulWidget`）：`TodoListPage`，管理待办列表的动态状态。
+2. **核心布局Widget**：
+  - `Scaffold`：页面骨架（包含AppBar、Body）；
+  - `Column`/`Row`：垂直/水平布局；
+  - `Expanded`：占满剩余空间；
+  - `ListView.builder`：懒加载列表（适合长列表，性能优化）；
+  - `ListTile`：列表项快捷组件。
+3. **状态管理**：
+  - `setState`：更新状态并触发UI重建；
+  - `TextEditingController`：控制输入框内容，需手动释放资源（`dispose`）。
+4. **交互能力**：
+  - 按钮点击（`onPressed`）；
+  - 复选框切换（`onChanged`）；
+  - 列表项点击（`onTap`）；
+  - 回车提交输入（`onSubmitted`）。
+5. **基础样式**：
+  - 主题配置（`ThemeData`）；
+  - 文本样式（划线、颜色）；
+  - 间距（`SizedBox`）；
+  - 输入框装饰（`InputDecoration`）。
 
 ### 总结
-Flutter是目前跨端开发中“性能+一致性+开发效率”平衡最好的方案，核心价值是**用一套代码实现原生级体验的多端应用**，适合对体验要求高、跨端需求强的中大型项目；其短板主要集中在学习成本和原生集成复杂度，但随着生态成熟，这些问题正逐步缓解，已成为大前端跨端开发的主流选择之一。
 
+Flutter是目前跨端开发中“性能+一致性+开发效率”平衡最好的方案，核心价值是**用一套代码实现原生级体验的多端应用**，适合对体验要求高、跨端需求强的中大型项目；其短板主要集中在学习成本和原生集成复杂度，但随着生态成熟，这些问题正逐步缓解，已成为大前端跨端开发的主流选择之一。
 
 UniApp：
 **UniApp** 是一个使用 **Vue.js** 语法进行开发所有前端应用的框架。开发者编写一套代码，可以发布到 **iOS、Android、Web（H5）、以及各种小程序（微信/支付宝/百度/字节跳动/QQ/快应用等）** 多个平台。
@@ -5398,33 +5774,40 @@ UniApp：
 ### 一、核心特性与工作原理
 
 #### 1. “一套代码，多端发布”
+
 这是 UniApp 最核心的价值主张。开发者不再需要为 iOS、Android、微信小程序等不同平台分别组建团队和编写代码。
 
-*   **实现方式**：你使用标准的 Vue 单文件组件（`.vue`）格式进行开发，然后通过 UniApp 提供的 IDE（HBuilderX）或 CLI 工具，将代码编译成不同平台所能识别的语言。
-    *   编译到小程序端，生成对应小程序的 WXML/WXSS/JS 等。
-    *   编译到 App 端，使用其自研的优化过的 Weex 引擎进行渲染。
-    *   编译到 H5 端，生成标准的 HTML5 + CSS + JavaScript。
+- **实现方式**：你使用标准的 Vue 单文件组件（`.vue`）格式进行开发，然后通过 UniApp 提供的 IDE（HBuilderX）或 CLI 工具，将代码编译成不同平台所能识别的语言。
+  - 编译到小程序端，生成对应小程序的 WXML/WXSS/JS 等。
+  - 编译到 App 端，使用其自研的优化过的 Weex 引擎进行渲染。
+  - 编译到 H5 端，生成标准的 HTML5 + CSS + JavaScript。
 
 #### 2. 基于 Vue.js 语法
+
 如果你熟悉 Vue.js，那么上手 UniApp 会非常快。它的语法、组件化思想、状态管理（支持 Vuex）等都与标准 Vue 项目高度一致。这吸引了庞大的 Vue 开发者群体。
 
 #### 3. 丰富的组件和 API
+
 UniApp 提供了一套跨端的、类似于小程序的组件和 API 规范。
 
-*   **组件**：如 `view`, `text`, `image`, `scroll-view` 等，它们在编译时会映射为各平台的原生组件，保证了良好的性能体验。
-*   **API**：如网络请求 `uni.request`、数据缓存 `uni.setStorage`、地理位置 `uni.getLocation` 等。这些 API 在不同平台具有一致性，底层由框架处理平台差异。
+- **组件**：如 `view`, `text`, `image`, `scroll-view` 等，它们在编译时会映射为各平台的原生组件，保证了良好的性能体验。
+- **API**：如网络请求 `uni.request`、数据缓存 `uni.setStorage`、地理位置 `uni.getLocation` 等。这些 API 在不同平台具有一致性，底层由框架处理平台差异。
 
 #### 4. 强大的 IDE 和工具链
+
 官方推荐的 **HBuilderX** IDE 为 UniApp 开发提供了强大的支持，包括：
-*   **语法高亮和智能提示**
-*   **一键真机运行和调试**
-*   **云打包服务**：无需配置 Mac 和 Xcode 环境，即可直接打包生成 iOS 和 Android 的安装包。
-*   **条件编译**：这是实现“一套代码，多端发布”的关键技术。
+
+- **语法高亮和智能提示**
+- **一键真机运行和调试**
+- **云打包服务**：无需配置 Mac 和 Xcode 环境，即可直接打包生成 iOS 和 Android 的安装包。
+- **条件编译**：这是实现“一套代码，多端发布”的关键技术。
 
 #### 5. 条件编译
+
 这是 UniApp 的灵魂特性。它允许开发者在代码中通过特殊的注释语法，来指定某段代码只在特定的平台上被编译和执行。
 
 **示例：**
+
 ```javascript
 // #ifdef H5
 console.log('这段代码只会在 H5 平台出现');
@@ -5438,37 +5821,38 @@ console.log('这段代码只会在微信小程序平台出现');
 console.log('这段代码只会在 App 平台出现');
 // #endif
 ```
+
 通过条件编译，可以优雅地处理不同平台间的细微差异，比如调用平台独有的 API 或使用不同的 UI 组件。
 
 ---
 
 ### 二、优势
 
-1.  **开发效率极高**：一套代码覆盖所有主流平台，极大地减少了开发和维护成本。
-2.  **学习成本低**：对于 Vue 开发者或小程序开发者来说，几乎没有额外的学习负担。
-3.  **生态丰富**：拥有插件市场，可以快速集成第三方功能（如支付、推送、地图等）。
-4.  **性能良好**：
-    *   在小程序端，直接编译为小程序代码，性能与原生开发无异。
-    *   在 App 端，其渲染方式优于纯 WebView 的 Hybrid 应用，更接近原生体验。
-5.  **社区活跃**：由 DCloud 公司主导，拥有庞大的开发者社区，遇到问题容易找到解决方案。
+1. **开发效率极高**：一套代码覆盖所有主流平台，极大地减少了开发和维护成本。
+2. **学习成本低**：对于 Vue 开发者或小程序开发者来说，几乎没有额外的学习负担。
+3. **生态丰富**：拥有插件市场，可以快速集成第三方功能（如支付、推送、地图等）。
+4. **性能良好**：
+  - 在小程序端，直接编译为小程序代码，性能与原生开发无异。
+  - 在 App 端，其渲染方式优于纯 WebView 的 Hybrid 应用，更接近原生体验。
+5. **社区活跃**：由 DCloud 公司主导，拥有庞大的开发者社区，遇到问题容易找到解决方案。
 
 ---
 
 ### 三、局限性
 
-1.  **“天花板”问题**：虽然可以满足 90% 以上的应用场景，但在处理极度复杂或对性能要求极高的动画/交互时，可能不如纯原生开发（Native App）。
-2.  **平台差异**：尽管 UniApp 尽力抹平了平台差异，但在某些细节上（如某些 API 的支持度、组件表现）仍可能存在不一致，需要开发者通过条件编译进行适配。
-3.  **包体积**：由于需要集成跨端引擎，App 端的安装包体积会比纯原生开发稍大一些。
-4.  **强依赖 DCloud**：其核心工具和云服务都与 DCloud 公司绑定。
+1. **“天花板”问题**：虽然可以满足 90% 以上的应用场景，但在处理极度复杂或对性能要求极高的动画/交互时，可能不如纯原生开发（Native App）。
+2. **平台差异**：尽管 UniApp 尽力抹平了平台差异，但在某些细节上（如某些 API 的支持度、组件表现）仍可能存在不一致，需要开发者通过条件编译进行适配。
+3. **包体积**：由于需要集成跨端引擎，App 端的安装包体积会比纯原生开发稍大一些。
+4. **强依赖 DCloud**：其核心工具和云服务都与 DCloud 公司绑定。
 
 ---
 
 ### 四、适用场景
 
-*   **初创公司和快速迭代项目**：需要快速验证产品，并以最低成本覆盖最多用户。
-*   **电商、资讯、企业应用等典型业务型应用**：这类应用逻辑复杂，但 UI 和交互相对标准，UniApp 完全能够胜任。
-*   **需要同时拥有小程序和 App 的项目**：用 UniApp 开发是最经济高效的选择。
-*   **Vue.js 技术栈的团队**：可以最大化利用现有技术积累。
+- **初创公司和快速迭代项目**：需要快速验证产品，并以最低成本覆盖最多用户。
+- **电商、资讯、企业应用等典型业务型应用**：这类应用逻辑复杂，但 UI 和交互相对标准，UniApp 完全能够胜任。
+- **需要同时拥有小程序和 App 的项目**：用 UniApp 开发是最经济高效的选择。
+- **Vue.js 技术栈的团队**：可以最大化利用现有技术积累。
 
 ### 五、总结
 
@@ -5481,169 +5865,180 @@ npm（Node Package Manager）不仅是 Node.js 的包管理器，它已经演变
 
 #### 1. 依赖管理：不仅仅是安装
 
-*   **精准的依赖解析**：当您运行 `npm install` 时，npm 不仅会安装您直接依赖的包，还会安装这些包的依赖（即“依赖的依赖”），形成一个复杂的**依赖树**。npm 的算法会解析并确保所有版本兼容，避免冲突。
-*   **依赖类型的细化**：
-    *   `dependencies`：项目运行时必须的依赖（如 Express、React）。
-    *   `devDependencies`：仅在开发阶段需要的依赖（如测试框架 Jest、构建工具 Webpack）。通过 `npm install --save-dev` 安装，它们不会被打包到生产环境中。
-    *   `peerDependencies`：表明您的包与某个宿主包（如插件与主框架）兼容的特定版本，但要求使用者自己安装它。常见于库和框架开发。
-    *   `optionalDependencies`：可选的依赖，即使安装失败，npm 也不会让整个安装过程失败。
-*   **`package-lock.json` 的变革性作用**：为了解决依赖树的不确定性问题（不同时间安装可能得到不同版本），npm 引入了 `package-lock.json` 文件。它**精确地描述了当前安装的依赖树的每一层**，确保了团队所有成员和生产环境之间能够安装**完全一致**的依赖版本，实现了“一次安装，处处相同”的效果。它是实现可靠、可重复构建的关键。
+- **精准的依赖解析**：当您运行 `npm install` 时，npm 不仅会安装您直接依赖的包，还会安装这些包的依赖（即“依赖的依赖”），形成一个复杂的**依赖树**。npm 的算法会解析并确保所有版本兼容，避免冲突。
+- **依赖类型的细化**：
+  - `dependencies`：项目运行时必须的依赖（如 Express、React）。
+  - `devDependencies`：仅在开发阶段需要的依赖（如测试框架 Jest、构建工具 Webpack）。通过 `npm install --save-dev` 安装，它们不会被打包到生产环境中。
+  - `peerDependencies`：表明您的包与某个宿主包（如插件与主框架）兼容的特定版本，但要求使用者自己安装它。常见于库和框架开发。
+  - `optionalDependencies`：可选的依赖，即使安装失败，npm 也不会让整个安装过程失败。
+- **`package-lock.json` 的变革性作用**：为了解决依赖树的不确定性问题（不同时间安装可能得到不同版本），npm 引入了 `package-lock.json` 文件。它**精确地描述了当前安装的依赖树的每一层**，确保了团队所有成员和生产环境之间能够安装**完全一致**的依赖版本，实现了“一次安装，处处相同”的效果。它是实现可靠、可重复构建的关键。
 
 #### 2. 软件包仓库：一个充满活力的生态系统
 
-*   **规模与影响力**：npm registry 不仅是“最大的之一”，根据其官方数据，它**托管了超过 200 万个软件包**，每周下载量高达数百亿次。从微小的工具函数到像 React、Vue、Angular 这样的全功能框架，几乎任何你能想到的 JavaScript 功能都有对应的包。
-*   **发现与评估**：开发者可以通过 `npm search` 命令行或 [npm 官网](https://www.npmjs.com/) 搜索包。在选择包时，社区通常会关注其**每周下载量、版本更新频率、开源许可证、Issues 的解决情况以及README文档的质量**来判断其健康和可靠性。
+- **规模与影响力**：npm registry 不仅是“最大的之一”，根据其官方数据，它**托管了超过 200 万个软件包**，每周下载量高达数百亿次。从微小的工具函数到像 React、Vue、Angular 这样的全功能框架，几乎任何你能想到的 JavaScript 功能都有对应的包。
+- **发现与评估**：开发者可以通过 `npm search` 命令行或 [npm 官网](https://www.npmjs.com/) 搜索包。在选择包时，社区通常会关注其**每周下载量、版本更新频率、开源许可证、Issues 的解决情况以及README文档的质量**来判断其健康和可靠性。
 
 #### 3. 版本控制：灵活与安全的平衡
 
-*   **语义化版本控制的实践**：
-    *   **主版本号**：做了不兼容的 API 修改。
-    *   **次版本号**：做了向下兼容的功能性新增。
-    *   **补丁版本号**：做了向下兼容的问题修复。
-*   **灵活的版本指定语法**：在 `package.json` 中，你可以非常精细地控制依赖版本：
-    *   `"1.2.3"`：固定安装 1.2.3 版本。
-    *   `"~1.2.3"`：安装不低于 1.2.3 的 **最新补丁版本**（如 1.2.4，但不会是 1.3.0）。
-    *   `"^1.2.3"`：安装不低于 1.2.3 的 **最新次要版本**（如 1.3.0，但不会是 2.0.0）。这是 `npm install --save` 的默认行为。
-    *   `"latest"`：安装最新的发布版本。
+- **语义化版本控制的实践**：
+  - **主版本号**：做了不兼容的 API 修改。
+  - **次版本号**：做了向下兼容的功能性新增。
+  - **补丁版本号**：做了向下兼容的问题修复。
+- **灵活的版本指定语法**：在 `package.json` 中，你可以非常精细地控制依赖版本：
+  - `"1.2.3"`：固定安装 1.2.3 版本。
+  - `"~1.2.3"`：安装不低于 1.2.3 的 **最新补丁版本**（如 1.2.4，但不会是 1.3.0）。
+  - `"^1.2.3"`：安装不低于 1.2.3 的 **最新次要版本**（如 1.3.0，但不会是 2.0.0）。这是 `npm install --save` 的默认行为。
+  - `"latest"`：安装最新的发布版本。
 
 #### 4. 脚本和任务自动化：项目的瑞士军刀
 
 `package.json` 中的 `scripts` 字段是一个强大的自动化工具。它不仅仅是运行命令，更是**统一项目工作流的中心**。
 
-*   **生命周期脚本**：npm 提供了一些特殊的脚本钩子，如 `preinstall`, `postinstall`, `prepublish` 等，可以在特定事件（如安装、发布）前后自动执行。
-*   **复杂工作流**：你可以将复杂的命令序列封装成简单的脚本。
-    ```json
-    "scripts": {
-      "dev": "nodemon server.js", // 启动开发服务器，支持热重载
-      "build": "webpack --mode=production", // 构建生产环境代码
-      "test": "jest", // 运行测试套件
-      "lint": "eslint .", // 代码风格检查
-      "deploy": "npm run build && npm run test && git push origin master" // 组合命令：构建、测试、部署
-    }
-    ```
-*   **环境变量访问**：在脚本中，你可以通过 `process.env` 访问所有环境变量，方便进行配置。
+- **生命周期脚本**：npm 提供了一些特殊的脚本钩子，如 `preinstall`, `postinstall`, `prepublish` 等，可以在特定事件（如安装、发布）前后自动执行。
+- **复杂工作流**：你可以将复杂的命令序列封装成简单的脚本。
+  
+  ```json
+  "scripts": {
+    "dev": "nodemon server.js", // 启动开发服务器，支持热重载
+    "build": "webpack --mode=production", // 构建生产环境代码
+    "test": "jest", // 运行测试套件
+    "lint": "eslint .", // 代码风格检查
+    "deploy": "npm run build && npm run test && git push origin master" // 组合命令：构建、测试、部署
+  }
+  ```
+  
+- **环境变量访问**：在脚本中，你可以通过 `process.env` 访问所有环境变量，方便进行配置。
 
 #### 5. 安全与审计
 
 随着软件供应链安全的重要性日益凸显，npm 内置了强大的安全功能。
 
-*   **`npm audit`**：该命令会扫描项目的依赖树，自动检测已知的安全漏洞。它会提供一个报告，指出哪个包、哪个版本存在什么问题，以及严重程度。
-*   **`npm audit fix`**：更强大的是，它可以**自动修复**那些可以通过更新到安全版本就能解决的漏洞。
-*   **漏洞数据库**：npm 团队维护着一个持续更新的安全漏洞数据库，与社区和安全研究人员合作，确保能快速响应新发现的威胁。
+- **`npm audit`**：该命令会扫描项目的依赖树，自动检测已知的安全漏洞。它会提供一个报告，指出哪个包、哪个版本存在什么问题，以及严重程度。
+- **`npm audit fix`**：更强大的是，它可以**自动修复**那些可以通过更新到安全版本就能解决的漏洞。
+- **漏洞数据库**：npm 团队维护着一个持续更新的安全漏洞数据库，与社区和安全研究人员合作，确保能快速响应新发现的威胁。
 
 #### 6. 全局安装与 npx：超越项目边界
 
-*   **全局包**：通过 `npm install -g ` 可以将一些命令行工具安装到系统全局，使其在任何地方都可以使用（如 `create-react-app`, `vue-cli` 等脚手架工具）。
-*   **npx 的革新**：npx（随 npm 5.2.0+ 自带）是一个用于**执行包**的工具。它允许你直接运行一个包，而无需先全局安装它。这对于临时使用某个工具（如 `npx create-react-app my-app`）或运行不同版本的工具有着巨大的便利，避免了全局命名空间的污染。
+- **全局包**：通过 `npm install -g ` 可以将一些命令行工具安装到系统全局，使其在任何地方都可以使用（如 `create-react-app`, `vue-cli` 等脚手架工具）。
+- **npx 的革新**：npx（随 npm 5.2.0+ 自带）是一个用于**执行包**的工具。它允许你直接运行一个包，而无需先全局安装它。这对于临时使用某个工具（如 `npx create-react-app my-app`）或运行不同版本的工具有着巨大的便利，避免了全局命名空间的污染。
 
 ### 总结
 
 npm 早已超越了其“Node 包管理器”的原始定义。它是一个**完整的 JavaScript 开发生命周期管理平台**，涵盖了从项目初始化、依赖管理、脚本自动化、代码测试到安全审计和最终发布的所有环节。其背后庞大的社区和生态系统，使得 JavaScript 开发者能够站在巨人的肩膀上，快速、高效、安全地构建复杂的现代应用程序。理解并熟练运用 npm 的各个方面，是成为一名高效 JavaScript 开发者的必备技能。
 
-
->前端展示场景有哪些？
-除了传统的网站、微信小程序、安卓和iOS原生应用，前端展示技术已经渗透到几乎所有带屏幕或有可视化交互的场景中。以下是一些重要的前端展示场景和技术：
+> 前端展示场景有哪些？
+> 除了传统的网站、微信小程序、安卓和iOS原生应用，前端展示技术已经渗透到几乎所有带屏幕或有可视化交互的场景中。以下是一些重要的前端展示场景和技术：
 
 ### 1. 跨平台移动应用开发
+
 这类技术使用Web技术（HTML/CSS/JS）或其衍生语法来开发**原生体验**的移动应用。
 
-*   **React Native：** 使用React的语法和JSX来编写UI，通过桥接技术调用原生组件。最终渲染的是**原生UI**（如Android的`View`，iOS的`UIView`），而非WebView。
-    *   **语法特点**： 类似于写React，但使用 `<View>`, `<Text>`, `<Image>` 等原生组件标签代替 `<div>`, `<span>`, `<img>`。
-*   **Flutter：** 谷歌的UI工具包，使用**Dart语言**，通过自绘引擎直接渲染UI，实现完全一致的高性能体验 across 平台。
-    *   **语法特点**： 一切都是Widget（组件），语法是声明式的，但不同于HTML或JSX，是纯粹的Dart代码。
-    *   ```dart
-        // Flutter 示例
-        Scaffold(
-          appBar: AppBar(title: Text('My App')),
-          body: Center(
-            child: Column(
-              children: [
-                Text('Hello World'),
-                ElevatedButton(
-                  onPressed: () { /* 处理点击 */ },
-                  child: Text('Click Me'),
-                ),
-              ],
+- **React Native：** 使用React的语法和JSX来编写UI，通过桥接技术调用原生组件。最终渲染的是**原生UI**（如Android的`View`，iOS的`UIView`），而非WebView。
+  - **语法特点**： 类似于写React，但使用 `<View>`, `<Text>`, `<Image>` 等原生组件标签代替 `<div>`, `<span>`, `<img>`。
+- **Flutter：** 谷歌的UI工具包，使用**Dart语言**，通过自绘引擎直接渲染UI，实现完全一致的高性能体验 across 平台。
+  - **语法特点**： 一切都是Widget（组件），语法是声明式的，但不同于HTML或JSX，是纯粹的Dart代码。
+  - ```dart
+    // Flutter 示例
+    Scaffold(
+      appBar: AppBar(title: Text('My App')),
+      body: Center(
+        child: Column(
+          children: [
+            Text('Hello World'),
+            ElevatedButton(
+              onPressed: () { /* 处理点击 */ },
+              child: Text('Click Me'),
             ),
-          ),
-        )
-        ```
-*   **Weex / Uni-app：** 更接近Web开发规范。Weex使用Vue语法，Uni-app在Vue基础上扩展了多端API。它们通常使用JavaScript引擎（如V8）来运行JS，然后通过“JS Bridge”调用原生模块更新视图。
+          ],
+        ),
+      ),
+    )
+    ```
+    
+- **Weex / Uni-app：** 更接近Web开发规范。Weex使用Vue语法，Uni-app在Vue基础上扩展了多端API。它们通常使用JavaScript引擎（如V8）来运行JS，然后通过“JS Bridge”调用原生模块更新视图。
 
 ### 2. 桌面端应用
+
 使用Web技术来开发Windows、macOS、Linux桌面应用。
 
-*   **Electron：** 使用Chromium作为渲染引擎，Node.js作为后端，相当于一个打包了的浏览器窗口。你可以用完整的HTML、CSS、JavaScript来构建应用。
-    *   **代表应用**： VS Code, Slack, Discord, Figma。
-*   **Tauri：** 一个新兴的替代方案，使用Rust作为后端，前端使用任何你喜欢的Web框架。它使用操作系统的原生WebView来渲染，因此体积和内存占用远小于Electron。
-*   **Flutter：** 同样支持桌面端（Windows, macOS, Linux），实现逻辑与移动端一致。
+- **Electron：** 使用Chromium作为渲染引擎，Node.js作为后端，相当于一个打包了的浏览器窗口。你可以用完整的HTML、CSS、JavaScript来构建应用。
+  - **代表应用**： VS Code, Slack, Discord, Figma。
+- **Tauri：** 一个新兴的替代方案，使用Rust作为后端，前端使用任何你喜欢的Web框架。它使用操作系统的原生WebView来渲染，因此体积和内存占用远小于Electron。
+- **Flutter：** 同样支持桌面端（Windows, macOS, Linux），实现逻辑与移动端一致。
 
 ### 3. 小程序/快应用生态
+
 微信小程序催生了一个庞大的“小程序”生态，各大超级App都推出了自己的平台。
 
-*   **支付宝小程序、百度智能小程序、抖音小程序、快手小程序等**： 它们的开发模式与微信小程序**高度相似**，但有自己的开发工具、组件和API语法。开发者需要学习对应平台的规则。
-*   **快应用**： 由主流手机厂商联合推出，无需安装，使用类似Vue和小程序的混合语法，但运行机制更接近原生。
+- **支付宝小程序、百度智能小程序、抖音小程序、快手小程序等**： 它们的开发模式与微信小程序**高度相似**，但有自己的开发工具、组件和API语法。开发者需要学习对应平台的规则。
+- **快应用**： 由主流手机厂商联合推出，无需安装，使用类似Vue和小程序的混合语法，但运行机制更接近原生。
 
 ### 4. 动态内容与可视化
+
 这是前端展示的核心领域，专注于数据的视觉呈现和交互。
 
-*   **数据可视化：**
-    *   **库/框架**： D3.js (最强大、最灵活)、ECharts (百度出品，配置方便)、AntV (蚂蚁金服出品)、Three.js (3D可视化)。
-    *   **场景**： 大屏数据看板、商业报表、实时监控系统、地理信息可视化。
-*   **动画与交互体验：**
-    *   **技术**： CSS3动画、Canvas、WebGL、SVG。
-    *   **场景**： 复杂的交互动效、网页游戏、产品互动演示、在线绘图工具（如Excalidraw）。
+- **数据可视化：**
+  - **库/框架**： D3.js (最强大、最灵活)、ECharts (百度出品，配置方便)、AntV (蚂蚁金服出品)、Three.js (3D可视化)。
+  - **场景**： 大屏数据看板、商业报表、实时监控系统、地理信息可视化。
+- **动画与交互体验：**
+  - **技术**： CSS3动画、Canvas、WebGL、SVG。
+  - **场景**： 复杂的交互动效、网页游戏、产品互动演示、在线绘图工具（如Excalidraw）。
 
 ### 5. 增强现实与虚拟现实
+
 在浏览器中实现AR/VR体验。
 
-*   **WebXR API：** 允许用户在浏览器中体验VR和AR内容。
-*   **Three.js / A-Frame：** 基于WebGL的3D库，可以相对轻松地创建3D场景和VR体验。A-Frame甚至允许通过HTML标签来定义3D场景。
-    *   ```html
-        <!-- A-Frame 示例 -->
-        <a-scene>
-          <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
-          <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
-        </a-scene>
-        ```
+- **WebXR API：** 允许用户在浏览器中体验VR和AR内容。
+- **Three.js / A-Frame：** 基于WebGL的3D库，可以相对轻松地创建3D场景和VR体验。A-Frame甚至允许通过HTML标签来定义3D场景。
+  - ```html
+    <!-- A-Frame 示例 -->
+    <a-scene>
+      <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+      <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
+    </a-scene>
+    ```
+    
 
 ### 6. 物联网与智能设备界面
+
 任何带屏幕的智能设备都需要UI。
 
-*   **场景**： 智能电视/机顶盒界面、车载信息娱乐系统、智能家居中控屏、智能手表/手环界面、零售终端POS机界面。
-*   **技术**： 这些设备的操作系统各异（如Linux, QNX, RTOS），其UI框架也各不相同。但很多厂商会选择使用**Chromium Embedded Framework**或**Flutter**这样能提供一致UI体验的技术来构建它们的图形界面。
+- **场景**： 智能电视/机顶盒界面、车载信息娱乐系统、智能家居中控屏、智能手表/手环界面、零售终端POS机界面。
+- **技术**： 这些设备的操作系统各异（如Linux, QNX, RTOS），其UI框架也各不相同。但很多厂商会选择使用**Chromium Embedded Framework**或**Flutter**这样能提供一致UI体验的技术来构建它们的图形界面。
 
 ### 7. 低代码/无代码平台
+
 这类平台本身就是一个复杂的前端应用，它允许用户通过拖拽、配置等图形化界面来生成另一个前端应用。
 
-*   **场景**： 企业内部管理系统搭建、官网搭建、表单生成、工作流配置等。
-*   **技术**： 平台本身通常由React/Vue/Angular等现代框架构建，它们动态渲染用户配置生成的JSON Schema，最终输出标准的Web页面或小程序代码。
+- **场景**： 企业内部管理系统搭建、官网搭建、表单生成、工作流配置等。
+- **技术**： 平台本身通常由React/Vue/Angular等现代框架构建，它们动态渲染用户配置生成的JSON Schema，最终输出标准的Web页面或小程序代码。
 
 ### 8. 服务端渲染与边缘渲染
+
 为了更好的首屏加载速度和SEO，前端展示的逻辑部分转移到了服务器。
 
-*   **SSR：** 使用Next.js (React), Nuxt.js (Vue) 等框架，在**服务器端**将组件渲染成HTML字符串，再发送给客户端。
-*   **边缘渲染**： 将SSR的过程放在全球分布的边缘节点上执行，进一步降低延迟。
+- **SSR：** 使用Next.js (React), Nuxt.js (Vue) 等框架，在**服务器端**将组件渲染成HTML字符串，再发送给客户端。
+- **边缘渲染**： 将SSR的过程放在全球分布的边缘节点上执行，进一步降低延迟。
 
 ### 总结
 
 前端展示的边界正在急剧扩张。从传统的**浏览器**，到**手机操作系统**，再到**桌面操作系统**、**超级App内部**、**各种智能设备**，甚至**服务器和边缘节点**，只要是涉及到**用户界面**和**人机交互**的地方，就是前端展示技术可以发挥作用的舞台。其核心逻辑从“操作DOM”演变为“状态驱动UI”，并向着更多元化的渲染环境和更极致的用户体验发展。
 
-
->微信小程序、安卓开发、IOS开发和原生HTML、CSS、JavaScript在语法上的对比
+> 微信小程序、安卓开发、IOS开发和原生HTML、CSS、JavaScript在语法上的对比
 
 ### 核心概括
 
-*   **原生Web**：使用三种独立的语言：**HTML**（结构）、**CSS**（样式）、**JavaScript**（逻辑）。
-*   **微信小程序**：使用高度相似的四种语言：**WXML**（结构）、**WXSS**（样式）、**JS**（逻辑）、**JSON**（配置）。其设计理念是让Web开发者能快速上手。
-*   **安卓（以Kotlin为例）**：在**XML**中定义UI布局，在**Kotlin/Java**中编写业务逻辑。
-*   **iOS（以Swift为例）**：可以使用**Storyboard/XIB（UI文件）** 或纯代码（**SwiftUI** 或 **UIKit**）来定义UI，在 **Swift/Objective-C** 中编写业务逻辑。
+- **原生Web**：使用三种独立的语言：**HTML**（结构）、**CSS**（样式）、**JavaScript**（逻辑）。
+- **微信小程序**：使用高度相似的四种语言：**WXML**（结构）、**WXSS**（样式）、**JS**（逻辑）、**JSON**（配置）。其设计理念是让Web开发者能快速上手。
+- **安卓（以Kotlin为例）**：在**XML**中定义UI布局，在**Kotlin/Java**中编写业务逻辑。
+- **iOS（以Swift为例）**：可以使用**Storyboard/XIB（UI文件）** 或纯代码（**SwiftUI** 或 **UIKit**）来定义UI，在 **Swift/Objective-C** 中编写业务逻辑。
 
 ---
 
 ### 1. 结构/UI层 (View)
 
 **原生Web (HTML)**
+
 ```html
 <div class="container">
   <h1 id="title">Hello World</h1>
@@ -5653,6 +6048,7 @@ npm 早已超越了其“Node 包管理器”的原始定义。它是一个**完
 ```
 
 **微信小程序 (WXML)**
+
 ```wxml
 <view class="container">
   <text id="title">Hello World</text>
@@ -5660,9 +6056,11 @@ npm 早已超越了其“Node 包管理器”的原始定义。它是一个**完
   <input type="text" placeholder="Enter something"/>
 </view>
 ```
-*   **语法对比**：WXML使用自定义组件如 `<view>`, `<text>`, `<image>` 代替了HTML的通用标签 `<div>`, `<span>`, `<img>`。事件绑定使用 `bindtap` 而不是 `onclick`。标签必须闭合（如 `<input/>`）。
+
+- **语法对比**：WXML使用自定义组件如 `<view>`, `<text>`, `<image>` 代替了HTML的通用标签 `<div>`, `<span>`, `<img>`。事件绑定使用 `bindtap` 而不是 `onclick`。标签必须闭合（如 `<input/>`）。
 
 **安卓 (Kotlin + XML)**
+
 ```xml
 <!-- activity_main.xml -->
 <LinearLayout
@@ -5689,50 +6087,54 @@ npm 早已超越了其“Node 包管理器”的原始定义。它是一个**完
 
 </LinearLayout>
 ```
-*   **语法对比**：使用XML描述UI，但标签和属性都是安卓独有的（如 `TextView`, `android:layout_width`）。UI组件通过 `android:id` 在代码中获取引用。
+
+- **语法对比**：使用XML描述UI，但标签和属性都是安卓独有的（如 `TextView`, `android:layout_width`）。UI组件通过 `android:id` 在代码中获取引用。
 
 **iOS (Swift + UIKit)**
+
 ```swift
 // 使用代码创建UI (ViewController.swift)
 import UIKit
 
 class ViewController: UIViewController {
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         let containerView = UIView()
         // ... 设置frame或Auto Layout约束
-        
+
         let titleLabel = UILabel()
         titleLabel.text = "Hello World"
-        
+
         let actionButton = UIButton(type: .system)
         actionButton.setTitle("Click Me", for: .normal)
         actionButton.addTarget(self, action: #selector(handleClick), for: .touchUpInside)
-        
+
         let inputField = UITextField()
         inputField.placeholder = "Enter something"
-        
+
         // 将子视图添加到父视图
         containerView.addSubview(titleLabel)
         containerView.addSubview(actionButton)
         containerView.addSubview(inputField)
         view.addSubview(containerView)
     }
-    
+
     @objc func handleClick() {
         // 处理点击事件
     }
 }
 ```
-*   **语法对比**：UI完全通过代码实例化和配置，使用UIKit框架中的类（如 `UILabel`, `UIButton`）。事件处理通过 `addTarget` 方法连接。另一种现代方式是使用 **SwiftUI** 的声明式语法，与上述所有方式差异更大。
+
+- **语法对比**：UI完全通过代码实例化和配置，使用UIKit框架中的类（如 `UILabel`, `UIButton`）。事件处理通过 `addTarget` 方法连接。另一种现代方式是使用 **SwiftUI** 的声明式语法，与上述所有方式差异更大。
 
 ---
 
 ### 2. 样式层 (Style)
 
 **原生Web (CSS)**
+
 ```css
 .container {
   display: flex;
@@ -5749,6 +6151,7 @@ button {
 ```
 
 **微信小程序 (WXSS)**
+
 ```wxss
 .container {
   display: flex;
@@ -5763,9 +6166,11 @@ button {
   background-color: #4CAF50;
 }
 ```
-*   **语法对比**：WXSS几乎完全继承了CSS的语法。主要增加了 **rpx** 这个自适应单位，并提供了一些全局样式与局部样式的规则。
+
+- **语法对比**：WXSS几乎完全继承了CSS的语法。主要增加了 **rpx** 这个自适应单位，并提供了一些全局样式与局部样式的规则。
 
 **安卓 (XML)**
+
 ```xml
 <!-- 在XML布局文件中直接写样式属性 -->
 <TextView
@@ -5782,9 +6187,11 @@ button {
     <item name="android:background">@color/green</item>
 </style>
 ```
-*   **语法对比**：样式通过XML属性直接设置。尺寸单位通常用 `dp`，字体大小用 `sp`。颜色等资源通常在 `res/values` 下的资源文件中定义。
+
+- **语法对比**：样式通过XML属性直接设置。尺寸单位通常用 `dp`，字体大小用 `sp`。颜色等资源通常在 `res/values` 下的资源文件中定义。
 
 **iOS (Swift)**
+
 ```swift
 // 在代码中设置样式
 titleLabel.textColor = .blue
@@ -5792,13 +6199,15 @@ titleLabel.font = UIFont.systemFont(ofSize: 18)
 actionButton.backgroundColor = UIColor(red: 0.3, green: 0.7, blue: 0.3, alpha: 1.0)
 containerView.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
 ```
-*   **语法对比**：样式完全通过代码设置，使用UIKit提供的属性（如 `textColor`, `font`）。颜色、尺寸等都是通过框架中的类（如 `UIColor`, `UIFont`）来创建和赋值。
+
+- **语法对比**：样式完全通过代码设置，使用UIKit提供的属性（如 `textColor`, `font`）。颜色、尺寸等都是通过框架中的类（如 `UIColor`, `UIFont`）来创建和赋值。
 
 ---
 
 ### 3. 逻辑层 (Logic)
 
 **原生Web (JavaScript)**
+
 ```javascript
 function handleClick() {
   const titleElement = document.getElementById('title');
@@ -5810,6 +6219,7 @@ function handleClick() {
 ```
 
 **微信小程序 (JavaScript)**
+
 ```javascript
 // pages/index/index.js
 Page({
@@ -5829,9 +6239,11 @@ Page({
   }
 })
 ```
-*   **语法对比**：小程序JS是框架封装后的。**数据驱动视图**，通过 `this.setData()` 方法来更新数据，从而触发视图的重新渲染。不能直接操作DOM。API调用使用小程序提供的 `wx.xxx` 方法。
+
+- **语法对比**：小程序JS是框架封装后的。**数据驱动视图**，通过 `this.setData()` 方法来更新数据，从而触发视图的重新渲染。不能直接操作DOM。API调用使用小程序提供的 `wx.xxx` 方法。
 
 **安卓 (Kotlin)**
+
 ```kotlin
 // MainActivity.kt
 class MainActivity : AppCompatActivity() {
@@ -5849,9 +6261,11 @@ class MainActivity : AppCompatActivity() {
     }
 }
 ```
-*   **语法对比**：逻辑在Activity/Fragment中。通过 `findViewById` 获取XML中定义的UI组件引用，然后为其设置监听器（如 `setOnClickListener`）。数据变化后需要手动调用UI组件的方法（如 `setText`）来更新。
+
+- **语法对比**：逻辑在Activity/Fragment中。通过 `findViewById` 获取XML中定义的UI组件引用，然后为其设置监听器（如 `setOnClickListener`）。数据变化后需要手动调用UI组件的方法（如 `setText`）来更新。
 
 **iOS (Swift)**
+
 ```swift
 // ViewController.swift
 class ViewController: UIViewController {
@@ -5875,14 +6289,15 @@ class ViewController: UIViewController {
     }
 }
 ```
-*   **语法对比**：逻辑在ViewController中。如果是通过代码创建的UI，需要持有其引用；如果是通过Storyboard，使用 `@IBOutlet` 来建立关联。事件处理使用 `@IBAction` 或 `addTarget` 方法。直接操作UI控件的属性来更新视图。
+
+- **语法对比**：逻辑在ViewController中。如果是通过代码创建的UI，需要持有其引用；如果是通过Storyboard，使用 `@IBOutlet` 来建立关联。事件处理使用 `@IBAction` 或 `addTarget` 方法。直接操作UI控件的属性来更新视图。
 
 ---
 
 ### 总结表格
 
-| 特性 | 原生Web | 微信小程序 | 安卓 (Kotlin/XML) | iOS (Swift/UIKit) |
-| :--- | :--- | :--- | :--- | :--- |
+| 特性  | 原生Web | 微信小程序 | 安卓 (Kotlin/XML) | iOS (Swift/UIKit) |
+| --- | --- | --- | --- | --- |
 | **结构语言** | HTML | WXML (自定义标签) | XML (安卓特定标签) | Swift (代码) / Storyboard (UI文件) |
 | **样式语言** | CSS | WXSS (基本同CSS) | XML 属性 | Swift (代码) / 界面生成器 |
 | **逻辑语言** | JavaScript | JavaScript (框架封装) | Kotlin/Java | Swift/Objective-C |
@@ -5892,11 +6307,12 @@ class ViewController: UIViewController {
 | **API调用** | `fetch` / `XMLHttpRequest` | `wx.request` 等 `wx` 对象 | OkHttp, Retrofit 等库 | `URLSession` |
 
 **核心差异**：
-*   **Web与小程序**：语法相似，但思维模型不同（DOM操作 vs 数据驱动）。小程序是封闭的生态，使用自定义组件和API。
-*   **Web与原生App**：语法完全不同。原生开发是**命令式**的，需要显式地找到UI组件并设置其属性；而现代Web和小程序框架更偏向**声明式**（尤其是React/Vue和小程序），只需关心状态，UI会自动更新。
-*   **安卓与iOS**：两者都是原生开发，模式相似（在XML/Storyboard中描述UI，在编程语言中处理逻辑），但使用的语言、框架、工具链和API完全不同。
 
->前端网页端是如何将代码隐藏的
+- **Web与小程序**：语法相似，但思维模型不同（DOM操作 vs 数据驱动）。小程序是封闭的生态，使用自定义组件和API。
+- **Web与原生App**：语法完全不同。原生开发是**命令式**的，需要显式地找到UI组件并设置其属性；而现代Web和小程序框架更偏向**声明式**（尤其是React/Vue和小程序），只需关心状态，UI会自动更新。
+- **安卓与iOS**：两者都是原生开发，模式相似（在XML/Storyboard中描述UI，在编程语言中处理逻辑），但使用的语言、框架、工具链和API完全不同。
+
+> 前端网页端是如何将代码隐藏的
 
 简单直接的回答是：**你无法真正隐藏前端（浏览器端）的源代码。**
 
@@ -5910,89 +6326,96 @@ class ViewController: UIViewController {
 
 这是最常用和最有效的手段，目的是让代码变得“机器友好”而“人类不友好”。
 
-*   **压缩：**
-    *   **目的：** 减小文件体积，加快加载速度。
-    *   **做法：** 删除所有不必要的字符，如空格、换行符、注释，并缩短变量名。
-    *   **效果：** 代码变成一行，难以阅读。
-    *   **示例：**
-        *   **压缩前：**
-        ```javascript
-        function calculateTotalPrice(price, quantity) {
-            // 计算总价
-            let total = price * quantity;
-            return total;
-        }
-        ```
-        *   **压缩后：**
-        ```javascript
-        function calculateTotalPrice(a,b){return a*b;}
-        // 或者更极致的：
-        function c(a,b){return a*b;}
-        ```
-
-*   **混淆：**
-    *   **目的：** 主动保护知识产权，防止代码被轻易理解和复用。
-    *   **做法：** 在压缩的基础上，进行更复杂的代码转换。例如，将变量和函数名替换为无意义的短字符（如 `a`, `b`, `_0x1a2b3c`），拆分字符串，编码字面量，添加无用的代码和控制流等。
-    *   **效果：** 代码变得极其晦涩难懂，虽然功能完全一样，但逆向工程的成本大大增加。
-    *   **工具：** JavaScript Obfuscator, UglifyJS, Terser 等。
-    *   **示例（经过混淆的代码可能长这样）：**
-        ```javascript
-        var _0x5a62 = ['\x48\x65\x6c\x6c\x6f', '\x6c\x6f\x67'];
-        (function(_0x123456, _0x789abc) {
-            var _0xdef321 = function(_0x13579a) {
-                while (--_0x13579a) {
-                    _0x123456['push'](_0x123456['shift']());
-                }
-            };
-            _0xdef321(++_0x789abc);
-        }(_0x5a62, 0x1f3));
-        var _0xabc123 = function(_0x24680, _0x13579b) {
-            _0x24680 = _0x24680 - 0x0;
-            var _0xdef456 = _0x5a62[_0x24680];
-            return _0xdef456;
+- **压缩：**
+  
+  - **目的：** 减小文件体积，加快加载速度。
+  - **做法：** 删除所有不必要的字符，如空格、换行符、注释，并缩短变量名。
+  - **效果：** 代码变成一行，难以阅读。
+  - **示例：**
+    - **压缩前：**
+      
+      ```javascript
+      function calculateTotalPrice(price, quantity) {
+      // 计算总价
+      let total = price * quantity;
+      return total;
+      }
+      ```
+      
+    - **压缩后：**
+      
+      ```javascript
+      function calculateTotalPrice(a,b){return a*b;}
+      // 或者更极致的：
+      function c(a,b){return a*b;}
+      ```
+      
+- **混淆：**
+  
+  - **目的：** 主动保护知识产权，防止代码被轻易理解和复用。
+  - **做法：** 在压缩的基础上，进行更复杂的代码转换。例如，将变量和函数名替换为无意义的短字符（如 `a`, `b`, `_0x1a2b3c`），拆分字符串，编码字面量，添加无用的代码和控制流等。
+  - **效果：** 代码变得极其晦涩难懂，虽然功能完全一样，但逆向工程的成本大大增加。
+  - **工具：** JavaScript Obfuscator, UglifyJS, Terser 等。
+  - **示例（经过混淆的代码可能长这样）：**
+    
+    ```javascript
+    var _0x5a62 = ['\x48\x65\x6c\x6c\x6f', '\x6c\x6f\x67'];
+    (function(_0x123456, _0x789abc) {
+        var _0xdef321 = function(_0x13579a) {
+            while (--_0x13579a) {
+                _0x123456['push'](_0x123456['shift']());
+            }
         };
-        function a() {
-            console[_0xabc123('0x0')](_0xabc123('0x1'));
-        }
-        a();
-        ```
+        _0xdef321(++_0x789abc);
+    }(_0x5a62, 0x1f3));
+    var _0xabc123 = function(_0x24680, _0x13579b) {
+        _0x24680 = _0x24680 - 0x0;
+        var _0xdef456 = _0x5a62[_0x24680];
+        return _0xdef456;
+    };
+    function a() {
+        console[_0xabc123('0x0')](_0xabc123('0x1'));
+    }
+    a();
+    ```
+    
 
 ### 2. 禁用开发者工具
 
 一些网站会通过JavaScript检测用户是否打开了开发者工具（F12），并试图干扰或阻止。
 
-*   **原理：** 监测浏览器窗口大小、焦点变化，或者检查某些特定函数（如 `debugger`）的存在。
-*   **做法：**
-    *   **无限Debugger：** 在代码中插入 `setInterval(function(){ debugger; }, 100);`，这会不断地触发调试器断点，导致控制台无法正常使用。
-    *   **禁用右键：** 通过监听 `contextmenu` 事件并阻止默认行为，来禁用右键菜单（其中包含“检查元素”选项）。
-    *   **监听按键：** 监听 F12、Ctrl+Shift+I、Ctrl+Shift+J 等快捷键，并阻止其默认行为。
-*   **局限性：** **这些方法非常容易被绕过。**
-    *   对于无限debugger，可以在Chrome的断点设置中禁用“Pause on exceptions”或直接找到并禁用那行代码。
-    *   对于禁用右键，可以直接按F12，或者通过浏览器菜单进入开发者工具。
-    *   这些方法更多是起到“劝退”新手的作用，对有经验的开发者无效。
+- **原理：** 监测浏览器窗口大小、焦点变化，或者检查某些特定函数（如 `debugger`）的存在。
+- **做法：**
+  - **无限Debugger：** 在代码中插入 `setInterval(function(){ debugger; }, 100);`，这会不断地触发调试器断点，导致控制台无法正常使用。
+  - **禁用右键：** 通过监听 `contextmenu` 事件并阻止默认行为，来禁用右键菜单（其中包含“检查元素”选项）。
+  - **监听按键：** 监听 F12、Ctrl+Shift+I、Ctrl+Shift+J 等快捷键，并阻止其默认行为。
+- **局限性：** **这些方法非常容易被绕过。**
+  - 对于无限debugger，可以在Chrome的断点设置中禁用“Pause on exceptions”或直接找到并禁用那行代码。
+  - 对于禁用右键，可以直接按F12，或者通过浏览器菜单进入开发者工具。
+  - 这些方法更多是起到“劝退”新手的作用，对有经验的开发者无效。
 
 ### 3. 将内容动态化/网络化
 
 这是保护核心逻辑和数据的一种更高级的方法。
 
-*   **原理：** 不把核心逻辑和重要数据写在静态的JS文件里，而是将它们放在服务器端。
-*   **做法：**
-    *   **关键逻辑后端化：** 将重要的计算、验证、数据处理等逻辑放在后端服务器（API）上。前端只负责展示和调用这些API。这样，最核心的“商业秘密”就完全不会暴露给浏览器。
-    *   **动态加载资源：** 页面初始加载的只是一个“空壳”，通过JavaScript动态地向服务器请求数据（AJAX/Fetch），然后再填充到页面上。这样，查看初始HTML源代码是看不到完整内容的。
-*   **示例：** 一个在线视频网站，其视频的真实URL和解密密钥是通过AJAX请求从服务器获取的，而不是硬编码在JS文件里。
+- **原理：** 不把核心逻辑和重要数据写在静态的JS文件里，而是将它们放在服务器端。
+- **做法：**
+  - **关键逻辑后端化：** 将重要的计算、验证、数据处理等逻辑放在后端服务器（API）上。前端只负责展示和调用这些API。这样，最核心的“商业秘密”就完全不会暴露给浏览器。
+  - **动态加载资源：** 页面初始加载的只是一个“空壳”，通过JavaScript动态地向服务器请求数据（AJAX/Fetch），然后再填充到页面上。这样，查看初始HTML源代码是看不到完整内容的。
+- **示例：** 一个在线视频网站，其视频的真实URL和解密密钥是通过AJAX请求从服务器获取的，而不是硬编码在JS文件里。
 
 ### 4. 使用Source Maps
 
 这是一个开发效率工具，但间接起到了保护作用。
 
-*   **目的：** 在生产环境（线上环境）中，我们运行的是压缩/混淆后的代码。但如果出现错误，我们希望在浏览器中看到的是原始的、未压缩的代码，以便于调试。
-*   **做法：** 在构建时，工具会生成一个 `.map` 文件，这个文件记录了混淆后代码与原始代码之间的映射关系。
-*   **对代码隐藏的影响：** 开发者可以将 `.map` 文件保留在内部，不部署到线上服务器。这样，用户在浏览器中看到的就只有混淆后的代码，而无法还原出清晰的源代码。只有当开发者在内部调试时，才会加载这个 `.map` 文件来还原代码。
+- **目的：** 在生产环境（线上环境）中，我们运行的是压缩/混淆后的代码。但如果出现错误，我们希望在浏览器中看到的是原始的、未压缩的代码，以便于调试。
+- **做法：** 在构建时，工具会生成一个 `.map` 文件，这个文件记录了混淆后代码与原始代码之间的映射关系。
+- **对代码隐藏的影响：** 开发者可以将 `.map` 文件保留在内部，不部署到线上服务器。这样，用户在浏览器中看到的就只有混淆后的代码，而无法还原出清晰的源代码。只有当开发者在内部调试时，才会加载这个 `.map` 文件来还原代码。
 
 ### 总结
 
-| 技术手段 | 目的 | 效果 | 可破解性 |
-| :--- | :--- | :--- | :--- |
+| 技术手段 | 目的  | 效果  | 可破解性 |
+| --- | --- | --- | --- |
 | **代码压缩/混淆** | 减小体积，增加阅读难度 | 代码变得混乱、难以理解 | **不可逆**，但功能可被分析 |
 | **禁用开发者工具** | 阻止用户打开F12 | 对新手有干扰 | **极易绕过** |
 | **核心逻辑后端化** | 保护核心算法和数据 | 前端看不到核心逻辑 | **非常有效**，是根本解决方案 |
@@ -6000,209 +6423,234 @@ class ViewController: UIViewController {
 
 **核心结论：**
 
-1.  **无法绝对隐藏：** 任何发送到用户浏览器端的内容，在技术上都是可查看和可分析的。
-2.  **增加成本是目标：** 前端代码保护的本质是**提高逆向工程的时间和精力成本**，让抄袭者和攻击者知难而退。
-3.  **正确的安全观：** 真正敏感的业务逻辑、API密钥、加密算法、用户数据等，**永远不应该信任客户端**。必须将它们放在后端服务器进行处理和校验。这是Web安全的黄金法则。
+1. **无法绝对隐藏：** 任何发送到用户浏览器端的内容，在技术上都是可查看和可分析的。
+2. **增加成本是目标：** 前端代码保护的本质是**提高逆向工程的时间和精力成本**，让抄袭者和攻击者知难而退。
+3. **正确的安全观：** 真正敏感的业务逻辑、API密钥、加密算法、用户数据等，**永远不应该信任客户端**。必须将它们放在后端服务器进行处理和校验。这是Web安全的黄金法则。
 
 所以，当你看到一个网站F12很难看懂时，它并不是“隐藏”了代码，而是通过上述方法，特别是**代码混淆**，把代码“化妆”成了一个难以辨认的样子。
 
-
->前端工程师如何在不同应用上进行适配
-前端工程师在不同应用上进行适配，本质上是确保产品在各种环境（设备、浏览器、屏幕尺寸、操作系统）下，都能提供功能完整、布局合理、体验流畅的界面。
+> 前端工程师如何在不同应用上进行适配
+> 前端工程师在不同应用上进行适配，本质上是确保产品在各种环境（设备、浏览器、屏幕尺寸、操作系统）下，都能提供功能完整、布局合理、体验流畅的界面。
 
 我们可以从以下几个维度来理解和实施适配：
 
 ### 一、核心适配维度
 
 #### 1. 跨浏览器适配
+
 确保网站在不同浏览器（Chrome, Firefox, Safari, Edge）及不同版本上表现一致。
 
-*   **方法：**
-    *   **CSS Reset / Normalize.css:** 使用这些库来统一不同浏览器的默认样式，消除内外边距、行高等的差异。
-    *   **特性检测 (Feature Detection):** 使用 `@supports` 规则或 Modernizr 库来检测浏览器是否支持某些 CSS 或 JS 特性，然后提供降级方案。
-        ```css
-        /* 检查是否支持 Grid 布局 */
-        @supports (display: grid) {
-          .container { display: grid; }
-        }
-        @supports not (display: grid) {
-          .container { display: flex; } /* 降级方案 */
-        }
-        ```
-    *   **厂商前缀 (Vendor Prefixes):** 对于实验性或老版本浏览器需要的 CSS 属性，添加前缀如 `-webkit-`, `-moz-`, `-ms-`。通常使用 Autoprefixer (PostCSS 插件) 自动处理。
-    *   **Polyfill:** 对于不支持的 JavaScript API（如 `fetch`, `IntersectionObserver`），引入对应的 Polyfill 库来“填补”功能。
+- **方法：**
+  - **CSS Reset / Normalize.css:** 使用这些库来统一不同浏览器的默认样式，消除内外边距、行高等的差异。
+  - **特性检测 (Feature Detection):** 使用 `@supports` 规则或 Modernizr 库来检测浏览器是否支持某些 CSS 或 JS 特性，然后提供降级方案。
+    
+    ```css
+    /* 检查是否支持 Grid 布局 */
+    @supports (display: grid) {
+      .container { display: grid; }
+    }
+    @supports not (display: grid) {
+      .container { display: flex; } /* 降级方案 */
+    }
+    ```
+    
+  - **厂商前缀 (Vendor Prefixes):** 对于实验性或老版本浏览器需要的 CSS 属性，添加前缀如 `-webkit-`, `-moz-`, `-ms-`。通常使用 Autoprefixer (PostCSS 插件) 自动处理。
+  - **Polyfill:** 对于不支持的 JavaScript API（如 `fetch`, `IntersectionObserver`），引入对应的 Polyfill 库来“填补”功能。
 
 #### 2. 跨设备/屏幕尺寸适配 (响应式与自适应设计)
+
 这是移动互联网时代最重要的适配工作。
 
-*   **核心概念：**
-    *   **响应式设计 (RWD):** 同一套代码，通过 CSS 媒体查询等技术，使布局和元素能“响应”并适应不同屏幕尺寸而动态变化。
-    *   **自适应设计 (AWD):** 为不同屏幕范围准备多套固定布局，通过后端或前端路由检测设备类型，然后加载对应的布局。可以看作是多个静态页面的集合。
-
-*   **实现技术 (主要针对 RWD):**
-    *   **视口 (Viewport) 设置:** 在 HTML 的 `<head>` 中加入以下标签，确保页面在移动端能以正确的宽度显示，并不允许缩放。
-        ```html
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        ```
-    *   **流体网格 (Fluid Grid):** 使用百分比 `%`、`fr` (Grid) 或 `flex: 1` (Flexbox) 等相对单位来布局，而不是固定的 `px`。
-    *   **弹性图片/媒体:** 设置图片最大宽度为 `100%`，防止其溢出容器。
-        ```css
-        img {
-          max-width: 100%;
-          height: auto;
-        }
-        ```
-    *   **CSS 媒体查询 (Media Queries):** 这是响应式的基石。根据不同的屏幕条件（宽度、高度、方向等）应用不同的 CSS 样式。
-        ```css
-        /* 移动设备优先 (默认样式为小屏幕) */
-        .container { padding: 10px; }
-
-        /* 平板 */
-        @media (min-width: 768px) {
-          .container { padding: 20px; }
-        }
-
-        /* 桌面 */
-        @media (min-width: 1024px) {
-          .container { padding: 40px; }
-        }
-        ```
-    *   **CSS Flexbox & Grid:** 现代布局技术，它们天生就是为构建灵活的、自适应的布局而设计的。
-    *   **相对视口单位:** 使用 `vw` (视口宽度), `vh` (视口高度), `vmin`, `vmax` 等单位，可以实现与视口大小直接关联的缩放效果。
+- **核心概念：**
+  
+  - **响应式设计 (RWD):** 同一套代码，通过 CSS 媒体查询等技术，使布局和元素能“响应”并适应不同屏幕尺寸而动态变化。
+  - **自适应设计 (AWD):** 为不同屏幕范围准备多套固定布局，通过后端或前端路由检测设备类型，然后加载对应的布局。可以看作是多个静态页面的集合。
+- **实现技术 (主要针对 RWD):**
+  
+  - **视口 (Viewport) 设置:** 在 HTML 的 `<head>` 中加入以下标签，确保页面在移动端能以正确的宽度显示，并不允许缩放。
+    
+    ```html
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    ```
+    
+  - **流体网格 (Fluid Grid):** 使用百分比 `%`、`fr` (Grid) 或 `flex: 1` (Flexbox) 等相对单位来布局，而不是固定的 `px`。
+    
+  - **弹性图片/媒体:** 设置图片最大宽度为 `100%`，防止其溢出容器。
+    
+    ```css
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+    ```
+    
+  - **CSS 媒体查询 (Media Queries):** 这是响应式的基石。根据不同的屏幕条件（宽度、高度、方向等）应用不同的 CSS 样式。
+    
+    ```css
+    /* 移动设备优先 (默认样式为小屏幕) */
+    .container { padding: 10px; }
+    
+    /* 平板 */
+    @media (min-width: 768px) {
+      .container { padding: 20px; }
+    }
+    
+    /* 桌面 */
+    @media (min-width: 1024px) {
+      .container { padding: 40px; }
+    }
+    ```
+    
+  - **CSS Flexbox & Grid:** 现代布局技术，它们天生就是为构建灵活的、自适应的布局而设计的。
+    
+  - **相对视口单位:** 使用 `vw` (视口宽度), `vh` (视口高度), `vmin`, `vmax` 等单位，可以实现与视口大小直接关联的缩放效果。
+    
 
 #### 3. 跨操作系统的适配
+
 主要是 iOS 和 Android 在交互和视觉上的差异。
 
-*   **方法：**
-    *   **遵循平台设计规范:** 深入研究 Apple’s HIG 和 Google’s Material Design，在交互细节（如滚动反弹、导航方式）和视觉风格（字体、图标）上贴近原生体验。
-    *   **处理特定样式:**
-        *   **滚动行为:** iOS 有弹性滚动，可以使用 `-webkit-overflow-scrolling: touch` 来优化。
-        *   **输入框:** iOS 下输入框会有内阴影，可以用 `-webkit-appearance: none;` 去除。
-        *   **状态栏:** 在 PWA 或 Hybrid App 中，需要处理移动端浏览器状态栏与应用的适配。
-    *   **字体渲染:** 不同系统字体不同，需要设置安全的字体栈 (Font Stack)。
+- **方法：**
+  - **遵循平台设计规范:** 深入研究 Apple’s HIG 和 Google’s Material Design，在交互细节（如滚动反弹、导航方式）和视觉风格（字体、图标）上贴近原生体验。
+  - **处理特定样式:**
+    - **滚动行为:** iOS 有弹性滚动，可以使用 `-webkit-overflow-scrolling: touch` 来优化。
+    - **输入框:** iOS 下输入框会有内阴影，可以用 `-webkit-appearance: none;` 去除。
+    - **状态栏:** 在 PWA 或 Hybrid App 中，需要处理移动端浏览器状态栏与应用的适配。
+  - **字体渲染:** 不同系统字体不同，需要设置安全的字体栈 (Font Stack)。
 
 #### 4. 跨应用类型的适配 (Web, Hybrid, Native)
+
 这里的“应用”指不同的技术栈构建的应用。
 
-*   **Web 应用 (PC & Mobile):** 主要使用上述的响应式技术。
-*   **Hybrid 应用 (混合应用，如 Cordova/PhoneGap, Ionic):**
-    *   本质上是一个内嵌了 WebView 的原生应用壳。
-    *   **适配要点:**
-        1.  **WebView 特性:** 需要处理不同 Android/iOS 版本 WebView 的兼容性问题。
-        2.  **像素密度:** 图片需要提供 `@2x`, `@3x` 等高分辨率版本以适应高DPI屏幕。
-        3.  **原生接口:** 通过 JS Bridge 调用设备功能（如相机、GPS）时，要注意不同平台的异步回调差异。
-*   **小程序 (微信、支付宝等):**
-    *   有自己独特的开发规范和组件库。
-    *   **适配要点:**
-        1.  **使用官方框架和组件库:** 这是最直接的适配方式，官方库已处理好大部分兼容性问题。
-        2.  **rpx / upx 单位:** 小程序提供了类似 `vw` 的响应式单位（如微信的 `rpx`），应优先使用。
-        3.  **API 兼容性:** 不同小程序平台提供的 API 有差异，需要做条件判断或封装统一接口。
+- **Web 应用 (PC & Mobile):** 主要使用上述的响应式技术。
+- **Hybrid 应用 (混合应用，如 Cordova/PhoneGap, Ionic):**
+  - 本质上是一个内嵌了 WebView 的原生应用壳。
+  - **适配要点:**
+    1. **WebView 特性:** 需要处理不同 Android/iOS 版本 WebView 的兼容性问题。
+    2. **像素密度:** 图片需要提供 `@2x`, `@3x` 等高分辨率版本以适应高DPI屏幕。
+    3. **原生接口:** 通过 JS Bridge 调用设备功能（如相机、GPS）时，要注意不同平台的异步回调差异。
+- **小程序 (微信、支付宝等):**
+  - 有自己独特的开发规范和组件库。
+  - **适配要点:**
+    1. **使用官方框架和组件库:** 这是最直接的适配方式，官方库已处理好大部分兼容性问题。
+    2. **rpx / upx 单位:** 小程序提供了类似 `vw` 的响应式单位（如微信的 `rpx`），应优先使用。
+    3. **API 兼容性:** 不同小程序平台提供的 API 有差异，需要做条件判断或封装统一接口。
 
 ### 二、现代前端框架中的适配实践
 
 在 Vue, React 等框架中，适配原则不变，但工具有所升级：
 
-*   **CSS-in-JS:** 使用 Styled-components, Emotion 等库，可以在 JS 中方便地根据 Props 或主题动态改变样式，实现组件级适配。
-*   **UI 组件库:** 使用 Ant Design, Element UI, Vant 等，它们本身就内置了响应式设计。
-*   **Hooks / Composables:** 可以封装自定义 Hook (React) 或 Composable (Vue) 来检测屏幕大小、设备类型等，从而动态调整组件行为。
-    ```javascript
-    // React 示例：一个检测屏幕大小的 Hook
-    import { useState, useEffect } from 'react';
-
-    function useScreenSize() {
-      const [screenSize, setScreenSize] = useState({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-
-      useEffect(() => {
-        const handleResize = () => {
-          setScreenSize({
-            width: window.innerWidth,
-            height: window.innerHeight,
-          });
-        };
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-      }, []);
-
-      return screenSize;
-    }
-    ```
+- **CSS-in-JS:** 使用 Styled-components, Emotion 等库，可以在 JS 中方便地根据 Props 或主题动态改变样式，实现组件级适配。
+  
+- **UI 组件库:** 使用 Ant Design, Element UI, Vant 等，它们本身就内置了响应式设计。
+  
+- **Hooks / Composables:** 可以封装自定义 Hook (React) 或 Composable (Vue) 来检测屏幕大小、设备类型等，从而动态调整组件行为。
+  
+  ```javascript
+  // React 示例：一个检测屏幕大小的 Hook
+  import { useState, useEffect } from 'react';
+  
+  function useScreenSize() {
+    const [screenSize, setScreenSize] = useState({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  
+    useEffect(() => {
+      const handleResize = () => {
+        setScreenSize({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      };
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+  
+    return screenSize;
+  }
+  ```
+  
 
 ### 三、测试与调试
 
-*   **开发者工具:** 浏览器自带的 DevTools 是首要工具，可以模拟不同设备、屏幕尺寸和网络条件。
-*   **真机测试:** 必须在真实的手机和平板设备上进行测试，模拟器无法完全还原所有细节（如触摸延迟、性能）。
-*   **云测试平台:** 使用 BrowserStack, Sauce Labs 等服务，可以在云端访问大量真实的设备和浏览器组合进行测试。
+- **开发者工具:** 浏览器自带的 DevTools 是首要工具，可以模拟不同设备、屏幕尺寸和网络条件。
+- **真机测试:** 必须在真实的手机和平板设备上进行测试，模拟器无法完全还原所有细节（如触摸延迟、性能）。
+- **云测试平台:** 使用 BrowserStack, Sauce Labs 等服务，可以在云端访问大量真实的设备和浏览器组合进行测试。
 
 ### 总结
 
 前端适配是一个系统工程，贯穿于从设计到开发的整个流程。其核心思想是：
 
-1.  **移动优先:** 从小屏幕开始设计和开发，逐步增强到大屏幕。
-2.  **渐进增强 / 优雅降级:** 确保核心功能在所有环境下都能工作，高级功能在支持的环境下提供更好体验。
-3.  **拥抱标准和现代技术:** 优先使用 Flexbox/Grid、相对单位、媒体查询等现代 CSS 技术。
-4.  **工具化与自动化:** 利用构建工具 (Webpack, Vite)、CSS 处理器 (Sass, PostCSS) 和测试工具来提升适配效率和可靠性。
+1. **移动优先:** 从小屏幕开始设计和开发，逐步增强到大屏幕。
+2. **渐进增强 / 优雅降级:** 确保核心功能在所有环境下都能工作，高级功能在支持的环境下提供更好体验。
+3. **拥抱标准和现代技术:** 优先使用 Flexbox/Grid、相对单位、媒体查询等现代 CSS 技术。
+4. **工具化与自动化:** 利用构建工具 (Webpack, Vite)、CSS 处理器 (Sass, PostCSS) 和测试工具来提升适配效率和可靠性。
 
 通过将上述策略和技巧结合起来，前端工程师就能从容应对各种复杂的适配场景，打造出真正健壮、用户友好的应用。
 
-
 # Web后端技术：
+
 软件开发中的**后端**，是指支撑前端用户交互、负责数据处理与业务逻辑实现的底层技术层，它不直接面向用户，而是专注于系统的**数据存储、计算、权限管控和服务调度**，是整个软件应用的“幕后大脑”。
 
 ### 一、后端的核心职责
+
 1. **数据管理**
-    - 负责与数据库（如MySQL、PostgreSQL、MongoDB）交互，完成数据的增删改查（CRUD）操作。
-    - 设计合理的数据模型和表结构，优化数据查询性能，保障数据的一致性和安全性。
-    - 例如：电商系统中用户订单的存储、商品库存的更新，都是由后端代码完成。
-
+  
+  - 负责与数据库（如MySQL、PostgreSQL、MongoDB）交互，完成数据的增删改查（CRUD）操作。
+  - 设计合理的数据模型和表结构，优化数据查询性能，保障数据的一致性和安全性。
+  - 例如：电商系统中用户订单的存储、商品库存的更新，都是由后端代码完成。
 2. **业务逻辑实现**
-    - 封装软件的核心业务规则，处理复杂的业务流程。
-    - 例如：支付系统中的订单金额校验、优惠折扣计算、支付状态同步；社交系统中的消息推送、好友关系链管理。
-
+  
+  - 封装软件的核心业务规则，处理复杂的业务流程。
+  - 例如：支付系统中的订单金额校验、优惠折扣计算、支付状态同步；社交系统中的消息推送、好友关系链管理。
 3. **接口提供与服务通信**
-    - 向前端（Web/APP）或其他服务提供标准化接口（如RESTful API、GraphQL、gRPC），实现前后端数据交互。
-    - 负责服务之间的调用与协作，比如微服务架构中，订单服务调用库存服务扣减库存。
-
+  
+  - 向前端（Web/APP）或其他服务提供标准化接口（如RESTful API、GraphQL、gRPC），实现前后端数据交互。
+  - 负责服务之间的调用与协作，比如微服务架构中，订单服务调用库存服务扣减库存。
 4. **权限与安全控制**
-    - 实现用户身份认证（如JWT、OAuth2.0）、权限校验（如基于角色的访问控制RBAC）。
-    - 防范常见的安全风险，如SQL注入、XSS攻击、CSRF攻击，对敏感数据进行加密处理。
-
+  
+  - 实现用户身份认证（如JWT、OAuth2.0）、权限校验（如基于角色的访问控制RBAC）。
+  - 防范常见的安全风险，如SQL注入、XSS攻击、CSRF攻击，对敏感数据进行加密处理。
 5. **系统性能与稳定性保障**
-    - 进行接口性能优化、缓存设计（如Redis）、负载均衡配置。
-    - 处理并发请求，保障系统在高流量下的稳定性，同时负责日志记录、监控告警和故障排查。
+  
+  - 进行接口性能优化、缓存设计（如Redis）、负载均衡配置。
+  - 处理并发请求，保障系统在高流量下的稳定性，同时负责日志记录、监控告警和故障排查。
 
 ### 二、后端开发的核心技术栈
+
 1. **编程语言**
-    - 主流后端语言：Java、Python、Go、Node.js、PHP、C# 等。
-    - 不同语言有不同的适用场景，例如Java适合企业级大型应用，Go适合高并发分布式系统，Python适合快速开发和数据分析。
-
+  
+  - 主流后端语言：Java、Python、Go、Node.js、PHP、C# 等。
+  - 不同语言有不同的适用场景，例如Java适合企业级大型应用，Go适合高并发分布式系统，Python适合快速开发和数据分析。
 2. **框架与工具**
-    - **Java**：Spring Boot、Spring Cloud、MyBatis/Hibernate
-    - **Python**：Django、Flask、FastAPI
-    - **Go**：Gin、Beego
-    - **Node.js**：Express、NestJS
-
+  
+  - **Java**：Spring Boot、Spring Cloud、MyBatis/Hibernate
+  - **Python**：Django、Flask、FastAPI
+  - **Go**：Gin、Beego
+  - **Node.js**：Express、NestJS
 3. **数据存储**
-    - 关系型数据库：MySQL、Oracle、PostgreSQL
-    - 非关系型数据库：MongoDB（文档型）、Redis（键值型）、Elasticsearch（搜索引擎）
-    - 消息队列：RabbitMQ、Kafka（用于异步通信和解耦）
-
+  
+  - 关系型数据库：MySQL、Oracle、PostgreSQL
+  - 非关系型数据库：MongoDB（文档型）、Redis（键值型）、Elasticsearch（搜索引擎）
+  - 消息队列：RabbitMQ、Kafka（用于异步通信和解耦）
 4. **部署与运维工具**
-    - 容器化：Docker、Kubernetes（K8s）
-    - 持续集成/持续部署（CI/CD）：Jenkins、GitLab CI
-    - 监控工具：Prometheus、Grafana
+  
+  - 容器化：Docker、Kubernetes（K8s）
+  - 持续集成/持续部署（CI/CD）：Jenkins、GitLab CI
+  - 监控工具：Prometheus、Grafana
 
 ### 三、后端与前端的核心区别
-| 维度         | 后端                     | 前端                     |
-|--------------|--------------------------|--------------------------|
-| 面向对象     | 数据、业务逻辑、服务器   | 用户、页面交互、浏览器/客户端 |
-| 核心目标     | 稳定、高效、安全         | 流畅、美观、易用         |
-| 技术栈       | 语言+框架+数据库+服务器  | HTML+CSS+JS+前端框架     |
-| 运行环境     | 服务器（Linux/Windows）  | 浏览器/移动端APP         |
+
+| 维度  | 后端  | 前端  |
+| --- | --- | --- |
+| 面向对象 | 数据、业务逻辑、服务器 | 用户、页面交互、浏览器/客户端 |
+| 核心目标 | 稳定、高效、安全 | 流畅、美观、易用 |
+| 技术栈 | 语言+框架+数据库+服务器 | HTML+CSS+JS+前端框架 |
+| 运行环境 | 服务器（Linux/Windows） | 浏览器/移动端APP |
 
 ### 四、后端的典型应用场景
+
 - **网站/APP后端**：电商平台、社交软件、资讯类APP的后台服务。
 - **企业级系统**：ERP（企业资源计划）、CRM（客户关系管理）、OA（办公自动化）系统。
 - **云服务与中间件**：API网关、分布式缓存、消息队列等基础设施。
@@ -6228,10 +6676,10 @@ JSP的核心思想是让Web开发人员能更容易地创建动态网页。与�
 
 这是一个至关重要的概念。JSP并不是一种独立运行的魔法。它的整个生命周期可以概括为“翻译”和“编译”。
 
-1.  **编写JSP文件**：开发者创建一个以`.jsp`为后缀的文件，里面包含标准的HTML标签和特殊的JSP标签（如`<% ... %>`）以及Java代码。
-2.  **翻译阶段**：当用户**第一次**请求这个JSP页面时，应用服务器（如Tomcat）中的**JSP引擎**（或称JSP容器）会将这个`.jsp`文件**翻译**成一个纯Java源文件（一个`.java`文件）。这个生成的Java文件本质上就是一个`HttpServlet`。
-3.  **编译阶段**：JSP引擎随后会调用Java编译器，将这个`.java`源文件**编译**成一个`.class`字节码文件。
-4.  **执行阶段**：服务器加载这个编译好的Servlet类，执行其`_jspService`方法。该方法会输出HTML流，其中动态部分由嵌入的Java逻辑决定。最终生成的纯HTML被发送到客户端浏览器。
+1. **编写JSP文件**：开发者创建一个以`.jsp`为后缀的文件，里面包含标准的HTML标签和特殊的JSP标签（如`<% ... %>`）以及Java代码。
+2. **翻译阶段**：当用户**第一次**请求这个JSP页面时，应用服务器（如Tomcat）中的**JSP引擎**（或称JSP容器）会将这个`.jsp`文件**翻译**成一个纯Java源文件（一个`.java`文件）。这个生成的Java文件本质上就是一个`HttpServlet`。
+3. **编译阶段**：JSP引擎随后会调用Java编译器，将这个`.java`源文件**编译**成一个`.class`字节码文件。
+4. **执行阶段**：服务器加载这个编译好的Servlet类，执行其`_jspService`方法。该方法会输出HTML流，其中动态部分由嵌入的Java逻辑决定。最终生成的纯HTML被发送到客户端浏览器。
 
 **此后，对该JSP页面的所有后续请求**，都会直接由这个已经编译好的Servlet来处理，直到JSP源文件被修改（此时会重新翻译和编译）。这个过程保证了首次访问稍慢，但后续访问速度很快。
 
@@ -6239,13 +6687,13 @@ JSP的核心思想是让Web开发人员能更容易地创建动态网页。与�
 
 ```mermaid
 flowchart TD
-    A[JSP 源文件<br>.jsp] --> B{“首次请求<br>或源文件更新?”}
-    B -- 是 --> C[JSP 引擎翻译为<br>Java Servlet 源文件]
-    C --> D[Java 编译器编译为<br>.class 字节码文件]
-    D --> E[Web 容器加载并实例化<br>Servlet 对象]
+    A[JSP 源文件.jsp] --> B{“首次请求或源文件更新?”}
+    B -- 是 --> C[JSP 引擎翻译为Java Servlet 源文件]
+    C --> D[Java 编译器编译为.class 字节码文件]
+    D --> E[Web 容器加载并实例化Servlet 对象]
     B -- 否 --> E
-    E --> F[执行_jspService方法<br>生成动态HTML]
-    F --> G[发送HTML响应<br>至客户端浏览器]
+    E --> F[执行_jspService方法生成动态HTML]
+    F --> G[发送HTML响应至客户端浏览器]
 ```
 
 ---
@@ -6254,61 +6702,77 @@ flowchart TD
 
 JSP提供了几种主要的元素来在HTML中嵌入Java代码：
 
-1.  **脚本片段**：
+1. **脚本片段**：
+  
+  ```jsp
+  <%
+      String name = request.getParameter("user");
+      out.println("Hello, " + name);
+  %>
+  ```
+  
+  在`<% ... %>`中的代码会被原样插入到翻译后Servlet的`_jspService`方法中。
+  
+2. **表达式**：
+  
+  ```jsp
+  <p>Welcome, <%= request.getParameter("user") %></p>
+  ```
+  
+  `<%= ... %>`用于输出一个变量或表达式的值。它相当于`out.print(...);`。
+  
+3. **声明**：
+  
+  ```jsp
+  <%!
+      private int count = 0;
+  %>
+  ```
+  
+  `<%! ... %>`用于声明成员变量或方法。这些内容会被添加到翻译后Servlet类的类体中，成为该Servlet的成员变量或方法。
+  
+4. **指令**：
+  
+  ```jsp
+  <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+  <%@ include file="header.jsp" %>
+  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+  ```
+  
+  指令`<%@ ... %>`为JSP容器提供整个页面的配置信息，比如页面属性、包含其他文件、引入标签库等。
+  
+5. **动作**：
+  
+  ```jsp
+  <jsp:include page="menu.jsp" />
+  <jsp:useBean id="user" class="com.example.User" scope="session"/>
+  ```
+  
+  动作标签以`<jsp:`开头，用于在JSP页面中执行一些预定义的功能，如包含文件、转发请求、操作JavaBean等。
+  
+6. **EL表达式 和 JSTL标签**：
+  这是为了取代笨拙的脚本片段而诞生的更优雅的解决方案。
+  
+  - **EL（Expression Language）**： `${}` 语法，用于更方便地访问请求、会话、应用作用域中的数据。
+    
     ```jsp
-    <%
-        String name = request.getParameter("user");
-        out.println("Hello, " + name);
-    %>
+    <p>Welcome, ${param.user}</p> <!-- 等价于上面的脚本表达式 -->
     ```
-    在`<% ... %>`中的代码会被原样插入到翻译后Servlet的`_jspService`方法中。
-
-2.  **表达式**：
+    
+  - **JSTL（JSP Standard Tag Library）**： 提供了一系列标准标签，用于实现循环、条件判断、格式化等常用功能，彻底避免了在HTML中直接写Java代码。
+    
     ```jsp
-    <p>Welcome, <%= request.getParameter("user") %></p>
+    <c:forEach items="${userList}" var="user">
+        <li>${user.name}</li>
+    </c:forEach>
     ```
-    `<%= ... %>`用于输出一个变量或表达式的值。它相当于`out.print(...);`。
-
-3.  **声明**：
-    ```jsp
-    <%!
-        private int count = 0;
-    %>
-    ```
-    `<%! ... %>`用于声明成员变量或方法。这些内容会被添加到翻译后Servlet类的类体中，成为该Servlet的成员变量或方法。
-
-4.  **指令**：
-    ```jsp
-    <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-    <%@ include file="header.jsp" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    ```
-    指令`<%@ ... %>`为JSP容器提供整个页面的配置信息，比如页面属性、包含其他文件、引入标签库等。
-
-5.  **动作**：
-    ```jsp
-    <jsp:include page="menu.jsp" />
-    <jsp:useBean id="user" class="com.example.User" scope="session"/>
-    ```
-    动作标签以`<jsp:`开头，用于在JSP页面中执行一些预定义的功能，如包含文件、转发请求、操作JavaBean等。
-
-6.  **EL表达式 和 JSTL标签**：
-    这是为了取代笨拙的脚本片段而诞生的更优雅的解决方案。
-    - **EL（Expression Language）**： `${}` 语法，用于更方便地访问请求、会话、应用作用域中的数据。
-        ```jsp
-        <p>Welcome, ${param.user}</p> <!-- 等价于上面的脚本表达式 -->
-        ```
-    - **JSTL（JSP Standard Tag Library）**： 提供了一系列标准标签，用于实现循环、条件判断、格式化等常用功能，彻底避免了在HTML中直接写Java代码。
-        ```jsp
-        <c:forEach items="${userList}" var="user">
-            <li>${user.name}</li>
-        </c:forEach>
-        ```
+    
 
 ---
 
 ### 三、示例代码
-``` html
+
+```html
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -6319,7 +6783,7 @@ JSP提供了几种主要的元素来在HTML中嵌入Java代码：
 </head>
 <body>
     <h1>用户列表</h1>
-    
+
     <!-- JSTL循环 -->
     <table border="1">
         <tr>
@@ -6337,7 +6801,7 @@ JSP提供了几种主要的元素来在HTML中嵌入Java代码：
             </tr>
         </c:forEach>
     </table>
-    
+
     <!-- 包含公共页脚 -->
     <jsp:include page="/WEB-INF/fragments/footer.jsp"/>
 </body>
@@ -6345,18 +6809,21 @@ JSP提供了几种主要的元素来在HTML中嵌入Java代码：
 ```
 
 ---
+
 ### 四、JSP 的优缺点
 
 #### 优点（在其所处的时代）：
-1.  **开发效率高**：相比纯Servlet用`out.println()`输出HTML，JSP编写动态页面直观、快速。
-2.  **前后端“天然”协作**：在早期前后端不分离的架构下，Java后端开发者可以轻松地制作出带动态数据的页面。
-3.  **技术成熟，生态强大**：作为Java EE的核心标准，有所有应用服务器的支持，并且可以与整个Java生态系统无缝集成。
+
+1. **开发效率高**：相比纯Servlet用`out.println()`输出HTML，JSP编写动态页面直观、快速。
+2. **前后端“天然”协作**：在早期前后端不分离的架构下，Java后端开发者可以轻松地制作出带动态数据的页面。
+3. **技术成熟，生态强大**：作为Java EE的核心标准，有所有应用服务器的支持，并且可以与整个Java生态系统无缝集成。
 
 #### 缺点（以现代视角看）：
-1.  **前后端耦合**：这是最大的问题。JSP将表示层（前端）和业务逻辑层（后端）紧密捆绑，不利于前后端分工并行开发，也使得前端难以独立测试和迭代。
-2.  **调试和维护困难**：当Java代码和HTML混杂在一起时，页面会变得混乱不堪，难以阅读和调试，俗称“意大利面条式代码”。
-3.  **对前端开发者不友好**：前端开发者需要了解Java和服务器环境，无法专注于UI和交互。
-4.  **性能瓶颈**：虽然编译后很快，但首次编译和重新编译仍有开销。而且所有渲染压力都在服务器端，增加了服务器负担。
+
+1. **前后端耦合**：这是最大的问题。JSP将表示层（前端）和业务逻辑层（后端）紧密捆绑，不利于前后端分工并行开发，也使得前端难以独立测试和迭代。
+2. **调试和维护困难**：当Java代码和HTML混杂在一起时，页面会变得混乱不堪，难以阅读和调试，俗称“意大利面条式代码”。
+3. **对前端开发者不友好**：前端开发者需要了解Java和服务器环境，无法专注于UI和交互。
+4. **性能瓶颈**：虽然编译后很快，但首次编译和重新编译仍有开销。而且所有渲染压力都在服务器端，增加了服务器负担。
 
 ---
 
@@ -6368,22 +6835,22 @@ JSP目前主要存在于大量的**遗留系统**中，尤其是在金融、电�
 **现代替代方案**：
 现代Web开发的主流是 **“前后端分离”** 架构。
 
-1.  **后端（替代JSP生成动态HTML的角色）**：
-    - **Spring Boot等框架提供RESTful API**：后端不再负责渲染HTML，而是专注于提供纯数据（通常是JSON/XML格式）的API接口。
-    - **现代服务端模板引擎**：如果仍需服务端渲染，Thymeleaf、FreeMarker等是比JSP更现代、更干净的选择。它们与HTML结合得更好，不强制依赖Servlet环境。
-
-2.  **前端（替代浏览器接收JSP生成的HTML的角色）**：
-    - **单页面应用框架**：如 **React、Vue.js、Angular**。它们通过消费后端提供的RESTful API数据，在浏览器端动态地构建和渲染用户界面。这种方式用户体验更好，前后端职责清晰。
-    - **服务器端渲染**：像 **Next.js (React)**、**Nuxt.js (Vue)** 这样的框架，结合了SPA的优点和SSR的SEO友好性，是另一种复杂但强大的现代解决方案。
+1. **后端（替代JSP生成动态HTML的角色）**：
+  
+  - **Spring Boot等框架提供RESTful API**：后端不再负责渲染HTML，而是专注于提供纯数据（通常是JSON/XML格式）的API接口。
+  - **现代服务端模板引擎**：如果仍需服务端渲染，Thymeleaf、FreeMarker等是比JSP更现代、更干净的选择。它们与HTML结合得更好，不强制依赖Servlet环境。
+2. **前端（替代浏览器接收JSP生成的HTML的角色）**：
+  
+  - **单页面应用框架**：如 **React、Vue.js、Angular**。它们通过消费后端提供的RESTful API数据，在浏览器端动态地构建和渲染用户界面。这种方式用户体验更好，前后端职责清晰。
+  - **服务器端渲染**：像 **Next.js (React)**、**Nuxt.js (Vue)** 这样的框架，结合了SPA的优点和SSR的SEO友好性，是另一种复杂但强大的现代解决方案。
 
 ### 总结
 
 JSP是Web开发早期阶段一个非常重要的**服务端动态网页技术**，它通过“在HTML中写Java”的理念，在一定时期内极大地提升了开发效率。其本质是一个最终会被编译成Servlet的模板。
 然而，随着软件架构向“前后端分离”演进，JSP因其**高度耦合、难以维护**的缺点而逐渐被现代技术所取代。理解JSP对于维护旧系统和学习Web技术演变史非常有价值，但在开启新项目时，应优先考虑基于RESTful API和现代前端框架的分离架构。
 
-
->JSP为什么采用在HTML中写Java？而不是HTML中写C++？HTML中写python？
-一句话概括：**这不是一个技术上的“能不能”，而是一个生态和设计上的“想不想”和“合不合适”。**
+> JSP为什么采用在HTML中写Java？而不是HTML中写C++？HTML中写python？
+> 一句话概括：**这不是一个技术上的“能不能”，而是一个生态和设计上的“想不想”和“合不合适”。**
 
 下面我们从几个关键维度来拆解这个选择：
 
@@ -6391,57 +6858,62 @@ JSP是Web开发早期阶段一个非常重要的**服务端动态网页技术**�
 
 ### 1. 语言定位与设计初衷
 
-*   **Java：生来就是为了网络与跨平台**
-    *   **“Write Once, Run Anywhere”**：Java的核心理念就是跨平台。它的字节码可以在任何安装了JVM的机器上运行，这完美契合了Web服务器多样化的环境（Windows Server, Linux, Unix等）。
-    *   **“网络就是计算机”**：Java从诞生之初就将网络编程作为其核心能力之一。`Servlet`规范（JSP的底层基础）就是专门为处理HTTP请求/响应模型而设计的。
-    *   **嵌入式设计**：JSP的`<% ... %>`这种将代码嵌入到模板中的方式，本身就是Java为Web开发量身定做的语法糖。
-
-*   **C++：生来是“系统级”的猛兽**
-    *   **性能之王，但代价高昂**：C++追求极致的性能和硬件控制。但这意味着它：
-        *   **没有内置的内存安全模型**：手动内存管理（`new`/`delete`）是Web服务器稳定性的噩梦。一个内存泄漏就能拖垮整个服务器。
-        *   **编译成本高**：与操作系统强关联，需要为不同平台编译不同的二进制文件，不符合Web快速部署的需求。
-        *   **缺乏标准的Web库**：没有像Java `Servlet API`那样统一、标准的Web开发规范。每个公司都得自己造轮子，生态难以统一。
-    *   **结论**：用C++写Web，就像用F1赛车去送快递——不是不行，但维护成本、司机（开发者）要求都太高，且容易出大事故。
-
-*   **Python：优雅的“后起之秀”**
-    *   **“人生苦短，我用Python”**：Python比Java诞生更早，但其在Web领域的爆发是在21世纪初以后。它的设计哲学是代码的清晰和可读性。
-    *   **语法冲突**：Python对**缩进**有严格的要求。想象一下，把它嵌入到不关心缩进的HTML中，会是一场格式上的灾难：
-        ```html
-        <ul>
-        <%
-        for item in item_list: # 这里开始一个块
-        %>
-            <li><%= item %></li>
-        <%
-                           # 如何优雅地结束这个块？HTML会破坏缩进结构！
-        %>
-        </ul>
-        ```
-    *   **后来者的成功**：Python后来通过**独立的模板引擎**解决了这个问题，比如Jinja2、Django Template。它们采用自己的标签语法`{% ... %}`、`{{ ... }}`，完美避开了与HTML和Python语法的冲突。但这证明了它不适合直接像JSP那样“嵌入”。
+- **Java：生来就是为了网络与跨平台**
+  
+  - **“Write Once, Run Anywhere”**：Java的核心理念就是跨平台。它的字节码可以在任何安装了JVM的机器上运行，这完美契合了Web服务器多样化的环境（Windows Server, Linux, Unix等）。
+  - **“网络就是计算机”**：Java从诞生之初就将网络编程作为其核心能力之一。`Servlet`规范（JSP的底层基础）就是专门为处理HTTP请求/响应模型而设计的。
+  - **嵌入式设计**：JSP的`<% ... %>`这种将代码嵌入到模板中的方式，本身就是Java为Web开发量身定做的语法糖。
+- **C++：生来是“系统级”的猛兽**
+  
+  - **性能之王，但代价高昂**：C++追求极致的性能和硬件控制。但这意味着它：
+    - **没有内置的内存安全模型**：手动内存管理（`new`/`delete`）是Web服务器稳定性的噩梦。一个内存泄漏就能拖垮整个服务器。
+    - **编译成本高**：与操作系统强关联，需要为不同平台编译不同的二进制文件，不符合Web快速部署的需求。
+    - **缺乏标准的Web库**：没有像Java `Servlet API`那样统一、标准的Web开发规范。每个公司都得自己造轮子，生态难以统一。
+  - **结论**：用C++写Web，就像用F1赛车去送快递——不是不行，但维护成本、司机（开发者）要求都太高，且容易出大事故。
+- **Python：优雅的“后起之秀”**
+  
+  - **“人生苦短，我用Python”**：Python比Java诞生更早，但其在Web领域的爆发是在21世纪初以后。它的设计哲学是代码的清晰和可读性。
+  - **语法冲突**：Python对**缩进**有严格的要求。想象一下，把它嵌入到不关心缩进的HTML中，会是一场格式上的灾难：
+    
+    ```html
+    <ul>
+    <%
+    for item in item_list: # 这里开始一个块
+    %>
+        <li><%= item %></li>
+    <%
+                       # 如何优雅地结束这个块？HTML会破坏缩进结构！
+    %>
+    </ul>
+    ```
+    
+  - **后来者的成功**：Python后来通过**独立的模板引擎**解决了这个问题，比如Jinja2、Django Template。它们采用自己的标签语法`{% ... %}`、`{{ ... }}`，完美避开了与HTML和Python语法的冲突。但这证明了它不适合直接像JSP那样“嵌入”。
 
 ---
 
 ### 2. 技术与商业生态
 
-*   **Java EE 的帝国**：
-    *   在JSP诞生的90年代末到21世纪初，正是Java企业级平台高歌猛进的时代。
-    *   Sun公司联合众多厂商（IBM, Oracle等）制定了`Servlet`和`JSP`标准。这意味着任何遵循此标准的应用服务器（Tomcat, WebLogic, WebSphere）都能运行JSP。
-    *   **强大的标准化和背后推手**，使得“HTML中写Java”成为一种可行且被大力推广的方案。
-
-*   **其他语言的生态**：
-    *   **C++**：缺乏这样一个统一、标准化、开箱即用的Web开发生态。
-    *   **Python**：当时还处于“胶水语言”的定位，其强大的Web框架（Django-2005, Flask-2010）都是在JSP之后才成熟起来的。
+- **Java EE 的帝国**：
+  
+  - 在JSP诞生的90年代末到21世纪初，正是Java企业级平台高歌猛进的时代。
+  - Sun公司联合众多厂商（IBM, Oracle等）制定了`Servlet`和`JSP`标准。这意味着任何遵循此标准的应用服务器（Tomcat, WebLogic, WebSphere）都能运行JSP。
+  - **强大的标准化和背后推手**，使得“HTML中写Java”成为一种可行且被大力推广的方案。
+- **其他语言的生态**：
+  
+  - **C++**：缺乏这样一个统一、标准化、开箱即用的Web开发生态。
+  - **Python**：当时还处于“胶水语言”的定位，其强大的Web框架（Django-2005, Flask-2010）都是在JSP之后才成熟起来的。
 
 ---
 
 ### 3. 执行模式与安全性
 
-*   **Java的沙箱与托管环境**：
-    *   JVM提供了一个安全、可控的“沙箱”环境。JSP文件被翻译成Servlet，然后在JVM中运行，受到严格限制，不容易对服务器操作系统造成致命破坏。
-    *   应用服务器可以轻松管理JSP的生命周期（加载、编译、热部署等）。
-
-*   **C++的直接操作**：
-    *   C++直接编译为机器码，与操作系统内核关系密切。让用户上传一段C++代码在服务器上编译执行，无异于“开门揖盗”，安全风险极高。
+- **Java的沙箱与托管环境**：
+  
+  - JVM提供了一个安全、可控的“沙箱”环境。JSP文件被翻译成Servlet，然后在JVM中运行，受到严格限制，不容易对服务器操作系统造成致命破坏。
+  - 应用服务器可以轻松管理JSP的生命周期（加载、编译、热部署等）。
+- **C++的直接操作**：
+  
+  - C++直接编译为机器码，与操作系统内核关系密切。让用户上传一段C++代码在服务器上编译执行，无异于“开门揖盗”，安全风险极高。
 
 ---
 
@@ -6449,19 +6921,19 @@ JSP是Web开发早期阶段一个非常重要的**服务端动态网页技术**�
 
 所以，“在HTML中写Java”而不是其他语言，是多种因素共同作用下的**历史必然**：
 
-1.  **时机**：Java在Web兴起时，正好提供了最成熟的、面向网络的跨平台解决方案。
-2.  **设计**：Java的语言特性和“嵌入式”语法设计，使其与HTML模板结合时相对自然和可控。
-3.  **生态**：背后有巨头推动的、标准化的企业级开发生态（Java EE）作为强大后盾。
-4.  **安全与稳定**：JVM的托管环境比原生代码（如C++）更安全，更适合多用户、高并发的Web场景。
-5.  **语法兼容性**：其语法（用`{}`界定代码块）比Python等语言更适合嵌入到无格式要求的HTML中。
+1. **时机**：Java在Web兴起时，正好提供了最成熟的、面向网络的跨平台解决方案。
+2. **设计**：Java的语言特性和“嵌入式”语法设计，使其与HTML模板结合时相对自然和可控。
+3. **生态**：背后有巨头推动的、标准化的企业级开发生态（Java EE）作为强大后盾。
+4. **安全与稳定**：JVM的托管环境比原生代码（如C++）更安全，更适合多用户、高并发的Web场景。
+5. **语法兼容性**：其语法（用`{}`界定代码块）比Python等语言更适合嵌入到无格式要求的HTML中。
 
 **后来的发展也印证了这一点：**
-*   **PHP** 走了类似“在HTML中嵌入脚本”的路子，并且大获成功，因为它就是为Web而生的。
-*   **C++** 主要用于开发对性能要求极高的**底层Web服务器**（如Nginx的模块）或**游戏服务器**，而不是直接用来写网页模板。
-*   **Python、Ruby** 等语言则选择了更优雅的 **“模板引擎”** 道路（Jinja2, ERB），将代码逻辑和HTML展示更清晰地进行分离，这可以看作是JSP思想的进化版。
+
+- **PHP** 走了类似“在HTML中嵌入脚本”的路子，并且大获成功，因为它就是为Web而生的。
+- **C++** 主要用于开发对性能要求极高的**底层Web服务器**（如Nginx的模块）或**游戏服务器**，而不是直接用来写网页模板。
+- **Python、Ruby** 等语言则选择了更优雅的 **“模板引擎”** 道路（Jinja2, ERB），将代码逻辑和HTML展示更清晰地进行分离，这可以看作是JSP思想的进化版。
 
 所以，JSP是那个特定时代背景下，Java给出的一个非常成功的“HTML中写代码”的答案。
-
 
 Node.js:
 Node.js是一个基于Chrome V8引擎的JavaScript运行环境，由Ryan Dahl在2009年5月发布。它使用了一个事件驱动、非阻塞式I/O模型，使得JavaScript能够在服务端运行，与PHP、Python、Perl、Ruby等服务端语言平起平坐。
@@ -6478,16 +6950,16 @@ Node.js的主要特性和优势包括：
 
 然而，Node.js也存在一些缺点，例如不适合CPU密集型应用、只支持单核CPU、可靠性较低、开源组件库质量参差不齐、debug不方便等。
 
-
 Java Web后端：
+
 ### 1. 什么是 Java Web 后端？
 
 简单来说，当你在浏览器或手机 App 上点击一个按钮时（比如“登录”或“下单”），你的请求会通过网络发送到一台远程的服务器。**Java Web 后端就是运行在这台服务器上的、用 Java 语言编写的程序**，它负责：
 
-*   **接收请求**：解析来自前端（浏览器、App、小程序等）的请求。
-*   **处理业务逻辑**：这是后端最核心的部分，例如：验证用户身份、计算商品价格、查询数据库、调用其他服务等。
-*   **访问数据**：与数据库（如 MySQL、Oracle）或其它数据存储系统进行交互，进行数据的增、删、改、查。
-*   **返回响应**：将处理结果（可能是成功的页面、JSON 数据、或一个错误信息）发送回前端。
+- **接收请求**：解析来自前端（浏览器、App、小程序等）的请求。
+- **处理业务逻辑**：这是后端最核心的部分，例如：验证用户身份、计算商品价格、查询数据库、调用其他服务等。
+- **访问数据**：与数据库（如 MySQL、Oracle）或其它数据存储系统进行交互，进行数据的增、删、改、查。
+- **返回响应**：将处理结果（可能是成功的页面、JSON 数据、或一个错误信息）发送回前端。
 
 你可以把它想象成餐厅的“后厨”：顾客（前端）点餐（发送请求），后厨（后端）根据订单准备食材（处理业务）、烹饪（处理逻辑），最后将做好的菜（响应）端给顾客。
 
@@ -6495,77 +6967,82 @@ Java Web后端：
 
 一个典型的 Java Web 后端应用通常采用分层架构，每一层都有明确的职责。最常见的是**三层架构**：
 
-*   **表现层**
-    *   **职责**：接收 HTTP 请求，解析参数，封装数据，返回 HTTP 响应（如 JSON、HTML）。
-    *   **核心技术**：**Servlet**（基石）、**Spring MVC**（事实上的标准）。Controller 是这一层的核心组件。
-
-*   **业务逻辑层**
-    *   **职责**：包含应用程序的核心业务规则和逻辑。例如，处理一个订单，需要依次调用库存检查、优惠券计算、创建订单记录等。
-    *   **核心技术**：**Spring Framework** 的 IOC（控制反转）和 AOP（面向切面编程）是构建这一层的利器。Service 是这一层的核心组件。
-
-*   **数据持久层**
-    *   **职责**：负责与数据库交互，将 Java 对象持久化到数据库表中，或者将查询结果映射回 Java 对象。
-    *   **核心技术**：**JDBC**（基础）、**MyBatis**、**Hibernate（JPA）**。DAO/Mapper 是这一层的核心组件。
+- **表现层**
+  
+  - **职责**：接收 HTTP 请求，解析参数，封装数据，返回 HTTP 响应（如 JSON、HTML）。
+  - **核心技术**：**Servlet**（基石）、**Spring MVC**（事实上的标准）。Controller 是这一层的核心组件。
+- **业务逻辑层**
+  
+  - **职责**：包含应用程序的核心业务规则和逻辑。例如，处理一个订单，需要依次调用库存检查、优惠券计算、创建订单记录等。
+  - **核心技术**：**Spring Framework** 的 IOC（控制反转）和 AOP（面向切面编程）是构建这一层的利器。Service 是这一层的核心组件。
+- **数据持久层**
+  
+  - **职责**：负责与数据库交互，将 Java 对象持久化到数据库表中，或者将查询结果映射回 Java 对象。
+  - **核心技术**：**JDBC**（基础）、**MyBatis**、**Hibernate（JPA）**。DAO/Mapper 是这一层的核心组件。
 
 ### 3. 主流技术栈与生态
 
 Java Web 后端领域已经非常成熟，形成了以 **Spring 家族**为核心的强大生态。
 
 #### **基石：Servlet API**
-*   这是所有 Java Web 技术的底层基础。它定义了如何处理请求和响应。Tomcat、Jetty 这类 Web 服务器（又称 Servlet 容器）就是它的实现。
+
+- 这是所有 Java Web 技术的底层基础。它定义了如何处理请求和响应。Tomcat、Jetty 这类 Web 服务器（又称 Servlet 容器）就是它的实现。
 
 #### **核心框架：Spring Framework**
-*   **IoC（控制反转）**： 由 Spring 容器来管理对象的创建和依赖关系，降低了组件间的耦合度。开发者不再需要 `new` 对象，而是通过依赖注入（DI）来获取。
-*   **AOP（面向切面编程）**： 将像日志、事务、安全校验这类“横切关注点”从业务逻辑中分离出来，使得代码更加清晰和可维护。
-*   **Spring MVC**： 基于 Servlet API 构建的强大 Web 框架，提供了清晰的 Model-View-Controller 模式，是开发现代 RESTful API 和 Web 应用的首选。
+
+- **IoC（控制反转）**： 由 Spring 容器来管理对象的创建和依赖关系，降低了组件间的耦合度。开发者不再需要 `new` 对象，而是通过依赖注入（DI）来获取。
+- **AOP（面向切面编程）**： 将像日志、事务、安全校验这类“横切关注点”从业务逻辑中分离出来，使得代码更加清晰和可维护。
+- **Spring MVC**： 基于 Servlet API 构建的强大 Web 框架，提供了清晰的 Model-View-Controller 模式，是开发现代 RESTful API 和 Web 应用的首选。
 
 #### **开发加速器：Spring Boot**
-*   **核心理念**：**约定优于配置**。它极大地简化了基于 Spring 的应用的初始搭建和开发过程。
-*   **自动配置**： 只需引入依赖（如 `spring-boot-starter-web`），Spring Boot 就会自动配置好 Tomcat、Spring MVC 等组件。
-*   **内嵌服务器**： 可以将 Web 服务器（如 Tomcat）直接打包到应用中，打成可执行的 JAR 包，部署变得极其简单。
-*   **生产就绪**： 提供了一系列用于监控和管理生产环境应用的功能（如健康检查、指标收集），通过 **Spring Boot Actuator** 实现。
+
+- **核心理念**：**约定优于配置**。它极大地简化了基于 Spring 的应用的初始搭建和开发过程。
+- **自动配置**： 只需引入依赖（如 `spring-boot-starter-web`），Spring Boot 就会自动配置好 Tomcat、Spring MVC 等组件。
+- **内嵌服务器**： 可以将 Web 服务器（如 Tomcat）直接打包到应用中，打成可执行的 JAR 包，部署变得极其简单。
+- **生产就绪**： 提供了一系列用于监控和管理生产环境应用的功能（如健康检查、指标收集），通过 **Spring Boot Actuator** 实现。
 
 #### **数据访问：MyBatis 和 JPA (Hibernate)**
-*   **MyBatis**： 一个半自动化的 ORM 框架。开发者需要自己编写 SQL，但 MyBatis 负责将结果集自动映射到 Java 对象。它灵活、SQL 可控性强，深受许多喜欢手写 SQL 的开发者的青睐。
-*   **JPA (Java Persistence API)** & **Hibernate**： JPA 是一个规范，Hibernate 是其最著名的实现。它是一个全自动的 ORM 框架，可以通过操作 Java 对象来间接操作数据库，几乎不需要手写 SQL。开发效率高，但复杂查询的优化需要更多经验。
+
+- **MyBatis**： 一个半自动化的 ORM 框架。开发者需要自己编写 SQL，但 MyBatis 负责将结果集自动映射到 Java 对象。它灵活、SQL 可控性强，深受许多喜欢手写 SQL 的开发者的青睐。
+- **JPA (Java Persistence API)** & **Hibernate**： JPA 是一个规范，Hibernate 是其最著名的实现。它是一个全自动的 ORM 框架，可以通过操作 Java 对象来间接操作数据库，几乎不需要手写 SQL。开发效率高，但复杂查询的优化需要更多经验。
 
 #### **微服务与云原生：Spring Cloud**
-*   当单体应用变得过于庞大和复杂时，会拆分为一组小的、相互协作的**微服务**。
-*   **Spring Cloud** 基于 Spring Boot，提供了一整套快速构建分布式系统（微服务架构）的工具。
-    *   **服务发现与注册**： Eureka, Nacos
-    *   **配置中心**： Spring Cloud Config, Nacos
-    *   **客户端负载均衡**： Ribbon, Spring Cloud LoadBalancer
-    *   **服务容错**： Hystrix, Sentinel
-    *   **API 网关**： Spring Cloud Gateway
+
+- 当单体应用变得过于庞大和复杂时，会拆分为一组小的、相互协作的**微服务**。
+- **Spring Cloud** 基于 Spring Boot，提供了一整套快速构建分布式系统（微服务架构）的工具。
+  - **服务发现与注册**： Eureka, Nacos
+  - **配置中心**： Spring Cloud Config, Nacos
+  - **客户端负载均衡**： Ribbon, Spring Cloud LoadBalancer
+  - **服务容错**： Hystrix, Sentinel
+  - **API 网关**： Spring Cloud Gateway
 
 ### 4. 一个完整的请求处理流程（以 Spring Boot + MVC 为例）
 
 假设前端请求 `GET /users/123`：
 
-1.  **请求到达**： 请求被内嵌的 Tomcat 接收。
-2.  **DispatcherServlet**： Spring MVC 的核心控制器 `DispatcherServlet` 拦截所有请求。
-3.  **查找 Handler**： `DispatcherServlet` 查询**处理器映射器**，找到能处理 `/users/123` 的 Controller 和方法。
-4.  **调用 Controller**： 执行对应的 Controller 方法，并将 URL 中的路径变量 `123` 作为参数传入。
-5.  **调用 Service**： Controller 调用业务逻辑层（Service）的方法，传入用户 ID `123`。
-6.  **调用 DAO/Mapper**： Service 调用数据持久层（Mapper）的方法，根据 ID 查询用户。
-7.  **访问数据库**： Mapper（通过 MyBatis）执行 SQL `SELECT * FROM user WHERE id = 123`，并将结果映射成一个 User 对象。
-8.  **返回结果**： 结果逐层返回：DAO -> Service -> Controller。
-9.  **生成响应**： Controller 方法将 User 对象返回（通常加上 `@RestController` 注解会自动转换为 JSON）。
+1. **请求到达**： 请求被内嵌的 Tomcat 接收。
+2. **DispatcherServlet**： Spring MVC 的核心控制器 `DispatcherServlet` 拦截所有请求。
+3. **查找 Handler**： `DispatcherServlet` 查询**处理器映射器**，找到能处理 `/users/123` 的 Controller 和方法。
+4. **调用 Controller**： 执行对应的 Controller 方法，并将 URL 中的路径变量 `123` 作为参数传入。
+5. **调用 Service**： Controller 调用业务逻辑层（Service）的方法，传入用户 ID `123`。
+6. **调用 DAO/Mapper**： Service 调用数据持久层（Mapper）的方法，根据 ID 查询用户。
+7. **访问数据库**： Mapper（通过 MyBatis）执行 SQL `SELECT * FROM user WHERE id = 123`，并将结果映射成一个 User 对象。
+8. **返回结果**： 结果逐层返回：DAO -> Service -> Controller。
+9. **生成响应**： Controller 方法将 User 对象返回（通常加上 `@RestController` 注解会自动转换为 JSON）。
 10. **HTTP 响应**： `DispatcherServlet` 将 JSON 数据通过 HTTP 响应返回给前端。
 
 ### 5. Java Web 后端的优势
 
-*   **成熟稳定**： 拥有超过 20 年的发展历史，经过大量企业级应用的验证，极其稳定。
-*   **性能强大**： JVM 的即时编译（JIT）技术使其性能卓越，且垃圾回收机制日益完善。
-*   **生态繁荣**： 拥有世界上最丰富的开源库和框架生态，几乎所有问题都能找到成熟的解决方案。
-*   **跨平台**： “一次编写，到处运行”，得益于 JVM。
-*   **可维护性高**： 强类型语言和面向对象的特性，使得大型项目的代码结构清晰，易于维护和扩展。
-*   **人才储备丰富**： 拥有全球最大规模的开发者社区和人才库。
+- **成熟稳定**： 拥有超过 20 年的发展历史，经过大量企业级应用的验证，极其稳定。
+- **性能强大**： JVM 的即时编译（JIT）技术使其性能卓越，且垃圾回收机制日益完善。
+- **生态繁荣**： 拥有世界上最丰富的开源库和框架生态，几乎所有问题都能找到成熟的解决方案。
+- **跨平台**： “一次编写，到处运行”，得益于 JVM。
+- **可维护性高**： 强类型语言和面向对象的特性，使得大型项目的代码结构清晰，易于维护和扩展。
+- **人才储备丰富**： 拥有全球最大规模的开发者社区和人才库。
 
 ---
 
 **总结**：Java Web 后端是一个庞大、成熟且不断演进的技术体系。它以稳定的 Servlet 为基础，以强大的 Spring 生态为核心，通过 Spring Boot 极大地提升了开发效率，并借助 Spring Cloud 等工具从容应对微服务和云原生时代的挑战。对于构建复杂、高性能、高可用的企业级应用来说，它依然是世界上最主流和最可靠的选择之一。
-
 
 Servlet：
 Servlet（Server Applet）是Java Servlet的简称，称为小服务程序或服务连接器，用Java编写的服务器端程序，具有独立于平台和协议的特性，主要功能在于交互式地浏览和生成数据，生成动态Web内容。
@@ -6576,14 +7053,14 @@ Servlet（Server Applet）是Java Servlet的简称，称为小服务程序或服
 Servlet的工作原理：
 Servlet接口定义了Servlet与servlet容器之间的契约。这个契约是：Servlet容器将Servlet类载入内存，并产生Servlet实例和调用它具体的方法。但是要注意的是，在一个应用程序中，每种Servlet类型只能有一个实例。
 
->用户请求致使Servlet容器调用Servlet的Service（）方法，并传入一个ServletRequest对象和一个ServletResponse对象。
-ServletRequest对象和ServletResponse对象都是由Servlet容器（例如TomCat）封装好的，并不需要开发者去实现，开发者可以直接使用这两个对象。
->ServletRequest中封装了当前的Http请求，因此，开发人员不必解析和操作原始的Http数据。
->ServletResponse表示当前用户的Http响应，程序员只需直接操作ServletResponse对象就能把响应轻松的发回给用户。
->对于每一个应用程序，Servlet容器还会创建一个ServletContext对象。这个对象中封装了上下文（应用程序）的环境详情。
->每个应用程序只有一个ServletContext。每个Servlet对象也都有一个封装Servlet配置的ServletConfig对象。
+> 用户请求致使Servlet容器调用Servlet的Service（）方法，并传入一个ServletRequest对象和一个ServletResponse对象。
+> ServletRequest对象和ServletResponse对象都是由Servlet容器（例如TomCat）封装好的，并不需要开发者去实现，开发者可以直接使用这两个对象。
+> ServletRequest中封装了当前的Http请求，因此，开发人员不必解析和操作原始的Http数据。
+> ServletResponse表示当前用户的Http响应，程序员只需直接操作ServletResponse对象就能把响应轻松的发回给用户。
+> 对于每一个应用程序，Servlet容器还会创建一个ServletContext对象。这个对象中封装了上下文（应用程序）的环境详情。
+> 每个应用程序只有一个ServletContext。每个Servlet对象也都有一个封装Servlet配置的ServletConfig对象。
 
->为什么需要Servlet，比Servlet更早的技术是什么？
+> 为什么需要Servlet，比Servlet更早的技术是什么？
 
 ### 一、比Servlet更早的技术是什么？
 
@@ -6592,19 +7069,21 @@ ServletRequest对象和ServletResponse对象都是由Servlet容器（例如TomCa
 **CGI** 的全称是 **Common Gateway Interface**，即通用网关接口。
 
 **它是如何工作的？**
-1.  用户在浏览器点击一个链接或提交一个表单，请求一个CGI程序（比如一个Perl或C脚本）。
-2.  Web服务器（如Apache）接收到请求。
-3.  Web服务器**为每一个请求创建一个新的操作系统进程**。
-4.  在这个新进程中，执行相应的CGI程序。
-5.  CGI程序处理请求（比如连接数据库），生成HTML输出。
-6.  Web服务器将这个输出返回给浏览器。
-7.  CGI程序执行完毕，**进程被销毁**。
+
+1. 用户在浏览器点击一个链接或提交一个表单，请求一个CGI程序（比如一个Perl或C脚本）。
+2. Web服务器（如Apache）接收到请求。
+3. Web服务器**为每一个请求创建一个新的操作系统进程**。
+4. 在这个新进程中，执行相应的CGI程序。
+5. CGI程序处理请求（比如连接数据库），生成HTML输出。
+6. Web服务器将这个输出返回给浏览器。
+7. CGI程序执行完毕，**进程被销毁**。
 
 **CGI的主要缺点：**
-1.  **性能极差**：每个请求都需要“创建进程-执行-销毁进程”这个过程。创建和销毁进程是操作系统级别非常重量级的操作，会大量消耗CPU和内存资源。当网站访问量很大时，服务器会不堪重负。
-2.  **平台依赖性强**：CGI通常用Perl、C等语言编写，与操作系统关系紧密。
-3.  **可移植性差**：一个为Unix/Linux写的C语言CGI程序很难直接运行在Windows服务器上。
-4.  **开发复杂**：处理简单的Web请求都需要编写底层代码，开发效率低。
+
+1. **性能极差**：每个请求都需要“创建进程-执行-销毁进程”这个过程。创建和销毁进程是操作系统级别非常重量级的操作，会大量消耗CPU和内存资源。当网站访问量很大时，服务器会不堪重负。
+2. **平台依赖性强**：CGI通常用Perl、C等语言编写，与操作系统关系紧密。
+3. **可移植性差**：一个为Unix/Linux写的C语言CGI程序很难直接运行在Windows服务器上。
+4. **开发复杂**：处理简单的Web请求都需要编写底层代码，开发效率低。
 
 ---
 
@@ -6613,40 +7092,42 @@ ServletRequest对象和ServletResponse对象都是由Servlet容器（例如TomCa
 Servlet的出现，正是为了解决CGI的这些致命缺陷。我们可以把Servlet理解为 **“用Java编写的、在服务器端运行的小程序”**，但它需要在一个特殊的环境中运行，这个环境就是 **Servlet容器**（比如Tomcat）。
 
 **Servlet是如何工作的？**
-1.  用户发起请求。
-2.  Web服务器（如Apache）接收到请求，如果是动态请求，会转发给Servlet容器（Tomcat）。
-3.  Servlet容器**在启动时或首次请求时，会加载和初始化Servlet类，并创建一个Servlet实例**。
-4.  对于后续的每个请求，容器会**复用这个实例**，只是创建一个新的线程来处理它。
-5.  线程调用Servlet的 `service()` 方法，根据请求类型（GET/POST）再调用 `doGet()` 或 `doPost()` 方法。
-6.  方法执行完毕，生成动态内容（HTML）。
-7.  容器将响应返回给Web服务器，再返回给浏览器。
-8.  **线程结束，但Servlet实例依然存在，等待下一个请求。**
+
+1. 用户发起请求。
+2. Web服务器（如Apache）接收到请求，如果是动态请求，会转发给Servlet容器（Tomcat）。
+3. Servlet容器**在启动时或首次请求时，会加载和初始化Servlet类，并创建一个Servlet实例**。
+4. 对于后续的每个请求，容器会**复用这个实例**，只是创建一个新的线程来处理它。
+5. 线程调用Servlet的 `service()` 方法，根据请求类型（GET/POST）再调用 `doGet()` 或 `doPost()` 方法。
+6. 方法执行完毕，生成动态内容（HTML）。
+7. 容器将响应返回给Web服务器，再返回给浏览器。
+8. **线程结束，但Servlet实例依然存在，等待下一个请求。**
 
 **Servlet相对于CGI的巨大优势：**
 
-1.  **卓越的性能（核心优势）**
-    *   **CGI模式**： 每请求 => 每进程。
-    *   **Servlet模式**： 每请求 => 每线程。
-    *   创建和销毁线程的开销，远小于创建和销毁进程的开销。这使得Servlet能够轻松应对高并发请求。
-
-2.  **可移植性（Write Once, Run Anywhere）**
-    *   Servlet是用Java编写的，所以它天然继承了Java的平台无关性。同一个Servlet可以部署到任何支持Java的服务器上，无需修改代码。
-
-3.  **强大的API支持**
-    *   Java Servlet API 提供了一整套强大的类和方法，用于处理HTTP请求和响应、会话管理、Cookie、过滤器、监听器等，极大地简化了Web开发。
-
-4.  **与Java生态无缝集成**
-    *   可以轻松地使用所有Java标准库和企业级技术，比如JDBC（连接数据库）、JPA、Spring框架等，使得构建复杂的企业级应用变得非常方便。
-
-5.  **生命周期由容器管理**
-    *   Servlet容器负责Servlet的加载、初始化、服务调用和销毁。开发者只需关注业务逻辑，无需关心底层资源管理和多线程问题（虽然仍需注意线程安全）。
+1. **卓越的性能（核心优势）**
+  
+  - **CGI模式**： 每请求 => 每进程。
+  - **Servlet模式**： 每请求 => 每线程。
+  - 创建和销毁线程的开销，远小于创建和销毁进程的开销。这使得Servlet能够轻松应对高并发请求。
+2. **可移植性（Write Once, Run Anywhere）**
+  
+  - Servlet是用Java编写的，所以它天然继承了Java的平台无关性。同一个Servlet可以部署到任何支持Java的服务器上，无需修改代码。
+3. **强大的API支持**
+  
+  - Java Servlet API 提供了一整套强大的类和方法，用于处理HTTP请求和响应、会话管理、Cookie、过滤器、监听器等，极大地简化了Web开发。
+4. **与Java生态无缝集成**
+  
+  - 可以轻松地使用所有Java标准库和企业级技术，比如JDBC（连接数据库）、JPA、Spring框架等，使得构建复杂的企业级应用变得非常方便。
+5. **生命周期由容器管理**
+  
+  - Servlet容器负责Servlet的加载、初始化、服务调用和销毁。开发者只需关注业务逻辑，无需关心底层资源管理和多线程问题（虽然仍需注意线程安全）。
 
 ---
 
 ### 总结
 
-| 特性 | CGI | Servlet |
-| :--- | :--- | :--- |
+| 特性  | CGI | Servlet |
+| --- | --- | --- |
 | **处理模型** | 每请求一进程 | 每请求一线程（实例复用） |
 | **性能** | 差，资源消耗大 | 优秀，适合高并发 |
 | **可移植性** | 差，依赖平台和语言 | 优秀，基于Java |
@@ -6656,18 +7137,20 @@ Servlet的出现，正是为了解决CGI的这些致命缺陷。我们可以把S
 **结论：**
 我们需要Servlet，是因为它提供了一个比CGI**性能更高、更健壮、更可移植、更强大**的服务器端动态网页技术方案。它奠定了现代Java Web开发的基石，后续所有的Java Web框架（如Spring MVC）都是构建在Servlet技术之上的。尽管今天我们已经很少直接编写Servlet，但理解它是理解整个Java Web技术栈的关键。
 
-
 Servlet接口中定义的方法：
 public interface Servlet {
-    void init(ServletConfig var1) throws ServletException;
- 
-    ServletConfig getServletConfig();
- 
-    void service(ServletRequest var1, ServletResponse var2) throws ServletException, IOException;
- 
-    String getServletInfo();
- 
-    void destroy();
+ void init(ServletConfig var1) throws ServletException;
+
+```
+ServletConfig getServletConfig();
+
+void service(ServletRequest var1, ServletResponse var2) throws ServletException, IOException;
+
+String getServletInfo();
+
+void destroy();
+```
+
 }
 
 用Servlet创建轻量级Web框架：
@@ -6675,138 +7158,149 @@ public interface Servlet {
 
 @WebServlet("/*")
 public class DispatcherServlet extends HttpServlet {
-    private Map<String, Controller> handlerMappings = new HashMap<>();
-    private ViewResolver viewResolver;
-    
-    @Override
-    public void init() {
-        // 1. 初始化控制器映射 (硬编码示例)
-        handlerMappings.put("/user", new UserController());
-        handlerMappings.put("/product", new ProductController());
-        
-        // 2. 初始化视图解析器
-        viewResolver = new JspViewResolver("/WEB-INF/views/", ".jsp");
+ private Map<String, Controller> handlerMappings = new HashMap<>();
+ private ViewResolver viewResolver;
+
+```
+@Override
+public void init() {
+    // 1. 初始化控制器映射 (硬编码示例)
+    handlerMappings.put("/user", new UserController());
+    handlerMappings.put("/product", new ProductController());
+
+    // 2. 初始化视图解析器
+    viewResolver = new JspViewResolver("/WEB-INF/views/", ".jsp");
+}
+
+@Override
+protected void service(HttpServletRequest req, HttpServletResponse resp) 
+    throws ServletException, IOException {
+
+    // 1. 获取请求路径
+    String path = req.getRequestURI().substring(req.getContextPath().length());
+
+    // 2. 查找对应的Controller
+    Controller controller = handlerMappings.get(path);
+    if (controller == null) {
+        resp.sendError(404, "No controller for path: " + path);
+        return;
     }
-    
-    @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) 
-        throws ServletException, IOException {
-        
-        // 1. 获取请求路径
-        String path = req.getRequestURI().substring(req.getContextPath().length());
-        
-        // 2. 查找对应的Controller
-        Controller controller = handlerMappings.get(path);
-        if (controller == null) {
-            resp.sendError(404, "No controller for path: " + path);
-            return;
+
+    try {
+        // 3. 调用Controller处理请求
+        ModelAndView mav = controller.handleRequest(req, resp);
+
+        // 4. 视图渲染
+        if (mav.getViewName() != null) {
+            viewResolver.resolveView(mav.getViewName(), mav.getModel(), req, resp);
+        } else if (mav.getJsonData() != null) {
+            renderJson(resp, mav.getJsonData());
         }
-        
-        try {
-            // 3. 调用Controller处理请求
-            ModelAndView mav = controller.handleRequest(req, resp);
-            
-            // 4. 视图渲染
-            if (mav.getViewName() != null) {
-                viewResolver.resolveView(mav.getViewName(), mav.getModel(), req, resp);
-            } else if (mav.getJsonData() != null) {
-                renderJson(resp, mav.getJsonData());
-            }
-        } catch (Exception e) {
-            throw new ServletException("Controller execution failed", e);
-        }
+    } catch (Exception e) {
+        throw new ServletException("Controller execution failed", e);
     }
-    
-    private void renderJson(HttpServletResponse resp, Object data) throws IOException {
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
-        new ObjectMapper().writeValue(resp.getWriter(), data);
-    }
+}
+
+private void renderJson(HttpServletResponse resp, Object data) throws IOException {
+    resp.setContentType("application/json");
+    resp.setCharacterEncoding("UTF-8");
+    new ObjectMapper().writeValue(resp.getWriter(), data);
+}
+```
+
 }
 
 2.创建控制器接口
 public interface Controller {
-    ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse res) 
-        throws Exception;
+ ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse res) 
+throws Exception;
 }
 
 3.创建模型视图对象
 public class ModelAndView {
-    private String viewName;
-    private Map<String, Object> model = new HashMap<>();
-    private Object jsonData;
+ private String viewName;
+ private Map<String, Object> model = new HashMap<>();
+ private Object jsonData;
 
-    // 构造器和getter/setter
-    public ModelAndView(String viewName) {
-        this.viewName = viewName;
-    }
-    
-    public ModelAndView withObject(String key, Object value) {
-        model.put(key, value);
-        return this;
-    }
-    
-    public ModelAndView withJson(Object jsonData) {
-        this.jsonData = jsonData;
-        return this;
-    }
+```
+// 构造器和getter/setter
+public ModelAndView(String viewName) {
+    this.viewName = viewName;
+}
+
+public ModelAndView withObject(String key, Object value) {
+    model.put(key, value);
+    return this;
+}
+
+public ModelAndView withJson(Object jsonData) {
+    this.jsonData = jsonData;
+    return this;
+}
+```
+
 }
 
 4.创建视图解析器
 public interface ViewResolver {
-    void resolveView(String viewName, 
-                    Map<String, Object> model,
-                    HttpServletRequest req, 
-                    HttpServletResponse res) 
-        throws Exception;
+ void resolveView(String viewName, 
+Map<String, Object> model,
+ HttpServletRequest req, 
+HttpServletResponse res) 
+throws Exception;
 }
 
 // JSP实现
 public class JspViewResolver implements ViewResolver {
-    private final String prefix;
-    private final String suffix;
-    
-    public JspViewResolver(String prefix, String suffix) {
-        this.prefix = prefix;
-        this.suffix = suffix;
-    }
-    
-    @Override
-    public void resolveView(String viewName, Map<String, Object> model,
-                           HttpServletRequest req, HttpServletResponse res) 
-        throws ServletException, IOException {
-        
-        // 设置模型数据
-        model.forEach(req::setAttribute);
-        
-        // 转发到JSP
-        RequestDispatcher dispatcher = req.getRequestDispatcher(prefix + viewName + suffix);
-        dispatcher.forward(req, res);
-    }
+ private final String prefix;
+ private final String suffix;
+
+```
+public JspViewResolver(String prefix, String suffix) {
+    this.prefix = prefix;
+    this.suffix = suffix;
+}
+
+@Override
+public void resolveView(String viewName, Map<String, Object> model,
+                       HttpServletRequest req, HttpServletResponse res) 
+    throws ServletException, IOException {
+
+    // 设置模型数据
+    model.forEach(req::setAttribute);
+
+    // 转发到JSP
+    RequestDispatcher dispatcher = req.getRequestDispatcher(prefix + viewName + suffix);
+    dispatcher.forward(req, res);
+}
+```
+
 }
 
 5.实现业务控制器示例
 public class UserController implements Controller {
-    @Override
-    public ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse res) {
-        // 1. 处理请求逻辑
-        String action = req.getParameter("action");
-        
-        // 2. 返回JSON响应
-        if ("list".equals(action)) {
-            List<User> users = Arrays.asList(
-                new User(1, "Alice"),
-                new User(2, "Bob")
-            );
-            return new ModelAndView().withJson(users);
-        }
-        
-        // 3. 返回视图响应
-        return new ModelAndView("userProfile")
-            .withObject("user", new User(1001, "Charlie"));
-    }
-}
+ @Override
+ public ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse res) {
+ // 1. 处理请求逻辑
+ String action = req.getParameter("action");
 
+```
+    // 2. 返回JSON响应
+    if ("list".equals(action)) {
+        List<User> users = Arrays.asList(
+            new User(1, "Alice"),
+            new User(2, "Bob")
+        );
+        return new ModelAndView().withJson(users);
+    }
+
+    // 3. 返回视图响应
+    return new ModelAndView("userProfile")
+        .withObject("user", new User(1001, "Charlie"));
+}
+```
+
+}
 
 在静态资源中的Content-type是如何体现的？
 静态资源：
@@ -6814,7 +7308,6 @@ public class UserController implements Controller {
 
 对于静态资源，Content-Type 通常由服务器自动根据文件的扩展名来确定。例如，对于 .html 文件，Content-Type 通常是 text/html；
 对于 .css 文件，Content-Type 是 text/css；对于 .js 文件，Content-Type 是 application/javascript；对于图片文件，如 .jpg 或 .png，Content-Type 则分别是 image/jpeg 或 image/png。
-
 
 Servlet设置Content-type：
 Servlet资源：
@@ -6828,58 +7321,61 @@ Servlet 是 Java Web 应用程序中的一部分，用于处理客户端的请�
 
 使用注解@webServlet可以设置Servlet路径
 
-
 ServletRequset接口:
-    Servlet容器对于接受到的每一个Http请求，都会创建一个ServletRequest对象，并把这个对象传递给Servlet的Sevice( )方法。其中，ServletRequest对象内封装了关于这个请求的许多详细信息。
+ Servlet容器对于接受到的每一个Http请求，都会创建一个ServletRequest对象，并把这个对象传递给Servlet的Sevice( )方法。其中，ServletRequest对象内封装了关于这个请求的许多详细信息。
 
-public interface ServletRequest { 
- 
-    int getContentLength();//返回请求主体的字节数
- 
-    String getContentType();//返回主体的MIME类型
- 
-    String getParameter(String var1);//返回请求参数的值
- 
+public interface ServletRequest {
+
+```
+int getContentLength();//返回请求主体的字节数
+
+String getContentType();//返回主体的MIME类型
+
+String getParameter(String var1);//返回请求参数的值
+```
+
 }
 
 ServletResponse接口:
-    javax.servlet.ServletResponse接口表示一个Servlet响应，在调用Servlet的Service( )方法前，Servlet容器会先创建一个ServletResponse对象，并把它作为第二个参数传给Service( )方法。ServletResponse隐藏了向浏览器发送响应的复杂过程。
+ javax.servlet.ServletResponse接口表示一个Servlet响应，在调用Servlet的Service( )方法前，Servlet容器会先创建一个ServletResponse对象，并把它作为第二个参数传给Service( )方法。ServletResponse隐藏了向浏览器发送响应的复杂过程。
 
 public interface ServletResponse {
-    String getCharacterEncoding();
- 
-    String getContentType();
- 
-    ServletOutputStream getOutputStream() throws IOException;
- 
-    PrintWriter getWriter() throws IOException;
- 
-    void setCharacterEncoding(String var1);
- 
-    void setContentLength(int var1);
- 
-    void setContentType(String var1);
- 
-    void setBufferSize(int var1);
- 
-    int getBufferSize();
- 
-    void flushBuffer() throws IOException;
- 
-    void resetBuffer();
- 
-    boolean isCommitted();
- 
-    void reset();
- 
-    void setLocale(Locale var1);
- 
-    Locale getLocale();
+ String getCharacterEncoding();
+
+```
+String getContentType();
+
+ServletOutputStream getOutputStream() throws IOException;
+
+PrintWriter getWriter() throws IOException;
+
+void setCharacterEncoding(String var1);
+
+void setContentLength(int var1);
+
+void setContentType(String var1);
+
+void setBufferSize(int var1);
+
+int getBufferSize();
+
+void flushBuffer() throws IOException;
+
+void resetBuffer();
+
+boolean isCommitted();
+
+void reset();
+
+void setLocale(Locale var1);
+
+Locale getLocale();
+```
+
 }
 
 在发送任何HTML之前，应该先调用setContentType（）方法，设置响应的内容类型，并将“text/html”作为一个参数传入，这是在告诉浏览器响应的内容类型为HTML，
 需要以HTML的方法解释响应内容而不是普通的文本，或者也可以加上“charset=UTF-8”改变响应的编码方式以防止发生中文乱码现象。
-
 
 ServletContext对象:
 ServletContext对象表示Servlet应用程序。每个Web应用程序都只有一个ServletContext对象。在将一个应用程序同时部署到多个容器的分布式环境中，每台Java虚拟机上的Web应用都会有一个ServletContext对象。
@@ -6911,8 +7407,6 @@ RequestDispatcher dispatcher = context.getRequestDispatcher("/someServlet");
 请注意，ServletContext对象在整个Web应用程序中都是共享的，因此它通常用于存储需要在整个应用程序中访问的信息，如数据库连接、配置参数等。
 但是，由于它是全局的，所以应该避免在其中存储与特定用户或请求相关的信息。
 
-
-
 ServletConfig接口:
 当Servlet容器初始化Servlet时，Servlet容器会给Servlet的init( )方式传入一个ServletConfig对象。
 
@@ -6921,7 +7415,6 @@ public String getInitParameter(String name): 此方法用于获取在 web.xml �
 public ServletContext getServletContext(): 此方法返回与该 servlet 关联的 ServletContext 对象。
 ServletContext 对象提供了对 Servlet 环境的访问，包括请求和响应对象、会话跟踪、初始化参数、上下文路径等等。
 public String getServletName(): 此方法返回 servlet 的名称，该名称在 web.xml 文件中为 servlet 定义。如果找不到 servlet 名称，此方法将返回 null。
-
 
 GenericServlet抽象类：
 在编写一个Servlet对象时，必须实现Servlet接口，在Servlet接口中包含5个方法，创建Servlet时必须都要实现这5个方法，这样操作非常不便。
@@ -6936,11 +7429,10 @@ public void destroy(): 当 servlet 不再需要时，这个方法被调用。它
 注意，虽然 GenericServlet 实现了大部分 Servlet 接口的方法，但是它并没有实现所有的方法。例如，Servlet 接口中的 getLoginPage() 和 isUserInRole(String role) 方法在 GenericServlet 中没有实现。
 如果需要这两个方法的功能，你可能需要自定义你的 Servlet 类并实现这两个方法。
 
-
-
 HttpServlet抽象类:
->HttpServlet抽象类是继承于GenericServlet抽象类而来的。使用HttpServlet抽象类时，还需要借助分别代表Servlet请求和Servlet响应的HttpServletRequest和HttpServletResponse对象。
->HttpServletRequest接口扩展于javax.servlet.ServletRequest接口，HttpServletResponse接口扩展于javax.servlet.servletResponse接口。
+
+> HttpServlet抽象类是继承于GenericServlet抽象类而来的。使用HttpServlet抽象类时，还需要借助分别代表Servlet请求和Servlet响应的HttpServletRequest和HttpServletResponse对象。
+> HttpServletRequest接口扩展于javax.servlet.ServletRequest接口，HttpServletResponse接口扩展于javax.servlet.servletResponse接口。
 
 public interface HttpServletRequest extends ServletRequest
 public interface HttpServletResponse extends ServletResponse
@@ -6949,60 +7441,62 @@ HttpServlet抽象类覆盖了GenericServlet抽象类中的Service( )方法，并
 
 HttpServlet抽象类如何实现自己的service方法?
 public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
-    HttpServletRequest request;
-    HttpServletResponse response;
-    try {
-        request = (HttpServletRequest)req;
-        response = (HttpServletResponse)res;
-    } catch (ClassCastException var6) {
-        throw new ServletException("non-HTTP request or response");
-    }
- 
-    this.service(request, response);
+ HttpServletRequest request;
+ HttpServletResponse response;
+ try {
+ request = (HttpServletRequest)req;
+ response = (HttpServletResponse)res;
+ } catch (ClassCastException var6) {
+ throw new ServletException("non-HTTP request or response");
+ }
+
+```
+this.service(request, response);
+```
+
 }
 
 我们发现，HttpServlet中的service方法把接收到的ServletRequsest类型的对象转换成了HttpServletRequest类型的对象，把ServletResponse类型的对象转换成了HttpServletResponse类型的对象。
 之所以能够这样强制的转换，是因为在调用Servlet的Service方法时，Servlet容器总会传入一个HttpServletRequest对象和HttpServletResponse对象，预备使用HTTP。因此，转换类型不会出错。
 
-
 随后的Service方法：
 protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    String method = req.getMethod();
-    long lastModified;
-    if (method.equals("GET")) {
-        lastModified = this.getLastModified(req);
-        if (lastModified == -1L) {
-            this.doGet(req, resp);
-        } else {
-            long ifModifiedSince = req.getDateHeader("If-Modified-Since");
-            if (ifModifiedSince < lastModified) {
-                this.maybeSetLastModified(resp, lastModified);
-                this.doGet(req, resp);
-            } else {
-                resp.setStatus(304);
-            }
-        }
-    } else if (method.equals("HEAD")) {
-        lastModified = this.getLastModified(req);
-        this.maybeSetLastModified(resp, lastModified);
-        this.doHead(req, resp);
-    } else if (method.equals("POST")) {
-        this.doPost(req, resp);
-    } else if (method.equals("PUT")) {
-        this.doPut(req, resp);
-    } else if (method.equals("DELETE")) {
-        this.doDelete(req, resp);
-    } else if (method.equals("OPTIONS")) {
-        this.doOptions(req, resp);
-    } else if (method.equals("TRACE")) {
-        this.doTrace(req, resp);
-    } else {
-        String errMsg = lStrings.getString("http.method_not_implemented");
-        Object[] errArgs = new Object[]{method};
-        errMsg = MessageFormat.format(errMsg, errArgs);
-        resp.sendError(501, errMsg);
-    }
- 
+ String method = req.getMethod();
+ long lastModified;
+ if (method.equals("GET")) {
+ lastModified = this.getLastModified(req);
+ if (lastModified == -1L) {
+ this.doGet(req, resp);
+ } else {
+ long ifModifiedSince = req.getDateHeader("If-Modified-Since");
+ if (ifModifiedSince < lastModified) {
+ this.maybeSetLastModified(resp, lastModified);
+ this.doGet(req, resp);
+ } else {
+ resp.setStatus(304);
+ }
+ }
+ } else if (method.equals("HEAD")) {
+ lastModified = this.getLastModified(req);
+ this.maybeSetLastModified(resp, lastModified);
+ this.doHead(req, resp);
+ } else if (method.equals("POST")) {
+ this.doPost(req, resp);
+ } else if (method.equals("PUT")) {
+ this.doPut(req, resp);
+ } else if (method.equals("DELETE")) {
+ this.doDelete(req, resp);
+ } else if (method.equals("OPTIONS")) {
+ this.doOptions(req, resp);
+ } else if (method.equals("TRACE")) {
+ this.doTrace(req, resp);
+ } else {
+ String errMsg = lStrings.getString("http.method_not_implemented");
+ Object[] errArgs = new Object[]{method};
+ errMsg = MessageFormat.format(errMsg, errArgs);
+ resp.sendError(501, errMsg);
+ }
+
 }
 接下来我们再看看service方法是如何工作的，我们会发现在service方法中还是没有任何的服务逻辑，但是却在解析HttpServletRequest中的方法参数，并调用以下方法之一：doGet,doPost,doHead,doPut,doTrace,doOptions和doDelete。
 这7种方法中，每一种方法都表示一个Http方法。doGet和doPost是最常用的。所以，如果我们需要实现具体的服务逻辑，不再需要覆盖service方法了，只需要覆盖doGet或者doPost就好了。
@@ -7010,7 +7504,6 @@ protected void service(HttpServletRequest req, HttpServletResponse resp) throws 
 HttpServlet有两个特性是GenericServlet所不具备的：
 1.不用覆盖service方法，而是覆盖doGet或者doPost方法。在少数情况，还会覆盖其他的5个方法。
 2.使用的是HttpServletRequest和HttpServletResponse对象。
-
 
 Servlet的生命周期：
 init( ),service( ),destroy( )是Servlet生命周期的方法，代表了Servlet的生命周期，即Servlet从“出生”到“工作”再到“死亡 ”的过程。
@@ -7026,53 +7519,57 @@ Servlet容器（例如TomCat）会根据下面的规则来调用这三个方法�
 3.destory,当要销毁Servlet时，Servlet容器就会调用这个方法，就如人一样，到时期了就得死亡。
 在卸载应用程序或者关闭Servlet容器时，就会发生这种情况，一般在这个方法中会写一些清除代码。
 
-
 在SpringBoot中创建Servlet，继承HttpServlet类：
 方式一： 通过注解扫描方式实现
 创建一个servlet类
 
 package com.liuhaiyang.springboot.servlet;
- 
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
- 
+
 //servlet第一种方式
-@WebServlet(urlPatterns = "/myservlet")  //定义请求路径，通过该路径能访问到这个servlet
+@WebServlet(urlPatterns = "/myservlet") //定义请求路径，通过该路径能访问到这个servlet
 public class MyServlet extends HttpServlet {
- 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().println("My Springboot-servlet-1");
-        resp.getWriter().flush();
-        resp.getWriter().close();
-    }
- 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
-    }
+
+```
+@Override
+protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    resp.getWriter().println("My Springboot-servlet-1");
+    resp.getWriter().flush();
+    resp.getWriter().close();
 }
- 
+
+@Override
+protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    super.doPost(req, resp);
+}
+```
+
+}
+
 在SpringBoot项目的入口类上方使用注解 @ServletComponentScan 注解来扫描Servlet中的注解即可。
 
 package com.liuhaiyang.springboot;
- 
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
- 
+
 @SpringBootApplication
-@ServletComponentScan(basePackages = "com.liuhaiyang.springboot.servlet")   //第一种的注解
+@ServletComponentScan(basePackages = "com.liuhaiyang.springboot.servlet") //第一种的注解
 public class SpringbootTest13Application {
- 
-    public static void main(String[] args) {
-        SpringApplication.run(SpringbootTest13Application.class, args);
-    }
- 
+
+```
+public static void main(String[] args) {
+    SpringApplication.run(SpringbootTest13Application.class, args);
+}
+```
+
 }
 
 方式二：通过 SpringBoot 的配置类实现（组件注册）
@@ -7080,62 +7577,65 @@ public class SpringbootTest13Application {
 再次创建一个Servlet类。
 
 package com.liuhaiyang.springboot.servlet2;
- 
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
- 
- 
+
 //servlet第二种方式
 public class MyServlet extends HttpServlet {
- 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().println("My Springboot-servlet-2");
-        resp.getWriter().flush();
-        resp.getWriter().close();
-    }
- 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
-    }
+
+```
+@Override
+protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    resp.getWriter().println("My Springboot-servlet-2");
+    resp.getWriter().flush();
+    resp.getWriter().close();
+}
+
+@Override
+protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    super.doPost(req, resp);
+}
+```
+
 }
 
 编写一个 Spring Boot 的配置类，在该类中注册 Servlet
 创建 ServletConfig 配置类
 
 package com.liuhaiyang.springboot.config;
- 
+
 import com.liuhaiyang.springboot.servlet2.MyServlet;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
- 
+
 @Configuration //该注解将此类定义为配置类（相当于一个xml文件）
 public class ServletConfig {
-    //@Bean是一个方法级别上的注解，主要用于配置类里 相当于<beans> <bean id="" class="" > </beans>
-    @Bean
-    public ServletRegistrationBean myServletRegistrationBean(){
-        ServletRegistrationBean servletRegistrationBean=new ServletRegistrationBean(new MyServlet(),"/myservlet");
-        return servletRegistrationBean;
-    }
+ //@Bean是一个方法级别上的注解，主要用于配置类里 相当于<beans> <bean id="" class="" > </beans>
+ @Bean
+ public ServletRegistrationBean myServletRegistrationBean(){
+ ServletRegistrationBean servletRegistrationBean=new ServletRegistrationBean(new MyServlet(),"/myservlet");
+ return servletRegistrationBean;
+ }
 }
 
 在Servlet中，HttpServletRequest和ServletRequest HttpServletResponse和ServletResponse是什么关系？
 ServletRequest 与 HttpServletRequest:
->ServletRequest 是一个通用的请求接口，定义了在Web应用中处理HTTP请求时的通用方法。
->HttpServletRequest 是 ServletRequest 的一个子接口，专门用于处理HTTP协议的请求。它提供了更多与HTTP协议相关的方法和属性，如获取请求头、查询参数、请求方法（GET、POST等）等。
->当你编写一个Servlet时，你通常会直接处理 HttpServletRequest，因为它提供了更丰富的功能来处理HTTP请求。
+
+> ServletRequest 是一个通用的请求接口，定义了在Web应用中处理HTTP请求时的通用方法。
+> HttpServletRequest 是 ServletRequest 的一个子接口，专门用于处理HTTP协议的请求。它提供了更多与HTTP协议相关的方法和属性，如获取请求头、查询参数、请求方法（GET、POST等）等。
+> 当你编写一个Servlet时，你通常会直接处理 HttpServletRequest，因为它提供了更丰富的功能来处理HTTP请求。
 
 ServletResponse 与 HttpServletResponse:
->ServletResponse 是一个通用的响应接口，定义了在Web应用中构建HTTP响应时的通用方法。
->HttpServletResponse 是 ServletResponse 的一个子接口，专门用于构建HTTP协议的响应。它提供了更多与HTTP协议相关的方法和属性，如设置响应头、发送重定向、设置响应状态码等。
->同样地，在编写Servlet时，你通常会直接处理 HttpServletResponse，因为它允许你更精细地控制HTTP响应的各个方面。
 
+> ServletResponse 是一个通用的响应接口，定义了在Web应用中构建HTTP响应时的通用方法。
+> HttpServletResponse 是 ServletResponse 的一个子接口，专门用于构建HTTP协议的响应。它提供了更多与HTTP协议相关的方法和属性，如设置响应头、发送重定向、设置响应状态码等。
+> 同样地，在编写Servlet时，你通常会直接处理 HttpServletResponse，因为它允许你更精细地控制HTTP响应的各个方面。
 
 关于转发和重定向的区别：
 
@@ -7146,15 +7646,29 @@ ServletResponse 与 HttpServletResponse:
 5.由于转发相当于服务器内部方法调用，所以转发后面的代码仍然会执行(转发之后记得return)；重定向代码执行之后是方法执行完成之后进行重定向操作，也就是访问第二个请求，如果是方法的最后一行进行重定向那就会马上进行重定向(重定向也需要return)。
 6.无论是RequestDispatcher.forward方法，还是HttpServletResponse.sendRedirect方法，在调用它们之前，都不能有内容已经被实际输出到了客户端。如果缓冲区中已经有了一些内容，这些内容将被从缓冲区中移除。
 
+### 常见的Servlet面试题
+
+#### 1. Servlet生命周期是怎样的？是单例多线程吗？
+
+- `init`：第一次被请求（或容器启动加载）时调用一次。`service`：每次请求都调用；`HttpServlet` 再分发到 `doGet`/`doPost`。`destroy`：应用卸载或容器关闭时调用一次。
+- 一个 Servlet 通常只有一个实例，多线程同时进 `service`，**成员变量不是线程安全的**。状态放到 request/session，不要放到字段上。
+
+#### 2. 转发和重定向有什么区别？
+
+- 转发是服务器内部跳转，浏览器只请求一次，地址栏不变，只能转到本应用，前后共用同一个 request。
+- 重定向是 302，浏览器再发一次请求，地址栏变，可以去任意 URL，是新的 request，原参数带不过去。
+- `forward` 后当前方法后面的代码还会跑，要 `return`。
 
 关于JSP和Servlet的区别：
-1.  不同之处在哪？
-Servlet在Java代码中通过HttpServletResponse对象动态输出HTML内容
-JSP在静态HTML内容中嵌入Java代码，Java代码被动态执行后生成HTML内容
 
-2.  各自的特点
-Servlet能够很好地组织业务逻辑代码，但是在Java源文件中通过字符串拼接的方式生成动态HTML内容会导致代码维护困难、可读性差
-JSP虽然规避了Servlet在生成HTML内容方面的劣势，但是在HTML中混入大量、复杂的业务逻辑同样也是不可取的
+1. 不同之处在哪？
+  Servlet在Java代码中通过HttpServletResponse对象动态输出HTML内容
+  JSP在静态HTML内容中嵌入Java代码，Java代码被动态执行后生成HTML内容
+  
+2. 各自的特点
+  Servlet能够很好地组织业务逻辑代码，但是在Java源文件中通过字符串拼接的方式生成动态HTML内容会导致代码维护困难、可读性差
+  JSP虽然规避了Servlet在生成HTML内容方面的劣势，但是在HTML中混入大量、复杂的业务逻辑同样也是不可取的
+  
 
 关于浏览器渲染数据：
 前端渲染:
@@ -7171,19 +7685,18 @@ JSP虽然规避了Servlet在生成HTML内容方面的劣势，但是在HTML中�
 坏处：占用服务器资源。
 
 前端渲染与后端渲染对比：
-    
+
 前端渲染：
 页面呈现速度：主要受限于带宽和客户端机器的好坏，优化效果好，可以逐步动态展开内容，感觉上会更快一点。
 可维护性强，前后端分离，各施其职，代码一目明了。
 SEO友好度(seo=Search(搜索) Engine(引擎) Optimization(优化),即搜索引擎优化)：差，大量使用ajax，多数浏览器不能抓取ajax数据。
 编码效率：高，前后端各自只做自己擅长的东西，后端最后只输出接口，不用管页面呈现，只要前后端人员能力不错，效率不会低。
-    
+
 后端渲染：
 页面呈现速度：快，受限于用户的带宽
 可维护性：差（前后端不分离）
 SEO友好度：好,后端的数据一步搞定,直接生成相对应的模板网页
 编码效率：低（有时候可能手忙脚乱,找不到数据对应的位置或者数据）
-
 
 什么是过滤器（Filter）
 过滤器，是在java web中将你传入的request、response提前过滤掉一些信息，或者提前设置一些参数。
@@ -7202,56 +7715,62 @@ java
 import javax.servlet.*;  
 import javax.servlet.http.HttpServletRequest;  
 import javax.servlet.http.HttpServletResponse;  
-import java.io.IOException;  
-  
-public class MyFilter implements Filter {  
-  
-    @Override  
-    public void init(FilterConfig filterConfig) throws ServletException {  
-        // 初始化方法，在过滤器创建时调用一次  
-        System.out.println("MyFilter initialized.");  
-    }  
-  
-    @Override  
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)  
-            throws IOException, ServletException {  
-          
-        // 在请求处理前执行代码  
-        HttpServletRequest req = (HttpServletRequest) request;  
-        HttpServletResponse res = (HttpServletResponse) response;  
-          
-        System.out.println("MyFilter is filtering request for " + req.getRequestURI());  
-          
-        // 继续过滤器链，即调用下一个过滤器或目标资源  
-        chain.doFilter(request, response);  
-          
-        // 在请求处理后执行代码（如果需要的话）  
-        System.out.println("MyFilter has finished filtering request for " + req.getRequestURI());  
-    }  
-  
-    @Override  
-    public void destroy() {  
-        // 销毁方法，在过滤器销毁时调用一次  
-        System.out.println("MyFilter destroyed.");  
-    }  
+import java.io.IOException;
+
+public class MyFilter implements Filter {
+
+```
+@Override  
+public void init(FilterConfig filterConfig) throws ServletException {  
+    // 初始化方法，在过滤器创建时调用一次  
+    System.out.println("MyFilter initialized.");  
+}  
+
+@Override  
+public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)  
+        throws IOException, ServletException {  
+
+    // 在请求处理前执行代码  
+    HttpServletRequest req = (HttpServletRequest) request;  
+    HttpServletResponse res = (HttpServletResponse) response;  
+
+    System.out.println("MyFilter is filtering request for " + req.getRequestURI());  
+
+    // 继续过滤器链，即调用下一个过滤器或目标资源  
+    chain.doFilter(request, response);  
+
+    // 在请求处理后执行代码（如果需要的话）  
+    System.out.println("MyFilter has finished filtering request for " + req.getRequestURI());  
+}  
+
+@Override  
+public void destroy() {  
+    // 销毁方法，在过滤器销毁时调用一次  
+    System.out.println("MyFilter destroyed.");  
+}  
+```
+
 }
 在web.xml中配置过滤器
 然后，你需要在你的web.xml文件中配置过滤器，以告诉Web容器何时应用这个过滤器。
 
 <web-app ...>  
-    <!-- 其他配置 -->  
-      
-    <filter>  
-        <filter-name>MyFilter</filter-name>  
-        <filter-class>com.example.MyFilter</filter-class>  
-    </filter>  
-      
-    <filter-mapping>  
-        <filter-name>MyFilter</filter-name>  
-        <url-pattern>/*</url-pattern> <!-- 应用到所有请求 -->  
-    </filter-mapping>  
-      
-    <!-- 其他配置 -->  
+ <!-- 其他配置 -->
+
+```
+<filter>  
+    <filter-name>MyFilter</filter-name>  
+    <filter-class>com.example.MyFilter</filter-class>  
+</filter>  
+
+<filter-mapping>  
+    <filter-name>MyFilter</filter-name>  
+    <url-pattern>/*</url-pattern> <!-- 应用到所有请求 -->  
+</filter-mapping>  
+
+<!-- 其他配置 -->  
+```
+
 </web-app>
 
 <filter>元素定义了过滤器的名称和类，而<filter-mapping>元素定义了该过滤器应用到哪些URL模式上。/*意味着过滤器会应用到Web应用程序中的所有请求。
@@ -7259,15 +7778,14 @@ public class MyFilter implements Filter {
 使用注解：
 如果你的Servlet容器（如Tomcat 7及更高版本、Jetty等）支持Servlet 3.0或更高版本的注解，你可以使用@WebFilter注解来替代web.xml中的配置。
 
-
 import javax.servlet.annotation.WebFilter;  
-import javax.servlet.annotation.WebInitParam;  
-  
+import javax.servlet.annotation.WebInitParam;
+
 @WebFilter(urlPatterns = "/*", initParams = {  
-    @WebInitParam(name = "param1", value = "value1")  
+ @WebInitParam(name = "param1", value = "value1")  
 })  
 public class MyFilter implements Filter {  
-    // ... 实现方法与之前相同 ...  
+ // ... 实现方法与之前相同 ...  
 }
 
 使用Spring Boot创建过滤器：
@@ -7280,32 +7798,35 @@ public class MyFilter implements Filter {
 
 import javax.servlet.*;  
 import javax.servlet.http.HttpServletRequest;  
-import java.io.IOException;  
-  
-public class MyCustomFilter implements Filter {  
-  
-    @Override  
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)  
-            throws IOException, ServletException {  
-          
-        HttpServletRequest request = (HttpServletRequest) servletRequest;  
-        System.out.println("MyCustomFilter is filtering request for " + request.getRequestURI());  
-          
-        // 继续过滤器链  
-        filterChain.doFilter(servletRequest, servletResponse);  
-          
-        System.out.println("MyCustomFilter has finished filtering request for " + request.getRequestURI());  
-    }  
-  
-    @Override  
-    public void init(FilterConfig filterConfig) throws ServletException {  
-        // 初始化方法  
-    }  
-  
-    @Override  
-    public void destroy() {  
-        // 销毁方法  
-    }  
+import java.io.IOException;
+
+public class MyCustomFilter implements Filter {
+
+```
+@Override  
+public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)  
+        throws IOException, ServletException {  
+
+    HttpServletRequest request = (HttpServletRequest) servletRequest;  
+    System.out.println("MyCustomFilter is filtering request for " + request.getRequestURI());  
+
+    // 继续过滤器链  
+    filterChain.doFilter(servletRequest, servletResponse);  
+
+    System.out.println("MyCustomFilter has finished filtering request for " + request.getRequestURI());  
+}  
+
+@Override  
+public void init(FilterConfig filterConfig) throws ServletException {  
+    // 初始化方法  
+}  
+
+@Override  
+public void destroy() {  
+    // 销毁方法  
+}  
+```
+
 }
 
 注册过滤器：
@@ -7313,18 +7834,21 @@ public class MyCustomFilter implements Filter {
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;  
 import org.springframework.context.annotation.Bean;  
-import org.springframework.context.annotation.Configuration;  
-  
+import org.springframework.context.annotation.Configuration;
+
 @Configuration  
-public class FilterConfig {  
-  
-    @Bean  
-    public FilterRegistrationBean<MyCustomFilter> myCustomFilterRegistration() {  
-        FilterRegistrationBean<MyCustomFilter> registrationBean = new FilterRegistrationBean<>();  
-        registrationBean.setFilter(new MyCustomFilter());  
-        registrationBean.addUrlPatterns("/*"); // 应用到所有请求  
-        return registrationBean;  
-    }  
+public class FilterConfig {
+
+```
+@Bean  
+public FilterRegistrationBean<MyCustomFilter> myCustomFilterRegistration() {  
+    FilterRegistrationBean<MyCustomFilter> registrationBean = new FilterRegistrationBean<>();  
+    registrationBean.setFilter(new MyCustomFilter());  
+    registrationBean.addUrlPatterns("/*"); // 应用到所有请求  
+    return registrationBean;  
+}  
+```
+
 }
 在上面的代码中，我们创建了一个FilterRegistrationBean，并将我们的MyCustomFilter实例设置到它里面。然后，我们添加了一个URL模式/*，这表示该过滤器将应用于所有的请求。
 
@@ -7334,11 +7858,11 @@ public class FilterConfig {
 import javax.servlet.*;  
 import javax.servlet.annotation.WebFilter;  
 import javax.servlet.http.HttpServletRequest;  
-import java.io.IOException;  
+import java.io.IOException;
 
 @Component  
 public class MyComponentFilter implements Filter {  
-    // ... 实现方法与之前相同 ...  
+ // ... 实现方法与之前相同 ...  
 }
 
 在这种情况下，不需要创建FilterRegistrationBean，因为Spring Boot会自动处理它。但是，如果需要更细粒度的控制（比如指定URL模式），那么使用FilterRegistrationBean是更好的选择。
@@ -7353,51 +7877,55 @@ public class MyComponentFilter implements Filter {
 首先，我们需要实现一个监听器接口。假设我们想要创建一个ServletContextListener，用于监听ServletContext的创建和销毁事件：
 
 import javax.servlet.ServletContextEvent;  
-import javax.servlet.ServletContextListener;  
-  
-public class MyServletContextListener implements ServletContextListener {  
-  
-    @Override  
-    public void contextInitialized(ServletContextEvent sce) {  
-        // ServletContext被创建时调用  
-        System.out.println("ServletContext 初始化");  
-        // 在这里可以执行初始化操作，比如加载配置文件等  
-    }  
-  
-    @Override  
-    public void contextDestroyed(ServletContextEvent sce) {  
-        // ServletContext被销毁时调用  
-        System.out.println("ServletContext 销毁");  
-        // 在这里可以执行清理操作，比如释放资源等  
-    }  
+import javax.servlet.ServletContextListener;
+
+public class MyServletContextListener implements ServletContextListener {
+
+```
+@Override  
+public void contextInitialized(ServletContextEvent sce) {  
+    // ServletContext被创建时调用  
+    System.out.println("ServletContext 初始化");  
+    // 在这里可以执行初始化操作，比如加载配置文件等  
+}  
+
+@Override  
+public void contextDestroyed(ServletContextEvent sce) {  
+    // ServletContext被销毁时调用  
+    System.out.println("ServletContext 销毁");  
+    // 在这里可以执行清理操作，比如释放资源等  
+}  
+```
+
 }
 
 然后，我们需要在web.xml文件中配置这个监听器：
 
 <web-app ...>  
-    <!-- 其他配置 -->  
-      
-    <listener>  
-        <listener-class>com.example.MyServletContextListener</listener-class>  
-    </listener>  
+ <!-- 其他配置 -->
+
+```
+<listener>  
+    <listener-class>com.example.MyServletContextListener</listener-class>  
+</listener>  
+```
+
 </web-app>
 
 如果你的项目使用的是Servlet 3.0或更高版本，你还可以使用注解来避免在web.xml中手动配置监听器。你只需要在监听器类上使用@WebListener注解即可：
 
-
 import javax.servlet.annotation.WebListener;  
 import javax.servlet.ServletContextEvent;  
-import javax.servlet.ServletContextListener;  
-  
+import javax.servlet.ServletContextListener;
+
 @WebListener  
 public class MyServletContextListener implements ServletContextListener {  
-    // 实现与上面相同的contextInitialized和contextDestroyed方法  
+ // 实现与上面相同的contextInitialized和contextDestroyed方法  
 }
 使用@WebListener注解后，你就不需要在web.xml中手动添加<listener>配置了，Servlet容器会在启动时自动发现并注册这个监听器。
 
 注意：监听器类应该放在WEB-INF/classes目录或其子目录下，或者打包在WEB-INF/lib目录下的JAR文件中，以确保Servlet容器能够找到和加载它们。
 当Web应用程序启动或停止时，Servlet容器会自动调用监听器的相应方法。
-
 
 什么是拦截器（Interceptor）
 拦截器是一种面向方面/切面编程（AOP Aspect-Oriented Programming），而面向切面就是将多个模块的通用服务进行分离，
@@ -7415,6 +7943,15 @@ public class MyServletContextListener implements ServletContextListener {
 4、拦截器可以访问action上下文、值栈里的对象，而过滤器不能
 5、在action的生命周期中，拦截器可以多次被调用，而过滤器只能在容器初始化时被调用一次
 6、拦截器可以获取IOC容器中的各个bean，而过滤器不行，这点很重要，在拦截器里注入一个service，可以调用业务逻辑。
+
+### 常见的Filter/Interceptor面试题
+
+#### 1. Filter、Listener、Interceptor的区别？
+
+- Filter：Servlet 规范，请求进入容器后、进 Servlet 前（返回时相反），基于过滤器链回调，能拦几乎所有请求。
+- Interceptor：Spring MVC，在 `DispatcherServlet` 里、Controller 前后，基于反射/AOP，能拿 Spring Bean，适合登录鉴权、日志。
+- Listener：监听容器、Session、Request 的创建销毁等事件，不是拦请求的。
+- 执行顺序：Filter → Interceptor → Controller。
 
 通俗理解：
 （1）过滤器（Filter）：当你有一堆东西的时候，你只希望选择符合你要求的某一些东西。定义这些要求的工具，就是过滤器。（理解：就是一堆字母中取一个B）
@@ -7435,25 +7972,24 @@ Action处理完成返回后，拦截器还可以做其他过程(还没想到要�
 例子：自定义拦截器
 @Component
 public class MyInterceptor implements HandlerInterceptor {
-  @Override
-  public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-                           Object handler) throws Exception {
-		return true;
-		}
+ @Override
+ public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+ Object handler) throws Exception {
+ return true;
+ }
 }
 
 需要再写一个自己的配置类：
 @Configuration
 public class MyConfiguration implements WebMvcConfigurer {
-	 @Override
-	 public void addInterceptors(InterceptorRegistry registry) {
-		  //将我们自定义的拦截器加入配置
-	 	 InterceptorRegistration interceptor = registry.addInterceptor(new MyInterceptor());
-		  //设置拦截的url
-		  interceptor.addPathPatterns("/user/**");
-	 }
+ @Override
+ public void addInterceptors(InterceptorRegistry registry) {
+ //将我们自定义的拦截器加入配置
+ InterceptorRegistration interceptor = registry.addInterceptor(new MyInterceptor());
+ //设置拦截的url
+ interceptor.addPathPatterns("/user/**");
+ }
 }
-
 
 使用Spring MVC拦截器实现控制权限：
 首先，你需要创建一个实现了HandlerInterceptor接口的类。在这个类中，你可以重写preHandle方法来进行权限控制。
@@ -7462,37 +7998,40 @@ java
 import javax.servlet.http.HttpServletRequest;  
 import javax.servlet.http.HttpServletResponse;  
 import org.springframework.web.servlet.HandlerInterceptor;  
-import org.springframework.web.servlet.ModelAndView;  
-  
-public class AuthInterceptor implements HandlerInterceptor {  
-  
-    @Override  
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {  
-        // 检查用户是否登录或者是否有权限访问  
-        String username = (String) request.getSession().getAttribute("username");  
-        if (username == null || !isUserAuthorized(username, request)) {  
-            // 如果用户未登录或未授权，重定向到登录页面  
-            response.sendRedirect(request.getContextPath() + "/login");  
-            return false; // 返回false表示请求处理到此为止，不再继续执行后续的Controller方法  
-        }  
-        return true; // 返回true表示请求可以继续执行  
+import org.springframework.web.servlet.ModelAndView;
+
+public class AuthInterceptor implements HandlerInterceptor {
+
+```
+@Override  
+public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {  
+    // 检查用户是否登录或者是否有权限访问  
+    String username = (String) request.getSession().getAttribute("username");  
+    if (username == null || !isUserAuthorized(username, request)) {  
+        // 如果用户未登录或未授权，重定向到登录页面  
+        response.sendRedirect(request.getContextPath() + "/login");  
+        return false; // 返回false表示请求处理到此为止，不再继续执行后续的Controller方法  
     }  
-  
-    private boolean isUserAuthorized(String username, HttpServletRequest request) {  
-        // 这里应该实现具体的权限检查逻辑  
-        // 例如，可以检查用户名是否匹配某个允许访问的列表  
-        return true; // 示例中默认返回true，表示所有用户都有权限  
-    }  
-  
-    @Override  
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {  
-        // 请求处理完成后调用，通常用于视图渲染前的处理  
-    }  
-  
-    @Override  
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {  
-        // 整个请求完成后调用，通常用于资源清理  
-    }  
+    return true; // 返回true表示请求可以继续执行  
+}  
+
+private boolean isUserAuthorized(String username, HttpServletRequest request) {  
+    // 这里应该实现具体的权限检查逻辑  
+    // 例如，可以检查用户名是否匹配某个允许访问的列表  
+    return true; // 示例中默认返回true，表示所有用户都有权限  
+}  
+
+@Override  
+public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {  
+    // 请求处理完成后调用，通常用于视图渲染前的处理  
+}  
+
+@Override  
+public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {  
+    // 整个请求完成后调用，通常用于资源清理  
+}  
+```
+
 }
 然后，你需要在Spring MVC的配置中注册这个拦截器，并指定它应该拦截哪些URL。这可以通过Java配置或XML配置来完成。
 
@@ -7500,122 +8039,132 @@ Java配置示例：
 import org.springframework.beans.factory.annotation.Autowired;  
 import org.springframework.context.annotation.Configuration;  
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;  
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;  
-  
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 @Configuration  
-public class WebConfig implements WebMvcConfigurer {  
-  
-    @Autowired  
-    private AuthInterceptor authInterceptor;  
-  
-    @Override  
-    public void addInterceptors(InterceptorRegistry registry) {  
-        registry.addInterceptor(authInterceptor)  
-                .addPathPatterns("/secure/**") // 拦截所有以"/secure/"开头的URL  
-                .excludePathPatterns("/secure/login"); // 排除"/secure/login"这个URL，不需要权限检查  
-    }  
+public class WebConfig implements WebMvcConfigurer {
+
+```
+@Autowired  
+private AuthInterceptor authInterceptor;  
+
+@Override  
+public void addInterceptors(InterceptorRegistry registry) {  
+    registry.addInterceptor(authInterceptor)  
+            .addPathPatterns("/secure/**") // 拦截所有以"/secure/"开头的URL  
+            .excludePathPatterns("/secure/login"); // 排除"/secure/login"这个URL，不需要权限检查  
+}  
+```
+
 }
 
 XML配置示例：
 
 <mvc:interceptors>  
-    <mvc:interceptor>  
-        <mvc:mapping path="/secure/**" />  
-        <mvc:exclude-mapping path="/secure/login" />  
-        <bean class="com.example.AuthInterceptor" />  
-    </mvc:interceptor>  
+ <mvc:interceptor>  
+ <mvc:mapping path="/secure/**" />  
+ <mvc:exclude-mapping path="/secure/login" />  
+ <bean class="com.example.AuthInterceptor" />  
+ </mvc:interceptor>  
 </mvc:interceptors>
 在这个配置中，AuthInterceptor会被注册为一个拦截器，并配置为拦截所有以/secure/开头的URL，但排除/secure/login这个URL。
-
 
 SpringBoot配置嵌入式Servlet容器：
 1、找到接口ConfigurableEmbeddedServletContainer
 2、找到接口EmbeddedServletContainerCustomizer
 3、注册Servlet、Filter、Listener
-	>ServletRegistrationBean
-	>FilterRegistrationBean
-	>ServletListenerRegistrationBean
+ >ServletRegistrationBean
+ >FilterRegistrationBean
+ >ServletListenerRegistrationBean
 
 配置Servlet:
 @WebServlet(urlPatterns = "/portal/*")
 public class HelloServlet extends HttpServlet {
-    public HelloServlet() {
-        super();
-    }
- 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
-        System.out.println("=====================Hello "+ name +", this is doGet Filter===================");
-        PrintWriter writer = resp.getWriter();
-        writer.write("Your request parameter is " + name);
-        writer.flush();
-        writer.close();
-    }
- 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("=====================Hello doPost Filter===================");
-        super.doPost(req, resp);
-    }
- 
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("=====================Hello doPut Filter===================");
-        super.doPut(req, resp);
-    }
+ public HelloServlet() {
+ super();
+ }
+
+```
+@Override
+protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    String name = req.getParameter("name");
+    System.out.println("=====================Hello "+ name +", this is doGet Filter===================");
+    PrintWriter writer = resp.getWriter();
+    writer.write("Your request parameter is " + name);
+    writer.flush();
+    writer.close();
+}
+
+@Override
+protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    System.out.println("=====================Hello doPost Filter===================");
+    super.doPost(req, resp);
+}
+
+@Override
+protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    System.out.println("=====================Hello doPut Filter===================");
+    super.doPut(req, resp);
+}
+```
+
 }
 
 配置Filter：
 @WebFilter(urlPatterns = "/*", filterName = "helloFilter")
 public class HelloFilter implements Filter {
- 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        System.out.println("================init filter===================");
-    }
- 
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        System.out.println("=================this is filer method====================");
-        filterChain.doFilter(servletRequest, servletResponse);
-    }
- 
-    @Override
-    public void destroy() {
-        System.out.println("==========================destroy method===================");
-    }
+
+```
+@Override
+public void init(FilterConfig filterConfig) throws ServletException {
+    System.out.println("================init filter===================");
+}
+
+@Override
+public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    System.out.println("=================this is filer method====================");
+    filterChain.doFilter(servletRequest, servletResponse);
+}
+
+@Override
+public void destroy() {
+    System.out.println("==========================destroy method===================");
+}
+```
+
 }
 
 配置Listener：
 package com.learn.listener;
- 
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
- 
+
 /**
- * springBoot整合Listener
- *
- *<listener>
- *	<listener-class>com.learn.listener.FirstListener</listener-class>
- *</listener>
- */
-@WebListener
-public class MyListener implements ServletContextListener {
- 
-	@Override
-	public void contextDestroyed(ServletContextEvent arg0) {
-		// TODO Auto-generated method stub
- 
-	}
- 
-	@Override
-	public void contextInitialized(ServletContextEvent arg0) {
-		System.out.println("Listener...init......");
- 
-	}
- 
+
+- springBoot整合Listener
+  
+
+- <listener-class>com.learn.listener.FirstListener</listener-class>
+  *</listener>
+  */
+  @WebListener
+  public class MyListener implements ServletContextListener {
+  
+  @Override
+  public void contextDestroyed(ServletContextEvent arg0) {
+   // TODO Auto-generated method stub
+  
+  }
+  
+  @Override
+  public void contextInitialized(ServletContextEvent arg0) {
+   System.out.println("Listener...init......");
+  
+  }
+  
+
 }
 
 Java WEB 中前后端不分离和前后端分离的区别是什么？
@@ -7626,7 +8175,6 @@ Java WEB 中前后端不分离和前后端分离的区别是什么？
 1.Spring Boot：Spring Boot是一个全栈的Java框架，它可以创建独立的、生产级别的Spring应用程序。Spring Boot可以构建Web应用，并且内置了Tomcat服务器，前端和后端代码都放在同一个应用中。
 2.JavaServer Pages (JSP)：JSP是一种Java技术，让你可以在HTML中嵌入Java代码。JSP在服务器上运行，并动态生成HTML页面返回给客户端。这种方式下，前端和后端的代码是混在一起的。
 
-
 前后端分离（Microservices Architecture）：与前后端不分离相反，前后端分离将前端和后端的职责完全分开。
 前端通常负责展示数据和用户交互，而后端则负责处理业务逻辑和数据持久化。这种架构有助于提高可扩展性、模块化和独立性。
 下面是一些前后端分离的例子：
@@ -7635,7 +8183,6 @@ Java WEB 中前后端不分离和前后端分离的区别是什么？
 2.RESTful API + Front-end SPA：后端提供RESTful API来处理业务逻辑和数据，而前端使用Single Page Application (SPA)框架（如Angular、React或Vue）来获取数据并展示给用户。
 
 总之：这两种架构都有其优缺点。前后端不分离的架构简单易用，但在大型项目中可能限制了可扩展性和模块化。前后端分离的架构提供了更高的灵活性，但同时也增加了开发和维护的复杂性。
-
 
 路由控制:前后端分离的情况后端在任何都会返回一个json数据，不涉及路由处理，即页面跳转全是由前端自己完成。
 不分离的情况，路由跳转一般由后端完成，而且携带数据，通过重定向或请求转发实现，依赖Servlet中的内置对象。
@@ -7651,7 +8198,6 @@ Java WEB 中前后端不分离和前后端分离的区别是什么？
 返回数据时使用@ResponseBody,作用在方法上,当然对于全局的也可以使用@RespController注解。
 前后端不分离一般使用@RequestMapping，请求方式不用管。前后端不分离一般使用@RequestMapping，请求方式不用管。
 
-
 Struts2：
 Struts2框架是一个用于开发Java EE网络应用程序的开放源代码网页应用程序架构。它利用并延伸了Java Servlet API，鼓励开发者采用MVC架构。
 Struts2以WebWork优秀的设计思想为核心，吸收了Struts框架的部分优点，提供了一个更加整洁的MVC设计模式实现的Web应用程序框架。
@@ -7659,57 +8205,62 @@ Struts2以WebWork优秀的设计思想为核心，吸收了Struts框架的部分
 Strut2核心过滤器：web.xml
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" 
-	xmlns="http://java.sun.com/xml/ns/javaee" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
-	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-  <display-name></display-name>	
-  <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
-  </welcome-file-list>
-  
-  <!-- 配置struts2的核心过滤器 -->
-  <!-- 所有请求都要通过核心过滤器 -->
-  <filter>
-  	<filter-name>struts2</filter-name>
-  	<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+xmlns="http://java.sun.com/xml/ns/javaee" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+ <display-name></display-name>  
+ <welcome-file-list> <welcome-file>index.jsp</welcome-file> </welcome-file-list>
+
+<!-- 配置struts2的核心过滤器 -->
+
+<!-- 所有请求都要通过核心过滤器 -->
+
+<filter>
+      <filter-name>struts2</filter-name>
+      <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
   </filter>
-  
-  <filter-mapping>
-  	<filter-name>struts2</filter-name>
-  	<url-pattern>/*</url-pattern>
+
+<filter-mapping>
+      <filter-name>struts2</filter-name>
+      <url-pattern>/*</url-pattern>
   </filter-mapping>
-  
+
 </web-app>
 
 编写启动类：
 package com.banana.struts.demo1;
 /*
- * Struts2的Action类
- */
-public class HelloAction {
-	public String execute(){
-		System.out.print("HelloAction执行了......");
-		return "success";
-	}
-}
+
+- Struts2的Action类
+  */
+  public class HelloAction {
+   public String execute(){
+  
+  ```
+   System.out.print("HelloAction执行了......");
+   return "success";
+  ```
+  
+  }
+  }
 
 编写struts.xml来控制转向：
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE struts PUBLIC
-	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
-	"http://struts.apache.org/dtds/struts-2.3.dtd">
+ "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+ "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-	<!-- Struts2为了管理Action的配置，通过包进行管理 -->
-	<!-- 配置Struts2的包 -->
-	<package name="hello" extends="struts-default" namespace="/">
-		<!-- 配置Action -->
-		<action name="hello" class="com.banana.struts.demo1.HelloAction">
-		<!-- 页面的跳转 -->
-			<result name="success">/demo1/success.jsp</result>
-		</action>
-	</package>
+    <!-- Struts2为了管理Action的配置，通过包进行管理 -->
+    <!-- 配置Struts2的包 -->
+    <package name="hello" extends="struts-default" namespace="/">
+        <!-- 配置Action -->
+        <action name="hello" class="com.banana.struts.demo1.HelloAction">
+        <!-- 页面的跳转 -->
+            <result name="success">/demo1/success.jsp</result>
+        </action>
+    </package>
 </struts>
 
 添加页面：
@@ -7720,24 +8271,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
 <html>
   <head>
     <base href="<%=basePath%>">
     <title>My JSP 'demo1' starting page</title>
   </head>
-  
-  <body>
+
+<body>
     <h1>Struts2的入门</h1>
     <h3><a href="${ pageContext.request.contextPath }/hello.action">Struts2的入门</a></h3>
   </body>
-  
+
 </html>
 
 Struts2被弃用原因：被爆出安全漏洞
 Struts2 漏洞概要
 2017年3月6日，Apache Struts2被曝存在远程命令执行漏洞，漏洞编号:S2-045，CVE编号:CVE-2017-5638，官方评级为高危，
 该漏洞是由于在使用基于Jakarta插件的文件上传功能条件下，恶意用户可以通过修改HTTP请求头中的Content-Type值来触发该漏洞，进而执行任意系统命令，导致系统被黑客入侵。
-
 
 SSH：
 SSH框架是Struts、Spring、Hibernate的一个合成框架，目前市场上比较流行的框架中也有它的身影。
@@ -7749,143 +8300,140 @@ Spring更像是一个容器，将所有配置的Struts和Hibernate中的东西�
 Hibernate是一个开源代码的对象映射框架，是根据JDBC技术基础衍生而来的，它将直接操作原来的数据库变为直接操作数据表后生成的Java类，
 实现了对象编程思维来操纵数据库。SSH框架中的各种技术相互协调、配合。实现了这一强大的框架。
 
-
 示例代码：
 首先，你需要确保你的项目中已经包含了SSH所需的依赖。如果你使用Maven，可以在pom.xml中添加以下依赖（注意版本号可能需要更新）：
 <dependencies>
-    <!-- Struts 2 dependencies -->
-    <dependency>
-        <groupId>org.apache.struts</groupId>
-        <artifactId>struts2-core</artifactId>
-        <version>2.5.26</version>
-    </dependency>
-    <!-- Other Struts 2 plugins like struts2-spring-plugin may be needed -->
- 
-    <!-- Spring dependencies -->
-    <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
-        <version>5.3.10</version>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-orm</artifactId>
-        <version>5.3.10</version>
-    </dependency>
- 
-    <!-- Hibernate dependencies -->
-    <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-core</artifactId>
-        <version>5.4.32.Final</version>
-    </dependency>
-    <!-- Hibernate JPA, connection pool (e.g., HikariCP), database driver dependencies -->
-    <!-- ... -->
+ <!-- Struts 2 dependencies -->
+ <dependency> <groupId>org.apache.struts</groupId>
+ <artifactId>struts2-core</artifactId>
+ <version>2.5.26</version> </dependency>
+ <!-- Other Struts 2 plugins like struts2-spring-plugin may be needed -->
+
+```
+<!-- Spring dependencies -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context</artifactId>
+    <version>5.3.10</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-orm</artifactId>
+    <version>5.3.10</version>
+</dependency>
+
+<!-- Hibernate dependencies -->
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-core</artifactId>
+    <version>5.4.32.Final</version>
+</dependency>
+<!-- Hibernate JPA, connection pool (e.g., HikariCP), database driver dependencies -->
+<!-- ... -->
+```
+
 </dependencies>
 接下来，你需要配置Spring和Hibernate，并集成Struts 2。这通常通过XML文件或Java配置类来完成。由于SSH框架较老，且XML配置较为繁琐，这里将展示XML配置的简化版本。
 
 Spring配置文件 (applicationContext.xml):
-<beans ...>
-    <!-- DataSource bean, SessionFactory bean, TransactionManager bean, etc. -->
-    <!-- ... -->
-</beans>
+<beans ...> <!-- DataSource bean, SessionFactory bean, TransactionManager bean, etc. -->
+ <!-- ... --></beans>
 
 Hibernate配置文件 (hibernate.cfg.xml):
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
-<hibernate-configuration>
-    <session-factory>
-        <!-- Database connection settings, mapping files, etc. -->
-        <!-- ... -->
-    </session-factory>
-</hibernate-configuration>
+<hibernate-configuration> <session-factory> <!-- Database connection settings, mapping files, etc. -->
+ <!-- ... --> </session-factory></hibernate-configuration>
 
 Struts 2配置文件 (struts.xml):
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN" "http://struts.apache.org/dtds/struts-2.5.dtd">
-<struts>
-    <constant name="struts.devMode" value="true"/>
-    <package name="default" namespace="/" extends="struts-default">
-        <action name="userAction_*" class="com.example.action.UserAction" method="{1}">
-            <result name="success">/user.jsp</result>
-            <!-- Other result mappings -->
-        </action>
-    </package>
-</struts>
+<struts> <constant name="struts.devMode" value="true"/>
+ <package name="default" namespace="/" extends="struts-default"> <action name="userAction_*" class="com.example.action.UserAction" method="{1}"> <result name="success">/user.jsp</result>
+ <!-- Other result mappings --> </action> </package></struts>
 
 数据库实体类 (User.java):
 @Entity
 @Table(name = "users")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
-    // getters and setters
-    // ...
+ @Id
+ @GeneratedValue(strategy = GenerationType.IDENTITY)
+ private Long id;
+ private String name;
+ // getters and setters
+ // ...
 }
 
 DAO接口和实现 (UserDao.java 和 UserDaoImpl.java):
 
 public interface UserDao {
-    User getUserById(Long id);
-    // other CRUD methods
-    // ...
+ User getUserById(Long id);
+ // other CRUD methods
+ // ...
 }
- 
+
 @Repository
 public class UserDaoImpl implements UserDao {
-    @Autowired
-    private SessionFactory sessionFactory;
- 
-    @Override
-    public User getUserById(Long id) {
-        return (User) sessionFactory.getCurrentSession().get(User.class, id);
-    }
-    // other CRUD method implementations
-    // ...
+ @Autowired
+ private SessionFactory sessionFactory;
+
+```
+@Override
+public User getUserById(Long id) {
+    return (User) sessionFactory.getCurrentSession().get(User.class, id);
+}
+// other CRUD method implementations
+// ...
+```
+
 }
 
 服务类 (UserService.java 和 UserServiceImpl.java):
 public interface UserService {
-    User getUserById(Long id);
-    // other service methods
-    // ...
+ User getUserById(Long id);
+ // other service methods
+ // ...
 }
- 
+
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserDao userDao;
- 
-    @Override
-    public User getUserById(Long id) {
-        return userDao.getUserById(id);
-    }
-    // other service method implementations
-    // ...
+ @Autowired
+ private UserDao userDao;
+
+```
+@Override
+public User getUserById(Long id) {
+    return userDao.getUserById(id);
+}
+// other service method implementations
+// ...
+```
+
 }
 
 Struts 2 Action类 (UserAction.java):
 
 @Controller
 public class UserAction extends ActionSupport {
-    @Autowired
-    private UserService userService;
-    private User user;
-    private Long userId;
- 
-    // Getter and Setter for userId
-    // ...
- 
-    @Action("userAction_show")
-    public String showUser() {
-        user = userService.getUserById(userId);
-        return SUCCESS;
-    }
-    // other action methods
-    // ...
- 
-    // Getter and Setter for user (if needed for input/output)
-    // ...
+ @Autowired
+ private UserService userService;
+ private User user;
+ private Long userId;
+
+```
+// Getter and Setter for userId
+// ...
+
+@Action("userAction_show")
+public String showUser() {
+    user = userService.getUserById(userId);
+    return SUCCESS;
+}
+// other action methods
+// ...
+
+// Getter and Setter for user (if needed for input/output)
+// ...
+```
+
 }
 
 JSP视图文件 (user.jsp):
@@ -7911,20 +8459,22 @@ web.xml（用于配置Struts 2的Dispatcher和Spring的ContextLoaderListener）:
         <filter-name>struts2</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
- 
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/applicationContext.xml</param-value>
-    </context-param>
- 
-    <!-- Other configurations like welcome-file-list, security, etc. -->
+
+```
+<listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+</listener>
+<context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>/WEB-INF/applicationContext.xml</param-value>
+</context-param>
+
+<!-- Other configurations like welcome-file-list, security, etc. -->
+```
+
 </web-app>
 
 请注意，这个SSH示例代码是非常简化的，并且省略了很多细节，比如数据源配置、事务管理、日志记录、错误处理等。在实际项目中，你需要根据需求添加这些配置。
-
 
 SSM：SSM（Spring+SpringMVC+MyBatis）框架集由Spring、MyBatis两个开源框架整合而成（SpringMVC是Spring中的部分内容），常作为数据源较简单的web项目的框架。
 
@@ -7939,43 +8489,40 @@ SSM（Spring + Spring MVC + MyBatis）是一个流行的Java Web应用程序框�
 
 首先，你需要确保你的项目中已经包含了SSM所需的依赖。如果你使用Maven，可以在pom.xml中添加以下依赖（注意版本号可能需要更新）：
 <dependencies>
-    <!-- Spring dependencies -->
-    <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
-        <version>5.3.10</version>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-webmvc</artifactId>
-        <version>5.3.10</version>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-jdbc</artifactId>
-        <version>5.3.10</version>
-    </dependency>
- 
-    <!-- MyBatis dependencies -->
-    <dependency>
-        <groupId>org.mybatis</groupId>
-        <artifactId>mybatis</artifactId>
-        <version>3.5.7</version>
-    </dependency>
-    <dependency>
-        <groupId>org.mybatis.spring</groupId>
-        <artifactId>mybatis-spring</artifactId>
-        <version>2.0.6</version>
-    </dependency>
- 
-    <!-- Database dependencies (e.g., MySQL) -->
-    <dependency>
-        <groupId>mysql</groupId>
-        <artifactId>mysql-connector-java</artifactId>
-        <version>8.0.25</version>
-    </dependency>
- 
-    <!-- Other dependencies like logging, servlet-api, etc. -->
+ <!-- Spring dependencies -->
+ <dependency> <groupId>org.springframework</groupId>
+ <artifactId>spring-context</artifactId>
+ <version>5.3.10</version> </dependency>
+ <dependency> <groupId>org.springframework</groupId>
+ <artifactId>spring-webmvc</artifactId>
+ <version>5.3.10</version> </dependency>
+ <dependency> <groupId>org.springframework</groupId>
+ <artifactId>spring-jdbc</artifactId>
+ <version>5.3.10</version> </dependency>
+
+```
+<!-- MyBatis dependencies -->
+<dependency>
+    <groupId>org.mybatis</groupId>
+    <artifactId>mybatis</artifactId>
+    <version>3.5.7</version>
+</dependency>
+<dependency>
+    <groupId>org.mybatis.spring</groupId>
+    <artifactId>mybatis-spring</artifactId>
+    <version>2.0.6</version>
+</dependency>
+
+<!-- Database dependencies (e.g., MySQL) -->
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.25</version>
+</dependency>
+
+<!-- Other dependencies like logging, servlet-api, etc. -->
+```
+
 </dependencies>
 接下来，你需要配置Spring和MyBatis。这通常通过XML文件或Java配置类来完成。由于篇幅原因，这里只展示Java配置类的简化版本。
 
@@ -7984,72 +8531,79 @@ Spring配置类 (AppConfig.java):
 @ComponentScan(basePackages = "com.example")
 @EnableWebMvc
 public class AppConfig implements WebMvcConfigurer {
-    // DataSource, SqlSessionFactory, TransactionManager beans, etc.
-    // ...
+ // DataSource, SqlSessionFactory, TransactionManager beans, etc.
+ // ...
 }
 
 MyBatis配置类 (MyBatisConfig.java):
 @Configuration
 @MapperScan("com.example.mapper")
 public class MyBatisConfig {
-    // DataSource and SqlSessionFactory beans
-    // ...
+ // DataSource and SqlSessionFactory beans
+ // ...
 }
 
 数据库实体类 (User.java):
 public class User {
-    private Long id;
-    private String name;
-    // getters and setters
-    // ...
+ private Long id;
+ private String name;
+ // getters and setters
+ // ...
 }
 
 Mapper接口 (UserMapper.java):
 @Mapper
 public interface UserMapper {
-    User getUserById(Long id);
-    // other CRUD methods
-    // ...
+ User getUserById(Long id);
+ // other CRUD methods
+ // ...
 }
 
 服务类 (UserService.java 和 UserServiceImpl.java):
 public interface UserService {
-    User getUserById(Long id);
-    // other service methods
-    // ...
+ User getUserById(Long id);
+ // other service methods
+ // ...
 }
- 
+
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserMapper userMapper;
- 
-    @Override
-    public User getUserById(Long id) {
-        return userMapper.getUserById(id);
-    }
-    // other service method implementations
-    // ...
+ @Autowired
+ private UserMapper userMapper;
+
+```
+@Override
+public User getUserById(Long id) {
+    return userMapper.getUserById(id);
+}
+// other service method implementations
+// ...
+```
+
 }
 
 控制器类 (UserController.java):
 @Controller
 @RequestMapping("/users")
 public class UserController {
-    @Autowired
-    private UserService userService;
- 
-    @GetMapping("/{id}")
-    public String getUser(@PathVariable Long id, Model model) {
-        User user = userService.getUserById(id);
-        model.addAttribute("user", user);
-        return "userView";
-    }
-    // other controller methods
-    // ...
+ @Autowired
+ private UserService userService;
+
+```
+@GetMapping("/{id}")
+public String getUser(@PathVariable Long id, Model model) {
+    User user = userService.getUserById(id);
+    model.addAttribute("user", user);
+    return "userView";
+}
+// other controller methods
+// ...
+```
+
 }
 
 视图文件 (userView.jsp):
+
 <html>
 <body>
     <h1>User Information</h1>
@@ -8059,31 +8613,25 @@ public class UserController {
 </html>
 
 Spring MVC配置文件 (spring-mvc.xml 或在Java配置类中配置）:
+
 <!-- Enable annotation-driven MVC, view resolver, etc. -->
+
 <!-- This can also be configured using Java Config instead of XML -->
+
 <!-- ... -->
 
 web.xml（如果你使用Servlet容器部署）:
-<web-app>
-    <servlet>
-        <servlet-name>dispatcher</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <init-param>
-            <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/spring-mvc.xml</param-value> <!-- or Java Config class -->
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>dispatcher</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
-    <!-- Other configurations like listener for Spring context, etc. -->
-</web-app>
+<web-app> <servlet> <servlet-name>dispatcher</servlet-name>
+ <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+ <init-param> <param-name>contextConfigLocation</param-name>
+ <param-value>/WEB-INF/spring-mvc.xml</param-value> <!-- or Java Config class --> </init-param>
+ <load-on-startup>1</load-on-startup> </servlet>
+ <servlet-mapping> <servlet-name>dispatcher</servlet-name>
+ <url-pattern>/</url-pattern> </servlet-mapping>
+ <!-- Other configurations like listener for Spring context, etc. --></web-app>
 
 请注意，这个示例非常简化，并且省略了很多细节，比如数据源配置、事务管理、日志记录、错误处理等。在实际项目中，你需要根据需求添加这些配置。此外，建议使用Spring Boot来简化SSM（或Spring + Spring Boot + MyBatis）的配置和部署过程。
 Spring Boot提供了很多自动配置和启动器依赖，可以大大减少XML配置和样板代码。
-
 
 SSH和SSM的区别：
 控制器层
@@ -8102,7 +8650,6 @@ SSH框架
 适用于对象模型复杂的项目，尤其是数据库表和对象关系清晰且稳定的情况下。Hibernate的自动化和ORM能力更能发挥作用。
 在较早期的企业级应用开发中较为常见，但由于配置复杂、学习成本较高，逐渐被SSM所取代。
 
-
 Java Spring框架：
 Spring 框架就像一个家族，有众多衍生产品例如 boot、security、jpa等等。但他们的基础都是Spring 的 ioc和aop ioc 提供了依赖注入的容器aop，解决了面向横切面的编程，然后在此两者的基础上实现了其他延伸产品的高级功能。
 Spring MVC是基于 Servlet 的一个 MVC 框架 主要解决 WEB 开发的问题，因为 Spring 的配置非常复杂，各种XML、 JavaConfig、hin处理起来比较繁琐。
@@ -8110,7 +8657,7 @@ Spring MVC是基于 Servlet 的一个 MVC 框架 主要解决 WEB 开发的问�
 Spring的工作原理其实是，Spring在启动时读取bean配置信息，这里bean配置信息包括xml文件、Java类@Configuration、注解@AutoWired，存放到Bean注册表，并根据Bean注册表实例化Bean。
 实际上就是实例化Bean的实现类，然后将Bean实例放到Spring容器中。
 
-Java Spring的几个核心部分：
+Spring的核心部分：
 1.Spring Core：这是Spring框架的基础，提供了依赖注入（Dependency Injection，DI）和控制反转（Inversion of Control，IoC）的核心功能。通过DI，开发者可以将对象的创建和依赖关系的管理交给Spring容器，从而实现了解耦和可测试性。
 IoC则是一种设计原则，通过反转对象的创建流程，使得应用程序更加灵活和可扩展。
 2.Spring Context：应用上下文模块，建立在Spring Core之上，提供了框架式的Bean访问方式，以及企业级服务，例如JNDI、EJB、电子邮件、国际化、校验和调度功能。
@@ -8132,7 +8679,6 @@ Spring IOC是指将对象的创建与对象之间的依赖关系交给Spring容�
 控制反转：在传统的程序中，对象的创建和依赖关系的设置往往是由程序本身（即开发者编写的代码）来控制的。而在Spring IOC中，这种控制权被反转给了Spring容器。
 依赖注入：依赖注入（Dependency Injection）是IOC的一种实现方式。它是指在程序运行时，由外部容器（如Spring容器）动态地将依赖对象注入到组件中，而不是在组件内部通过new或其他方式创建依赖对象。
 
-
 配置文件或注解：
 Spring容器通过读取配置文件（如XML文件）或注解来识别需要管理的Bean，以及这些Bean之间的依赖关系。
 
@@ -8145,7 +8691,6 @@ Bean的装配：在创建Bean实例后，Spring容器会根据配置文件或注
 Setter注入：通过setter方法将依赖对象注入到Bean中。
 接口注入：虽然Spring不直接支持接口注入，但可以通过其他方式（如构造器注入或Setter注入）实现类似的效果。
 
-
 IOC的优点：
 降低耦合度：
 Spring IOC通过容器来管理对象之间的依赖关系，使得对象之间的耦合度降低，提高了代码的灵活性和可维护性。
@@ -8156,69 +8701,136 @@ Spring IOC容器支持面向切面编程（AOP），使得可以在不修改代�
 简化测试：
 Spring IOC容器使得测试变得更加简单，因为可以通过注入模拟对象（mock objects）来替代真实的依赖对象，从而进行单元测试。
 
-
 示例代码：
+
+**Spring IOC 底层实现机制详解**
+
+- **BeanDefinition（Bean 定义）**：Spring 在启动时通过 `BeanDefinitionReader`（例如 XmlBeanDefinitionReader、AnnotatedBeanDefinitionReader）将配置（XML、@Configuration、注解扫描结果）解析为 `BeanDefinition`。`BeanDefinition` 保存 Bean 的类名、scope、构造函数参数、属性值、init-method、destroy-method 等元数据。
+  
+- **注册表与读取器**：`BeanDefinitionRegistry`（通常由 `DefaultListableBeanFactory` 实现）负责保存 `BeanDefinition`。注解驱动的上下文使用 `AnnotatedBeanDefinitionReader` 将 `@Component`、`@Configuration` 等转换成 `AnnotatedGenericBeanDefinition` 并注册进注册表；类路径扫描由 `ClassPathBeanDefinitionScanner` 完成。
+  
+- **容器核心：BeanFactory vs ApplicationContext**：`BeanFactory`（最低层）负责按需创建和管理 Beans；`ApplicationContext` 在 `BeanFactory` 基础上添加事件发布、国际化、资源加载等企业级服务。大多数实现类（如 `AnnotationConfigApplicationContext`）最终使用 `DefaultListableBeanFactory`。
+  
+- **创建 Bean 的执行流程（高层次）**：
+  
+  1. 容器根据 `beanName` 查找 `BeanDefinition`。
+  2. 调用 `getBean()` -> `doGetBean()` -> `createBean()`（`AbstractAutowireCapableBeanFactory`）
+  3. `createBean()` 调用 `doCreateBean()`：包括解析构造器、实例化（InstantiationStrategy）、早期引用注册、属性填充（populateBean）、初始化（applyBeanPostProcessorsBeforeInitialization -> invokeInitMethods -> applyBeanPostProcessorsAfterInitialization）等步骤。
+- **实例化策略**：Spring 通过 `InstantiationStrategy` （如 `SimpleInstantiationStrategy`、`CglibSubclassingInstantiationStrategy`）来创建对象。Spring 可以通过构造函数、带参数构造器或工厂方法实例化 Bean。
+  
+- **依赖注入（注入点解析）**：
+  
+  - 注解方式由 `AutowiredAnnotationBeanPostProcessor` 处理，扫描 `@Autowired`、`@Value`、`@Inject` 等注入点，生成 `InjectionMetadata`，并在 `postProcessProperties` / `postProcessPropertyValues` 时利用 `BeanWrapper` 和反射写入字段或调用 setter。
+  - 解析依赖使用 `DependencyDescriptor`，容器会调用 `resolveDependency()` 来按类型/名称/限定符选择候选 Bean，并支持 `@Qualifier`、`@Primary` 等规则。
+- **循环依赖处理（单例）**：
+  
+  - Spring 对单例 Bean 支持部分循环依赖，通过 `DefaultSingletonBeanRegistry` 的三个缓存：`singletonObjects`（完全初始化的单例），`earlySingletonObjects`（原始早期对象）和 `singletonFactories`（ObjectFactory，用于创建早期引用）。
+  - 在 `doCreateBean()` 的实例化完成后但在完全初始化之前，会将一个能返回早期引用的 `singletonFactory` 放入 `singletonFactories`。当其他 Bean 需要该 Bean 时，容器会先从 `earlySingletonObjects` / `singletonFactories` 中取到早期引用，从而解决属性注入层面的循环依赖。
+  - 注意：构造器注入的循环依赖无法通过早期引用解决（会导致异常），而 setter/字段注入可被部分解决。
+- **BeanPostProcessor 与 AOP 代理生成时机**：
+  
+  - AOP 代理通常在初始化后创建（`BeanPostProcessor#postProcessAfterInitialization`），但为了支持循环依赖并保证早期引用能返回增强后的代理，Spring 的 `SmartInstantiationAwareBeanPostProcessor`（例如 `AopAutoProxyCreator` / `AutowiredAnnotationBeanPostProcessor` 的扩展）会在早期阶段通过 `getEarlyBeanReference()` 包装对象，返回代理对象放入早期引用缓存。
+  - 常见 AOP 实现流程：`ProxyFactory` -> `AdvisedSupport`（保存拦截器链）-> `AopProxyFactory` -> 选择 `JdkDynamicAopProxy` 或 `Cglib2AopProxy`，最终返回代理对象。
+- **BeanFactoryPostProcessor 与 BeanPostProcessor 的区别**：
+  
+  - `BeanFactoryPostProcessor`（如 `PropertyPlaceholderConfigurer`）在加载 `BeanDefinition` 后、实例化 Bean 之前执行，用于修改 BeanDefinition 元数据。
+  - `BeanPostProcessor` 在 Bean 实例化并填充属性后、执行初始化方法前/后对 Bean 实例进行修改（例如注入代理、处理自定义注解等）。
+- **生命周期回调与 Aware 接口**：
+  
+  - 容器会在初始化过程中回调 `Aware` 接口（如 `BeanNameAware`、`BeanFactoryAware`、`ApplicationContextAware`），随后调用 `postProcessBeforeInitialization`、`afterPropertiesSet()`（`InitializingBean`）、自定义 `init-method`、`@PostConstruct`，最后执行 `postProcessAfterInitialization`。
+  - 销毁时调用 `DisposableBean`、自定义 `destroy-method`、`@PreDestroy` 等，单例由容器管理，prototype 不由容器自动销毁。
+- **作用域（scope）**：
+  
+  - `singleton`：容器只创建一个共享实例，保存在单例缓存中。
+  - `prototype`：每次 `getBean()` 都返回新的实例；容器不管理完整生命周期（不调用 destroy）。
+  - `request`、`session` 等 Web 作用域由 `WebApplicationContext` 提供支持。
+- **注解与元数据扫描**：
+  
+  - `@Component`、`@Service`、`@Repository`、`@Controller` 通过类路径扫描（`ClassPathBeanDefinitionScanner`）被转换为 `BeanDefinition`。
+  - `@Configuration` 类由 `@ConfigurationClassPostProcessor` 解析，`@Bean` 方法将注册相应的 `BeanDefinition`，并对 `@Configuration` 做增强（通过 CGLIB）以保证 `@Bean` 方法的单例语义。
+- **特殊类型：FactoryBean 与 BeanWrapper**：
+  
+  - `FactoryBean` 是创建复杂对象的一种工厂回调接口，容器会区别对待 `FactoryBean` 本身与其创建的对象（通过 `&` 前缀可以引用工厂本身）。
+  - `BeanWrapper`（`BeanWrapperImpl`）封装目标 Bean，提供属性访问、类型转换（依赖 `TypeConverter`）等功能，`PropertyEditor` 与 `ConversionService` 用于属性类型转换。
+- **并发与线程安全**：单例缓存与 Bean 创建使用内部同步（`synchronized` 或并发地图配合双检锁）以保证线程安全，`AbstractBeanFactory`/`DefaultSingletonBeanRegistry` 中有明确的并发设计以避免多线程重复创建实例。
+  
+- **扩展点**：
+  
+  - 自定义 `BeanPostProcessor`、`BeanFactoryPostProcessor`、自定义 `InstantiationStrategy`、自定义 `Scope` 等均可扩展容器行为。
+
+以上为 Spring IoC 的关键底层实现点，理解这些组件和流程，有助于定位容器行为、排查循环依赖、实现自定义容器扩展或深入 AOP 代理时机。
+
 定义Java类：
 // 定义一个简单的服务类  
 public class UserService {  
-    private UserDao userDao;  
-  
-    // 通过setter方法注入UserDao  
-    @Autowired
-    public void setUserDao(UserDao userDao) {  
-        this.userDao = userDao;  
-    }  
-  
-    public void serve() {  
-        userDao.findUser();  
-    }  
+ private UserDao userDao;
+
+```
+// 通过setter方法注入UserDao  
+@Autowired
+public void setUserDao(UserDao userDao) {  
+    this.userDao = userDao;  
 }  
+
+public void serve() {  
+    userDao.findUser();  
+}  
+```
+
+}
 
 // 定义DAO接口  
 public interface UserDao {  
-    void findUser();  
+ void findUser();  
 }
 
 // 定义一个简单的DAO类  
 public class UserDaoImpl implements UserDao {  
-    public void findUser() {  
-        System.out.println("User found!");  
-    }  
-}  
+ public void findUser() {  
+ System.out.println("User found!");  
+ }  
+}
 
 编写XML配置文件：
 
-<?xml version="1.0" encoding="UTF-8"?>  
+<?xml version="1.0" encoding="UTF-8"?>
+
+  
 <beans xmlns="http://www.springframework.org/schema/beans"  
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-       xsi:schemaLocation="http://www.springframework.org/schema/beans  
-       http://www.springframework.org/schema/beans/spring-beans.xsd">  
-  
-    <!-- 定义UserDao的Bean -->  
-    <bean id="userDao" class="com.example.UserDaoImpl"/>  
-  
-    <!-- 定义UserService的Bean，并注入UserDao -->  
-    <bean id="userService" class="com.example.UserService">  
-        <property name="userDao" ref="userDao"/>  
-    </bean>  
-  
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+ xsi:schemaLocation="http://www.springframework.org/schema/beans  
+ http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+```
+<!-- 定义UserDao的Bean -->  
+<bean id="userDao" class="com.example.UserDaoImpl"/>  
+
+<!-- 定义UserService的Bean，并注入UserDao -->  
+<bean id="userService" class="com.example.UserService">  
+    <property name="userDao" ref="userDao"/>  
+</bean>  
+```
+
 </beans>
 
 使用Spring容器获取Bean并调用方法：
 import org.springframework.context.ApplicationContext;  
-import org.springframework.context.support.ClassPathXmlApplicationContext;  
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Main {  
-    public static void main(String[] args) {  
-        // 加载Spring配置文件，创建IOC容器  
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");  
-  
-        // 从IOC容器中获取UserService的Bean实例  
-        UserService userService = (UserService) context.getBean("userService");  
-  
-        // 调用UserService的方法  
-        userService.serve();  
-    }  
+ public static void main(String[] args) {  
+ // 加载Spring配置文件，创建IOC容器  
+ ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+
+```
+    // 从IOC容器中获取UserService的Bean实例  
+    UserService userService = (UserService) context.getBean("userService");  
+
+    // 调用UserService的方法  
+    userService.serve();  
+}  
+```
+
 }
 
 在这个示例中，我们定义了一个简单的UserService类和一个UserDao接口及其实现类UserDaoImpl。然后，在XML配置文件中定义了UserDao和UserService的Bean，并通过<property>标签将UserDao注入到UserService中。
@@ -8281,13 +8893,31 @@ Spring容器根据BeanDefinition中的属性信息，为Bean实例设置属性�
 当容器关闭时（如应用程序停止时），如果Bean实现了DisposableBean接口，Spring容器会调用其destroy方法，用于释放Bean所占用的资源。
 同时，如果配置文件中为Bean指定了destroy-method属性，Spring容器也会调用该指定的销毁方法。
 
-
 Bean生命周期中的关键接口与回调方法：
 Aware接口：包括BeanNameAware、BeanFactoryAware、ApplicationContextAware等，用于让Bean获取到Spring容器的相关信息。
 BeanPostProcessor接口：提供了两个方法，preProcessBeforeInitialization和postProcessAfterInitialization，分别在Bean初始化前后进行回调，允许对Bean进行额外的处理。
 InitializingBean接口：提供了afterPropertiesSet方法，用于在Bean属性设置完成后进行自定义的初始化操作。
 DisposableBean接口：提供了destroy方法，用于在Bean销毁前进行资源释放等操作。
 
+### 常见的Spring IoC面试题
+
+#### 1. 什么是IoC？Bean的生命周期是什么？
+
+- 控制反转：对象创建和依赖关系交给容器，代码里不再 `new`。依赖注入是它的实现手段。
+- 大致流程：BeanDefinition → 实例化 → 填充属性 → 初始化（`@PostConstruct` / `InitializingBean` / `init-method`）→ 后置处理（AOP 代理常在这里生成）→ 使用 → 销毁（`@PreDestroy` / `DisposableBean` / `destroy-method`）。
+- `BeanFactory` 只管按需造 Bean；`ApplicationContext` 还带事件、国际化、资源加载。
+
+#### 2. Spring如何解决循环依赖？哪种解不了？
+
+- 只处理**单例 + setter/字段注入**。三级缓存：成品（`singletonObjects`）、早期对象（`earlySingletonObjects`）、能产出早期引用的工厂（`singletonFactories`）。
+- A 实例化完就把工厂放进三级缓存。创建 B 时发现要注入 A，就从工厂拿出早期引用（若需要 AOP，这里已经是代理）。
+- **构造器循环依赖解不了**：对象都还没 new 出来，拿不到早期引用。prototype 也不支持。
+
+#### 3. `@Autowired`和`@Resource`的区别？
+
+- `@Autowired` 是 Spring 注解，默认按**类型**注入，多个候选再用 `@Qualifier` / `@Primary`。
+- `@Resource` 是 JDK 注解，默认按**名称**注入，找不到再按类型。
+- 都可加在字段或 setter 上。构造器注入更推荐，且构造器循环依赖 Spring 解不了，能更早暴露设计问题。
 
 使用注解管理Bean的方式：
 在Spring框架中，注解（Annotation）提供了一种声明式的方式来管理Bean，而不是传统的基于XML的配置方式。通过使用注解，你可以更简洁、更直接地在Java代码中定义和管理Bean。
@@ -8297,27 +8927,30 @@ DisposableBean接口：提供了destroy方法，用于在Bean销毁前进行资�
 启用注解支持：
 要在Spring中启用注解支持，你需要在Spring配置文件中添加<context:annotation-config/>标签，或者在Java配置中使用@Configuration和@EnableAnnotationConfiguration注解（如果你使用的是较新版本的Spring，通常只需添加@Configuration注解）。
 
-<!-- 在XML配置中启用注解 -->  
+<!-- 在XML配置中启用注解 -->
+
 <beans xmlns="http://www.springframework.org/schema/beans"  
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-       xmlns:context="http://www.springframework.org/schema/context"  
-       xsi:schemaLocation="http://www.springframework.org/schema/beans  
-       http://www.springframework.org/schema/beans/spring-beans.xsd  
-       http://www.springframework.org/schema/context  
-       http://www.springframework.org/schema/context/spring-context.xsd">  
-  
-    <context:annotation-config/>  
-  
-    <!-- 其他bean定义 -->  
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+ xmlns:context="http://www.springframework.org/schema/context"  
+ xsi:schemaLocation="http://www.springframework.org/schema/beans  
+ http://www.springframework.org/schema/beans/spring-beans.xsd  
+ http://www.springframework.org/schema/context  
+ http://www.springframework.org/schema/context/spring-context.xsd">
+
+```
+<context:annotation-config/>  
+
+<!-- 其他bean定义 -->  
+```
+
 </beans>
 
 或者，在Java配置中：
 
 @Configuration  
 public class AppConfig {  
-    // ... 其他配置 ...  
+ // ... 其他配置 ...  
 }
-
 
 使用@Component及其衍生注解：
 Spring提供了几个注解来标记组件类，使其作为Bean被Spring容器管理。这些注解包括@Component、@Service、@Repository和@Controller。它们都是@Component的特化版本，用于表示不同类型的组件。
@@ -8330,7 +8963,7 @@ Spring提供了几个注解来标记组件类，使其作为Bean被Spring容器�
 示例：
 @Service  
 public class MyService {  
-    // ... 服务实现 ...  
+ // ... 服务实现 ...  
 }
 
 自动装配：
@@ -8339,12 +8972,15 @@ Spring的@Autowired注解用于自动装配bean之间的依赖关系。Spring容
 示例：
 @Service  
 public class MyService {  
-    private final MyRepository myRepository;  
-  
-    @Autowired  
-    public MyService(MyRepository myRepository) {  
-        this.myRepository = myRepository;  
-    }  
+ private final MyRepository myRepository;
+
+```
+@Autowired  
+public MyService(MyRepository myRepository) {  
+    this.myRepository = myRepository;  
+}  
+```
+
 }
 
 使用@Qualifier解决歧义：
@@ -8362,47 +8998,47 @@ private MyBean myBean;
 @Service  
 @Scope("prototype")  
 public class MyPrototypeService {  
-    // ... 服务实现 ...  
+ // ... 服务实现 ...  
 }
 使用@Resource和@Inject：
 除了@Autowired，你还可以使用JSR-250的@Resource注解或JSR-330的@Inject注解来进行依赖注入。这些注解提供了与@Autowired类似的功能，但具有一些不同的特性和用法。
 
 7. 自定义注解和Bean定义：
-你还可以创建自定义的注解，并使用@Bean方法在Java配置类中定义bean。这提供了一种更灵活的方式来定义和注册bean。
-
+  你还可以创建自定义的注解，并使用@Bean方法在Java配置类中定义bean。这提供了一种更灵活的方式来定义和注册bean。
+  
 8. 使用@ComponentScan扫描组件：
-@ComponentScan注解用于指定Spring应该扫描哪个包以查找带有@Component、@Service、@Repository和@Controller注解的类，并将它们注册为bean。你可以将其添加到配置类上。
-
+  @ComponentScan注解用于指定Spring应该扫描哪个包以查找带有@Component、@Service、@Repository和@Controller注解的类，并将它们注册为bean。你可以将其添加到配置类上。
+  
 9. 使用Java配置类替代XML：
-除了使用注解标记组件类，你还可以使用Java配置类完全替代XML配置文件。这通过@Configuration类和使用@Bean方法来实现。这种方法提供了更类型安全和更强大的配置能力。
-
+  除了使用注解标记组件类，你还可以使用Java配置类完全替代XML配置文件。这通过@Configuration类和使用@Bean方法来实现。这种方法提供了更类型安全和更强大的配置能力。
+  
 
 问：Spring里的注解@AutoWired和@Resource注解有什么区别
 Spring框架中的@Autowired和@Resource注解都是用于依赖注入的，但它们之间存在一些重要的区别：
 
->来源不同：@Autowired是Spring框架提供的注解，主要用于实现Spring框架中的依赖注入功能。而@Resource是Java EE规范中的注解，它是JSR-250规范的一部分，因此在Java EE和Spring中都可以使用。
-查找顺序不同：当Spring容器进行依赖注入时，@Autowired首先会尝试按类型（byType）查找匹配的bean，如果找到多个同类型的bean，则会根据bean的名称（name）或@Qualifier注解来进一步确定。
-而@Resource的查找顺序则相反，它首先会按名称（byName）查找，如果找不到匹配的bean，则会根据类型查找。
+> 来源不同：@Autowired是Spring框架提供的注解，主要用于实现Spring框架中的依赖注入功能。而@Resource是Java EE规范中的注解，它是JSR-250规范的一部分，因此在Java EE和Spring中都可以使用。
+> 查找顺序不同：当Spring容器进行依赖注入时，@Autowired首先会尝试按类型（byType）查找匹配的bean，如果找到多个同类型的bean，则会根据bean的名称（name）或@Qualifier注解来进一步确定。
+> 而@Resource的查找顺序则相反，它首先会按名称（byName）查找，如果找不到匹配的bean，则会根据类型查找。
 
 如下有两个名称相同的接口
 public interface MyService {
-    void doSomething();
+ void doSomething();
 }
 
 @Service("serviceA")
 public class MyServiceA implements MyService {
-    @Override
-    public void doSomething() {
-        System.out.println("Service A is doing something.");
-    }
+ @Override
+ public void doSomething() {
+ System.out.println("Service A is doing something.");
+ }
 }
 
 @Service("serviceB")
 public class MyServiceB implements MyService {
-    @Override
-    public void doSomething() {
-        System.out.println("Service B is doing something.");
-    }
+ @Override
+ public void doSomething() {
+ System.out.println("Service B is doing something.");
+ }
 }
 
 使用@Autowired 的场景：
@@ -8424,9 +9060,8 @@ private MyService myService;
 
 通过 name 属性指定 Bean 的名称，Spring 会注入名为 serviceA 的 Bean。
 
-
->支持的参数不同：@Autowired只有一个可选参数required，表示是否自动装配。如果设置为false，那么在找不到匹配的bean时，不会抛出异常。
-而@Resource可以设置更多的参数，包括name、type、authenticationType、mappedName、shareable和lookup等，提供了更丰富的配置选项。
+> 支持的参数不同：@Autowired只有一个可选参数required，表示是否自动装配。如果设置为false，那么在找不到匹配的bean时，不会抛出异常。
+> 而@Resource可以设置更多的参数，包括name、type、authenticationType、mappedName、shareable和lookup等，提供了更丰富的配置选项。
 
 @Autowired 只有一个可选参数：required。
 
@@ -8473,7 +9108,7 @@ lookup:
 作用：指定资源的查找名称（通常用于 Java EE 环境）。
 示例：@Resource(lookup = "java:comp/env/myBean")
 
->依赖注入的用法支持不同：@Autowired支持构造方法注入、属性注入和Setter方法注入。而@Resource只支持属性注入和Setter方法注入，不支持构造方法注入。
+> 依赖注入的用法支持不同：@Autowired支持构造方法注入、属性注入和Setter方法注入。而@Resource只支持属性注入和Setter方法注入，不支持构造方法注入。
 
 @Autowired支持以下三种注入方式：
 
@@ -8488,7 +9123,7 @@ private MyService myService;
 
 @Autowired
 public void setMyService(MyService myService) {
-    this.myService = myService;
+ this.myService = myService;
 }
 
 (3) 构造方法注入
@@ -8497,7 +9132,7 @@ private final MyService myService;
 
 @Autowired
 public MyController(MyService myService) {
-    this.myService = myService;
+ this.myService = myService;
 }
 
 @Resource仅支持以下两种注入方式：
@@ -8512,16 +9147,15 @@ private MyService myService;
 
 @Resource
 public void setMyService(MyService myService) {
-    this.myService = myService;
+ this.myService = myService;
 }
 
 为什么 @Resource 不支持构造方法注入？
 @Resource 是 Java 标准库的一部分，设计初衷是为了提供一种通用的依赖注入方式，而构造方法注入是 Spring 特有的功能。因此，@Resource 并未扩展支持构造方法注入。
 
->IDEA编译器的提示不同：在IntelliJ IDEA等集成开发环境中，当使用@Autowired注解注入Mapper对象时，可能会收到关于找不到bean的警告或错误提示。而使用@Resource注解时，通常不会出现此类问题。
+> IDEA编译器的提示不同：在IntelliJ IDEA等集成开发环境中，当使用@Autowired注解注入Mapper对象时，可能会收到关于找不到bean的警告或错误提示。而使用@Resource注解时，通常不会出现此类问题。
 
 总结来说，@Autowired和@Resource都是Spring中用于实现依赖注入的注解，但它们在来源、查找顺序、支持的参数、用法支持和IDE提示等方面存在区别。在选择使用哪个注解时，可以根据项目的具体需求和上下文环境进行考虑。
-
 
 @Bean和@Component的区别是什么？
 @Component:
@@ -8531,9 +9165,9 @@ public void setMyService(MyService myService) {
 
 @Component
 public class MyService {
-    public void doSomething() {
-        System.out.println("Doing something...");
-    }
+ public void doSomething() {
+ System.out.println("Doing something...");
+ }
 }
 直接标注在类上，Spring 会自动扫描并注册该类为 Bean。
 
@@ -8549,10 +9183,13 @@ public class MyService {
 @Configuration
 public class AppConfig {
 
-    @Bean
-    public MyService myService() {
-        return new MyService();
-    }
+```
+@Bean
+public MyService myService() {
+    return new MyService();
+}
+```
+
 }
 标注在方法上，方法返回值会被注册为 Bean。
 
@@ -8568,84 +9205,99 @@ public class AppConfig {
 解耦性：无需修改第三方库的源码即可将其注册为 Bean。
 
 1. 复杂初始化逻辑
-@Bean 注解通常用于配置类（@Configuration 类）中的方法上，这些方法可以包含任意的 Java 代码，因此非常适合处理复杂的初始化逻辑。
+  @Bean 注解通常用于配置类（@Configuration 类）中的方法上，这些方法可以包含任意的 Java 代码，因此非常适合处理复杂的初始化逻辑。
 
 示例代码：
 假设我们需要创建一个 DataSource Bean，并且在创建时需要设置一些复杂的属性或执行一些初始化逻辑：
 @Configuration
 public class AppConfig {
 
-    @Bean
-    public DataSource dataSource() {
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/mydb");
-        dataSource.setUsername("root");
-        dataSource.setPassword("password");
-        dataSource.setMaximumPoolSize(10);
-        dataSource.setMinimumIdle(2);
-        // 其他复杂的初始化逻辑
-        return dataSource;
-    }
+```
+@Bean
+public DataSource dataSource() {
+    HikariDataSource dataSource = new HikariDataSource();
+    dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/mydb");
+    dataSource.setUsername("root");
+    dataSource.setPassword("password");
+    dataSource.setMaximumPoolSize(10);
+    dataSource.setMinimumIdle(2);
+    // 其他复杂的初始化逻辑
+    return dataSource;
+}
+```
+
 }
 
 在这个例子中，@Bean 注解允许我们在方法中编写复杂的初始化逻辑，而 @Component 无法做到这一点。
 
 2. 第三方库的类
-对于第三方库的类，我们通常无法直接修改其源码（例如无法在类上添加 @Component 注解）。此时，@Bean 注解提供了一种间接的方式来将这些类注册为 Spring Bean。
+  对于第三方库的类，我们通常无法直接修改其源码（例如无法在类上添加 @Component 注解）。此时，@Bean 注解提供了一种间接的方式来将这些类注册为 Spring Bean。
 
 示例代码：
 假设我们使用了一个第三方库中的 RestTemplate 类，并希望将其注册为 Spring Bean：
 @Configuration
 public class AppConfig {
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
+```
+@Bean
+public RestTemplate restTemplate() {
+    return new RestTemplate();
+}
+```
+
 }
 
 由于 RestTemplate 是第三方库的类，我们无法在其源码上添加 @Component 注解，因此只能通过 @Bean 注解将其注册为 Bean。
 
 3. 条件化 Bean 注册
-@Bean 注解可以与 @Conditional 注解结合使用，根据条件动态决定是否注册某个 Bean。这种灵活性是 @Component 无法提供的。
+  @Bean 注解可以与 @Conditional 注解结合使用，根据条件动态决定是否注册某个 Bean。这种灵活性是 @Component 无法提供的。
 
 示例代码：
 @Configuration
 public class AppConfig {
 
-    @Bean
-    @Conditional(MyCondition.class)
-    public MyService myService() {
-        return new MyService();
-    }
+```
+@Bean
+@Conditional(MyCondition.class)
+public MyService myService() {
+    return new MyService();
+}
+```
+
 }
 
 4. 多例 Bean 或自定义作用域
-@Bean 注解可以与 @Scope 注解结合使用，定义非单例的 Bean 或自定义作用域的 Bean。
+  @Bean 注解可以与 @Scope 注解结合使用，定义非单例的 Bean 或自定义作用域的 Bean。
 
 示例代码：
 @Configuration
 public class AppConfig {
 
-    @Bean
-    @Scope("prototype")
-    public MyService myService() {
-        return new MyService();
-    }
+```
+@Bean
+@Scope("prototype")
+public MyService myService() {
+    return new MyService();
+}
+```
+
 }
 
 在这个例子中，每次请求 MyService Bean 时都会创建一个新的实例，而不是使用单例模式。
 
 5. 依赖注入的灵活性
-@Bean 注解的方法可以接受参数，Spring 会自动将这些参数注入为其他 Bean。这种方式非常适合需要依赖其他 Bean 的复杂初始化逻辑。
+  @Bean 注解的方法可以接受参数，Spring 会自动将这些参数注入为其他 Bean。这种方式非常适合需要依赖其他 Bean 的复杂初始化逻辑。
 
 @Configuration
 public class AppConfig {
 
-    @Bean
-    public MyService myService(AnotherService anotherService) {
-        return new MyService(anotherService);
-    }
+```
+@Bean
+public MyService myService(AnotherService anotherService) {
+    return new MyService(anotherService);
+}
+```
+
 }
 
 在这个例子中，AnotherService 会被自动注入到 myService 方法中，然后用于创建 MyService 实例。
@@ -8687,7 +9339,6 @@ LocaleResolver用于解析请求中的语言环境信息，并将其设置到当
 可以通过多种方式切换应用程序的语言环境，如使用LocaleContextHolder来设置当前的语言环境。
 也可以使用拦截器（如LocaleChangeInterceptor）来允许用户通过请求参数（如“?lang=fr”）来切换语言环境。
 
-
 Spring中的上下文：
 Spring中的上下文（Spring Context）是Spring框架的一个核心概念，它扮演着管理和组织应用程序中各个对象的重要角色。以下是对Spring上下文的详细描述：
 
@@ -8728,8 +9379,6 @@ WebApplicationContext：专门用于Web应用程序的上下文，它继承自Ap
 在程序关闭时，Spring上下文会销毁容器中的Bean对象，并执行一些清理工作。
 销毁过程包括调用销毁方法、释放资源等步骤。
 
-
-
 Spring AOP（Aspect-Oriented Programming）是面向切面编程的一种实现技术，主要用于实现程序功能的统一维护。
 Spring AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
 
@@ -8737,7 +9386,6 @@ Spring AOP的三种使用方式：
 注解方式：通过注解的方式配置切入点，然后定义增强处理。
 XML方式：通过XML配置文件的方式配置切入点，然后定义增强处理。
 Java方式：通过Java配置类的方式配置切入点，然后定义增强处理。
-
 
 Spring AOP是运用反射来实现的：
 Spring AOP即面向切面编程，是Spring核心之一，其可以快速横向扩展。在Spring中，每一个代理实例都有一个关联的调用处理程序对象，它实现了接口InvocationHandler，该接口的invoke方法用于处理代理实例上的方法调用。
@@ -8770,45 +9418,46 @@ private perateLogMapper operateLogMapper;
 
 @Around("@annotation(com.itheima.anno.Log)")
 public Obiect recordLog(ProceedingdoinPoint joinPoint) throws Throwable {
-        //操作人ID-当前登录员工ID
-        //获取请求头中的iwt令牌，解析令牌
-        String jwt=request.getHeader(name: "token");
-        Claims claims=JwtUtils.parseuWT(jwt);
-        Integer operateUser =(Integer)claims.get("id");
+ //操作人ID-当前登录员工ID
+ //获取请求头中的iwt令牌，解析令牌
+ String jwt=request.getHeader(name: "token");
+ Claims claims=JwtUtils.parseuWT(jwt);
+ Integer operateUser =(Integer)claims.get("id");
 
-        //操作时间
-        LocalDateTime operateTime = LocalDateTime.now();
+```
+    //操作时间
+    LocalDateTime operateTime = LocalDateTime.now();
 
-        //操作类名
-        String className = joinPoint.getTarget().getclass().getName ();
+    //操作类名
+    String className = joinPoint.getTarget().getclass().getName ();
 
-        //操作方法名
-        String methodName = joinPoint.getSignature().getName ();
+    //操作方法名
+    String methodName = joinPoint.getSignature().getName ();
 
-        //操作方法参数
-        Object result =joinPoint.proceed();
-        String methodParams =Arrays.tostring(args);
+    //操作方法参数
+    Object result =joinPoint.proceed();
+    String methodParams =Arrays.tostring(args);
 
-        long begin =System.currentTimeMillis();//调用原始目标方法运行
-        long end=System.currentTimeMillis();
+    long begin =System.currentTimeMillis();//调用原始目标方法运行
+    long end=System.currentTimeMillis();
 
-        //方法返回值
-        String returnValue = JsONObject.touSONstring(result);
+    //方法返回值
+    String returnValue = JsONObject.touSONstring(result);
 
-        //操作耗时
-        Long costTime =end-begin;
+    //操作耗时
+    Long costTime =end-begin;
 
-        //记录操作日志
-        OperateLog operateLog = new OperateLog( id: null,operateUser,operaoperate,operateTime,className,methodName,methodName,returnValue,costTime)
-        LogMapper.insert(operateLog);
-        log.info("AOP记录操作日志:{}"operateLog);
+    //记录操作日志
+    OperateLog operateLog = new OperateLog( id: null,operateUser,operaoperate,operateTime,className,methodName,methodName,returnValue,costTime)
+    LogMapper.insert(operateLog);
+    log.info("AOP记录操作日志:{}"operateLog);
 
-        return result;
-    }
+    return result;
+}
+```
+
 }
 3.在需要的方法上添加注解
-
-
 
 Spring AOP的实现原理：
 Spring AOP（Aspect Oriented Programming，面向切面编程）的实现原理主要基于动态代理和字节码操作。
@@ -8856,9 +9505,9 @@ AnnotationAwareAspectJAutoProxyCreator
 关键方法：postProcessAfterInitialization()（见 AbstractAutoProxyCreator）。
 
 public Object postProcessAfterInitialization(Object bean, String beanName) {
-    if (shouldSkip(bean.getClass(), beanName)) return bean;
-    // 创建代理
-    return wrapIfNecessary(bean, beanName, cacheKey);
+ if (shouldSkip(bean.getClass(), beanName)) return bean;
+ // 创建代理
+ return wrapIfNecessary(bean, beanName, cacheKey);
 }
 
 BeanFactoryAspectJAdvisorsBuilder
@@ -8872,11 +9521,11 @@ DefaultAopProxyFactory
 根据目标类是否实现接口，决定使用 JDK 动态代理或 CGLIB：
 
 public AopProxy createAopProxy(AdvisedSupport config) {
-    if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
-        return new ObjenesisCglibAopProxy(config); // CGLIB
-    } else {
-        return new JdkDynamicAopProxy(config);     // JDK 代理
-    }
+ if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
+ return new ObjenesisCglibAopProxy(config); // CGLIB
+ } else {
+ return new JdkDynamicAopProxy(config); // JDK 代理
+ }
 }
 
 ②代理对象生成
@@ -8884,21 +9533,21 @@ JDK 动态代理
 JdkDynamicAopProxy 实现 InvocationHandler，拦截方法调用：
 
 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-    // 获取拦截器链并执行
-    List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
-    if (chain.isEmpty()) {
-        return method.invoke(target, args); // 无增强则直接调用原方法
-    } else {
-        MethodInvocation invocation = new ReflectiveMethodInvocation(proxy, target, method, args, chain);
-        return invocation.proceed(); // 执行拦截器链
-    }
+ // 获取拦截器链并执行
+ List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
+ if (chain.isEmpty()) {
+ return method.invoke(target, args); // 无增强则直接调用原方法
+ } else {
+ MethodInvocation invocation = new ReflectiveMethodInvocation(proxy, target, method, args, chain);
+ return invocation.proceed(); // 执行拦截器链
+ }
 }
 
 CGLIB 代理
 CglibAopProxy 通过 Enhancer 生成子类，DynamicAdvisedInterceptor 处理拦截：
 
 public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
-    // 逻辑与 JDK 代理类似，最终调用 MethodInvocation.proceed()
+ // 逻辑与 JDK 代理类似，最终调用 MethodInvocation.proceed()
 }
 
 3.拦截执行：ReflectiveMethodInvocation 驱动拦截器链，按顺序调用通知逻辑。
@@ -8908,48 +9557,48 @@ DefaultAdvisorChainFactory
 
 List<Object> interceptors = new ArrayList<>(advisors.length);
 for (Advisor advisor : advisors) {
-    if (advisor instanceof MethodInterceptor) {
-        interceptors.add(advisor);
-    }
+ if (advisor instanceof MethodInterceptor) {
+ interceptors.add(advisor);
+ }
 }
 ②链式调用
 ReflectiveMethodInvocation
 维护拦截器链和当前执行位置，递归调用 proceed()：
 
 public Object proceed() throws Throwable {
-    if (this.currentInterceptorIndex == this.interceptorsAndDynamicMethodMatchers.size() - 1) {
-        return invokeJoinpoint(); // 调用目标方法
-    }
-    // 执行当前拦截器
-    Object interceptor = this.interceptorsAndDynamicMethodMatchers.get(++this.currentInterceptorIndex);
-    if (interceptor instanceof MethodInterceptor) {
-        return ((MethodInterceptor) interceptor).invoke(this);
-    }
+ if (this.currentInterceptorIndex == this.interceptorsAndDynamicMethodMatchers.size() - 1) {
+ return invokeJoinpoint(); // 调用目标方法
+ }
+ // 执行当前拦截器
+ Object interceptor = this.interceptorsAndDynamicMethodMatchers.get(++this.currentInterceptorIndex);
+ if (interceptor instanceof MethodInterceptor) {
+ return ((MethodInterceptor) interceptor).invoke(this);
+ }
 }
 ③ 通知类型适配
 MethodBeforeAdviceInterceptor
 处理 @Before 通知：
 
 public Object invoke(MethodInvocation mi) throws Throwable {
-    this.advice.before(mi.getMethod(), mi.getArguments(), mi.getThis());
-    return mi.proceed(); // 继续链式调用
+ this.advice.before(mi.getMethod(), mi.getArguments(), mi.getThis());
+ return mi.proceed(); // 继续链式调用
 }
 AspectJAfterAdvice
 处理 @After 通知：
 
 public Object invoke(MethodInvocation mi) throws Throwable {
-    try {
-        return mi.proceed(); // 先执行后续调用
-    } finally {
-        invokeAdviceMethod(); // 最终执行通知逻辑
-    }
+ try {
+ return mi.proceed(); // 先执行后续调用
+ } finally {
+ invokeAdviceMethod(); // 最终执行通知逻辑
+ }
 }
 AspectJAroundAdvice
 处理 @Around 通知：
 
 public Object invoke(MethodInvocation mi) throws Throwable {
-    ProceedingJoinPoint pjp = lazyGetProceedingJoinPoint(mi);
-    return invokeAdviceMethod(pjp); // 由用户控制是否调用 proceed()
+ ProceedingJoinPoint pjp = lazyGetProceedingJoinPoint(mi);
+ return invokeAdviceMethod(pjp); // 由用户控制是否调用 proceed()
 }
 
 Spring AOP和AspectJ AOP有什么区别？
@@ -8989,13 +9638,23 @@ AspectJ AOP
 AspectJ AOP通过编译时织入可以减少运行时开销，提高性能。Spring AOP是动态代理，AspectJ AOP是静态代理。
 综上所述，Spring AOP和AspectJ AOP各有优劣。在选择使用哪种AOP技术时，需要根据项目的具体需求、团队技术栈以及维护成本等因素进行权衡。如果需要更加灵活、强大的AOP功能和更高的性能，可以选择AspectJ AOP；如果只是需要简单的AOP功能，并且希望与Spring应用程序集成，那么Spring AOP可能是一个更好的选择。
 
+### 常见的Spring AOP面试题
+
+#### 1. JDK动态代理和CGLIB如何选择？
+
+- 目标类有接口，默认 JDK 代理（`InvocationHandler`，基于接口）。没接口则 CGLIB 生成子类。Spring Boot 2 起常默认 CGLIB。
+- JDK 代理只能拦接口方法；CGLIB 不能代理 `final` 类/方法。
+
+#### 2. 自调用为什么切不到？Spring事务什么时候会失效？
+
+- `this.foo()` 走的是原始对象不是代理，事务、日志都切不到。解法：注入自己、`AopContext.currentProxy()`，或把方法拆到另一个 Bean。
+- 事务还会因：方法非 `public`、异常被 catch 吃掉、抛受检异常却没设 `rollbackFor`、传播行为用错而失效。默认只回滚 `RuntimeException` 和 `Error`。表还得是 InnoDB。
 
 SpringMVC：
 SpringMVC是一个基于Java的Web应用开发框架，用于构建灵活、可扩展的Web应用程序。它是Spring框架的一部分，提供了一种模型-视图-控制器（MVC）的架构模式，用于将应用程序的不同方面分离开来。
 SpringMVC使用了前端控制器（Front Controller）设计模式，其中DispatcherServlet充当中央调度器，负责接收所有的客户端请求并将其分派给相应的处理程序（Controller）。
 它还提供了丰富的功能，如请求映射、数据绑定、数据验证、视图解析和国际化支持等，以简化Web应用程序的开发过程。
 通过使用SpringMVC，开发人员可以轻松地构建可维护和可扩展的Web应用程序，实现松耦合和高度可测试性。它还与其他Spring框架模块（如Spring IoC和Spring AOP）紧密集成，提供了全面的企业级开发解决方案。
-
 
 Spring MVC的功能
 Spring MVC提供了一种轻度耦合的方式来开发web应用。Spring MVC是Spring的一个模块，是一个web框架。通过Dispatcher Servlet, ModelAndView 和 View Resolver，开发web应用变得很容易。解决的问题领域是网站应用程序或者服务开发——URL路由、Session、模板引擎、静态Web资源等等。
@@ -9012,58 +9671,58 @@ Spring MVC提供了一种轻度耦合的方式来开发web应用。Spring MVC是
 DispatcherServlet是Spring MVC的核心组件，它负责接收HTTP请求，并将其分发给相应的控制器处理。
 
 <beans xmlns="http://www.springframework.org/schema/beans"  
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-       xsi:schemaLocation="http://www.springframework.org/schema/beans  
-       http://www.springframework.org/schema/beans/spring-beans.xsd  
-       http://www.springframework.org/schema/context  
-       http://www.springframework.org/schema/context/spring-context.xsd">  
-  
-    <!-- 配置DispatcherServlet -->  
-    <bean class="org.springframework.web.servlet.DispatcherServlet"  
-          id="dispatcherServlet">  
-        <property name="contextConfigLocation" value="/WEB-INF/spring-mvc-servlet.xml"/>  
-    </bean>  
-  
-    <!-- 配置Servlet映射 -->  
-    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">  
-        <property name="mappings">  
-            <props>  
-                <prop key="/hello.do">helloController</prop>  
-            </props>  
-        </property>  
-    </bean>  
-  
-    <!-- 配置控制器 -->  
-    <bean id="helloController" class="com.example.HelloController"/>  
-  
-    <!-- 配置视图解析器 -->  
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
-        <property name="prefix" value="/WEB-INF/views/"/>  
-        <property name="suffix" value=".jsp"/>  
-    </bean>  
-  
-    <!-- 其他配置，例如拦截器、消息转换器等 -->  
-  
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+ xsi:schemaLocation="http://www.springframework.org/schema/beans  
+ http://www.springframework.org/schema/beans/spring-beans.xsd  
+ http://www.springframework.org/schema/context  
+ http://www.springframework.org/schema/context/spring-context.xsd">
+
+```
+<!-- 配置DispatcherServlet -->  
+<bean class="org.springframework.web.servlet.DispatcherServlet"  
+      id="dispatcherServlet">  
+    <property name="contextConfigLocation" value="/WEB-INF/spring-mvc-servlet.xml"/>  
+</bean>  
+
+<!-- 配置Servlet映射 -->  
+<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">  
+    <property name="mappings">  
+        <props>  
+            <prop key="/hello.do">helloController</prop>  
+        </props>  
+    </property>  
+</bean>  
+
+<!-- 配置控制器 -->  
+<bean id="helloController" class="com.example.HelloController"/>  
+
+<!-- 配置视图解析器 -->  
+<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
+    <property name="prefix" value="/WEB-INF/views/"/>  
+    <property name="suffix" value=".jsp"/>  
+</bean>  
+
+<!-- 其他配置，例如拦截器、消息转换器等 -->  
+```
+
 </beans>
 在web.xml中配置DispatcherServlet
 你还需要在web.xml中配置Servlet容器来加载并映射DispatcherServlet。
 
-
 <web-app ...>  
-    <servlet>  
-        <servlet-name>dispatcherServlet</servlet-name>  
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>  
-        <init-param>  
-            <param-name>contextConfigLocation</param-name>  
-            <param-value>/WEB-INF/spring-mvc-servlet.xml</param-value>  
-        </init-param>  
-        <load-on-startup>1</load-on-startup>  
-    </servlet>  
-  
-    <servlet-mapping>  
-        <servlet-name>dispatcherServlet</servlet-name>  
-        <url-pattern>*.do</url-pattern>  
-    </servlet-mapping>  
+ <servlet> <servlet-name>dispatcherServlet</servlet-name>  
+ <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>  
+ <init-param> <param-name>contextConfigLocation</param-name>  
+ <param-value>/WEB-INF/spring-mvc-servlet.xml</param-value> </init-param>  
+ <load-on-startup>1</load-on-startup> </servlet>
+
+```
+<servlet-mapping>  
+    <servlet-name>dispatcherServlet</servlet-name>  
+    <url-pattern>*.do</url-pattern>  
+</servlet-mapping>  
+```
+
 </web-app>
 
 在现代的Spring Boot应用中，推荐使用Java配置类来代替XML配置，因为Java配置提供了类型安全、重构支持以及更简洁的配置方式。以下是Java配置类的简单示例：
@@ -9073,20 +9732,22 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;  
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;  
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;  
-import org.springframework.web.servlet.view.InternalResourceViewResolver;  
-  
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
 @Configuration  
 @EnableWebMvc  
 @ComponentScan(basePackages = "com.example")  
-public class WebConfig implements WebMvcConfigurer {  
-  
-    @Override  
-    public void configureViewResolvers(ViewResolverRegistry registry) {  
-        registry.jsp().prefix("/WEB-INF/views/").suffix(".jsp");  
-    }  
-  
-    // 其他配置方法，例如配置拦截器、消息转换器等  
-  
+public class WebConfig implements WebMvcConfigurer {
+
+```
+@Override  
+public void configureViewResolvers(ViewResolverRegistry registry) {  
+    registry.jsp().prefix("/WEB-INF/views/").suffix(".jsp");  
+}  
+
+// 其他配置方法，例如配置拦截器、消息转换器等  
+```
+
 }
 
 注：在Spring Boot应用中，通常不需要在web.xml中配置Servlet，因为Spring Boot会自动配置并注册DispatcherServlet。你只需要将Java配置类放在Spring Boot的主配置类所在的包或子包中，或者在主配置类上使用@Import注解来导入Java配置类。
@@ -9113,7 +9774,6 @@ public String testParam(String username, String password){
 System.out.println("username:"+username+",password:"+password);
 return "success";
 }
-
 
 注：
 若请求所传输的请求参数中有多个同名的请求参数，此时可以在控制器方法的形参中设置字符串
@@ -9163,9 +9823,19 @@ HandlerMapping：通过扩展处理器映射器实现不同的映射方式，例
 HandlAdapter：通过扩展处理器适配器，支持更多类型的处理器。
 ViewResolver：通过扩展视图解析器，支持更多类型的视图解析，例如：jsp、freemarker、pdf、excel等。
 
+### 常见的Spring MVC面试题
+
+#### 1. `DispatcherServlet`的工作流程是什么？
+
+- 请求先进 `DispatcherServlet`（前端控制器）。
+- `HandlerMapping` 按 URL 找到 Controller；`HandlerAdapter` 调用对应方法。
+- 方法返回 `ModelAndView` 或直接写 JSON（`@ResponseBody` / `@RestController`）。
+- 有视图时再经 `ViewResolver` 渲染；前后端分离时通常直接返回 JSON，不再走视图。
+- 拦截器在 Handler 前后执行：`preHandle` → Controller → `postHandle` → 视图 → `afterCompletion`。
 
 域对象共享数据
 1、使用ServletAPI向request域对象共享数据
+
 <form th:action="@{/testpojo}" method="post">
 用户名：<input type="text" name="username"><br>
 密码：<input type="password" name="password"><br>
@@ -9207,7 +9877,6 @@ SpringMVC本质上是对Java Web Servlet的封装，使得开发Java Web项目�
 SpringMVC是后端渲染式的后台开发框架，没有做到前后端分离，对前端开发人员也要求有Java Web的开发环境。
 前端人员作出的静态Html页面，也需要进行整合，改为Spring MVC里的View。
 
-
 Spring MVC的竞争力怎么样？Spring MVC与其他技术的比较：
 与Spring Boot的比较：
 Spring Boot是一个更轻量级的框架，更适合当前“微服务”的开发模式。
@@ -9218,8 +9887,6 @@ Spring Boot提供了大量的自动配置和简化开发的功能，使得开发
 前后端分离是当前Web开发的一个流行趋势，它使得前端和后端可以独立开发、部署和扩展。
 在这种模式下，后端主要提供RESTful API接口，而前端则使用各种前端框架（如React、Vue.js等）进行开发。
 虽然Spring MVC仍然可以支持RESTful API的开发，但在一些项目中，开发者可能会选择更轻量级或更专注于API开发的框架（如Spring WebFlux、Spring Data REST等）。
-
-
 
 SpringBoot：
 Spring Boot 是由 Pivotal 团队提供的用于简化 Spring 应用开发的框架。它通过默认配置、自动化配置和内嵌服务器的支持，大幅减少了开发者配置和部署 Spring 应用的复杂度。
@@ -9244,92 +9911,101 @@ Spring Boot通过自动配置简化了Spring框架的使用，它并没有提供
 使用Spring Boot后，项目的初始化、配置以及部署方式发生了变化。例如，不再需要单独安装Tomcat等容器服务器，只需通过Maven或Gradle等工具打包成jar包，就可以直接运行网站。然而，这些变化并不影响业务逻辑和流程的实现。
 
 SpringBoot的配置机制：
->自动配置：Spring Boot 通过自动配置机制，根据项目中的依赖关系和条件，自动地创建和配置应用程序所需的组件。这种机制大大简化了配置过程，减少了手动配置的工作量。
->默认配置：Spring Boot 提供了大量的默认配置，这些配置适用于大多数应用场景。通过使用默认配置，您可以轻松地启动应用程序，而无需编写过多的配置文件。
->自定义配置：如果默认配置不能满足您的需求，您可以根据需要自定义配置。Spring Boot 支持使用 application.properties 或 application.yml 文件来定义自定义配置。您可以在这些文件中设置自己的属性，以满足特定应用程序的需求。
->外部化配置：Spring Boot 支持将配置文件放置在项目外部，以便于在不同的环境中使用相同的配置。您可以将配置文件放在项目的根目录或 classpath 根目录之外的位置，然后在应用程序中通过设置配置文件的路径来加载它们。
->热重载配置：Spring Boot 支持配置文件的热重载，这意味着当您更改配置文件时，应用程序将自动重新加载配置，而无需重启整个应用程序。这使得开发过程更加高效，因为您无需等待应用程序重新启动就可以看到配置更改的效果。
->命令行参数：Spring Boot 还支持通过命令行参数来覆盖配置文件中的属性值。这使得您可以在启动应用程序时指定特定的属性值，以便进行测试或生产环境的差异化配置。
 
+> 自动配置：Spring Boot 通过自动配置机制，根据项目中的依赖关系和条件，自动地创建和配置应用程序所需的组件。这种机制大大简化了配置过程，减少了手动配置的工作量。
+> 默认配置：Spring Boot 提供了大量的默认配置，这些配置适用于大多数应用场景。通过使用默认配置，您可以轻松地启动应用程序，而无需编写过多的配置文件。
+> 自定义配置：如果默认配置不能满足您的需求，您可以根据需要自定义配置。Spring Boot 支持使用 application.properties 或 application.yml 文件来定义自定义配置。您可以在这些文件中设置自己的属性，以满足特定应用程序的需求。
+> 外部化配置：Spring Boot 支持将配置文件放置在项目外部，以便于在不同的环境中使用相同的配置。您可以将配置文件放在项目的根目录或 classpath 根目录之外的位置，然后在应用程序中通过设置配置文件的路径来加载它们。
+> 热重载配置：Spring Boot 支持配置文件的热重载，这意味着当您更改配置文件时，应用程序将自动重新加载配置，而无需重启整个应用程序。这使得开发过程更加高效，因为您无需等待应用程序重新启动就可以看到配置更改的效果。
+> 命令行参数：Spring Boot 还支持通过命令行参数来覆盖配置文件中的属性值。这使得您可以在启动应用程序时指定特定的属性值，以便进行测试或生产环境的差异化配置。
 
 Springboot如何读取application.properties或application.yml中的配置?
 在Spring Boot中，读取application.properties或application.yml中的配置是非常直接和简单的。Spring Boot提供了多种方式来访问这些配置文件中的属性。以下是一些常用的方法：
 
 1. 使用@Value注解
-你可以直接在类的字段上使用@Value注解来注入配置文件中的属性值。这适用于简单的配置值。
+  你可以直接在类的字段上使用@Value注解来注入配置文件中的属性值。这适用于简单的配置值。
 
 import org.springframework.beans.factory.annotation.Value;  
-import org.springframework.stereotype.Component;  
-  
+import org.springframework.stereotype.Component;
+
 @Component  
-public class MyBean {  
-  
-    @Value("${my.property}")  
-    private String myProperty;  
-  
-    // Getter and Setter  
-    public String getMyProperty() {  
-        return myProperty;  
-    }  
-  
-    public void setMyProperty(String myProperty) {  
-        this.myProperty = myProperty;  
-    }  
+public class MyBean {
+
+```
+@Value("${my.property}")  
+private String myProperty;  
+
+// Getter and Setter  
+public String getMyProperty() {  
+    return myProperty;  
+}  
+
+public void setMyProperty(String myProperty) {  
+    this.myProperty = myProperty;  
+}  
+```
+
 }
 在application.properties中：
 my.property=someValue
 
 或者在application.yml中：
 my:  
-  property: someValue
+ property: someValue
 
 2. 使用@ConfigurationProperties注解
-对于更复杂的配置，你可以使用@ConfigurationProperties注解。这个注解允许你将配置文件中的属性绑定到一个POJO（Plain Old Java Object）上。
+  对于更复杂的配置，你可以使用@ConfigurationProperties注解。这个注解允许你将配置文件中的属性绑定到一个POJO（Plain Old Java Object）上。
 
 首先，定义一个配置类：
 import org.springframework.boot.context.properties.ConfigurationProperties;  
-import org.springframework.stereotype.Component;  
-  
+import org.springframework.stereotype.Component;
+
 @Component  
 @ConfigurationProperties(prefix = "my")  
-public class MyProperties {  
-  
-    private String property;  
-  
-    // Getter and Setter  
-    public String getProperty() {  
-        return property;  
-    }  
-  
-    public void setProperty(String property) {  
-        this.property = property;  
-    }  
+public class MyProperties {
+
+```
+private String property;  
+
+// Getter and Setter  
+public String getProperty() {  
+    return property;  
+}  
+
+public void setProperty(String property) {  
+    this.property = property;  
+}  
+```
+
 }
 然后，在application.properties或application.yml中配置属性，如上所示。
 
 注意：确保你的Spring Boot应用启用了@EnableConfigurationProperties注解（这通常在@SpringBootApplication注解中自动包含）。
 
 3. 使用Environment抽象
-你还可以注入Environment抽象来访问配置文件中的所有属性。
+  你还可以注入Environment抽象来访问配置文件中的所有属性。
 
 import org.springframework.beans.factory.annotation.Autowired;  
 import org.springframework.core.env.Environment;  
-import org.springframework.stereotype.Component;  
-  
+import org.springframework.stereotype.Component;
+
 @Component  
-public class MyBean {  
-  
-    @Autowired  
-    private Environment env;  
-  
-    public void someMethod() {  
-        String myProperty = env.getProperty("my.property");  
-        // 使用myProperty  
-    }  
+public class MyBean {
+
+```
+@Autowired  
+private Environment env;  
+
+public void someMethod() {  
+    String myProperty = env.getProperty("my.property");  
+    // 使用myProperty  
+}  
+```
+
 }
 
 4. 使用@PropertySource注解
-虽然@PropertySource注解主要用于加载额外的属性文件，但它也可以与@Value或@ConfigurationProperties结合使用来指定配置文件的位置。不过，对于application.properties或application.yml这样的标准配置文件，通常不需要显式指定。
+  虽然@PropertySource注解主要用于加载额外的属性文件，但它也可以与@Value或@ConfigurationProperties结合使用来指定配置文件的位置。不过，对于application.properties或application.yml这样的标准配置文件，通常不需要显式指定。
 
 注意事项
 确保你的配置文件（application.properties或application.yml）位于正确的位置（通常是src/main/resources目录下）。
@@ -9337,11 +10013,11 @@ public class MyBean {
 对于YAML文件，注意缩进和格式，因为YAML是敏感的。
 使用@ConfigurationProperties时，Spring Boot会自动进行类型转换和验证（如果你使用了JSR-303/JSR-349 Bean Validation API）。
 
-
 SpringBoot的启动方法：
 @SpringBootApplication 是 Spring Boot 应用的启动类上常用的注解，它结合了多个核心注解，简化了 Spring Boot 应用的配置。
 
 这个注解是由以下三个注解组合而成的：
+
 1. @SpringBootConfiguration：组合了@Configuration注解，实现配置文件的功能
 2. @EnableAutoConfiguration：打开自动配置的功能，也可以关闭某个自动配置的选项
 3. @ComponentScan：Spring组件扫描
@@ -9364,11 +10040,11 @@ import java.lang.annotation.*;
 @SpringBootConfiguration
 @EnableAutoConfiguration
 @ComponentScan(excludeFilters = {
-    @ComponentScan.Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
-    @ComponentScan.Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class)
+ @ComponentScan.Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
+ @ComponentScan.Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class)
 })
 public @interface SpringBootApplication {
-    // Additional attributes omitted for brevity
+ // Additional attributes omitted for brevity
 }
 
 组成注解的详细解析
@@ -9376,7 +10052,6 @@ public @interface SpringBootApplication {
 1. @SpringBootConfiguration
 
 这个注解是 @Configuration的一个特化，表明这是一个 Spring 配置类。
-
 
 package org.springframework.boot;
 import org.springframework.context.annotation.Configuration;
@@ -9389,13 +10064,11 @@ import java.lang.annotation.*;
 public @interface SpringBootConfiguration {
 }
 
-
 @Configuration 本身是 Spring 的核心注解之一，表示一个类可以使用 Spring IoC 容器作为 bean 定义的来源。@SpringBootConfiguration 本质上是一个带有@Configuration 注解的类，这意味着它可以定义 Spring beans。
 
 2. @EnableAutoConfiguration
 
 @EnableAutoConfiguration 告诉 Spring Boot 根据应用程序的类路径设置、其他 bean 和各种属性配置自动配置 Spring 应用上下文。这是 Spring Boot 自动配置机制的核心注解。
-
 
 package org.springframework.boot.autoconfigure;
 
@@ -9412,9 +10085,12 @@ import java.lang.annotation.*;
 @AutoConfigurationPackage
 @Import(AutoConfigurationImportSelector.class)
 public @interface EnableAutoConfiguration {
-    Class<?>[] exclude() default {};
+ Class<?>[] exclude() default {};
 
-    String[] excludeName() default {};
+```
+String[] excludeName() default {};
+```
+
 }
 
 @AutoConfigurationPackage:
@@ -9437,10 +10113,8 @@ Spring Boot 通过 SpringFactoriesLoader 加载 META-INF/spring.factories 文件
 ③自动配置类的加载:
 AutoConfigurationImportSelector 会读取 spring.factories 文件中的 org.springframework.boot.autoconfigure.EnableAutoConfiguration 键对应的自动配置类列表，并根据条件注解进行筛选。
 
-
 3. @ComponentScan
-@ComponentScan 告诉 Spring 在启动类的包及其子包中查找其他组件、配置和服务，允许 Spring 自动扫描和注册这些组件。
-
+  @ComponentScan 告诉 Spring 在启动类的包及其子包中查找其他组件、配置和服务，允许 Spring 自动扫描和注册这些组件。
 
 package org.springframework.context.annotation;
 
@@ -9451,16 +10125,13 @@ import java.lang.annotation.*;
 @Documented
 @Repeatable(ComponentScans.class)
 public @interface ComponentScan {
-    String[] value() default {};
-    String[] basePackages() default {};
-    Class<?>[] basePackageClasses() default {};
-    boolean lazyInit() default false;
+ String[] value() default {};
+ String[] basePackages() default {};
+ Class<?>[] basePackageClasses() default {};
+ boolean lazyInit() default false;
 }
 
-
 @ComponentScan 默认扫描启动类所在包及其子包中的所有组件（如 @Component、@Service、@Repository 和 @Controller 等），这意味着您通常会将启动类放在根包中，以便扫描整个项目的组件。
-
-
 
 Spring Boot 启动类：
 package com.example.demo;
@@ -9471,13 +10142,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class DemoApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
-    }
+```
+public static void main(String[] args) {
+    SpringApplication.run(DemoApplication.class, args);
+}
+```
+
 }
 
 在这个示例中，@SpringBootApplication 注解使得 DemoApplication 类成为 Spring Boot 应用的启动类。通过调用 SpringApplication.run(DemoApplication.class, args)，Spring Boot 框架将自动执行以下步骤：
- 
+
 1. 创建 Spring 应用上下文（ApplicationContext）。
 2. 注册并启动所有@ComponentScan 扫描到的 bean。
 3. 根据 @EnableAutoConfiguration 注解自动配置 Spring 应用上下文。
@@ -9485,7 +10159,6 @@ public class DemoApplication {
 
 总结
 @SpringBootApplication 是一个复合注解，结合了 @SpringBootConfiguration、@EnableAutoConfiguration 和 @ComponentScan，简化了 Spring Boot 应用的配置。通过使用这个注解，开发者可以快速配置和启动一个 Spring Boot 应用，而无需编写大量的配置代码。
-
 
 Spring Boot是如何启动的？
 SpringBoot的启动过程是一个复杂但有序的过程，从run方法开始，经历多个步骤来初始化应用程序上下文、创建Bean工厂对象、刷新上下文等，最终启动应用程序。
@@ -9504,8 +10177,9 @@ run方法是SpringBoot启动的入口点。当执行SpringApplication.run(DemoAp
 3.获取运行时监听器：从META-INF/spring.factories文件中找到所有SpringApplicationRunListener的监听器，并启动它们。这些监听器用于监听应用程序启动过程中的各种事件。
 
 4.准备环境：创建一个ConfigurableEnvironment对象，用于读取环境配置，如application.yml或application.properties文件。
->加载配置源参数和命令行属性。
->配置当前active的配置文件。
+
+> 加载配置源参数和命令行属性。
+> 配置当前active的配置文件。
 
 5.发布监听事件：通知所有监听器当前环境已准备完成。
 
@@ -9520,9 +10194,10 @@ run方法是SpringBoot启动的入口点。当执行SpringApplication.run(DemoAp
 8.注册Bean：在容器中注册一些必要的Bean，如springApplicationArguments和springBootBanner。
 
 9.刷新容器：调用refreshContext(context)方法，这是启动过程的核心部分。它负责完成组件的扫描、创建、加载等任务。
->创建容器中的所有组件。
->实例化并初始化所有的Bean。
->创建并启动Tomcat服务器（如果使用的是Servlet容器）。
+
+> 创建容器中的所有组件。
+> 实例化并初始化所有的Bean。
+> 创建并启动Tomcat服务器（如果使用的是Servlet容器）。
 
 10.发布事件：通知所有监听器项目已启动。
 
@@ -9534,8 +10209,6 @@ run方法是SpringBoot启动的入口点。当执行SpringApplication.run(DemoAp
 当所有步骤都执行完毕后，SpringBoot应用程序就成功启动了。此时，可以通过访问配置的端口和上下文路径来访问应用程序提供的服务。
 
 综上所述，SpringBoot的启动过程是一个涉及多个步骤和组件的复杂过程。从run方法开始，通过创建和初始化SpringApplication对象、准备环境、创建容器、准备容器、刷新容器等步骤，最终成功启动应用程序。
-
-
 
 用Spring Boot解释一下约定大于配置大于编码：
 "约定大于配置大于编码" 是一个设计原则，它强调了在设计软件时，应该优先考虑使用通用的、广泛接受的约定，其次是配置选项，最后才是直接编写代码。这个原则旨在提高软件的可维护性、可读性和可扩展性。在Spring Boot框架中，这个原则得到了很好的体现。
@@ -9564,19 +10237,26 @@ application.properties 或 application.yml：这是Spring Boot中最常用的配
 在Spring Boot中，"约定大于配置大于编码"原则的应用使得开发者可以更加高效地构建应用。通过遵循通用的约定和利用强大的配置功能，开发者可以快速地搭建起一个功能完善的应用，
 并在需要时通过编码来实现更高级的功能。这种设计方式不仅提高了开发效率，也增强了应用的可维护性和可读性。
 
-
-
 SpringBoot的自动配置：
 Spring Boot的自动配置是其核心功能之一，它极大地简化了Spring应用程序的初始搭建和配置过程。自动配置的核心思想是根据项目中的依赖和类路径下的特定类，自动创建和配置Spring容器中的bean，从而省去了手动配置的大量工作。
 
 以下是Spring Boot自动配置的主要原理和实现方式：
->条件化配置：Spring Boot通过条件注解（如@ConditionalOnClass、@ConditionalOnMissingBean等）来决定是否加载某个自动配置类或bean。这些条件可以是类路径下是否存在某个类、是否存在某个bean等。
-只有当满足特定条件时，相关的自动配置才会生效。
->自动配置类：自动配置类通过@Configuration注解标识，它们包含了Spring容器需要自动创建的bean的定义。这些bean的创建和配置会根据条件化注解的条件来确定。自动配置类通常存放在spring-boot-autoconfigure模块的jar包中。
->META-INF/spring.factories文件：Spring Boot通过在类路径下的META-INF/spring.factories文件中定义自动配置类，告诉Spring Boot哪些配置类需要被加载。这个文件是一个属性文件，其中包含了自动配置类的全限定名。
->属性绑定：Spring Boot还允许开发者在application.properties或application.yml文件中定义外部化配置，这些配置会被自动绑定到相关的bean上。这大大简化了配置的复杂性，使得开发者能够更专注于业务逻辑的实现。
->Starter依赖：Spring Boot提供了一系列的“Starter”依赖，这些依赖包含了构建某个特定类型应用程序所需的所有基本依赖和自动配置。例如，spring-boot-starter-web包含了构建Web应用程序所需的Spring MVC和嵌入式Servlet容器等依赖和自动配置。
 
+> 条件化配置：Spring Boot通过条件注解（如@ConditionalOnClass、@ConditionalOnMissingBean等）来决定是否加载某个自动配置类或bean。这些条件可以是类路径下是否存在某个类、是否存在某个bean等。
+> 只有当满足特定条件时，相关的自动配置才会生效。
+> 自动配置类：自动配置类通过@Configuration注解标识，它们包含了Spring容器需要自动创建的bean的定义。这些bean的创建和配置会根据条件化注解的条件来确定。自动配置类通常存放在spring-boot-autoconfigure模块的jar包中。
+> META-INF/spring.factories文件：Spring Boot通过在类路径下的META-INF/spring.factories文件中定义自动配置类，告诉Spring Boot哪些配置类需要被加载。这个文件是一个属性文件，其中包含了自动配置类的全限定名。
+> 属性绑定：Spring Boot还允许开发者在application.properties或application.yml文件中定义外部化配置，这些配置会被自动绑定到相关的bean上。这大大简化了配置的复杂性，使得开发者能够更专注于业务逻辑的实现。
+> Starter依赖：Spring Boot提供了一系列的“Starter”依赖，这些依赖包含了构建某个特定类型应用程序所需的所有基本依赖和自动配置。例如，spring-boot-starter-web包含了构建Web应用程序所需的Spring MVC和嵌入式Servlet容器等依赖和自动配置。
+
+### 常见的Spring Boot面试题
+
+#### 1. Spring Boot自动配置原理是什么？
+
+- `@SpringBootApplication` = `@Configuration` + `@EnableAutoConfiguration` + `@ComponentScan`。
+- `@EnableAutoConfiguration` 通过 `SpringFactoriesLoader` 加载 `META-INF/spring.factories`（Boot 2.7+ 也用 `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`）里的自动配置类。
+- 每个自动配置类带条件注解（`@ConditionalOnClass`、`@ConditionalOnMissingBean` 等）：类路径有对应 Starter、容器里还没有同类型 Bean 时才生效。
+- 配置项绑定到 `application.yml` / `application.properties`。自己写了同类型 Bean 就会顶掉默认自动配置。
 
 Spring与SpringBoot中一些常用注解：
 
@@ -9598,7 +10278,6 @@ Spring与SpringBoot中一些常用注解：
 自动配置类：Spring Boot提供了许多自动配置类，这些类包含了一些预定义的bean，并且会根据项目的条件进行创建和配置。
 META-INF/spring.factories文件：自动配置类通过META-INF/spring.factories文件进行注册。Spring Boot在启动时，会扫描这个文件，并加载其中定义的自动配置类。
 
-
 @ComponentScan：
 这个注解用于告诉Spring Boot哪些包下的类需要被扫描并注册为Spring容器管理的bean。默认情况下，@SpringBootApplication注解会扫描启动类所在的包及其子包。
 
@@ -9614,15 +10293,15 @@ META-INF/spring.factories文件：自动配置类通过META-INF/spring.factories
 @Component：普通pojo注入spring容器
 
 示例代码：
-package com.example.demo.components;  
-  
-import org.springframework.stereotype.Component;  
-  
+package com.example.demo.components;
+
+import org.springframework.stereotype.Component;
+
 @Component  
 public class HelloWorld {  
-    public String sayHello() {  
-        return "Hello, World!";  
-    }  
+ public String sayHello() {  
+ return "Hello, World!";  
+ }  
 }
 
 在这个例子中，HelloWorld 类被标记为 @Component，这意味着 Spring 容器会在启动时自动检测并注册这个类的实例。
@@ -9640,13 +10319,12 @@ Spring 还提供了几个特定用途的注解，它们是 @Component 的特化�
 @Conditional：基于特定条件来决定是否创建一个 bean。它是 Spring 4.0 引入的一个强大特性，允许根据运行时环境或其他条件来控制 bean 的创建。在配置类中的 bean 声明上添加条件，以决定这些 bean 是否应该被注册到 Spring 应用上下文中。
 @ImportResource：用于导入 Spring 的 XML 配置文件，使其与基于 Java 的配置一起使用。这在需要将现有 XML 配置迁移到基于 Java 的配置时非常有用。
 
-
 自定义条件
 要创建一个自定义条件，你需要实现 Condition 接口，并重写 matches 方法。以下是一个简单的例子，展示了如何根据某个特定的属性来决定是否创建一个 bean。
 
 condition接口：
-public interface Condition {    
-    boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata);  
+public interface Condition {  
+ boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata);  
 }
 ConditionContext 提供了关于当前 Spring 应用上下文的信息，比如环境属性、类加载器等。
 AnnotatedTypeMetadata 提供了关于当前注解元素的元数据，比如注解的属性值等。
@@ -9654,39 +10332,44 @@ AnnotatedTypeMetadata 提供了关于当前注解元素的元数据，比如注�
 1.创建自定义条件类
 import org.springframework.context.annotation.Condition;  
 import org.springframework.context.annotation.ConditionContext;  
-import org.springframework.core.type.AnnotatedTypeMetadata;  
-  
-public class OnPropertyCondition implements Condition {  
-  
-    @Override  
-    public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {  
-        // 获取环境属性 "example.feature.enabled"  
-        String property = context.getEnvironment().getProperty("example.feature.enabled");  
-        // 如果属性为 "true"，则返回 true，否则返回 false  
-        return Boolean.parseBoolean(property);  
-    }  
+import org.springframework.core.type.AnnotatedTypeMetadata;
+
+public class OnPropertyCondition implements Condition {
+
+```
+@Override  
+public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {  
+    // 获取环境属性 "example.feature.enabled"  
+    String property = context.getEnvironment().getProperty("example.feature.enabled");  
+    // 如果属性为 "true"，则返回 true，否则返回 false  
+    return Boolean.parseBoolean(property);  
+}  
+```
+
 }
 
 2.在配置类中使用自定义条件
 import org.springframework.context.annotation.Bean;  
 import org.springframework.context.annotation.Conditional;  
-import org.springframework.context.annotation.Configuration;  
-  
+import org.springframework.context.annotation.Configuration;
+
 @Configuration  
-public class MyAppConfig {  
-  
-    @Bean  
-    @Conditional(OnPropertyCondition.class)  
-    public MyFeature myFeature() {  
-        return new MyFeature();  
-    }  
+public class MyAppConfig {
+
+```
+@Bean  
+@Conditional(OnPropertyCondition.class)  
+public MyFeature myFeature() {  
+    return new MyFeature();  
+}  
+```
+
 }
 
 3.在 application.properties 中设置属性
 example.feature.enabled=true
 
 如果 application.properties 文件中设置了 example.feature.enabled=true，则 MyFeature 的 bean 会被创建并注册到 Spring 应用上下文中。如果设置为 false 或未设置，则 MyFeature 的 bean 不会被创建。
-
 
 Spring Boot 提供的其他条件注解
 Spring Boot 提供了一系列预定义的 @Conditional 注解，如：
@@ -9697,8 +10380,6 @@ Spring Boot 提供了一系列预定义的 @Conditional 注解，如：
 @ConditionalOnClass：当指定的类在类路径上时，条件满足。
 @ConditionalOnMissingClass：当指定的类不在类路径上时，条件满足。
 @ConditionalOnExpression：当指定的 SpEL 表达式计算结果为 true 时，条件满足。
-
-
 
 用于web开发的注解：
 @RequestMapping：@RequestMapping（url），通过该注解就可以通过配置的url进行访问，方式可以是get或post请求，两种方式均可
@@ -9720,8 +10401,6 @@ Spring Boot 提供了一系列预定义的 @Conditional 注解，如：
 @PropertySource：用于指定要读取的配置文件，可以和@Value或@ConfigurationProperties配合使用
 @Configuration：作用于类上表示这是一个配置类，可理解为用spring的时候xml里面的< beans>标签 
 @Bean：产生bean对象加入容器，作用于方法，可理解为用spring的时候xml里面的标签
- 
-
 
 Spring Boot的启动类实现方式：
 1、程序从main方法开始运行
@@ -9733,12 +10412,12 @@ Spring Boot的启动类实现方式：
 7、程序启动扫描加载主程序类所在的包以及下面所有子包的组件；
 
 Spring Boot使用的全局配置文件：
->application.properties
->application.yml
+
+> application.properties
+> application.yml
 
 配置文件放在src/main/resources目录或者类路径/config下
 .yml是YAML(YAML Aint Markup Language)编写的文件格式，YAML是一种直观的能够被电脑识别的的数据数据序列化格式，比json、xml等更适合做配置文件
-
 
 总结一下SpringBoot核心功能：
 1.可独立运行的SpringBoot项目：
@@ -9759,7 +10438,6 @@ SpringBoot提供了丰富的生产就绪功能，如性能指标、应用信息�
 
 6.无代码生成和XML配置：
 SpringBoot完全不需要任何XML配置即可实现Spring的所有配置，同时也不会生成额外的代码。它鼓励使用注解和Java配置来替代传统的XML配置，使得配置更加灵活和易于管理。
-
 
 SpringBoot响应式编程：
 Spring Boot响应式编程是一种现代化的编程范式，特别适用于需要高并发和高性能的应用场景。
@@ -9796,15 +10474,18 @@ import reactor.core.publisher.Mono;
 @RestController
 public class ReactiveController {
 
-    @GetMapping("/hello")
-    public Mono<String> hello() {
-        return Mono.just("Hello, Reactive World!");
-    }
+```
+@GetMapping("/hello")
+public Mono<String> hello() {
+    return Mono.just("Hello, Reactive World!");
+}
 
-    @GetMapping("/numbers")
-    public Flux<Integer> numbers() {
-        return Flux.range(1, 10); // 生成从1到10的数字流
-    }
+@GetMapping("/numbers")
+public Flux<Integer> numbers() {
+    return Flux.range(1, 10); // 生成从1到10的数字流
+}
+```
+
 }
 
 Flux和Mono：
@@ -9825,7 +10506,6 @@ Mono
 
 总结
 在Spring WebFlux中，Flux和Mono通过异步和非阻塞的方式处理数据流，提供了更好的性能和可伸缩性。它们使得开发者可以编写异步数据处理逻辑，轻松地对数据流进行各种处理。同时，Flux和Mono还提供了丰富的操作符来支持复杂的业务逻辑和数据变换需求。
-
 
 Spring WebFlux的优化和监控：
 Spring WebFlux的优化和监控是确保响应式应用程序高效运行和易于维护的关键步骤。
@@ -9874,6 +10554,7 @@ Spring WebFlux可以与多种日志框架集成，如SLF4J、Logback和Log4j2。
 这些工具通常提供了丰富的监控功能，如分布式跟踪、性能瓶颈分析、错误日志收集等。
 
 # 数据库连接技术：
+
 JDBC → ORM框架
 
 JDBC:
@@ -9895,48 +10576,51 @@ JDBC 基本步骤
 import java.sql.Connection;  
 import java.sql.DriverManager;  
 import java.sql.ResultSet;  
-import java.sql.Statement;  
-  
+import java.sql.Statement;
+
 public class JDBC {  
-    public static void main(String[] args) {  
-        // 数据库 URL，用户名和密码  
-        String url = "jdbc:mysql://localhost:3306/your_database_name?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";  
-        String user = "your_username";  
-        String password = "your_password";  
-  
-        try {  
-            // 加载 JDBC 驱动  
-            Class.forName("com.mysql.cj.jdbc.Driver");  
-  
-            // 建立连接  
-            Connection conn = DriverManager.getConnection(url, user, password);  
-  
-            // 创建 Statement  
-            Statement stmt = conn.createStatement();  
-  
-            // 执行查询  
-            String sql = "SELECT id, name FROM users";  
-            ResultSet rs = stmt.executeQuery(sql);  
-  
-            // 处理结果  
-            while (rs.next()) {  
-                int id = rs.getInt("id");  
-                String name = rs.getString("name");  
-                System.out.println("ID: " + id + ", Name: " + name);  
-            }  
-  
-            // 关闭资源  
-            rs.close();  
-            stmt.close();  
-            conn.close();  
-        } catch (Exception e) {  
-            e.printStackTrace();  
+ public static void main(String[] args) {  
+ // 数据库 URL，用户名和密码  
+ String url = "jdbc:mysql://localhost:3306/your_database_name?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";  
+ String user = "your_username";  
+ String password = "your_password";
+
+```
+    try {  
+        // 加载 JDBC 驱动  
+        Class.forName("com.mysql.cj.jdbc.Driver");  
+
+        // 建立连接  
+        Connection conn = DriverManager.getConnection(url, user, password);  
+
+        // 创建 Statement  
+        Statement stmt = conn.createStatement();  
+
+        // 执行查询  
+        String sql = "SELECT id, name FROM users";  
+        ResultSet rs = stmt.executeQuery(sql);  
+
+        // 处理结果  
+        while (rs.next()) {  
+            int id = rs.getInt("id");  
+            String name = rs.getString("name");  
+            System.out.println("ID: " + id + ", Name: " + name);  
         }  
+
+        // 关闭资源  
+        rs.close();  
+        stmt.close();  
+        conn.close();  
+    } catch (Exception e) {  
+        e.printStackTrace();  
     }  
+}  
+```
+
 }
 
->JDBC为什么能连接的上数据库？
-好的，这是一个非常核心的Java面试题和基础知识点。JDBC能连接上数据库，本质上是因为它扮演了一个**“翻译官”和“桥梁”** 的角色。
+> JDBC为什么能连接的上数据库？
+> 好的，这是一个非常核心的Java面试题和基础知识点。JDBC能连接上数据库，本质上是因为它扮演了一个**“翻译官”和“桥梁”** 的角色。
 
 JDBC的连接过程可以分为以下几个关键步骤：
 
@@ -9949,6 +10633,7 @@ Sun公司（现在是Oracle）定义了JDBC这一套标准接口。这些接口�
 #### 2. 驱动实现（厂商提供“翻译官”）
 
 各个数据库厂商（如MySQL的Oracle，PostgreSQL的社区等）负责提供这个“充电器”，也就是 **JDBC驱动**。这个驱动是一个Jar包，它做了两件核心事情：
+
 - **实现了JDBC接口**：它提供了 `Connection`, `Statement` 等接口的具体实现类。
 - **实现了数据库的私有协议**：它知道如何通过TCP/IP网络，按照特定数据库的通信协议（比如MySQL的协议）来打包、发送请求和解析响应。
 
@@ -9970,17 +10655,20 @@ Connection conn = DriverManager.getConnection(url, user, password);
 背后发生了这些事情：
 
 **a. 加载并注册驱动**
+
 - `Class.forName("com.mysql.cj.jdbc.Driver")` 会加载MySQL驱动类。
 - 在驱动类的静态代码块中，它会向 `DriverManager`（驱动管理器）**注册自己**。简单说，就是告诉系统：“嗨，我（MySQL驱动）现在可用了！”
 
 > **注意**：由于SPI机制，在现代Java（JDBC 4.0+）中，这步通常可以省略。你只需要把驱动的Jar包放在Classpath下，`DriverManager` 会自动发现并加载它。
 
 **b. DriverManager 建立连接**
+
 - 当调用 `DriverManager.getConnection(url, user, password)` 时，`DriverManager` 会拿着你提供的URL（`jdbc:mysql://localhost:3306/mydatabase`）去遍历所有**已经注册的驱动**。
 - 它会问每一个驱动：“你能处理这个URL吗？”
 - MySQL驱动看到URL以 `jdbc:mysql:` 开头，会说：“我能处理！”，然后它就会开始工作。
 
 **c. 驱动进行实际网络通信**
+
 - MySQL驱动解析URL，获取到数据库服务器的地址（`localhost`）、端口（`3306`）和数据库名（`mydatabase`）。
 - 驱动使用给定的用户名和密码，与数据库服务器建立一个**TCP/IP Socket连接**。
 - 然后，它按照 **MySQL的通信协议**，将登录信息打包成一个网络数据包，通过Socket发送给MySQL服务器。
@@ -9988,6 +10676,7 @@ Connection conn = DriverManager.getConnection(url, user, password);
 - 此时，MySQL驱动会创建一个实现了 `java.sql.Connection` 接口的**连接对象**（比如 `com.mysql.cj.jdbc.ConnectionImpl` 的实例），并将其返回给应用程序。
 
 #### 4. 后续操作
+
 - 之后，当你通过 `Connection` 创建 `Statement` 并执行SQL时（如 `stmt.executeQuery("SELECT * FROM users")`），这个调用会被驱动接收。
 - 驱动再次将SQL命令按照数据库协议打包，发送给服务器。
 - 服务器执行SQL后返回结果集，驱动再将这些二进制数据**翻译**成标准的JDBC `ResultSet` 对象，返回给应用程序。
@@ -9996,13 +10685,12 @@ Connection conn = DriverManager.getConnection(url, user, password);
 
 JDBC能连接上数据库，核心在于其**“基于接口的编程”** 和 **“驱动桥接”** 的设计模式：
 
-1.  **JDBC API（标准接口）**：为Java应用程序提供了统一、标准的数据库访问方式。
-2.  **JDBC Driver（驱动实现）**：由数据库厂商提供，作为“翻译官”，它一方面实现了JDBC标准接口，另一方面掌握了与特定数据库通信的私有协议。
-3.  **DriverManager（驱动管理器）**：作为“中介”，负责匹配正确的驱动并协助建立初始连接。
-4.  **网络协议**：最终，所有的通信都是通过底层的TCP/IP协议，按照数据库特定的格式进行的。
+1. **JDBC API（标准接口）**：为Java应用程序提供了统一、标准的数据库访问方式。
+2. **JDBC Driver（驱动实现）**：由数据库厂商提供，作为“翻译官”，它一方面实现了JDBC标准接口，另一方面掌握了与特定数据库通信的私有协议。
+3. **DriverManager（驱动管理器）**：作为“中介”，负责匹配正确的驱动并协助建立初始连接。
+4. **网络协议**：最终，所有的通信都是通过底层的TCP/IP协议，按照数据库特定的格式进行的。
 
 正是这种分层和标准化的设计，使得Java程序可以“写一次，处处运行”，无需修改代码，只需更换驱动Jar包和连接URL，就能连接到不同的数据库。
-
 
 Mybatis：
 MyBatis是一个优秀的持久层框架，它对jdbc的操作数据库的过程进行封装，使开发者只需要关注 SQL 本身，而不需要花费精力去处理例如注册驱动、创建connection、创建statement、手动设置参数、结果集检索等jdbc繁杂的过程代码。
@@ -10010,38 +10698,38 @@ Mybatis通过xml或注解的方式将要执行的各种statement（statement、p
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mybitis.mapper.UserMapper">
-    <resultMap id="result" type="com.mybitis.entity.User">
-        <result column="userid" jdbcType="INTEGER" property="userid" />
-        <result column="username" jdbcType="VARCHAR" property="username" />
-        <result column="password" jdbcType="VARCHAR" property="password" />
-    </resultMap>
+ <resultMap id="result" type="com.mybitis.entity.User"> <result column="userid" jdbcType="INTEGER" property="userid" />
+ <result column="username" jdbcType="VARCHAR" property="username" />
+ <result column="password" jdbcType="VARCHAR" property="password" /> </resultMap>
 
-    <select id="findAllUser" resultType="com.mybitis.entity.User">
-        select  * from user;
-    </select>
+```
+<select id="findAllUser" resultType="com.mybitis.entity.User">
+    select  * from user;
+</select>
 
-    <select id="findUserByUserId" resultType="com.mybitis.entity.User">
-        select * from user where userid=#{userid};
-    </select>
-    <select id="findUserByUsername" resultType="com.mybitis.entity.User">
-        select * from user where username=#{username};
-    </select>
+<select id="findUserByUserId" resultType="com.mybitis.entity.User">
+    select * from user where userid=#{userid};
+</select>
+<select id="findUserByUsername" resultType="com.mybitis.entity.User">
+    select * from user where username=#{username};
+</select>
 
-    <insert id="insertUser" parameterType="com.mybitis.entity.User" keyProperty="userid" useGeneratedKeys="true">
-        insert into user(userid,username,password) values (#{userid},#{username},#{password});
-    </insert>
+<insert id="insertUser" parameterType="com.mybitis.entity.User" keyProperty="userid" useGeneratedKeys="true">
+    insert into user(userid,username,password) values (#{userid},#{username},#{password});
+</insert>
 
-    <update id="updateUser" parameterType="com.mybitis.entity.User">
-        update user set username=#{username},password=#{password} where userid=#{userid};
-    </update>
+<update id="updateUser" parameterType="com.mybitis.entity.User">
+    update user set username=#{username},password=#{password} where userid=#{userid};
+</update>
 
-    <delete id="deleteUser" parameterType="com.mybitis.entity.User">
-        delete from user where userid=#{userid};
-    </delete>
+<delete id="deleteUser" parameterType="com.mybitis.entity.User">
+    delete from user where userid=#{userid};
+</delete>
+```
+
 </mapper>
 
-MyBatis获取参数值的两种方式：${}和#{}
-${}的本质就是字符串拼接，#{}的本质就是占位符赋值
+MyBatis获取参数值的两种方式：${}和#{} ${}的本质就是字符串拼接，#{}的本质就是占位符赋值
 ${}使用字符串拼接的方式拼接sql，若为字符串类型或日期类型的字段进行赋值时，需要手动加单引号；
 但是#{}使用占位符赋值的方式拼接sql，此时为字符串类型或日期类型的字段进行赋值时，可以自动添加单引号使用#{}可以防止SQL注入
 
@@ -10067,34 +10755,44 @@ ${}使用字符串拼接的方式拼接sql，若为字符串类型或日期类�
 此时，会将这些参数放在map集合中，以@Param注解的value属性值为键，以参数为值；
 以param1,param2...为键，以参数为值；只需要通过${}和#{}访问map集合的键就可以获取相对应的值，注意${}需要手动加单引号
 
-
 MyBatis的缓存：
 1、MyBatis的一级缓存
 一级缓存是SqlSession级别的，通过同一个SqlSession查询的数据会被缓存，下次查询相同的数据，就会从缓存中直接获取，不会从数据库重新访问
 
 使一级缓存失效的四种情况：
-1) 不同的SqlSession对应不同的一级缓存
-2) 同一个SqlSession但是查询条件不同
-3) 同一个SqlSession两次查询期间执行了任何一次增删改操作
-4) 同一个SqlSession两次查询期间手动清空了缓存
+
+1. 不同的SqlSession对应不同的一级缓存
+2. 同一个SqlSession但是查询条件不同
+3. 同一个SqlSession两次查询期间执行了任何一次增删改操作
+4. 同一个SqlSession两次查询期间手动清空了缓存
 
 2、MyBatis的二级缓存
 二级缓存是SqlSessionFactory级别，通过同一个SqlSessionFactory创建的SqlSession查询的结果会被缓存；此后若再次执行相同的查询语句，结果就会从缓存中获取。
 
 二级缓存开启的条件：
 a>在核心配置文件中，设置全局配置属性cacheEnabled="true"，默认为true，不需要设置
-<settings>
-    <setting name="cacheEnabled" value="true"/>
-</settings>
+<settings> <setting name="cacheEnabled" value="true"/></settings>
 b>在映射文件中设置标签<cache />
-<mapper namespace="com.example.MyMapper">
-    <cache/>
-    <!-- 其他映射配置 -->
-</mapper>
+<mapper namespace="com.example.MyMapper"> <cache/>
+ <!-- 其他映射配置 --></mapper>
 c>二级缓存必须在SqlSession关闭或提交之后有效
 d>查询的数据所转换的实体类类型必须实现序列化的接口
 使二级缓存失效的情况：
 两次查询之间执行了任意的增删改，会使一级和二级缓存同时失效
+
+### 常见的MyBatis面试题
+
+#### 1. `#{}`和`${}`的区别？
+
+- `#{}` 是预编译占位符，走 `PreparedStatement`，能防 SQL 注入，字符串会自动加引号。
+- `${}` 是字符串拼接，不能防注入，多用于动态表名/列名，必须自己做白名单校验。
+- 能用 `#{}` 就不要用 `${}`。
+
+#### 2. MyBatis一级缓存和二级缓存的区别？
+
+- 一级缓存是 `SqlSession` 级别，默认开启。换 Session、条件变了、中途增删改、手动清空都会失效。
+- 二级缓存是 `SqlSessionFactory` 级别，要在 mapper 里开 `<cache/>`，实体要可序列化，且 Session 提交/关闭后才生效。中途增删改会让一、二级一起失效。
+- 分布式下二级缓存容易脏数据，生产上更常用 Redis。
 
 Mybatis的源码解析：
 
@@ -10109,7 +10807,6 @@ SqlSession
 Mapper
 作用：Mapper 接口是 MyBatis 中的一个重要概念，它是开发者定义的接口，MyBatis 会自动生成这个接口的实现，并通过这个实现来执行 SQL 语句。
 实现：Mapper 接口的实现是通过动态代理来完成的，MyBatis 会在运行时动态地创建 Mapper 接口的代理对象。
-
 
 获得Mapper动态代理之后，执行SQL的顺序：
 1.获得Mapper动态代理
@@ -10128,49 +10825,51 @@ MyBatis 的工作流程大致可以分为以下几个步骤：
 如果执行的是 Mapper 接口中的方法，MyBatis 会通过动态代理机制调用对应的 Mapper SQL 语句。
 5.处理结果：将 SQL 执行的结果映射成 Java 对象并返回。
 
-
 Mybatis的逆向工程：
 MyBatis Generator是一个用于生成MyBatis的Java数据访问层代码和SQL映射文件的逆向工程工具。你可以通过配置MyBatis Generator来自动生成数据库表的实体类、Mapper接口以及SQL映射文件。
 
 逆向工程的配置文件：
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-    "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+ "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
     <classPathEntry location="path/to/your/database/driver.jar" />
 
-    <context id="MyBatisGenerator" targetRuntime="MyBatis3">
-        <property name="javaFileEncoding" value="UTF-8" />
-        <property name="beginningDelimiter" value=" " />
-        <property name="endingDelimiter" value=" " />
+```
+<context id="MyBatisGenerator" targetRuntime="MyBatis3">
+    <property name="javaFileEncoding" value="UTF-8" />
+    <property name="beginningDelimiter" value=" " />
+    <property name="endingDelimiter" value=" " />
 
-        <!-- 数据库连接配置 -->
-        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-            connectionURL="jdbc:mysql://localhost:3306/your_database"
-            userId="your_username"
-            password="your_password">
-        </jdbcConnection>
+    <!-- 数据库连接配置 -->
+    <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+        connectionURL="jdbc:mysql://localhost:3306/your_database"
+        userId="your_username"
+        password="your_password">
+    </jdbcConnection>
 
-        <!-- 生成实体类的目标包 -->
-        <javaModelGenerator targetPackage="com.example.model" targetProject="src/main/java">
-            <property name="enableSubPackages" value="true" />
-            <property name="trimStrings" value="true" />
-        </javaModelGenerator>
+    <!-- 生成实体类的目标包 -->
+    <javaModelGenerator targetPackage="com.example.model" targetProject="src/main/java">
+        <property name="enableSubPackages" value="true" />
+        <property name="trimStrings" value="true" />
+    </javaModelGenerator>
 
-        <!-- 生成Mapper接口的目标包 -->
-        <sqlMapGenerator targetPackage="com.example.mapper" targetProject="src/main/resources">
-            <property name="enableSubPackages" value="true" />
-        </sqlMapGenerator>
+    <!-- 生成Mapper接口的目标包 -->
+    <sqlMapGenerator targetPackage="com.example.mapper" targetProject="src/main/resources">
+        <property name="enableSubPackages" value="true" />
+    </sqlMapGenerator>
 
-        <!-- 生成Mapper XML 文件的目标包 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.mapper" targetProject="src/main/resources">
-            <property name="enableSubPackages" value="true" />
-        </javaClientGenerator>
+    <!-- 生成Mapper XML 文件的目标包 -->
+    <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.mapper" targetProject="src/main/resources">
+        <property name="enableSubPackages" value="true" />
+    </javaClientGenerator>
 
-        <!-- 配置要生成的表和生成规则 -->
-        <table tableName="your_table_name" domainObjectName="YourTable" enableCountByExample="false" enableUpdateByExample="false"
-            enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
-    </context>
+    <!-- 配置要生成的表和生成规则 -->
+    <table tableName="your_table_name" domainObjectName="YourTable" enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
+</context>
+```
+
 </generatorConfiguration>
 
 MybatisPlus：
@@ -10186,9 +10885,9 @@ CRUD 操作封装：提供了丰富的 CRUD 操作封装，减少了编写 SQL �
 自动填充：支持字段的自动填充功能，例如创建时间、更新时间等字段。
 
 核心功能
-1. 简化的 CRUD 操作
-MyBatis-Plus 提供了一系列简化的 CRUD 操作方法，通过继承 BaseMapper 接口，可以快速实现基本的 CRUD 操作。
 
+1. 简化的 CRUD 操作
+  MyBatis-Plus 提供了一系列简化的 CRUD 操作方法，通过继承 BaseMapper 接口，可以快速实现基本的 CRUD 操作。
 
 public interface UserMapper extends BaseMapper<User> {
 }
@@ -10201,8 +10900,7 @@ selectById：根据 ID 查询数据
 selectList：查询所有数据
 
 2. 条件构造器
-MyBatis-Plus 提供了 QueryWrapper 和 UpdateWrapper 用于构建查询和更新条件。
-
+  MyBatis-Plus 提供了 QueryWrapper 和 UpdateWrapper 用于构建查询和更新条件。
 
 // QueryWrapper 示例
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
@@ -10215,15 +10913,13 @@ lambdaQueryWrapper.eq(User::getName, "John");
 List<User> users = userMapper.selectList(lambdaQueryWrapper);
 
 3. 分页插件
-MyBatis-Plus 提供了分页插件，方便进行分页查询。
-
+  MyBatis-Plus 提供了分页插件，方便进行分页查询。
 
 IPage<User> page = new Page<>(1, 10);
 IPage<User> userPage = userMapper.selectPage(page, null);
 
 4. 代码生成器
-通过代码生成器可以快速生成实体类、Mapper 接口、Service 接口及实现类、Controller 等。
-
+  通过代码生成器可以快速生成实体类、Mapper 接口、Service 接口及实现类、Controller 等。
 
 AutoGenerator mpg = new AutoGenerator();
 
@@ -10250,7 +10946,6 @@ mpg.setPackageInfo(pc);
 // 执行生成
 mpg.execute();
 
-
 Hibernate：
 Hibernate是一个开放源代码的对象关系映射框架，它对JDBC进行了非常轻量级的对象封装，它将POJO与数据库表建立映射关系，是一个全自动的orm框架，hibernate可以自动生成SQL语句，自动执行，使得Java程序员可以随心所欲的使用对象编程思维来操纵数据库。
 Hibernate可以应用在任何使用JDBC的场合，既可以在Java的客户端程序使用，也可以在Servlet/JSP的Web应用中使用，最具革命意义的是，Hibernate可以在应用EJB的JavaEE架构中取代CMP，完成数据持久化的重任。
@@ -10258,55 +10953,61 @@ Hibernate可以应用在任何使用JDBC的场合，既可以在Java的客户端
 创建映射配置文件：
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC 
-    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-    
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
 <hibernate-mapping>
-	<!-- 建立类与表的映射 -->
-	<class name="com.meimeixia.hibernate.demo01.Customer" table="cst_customer">
-		<!-- 建立类中的属性与表中的主键相对应 -->
-		<id name="cust_id" column="cust_id">
-			<!-- 主键的生成策略，后面会讲，现在使用的是本地生成策略 -->
-			<generator class="native" />
-		</id>
-		
-		<!-- 建立类中的普通属性和表中的字段相对应 -->
-		<property name="cust_name" column="cust_name" />
-		<property name="cust_source" column="cust_source" />
-		<property name="cust_industry" column="cust_industry" />
-		<property name="cust_level" column="cust_level" />
-		<property name="cust_phone" column="cust_phone" />
-		<property name="cust_mobile" column="cust_mobile" />
-	</class>
+    <!-- 建立类与表的映射 -->
+    <class name="com.meimeixia.hibernate.demo01.Customer" table="cst_customer">
+        <!-- 建立类中的属性与表中的主键相对应 -->
+        <id name="cust_id" column="cust_id">
+            <!-- 主键的生成策略，后面会讲，现在使用的是本地生成策略 -->
+            <generator class="native" />
+        </id>
+
+```
+    <!-- 建立类中的普通属性和表中的字段相对应 -->
+    <property name="cust_name" column="cust_name" />
+    <property name="cust_source" column="cust_source" />
+    <property name="cust_industry" column="cust_industry" />
+    <property name="cust_level" column="cust_level" />
+    <property name="cust_phone" column="cust_phone" />
+    <property name="cust_mobile" column="cust_mobile" />
+</class>
+```
+
 </hibernate-mapping>
 
 创建核心配置文件：
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC
-	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
-	
+ "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+ "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
 <hibernate-configuration>
-	<session-factory>
-		<!-- 下面是三个必须要有的配置 -->
-		<!-- 配置连接MySQL数据库的基本参数 -->
-		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="hibernate.connection.url">jdbc:mysql:///hibernate_demo01</property>
-		<property name="hibernate.connection.username">root</property>
-		<property name="hibernate.connection.password">liayun</property>
-		
-		<!-- 配置Hibernate的方言 -->
-		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-		
-		<!-- 下面两个是可选的配置！ -->
-		<!-- 打印sql语句 -->
-		<property name="hibernate.show_sql">true</property>
-		<!-- 格式化sql语句 -->
-		<property name="hibernate.format_sql">true</property>
-		
-		<!-- 告诉Hibernate的核心配置文件加载哪个映射文件 -->
-		<mapping resource="com/meimeixia/hibernate/demo01/Customer.hbm.xml"/>
-	</session-factory>
+    <session-factory>
+        <!-- 下面是三个必须要有的配置 -->
+        <!-- 配置连接MySQL数据库的基本参数 -->
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql:///hibernate_demo01</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">liayun</property>
+
+```
+    <!-- 配置Hibernate的方言 -->
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+    <!-- 下面两个是可选的配置！ -->
+    <!-- 打印sql语句 -->
+    <property name="hibernate.show_sql">true</property>
+    <!-- 格式化sql语句 -->
+    <property name="hibernate.format_sql">true</property>
+
+    <!-- 告诉Hibernate的核心配置文件加载哪个映射文件 -->
+    <mapping resource="com/meimeixia/hibernate/demo01/Customer.hbm.xml"/>
+</session-factory>
+```
+
 </hibernate-configuration>
 
 创建单元测试类：
@@ -10319,57 +11020,27 @@ import org.hibernate.cfg.Configuration;
 import org.junit.Test;
 
 /**
- * Hibernate的入门案例
- * @author 
- *
- */
-public class HibernateDemo1 {
-	
-	//保存用户的案例
-	@Test
-	public void demo1() {
-		//1. 加载Hibernate的核心配置文件
-		Configuration configuration = new Configuration().configure();
-		//如果在Hibernate的核心配置文件没有设置加载哪个映射文件，则可手动加载映射文件
-		//configuration.addResource("com/meimeixia/hibernate/demo01/Customer.hbm.xml");
-		
-		//2. 创建SessionFactory对象，类似于JDBC中的连接池
-		SessionFactory sessionFactory = configuration.buildSessionFactory();
-		
-		//3. 通过SessionFactory获取到Session对象，类似于JDBC中的Connection
-		Session session = sessionFactory.openSession();
-		
-		//4. 手动开启事务，（最好是手动开启事务）
-		Transaction transaction = session.beginTransaction();
-		
-		//5. 编写代码
-		Customer customer = new Customer();
-		customer.setCust_name("张小敬aaa");
-		
-		session.save(customer);//保存一个用户
-		
-		//6. 事务提交
-		transaction.commit();
-		
-		//7. 释放资源
-		session.close();
-		sessionFactory.close();
-	}
-	
+
+- Hibernate的入门案例
+  
+- @author
+  
+
 }
 
 # 程序设计：
+
 MVC设计模式：MVC指MVC模式的某种框架，它强制性地使应用程序的输入、处理和输出分开。
 使用MVC应用程序被分成三个核心部件：模型、视图、控制器。
 
->M即model模型是指模型表示业务规则。在MVC的三个部件中，模型拥有最多的处理任务。即Bean层、mapper层和service层。
-被模型返回的数据是中立的，模型与数据格式无关，这样一个模型能为多个视图提供数据，由于应用于模型的代码只需写一次就可以被多个视图重用，所以减少了代码的重复性。
+> M即model模型是指模型表示业务规则。在MVC的三个部件中，模型拥有最多的处理任务。即Bean层、mapper层和service层。
+> 被模型返回的数据是中立的，模型与数据格式无关，这样一个模型能为多个视图提供数据，由于应用于模型的代码只需写一次就可以被多个视图重用，所以减少了代码的重复性。
 
->V即View视图是指用户看到并与之交互的界面。比如由html元素组成的网页界面，或者软件的客户端界面。
-MVC的好处之一在于它能为应用程序处理很多不同的视图。在视图中其实没有真正的处理发生，它只是作为一种输出数据并允许用户操作的方式。
+> V即View视图是指用户看到并与之交互的界面。比如由html元素组成的网页界面，或者软件的客户端界面。
+> MVC的好处之一在于它能为应用程序处理很多不同的视图。在视图中其实没有真正的处理发生，它只是作为一种输出数据并允许用户操作的方式。
 
->C即controller控制器是指控制器接受用户的输入并调用模型和视图去完成用户的需求，控制器本身不输出任何东西和做任何处理。
-它只是接收请求并决定调用哪个模型构件去处理请求，然后再确定用哪个视图来显式返回的数据。
+> C即controller控制器是指控制器接受用户的输入并调用模型和视图去完成用户的需求，控制器本身不输出任何东西和做任何处理。
+> 它只是接收请求并决定调用哪个模型构件去处理请求，然后再确定用哪个视图来显式返回的数据。
 
 MVC(Model模型、View视图、Control控制层)，将软件进行分层达到松耦合的效果。
 通用的软件编程思想, 在MVC设计模式中认为, 任何软件都可以分三层：
@@ -10377,13 +11048,55 @@ MVC(Model模型、View视图、Control控制层)，将软件进行分层达到�
 在MVC设计思想中要求一个符合MVC设计思想的软件应该保证上面这三部分相互独立，互不干扰，每一个部分只负责自己擅长的部分。
 如果某一个模块发生变化，应该尽量做到不影响其他两个模块。提高代码的可读性，实现程序间的松耦合、提高代码复用性。
 
+- 传统的MVC模式是如何做到松耦合的？
+  传统的 MVC 模式之所以能实现松耦合，核心在于它通过**明确的职责划分**和**特定的交互规则**，将界面、数据和业务逻辑解耦，使它们可以独立变化而不互相牵制。
 
-Java程序通过设计模式、数据结构与算法等技术组成框架
-设计模式：
-设计模式（Design Patterns）是在软件设计中针对特定问题的最佳解决方案。它们是在软件开发过程中，对常见问题的反复出现的解决方案的总结与抽象。
-这些模式描述了在特定上下文中，针对某类问题的一组相互协作的类、接口和通信机制，用于解决某一类通用设计问题。
-设计模式是经验的总结，是软件开发人员在长期开发过程中，针对某一类问题的解决方案的抽象和提炼。
-使用设计模式可以帮助我们提高代码的可重用性、可维护性和可扩展性，同时降低系统的复杂度，提高软件开发的效率和质量。
+具体来说，主要通过以下几个方面实现：
+
+### 1. 观察者模式：让 Model 与 View 彻底解耦
+
+这是最核心的机制。Model（数据与业务逻辑）不直接依赖 View，但会在自身状态改变时**主动通知**所有注册的观察者。
+
+- **如何解耦**：View 作为观察者向 Model 注册。Model 只知道“有一群观察者需要通知”，但完全不知道这些观察者是何种 View，更不会调用 View 的具体方法。View 则被动接收通知，然后自行决定如何更新界面。
+- **好处**：同一个 Model 可以同时驱动多个 View（如表格视图、柱状图、饼图），且添加新 View 时**无需修改 Model 的代码**。
+
+### 2. 策略模式：让 View 与 Controller 解耦
+
+Controller 负责处理用户输入（如点击、键盘事件），并据此更新 Model。View 与 Controller 之间通过策略模式组合。
+
+- **如何解耦**：View 只负责展示和捕获事件，但**不处理**这些事件。它会把事件转发给一个抽象的“策略”（即 Controller 接口）。不同的 Controller 可以以不同策略处理同一事件，而 View 本身完全不变。
+- **好处**：更换 View 的行为逻辑（比如从普通编辑模式改为只读模式）时，只需换一个 Controller 实例，**View 代码无需任何改动**。
+
+### 3. 可插拔的 View 与 Controller
+
+在成熟的 MVC 框架中，View 和 Controller 通常成对出现，但可以灵活替换。
+
+- **如何解耦**：View 通过组合方式持有 Controller 的引用，而不是继承自固定 Controller。运行时，你可以动态地为 View 装配不同的 Controller。
+- **好处**：同一组数据（Model）可以用“普通界面+标准控制器”或“移动端精简界面+触控优化控制器”来展现，彼此独立开发、测试和部署。
+
+### 4. Model 完全独立
+
+Model 是 MVC 中最“内向”的组件。
+
+- **如何解耦**：Model 不依赖 View 或 Controller。它不包含任何 UI 代码（如弹窗、禁用按钮），也不包含特定于用户操作的逻辑。它只关心数据存储、业务规则和状态管理。
+- **好处**：Model 可以被**单元测试**直接验证，可以在非 GUI 环境（如后端服务、定时任务）中复用，完全不受前端技术栈变迁（从 Swing 到 Web 再到移动端）的影响。
+
+### 总结：一个典型的协作流程
+
+1. **用户点击按钮**：View 捕获点击事件。
+2. **转发给 Controller**：View 不处理业务，只调用自己的 Controller 的 `onSubmit` 方法。
+3. **Controller 更新 Model**：Controller 调用 Model 的 `saveData` 方法。它只负责“指挥”，不负责具体实现。
+4. **Model 通知变化**：Model 状态改变后，触发事件通知所有观察者。
+5. **View 自我更新**：View 收到通知后，从 Model 拉取最新数据，更新屏幕显示。
+
+**最终效果**：修改界面样式只需改 View；改变业务逻辑只需改 Model；调整用户交互流程只需改 Controller。三者可以并行开发、独立演化，这就是松耦合带来的核心价值。
+
+- Java程序通过设计模式、数据结构与算法等技术组成框架
+  设计模式：
+  设计模式（Design Patterns）是在软件设计中针对特定问题的最佳解决方案。它们是在软件开发过程中，对常见问题的反复出现的解决方案的总结与抽象。
+  这些模式描述了在特定上下文中，针对某类问题的一组相互协作的类、接口和通信机制，用于解决某一类通用设计问题。
+  设计模式是经验的总结，是软件开发人员在长期开发过程中，针对某一类问题的解决方案的抽象和提炼。
+  使用设计模式可以帮助我们提高代码的可重用性、可维护性和可扩展性，同时降低系统的复杂度，提高软件开发的效率和质量。
 
 设计模式的目的是提供一套可复用的设计问题的解决方案，提高代码的可维护性、可重用性和可读性。具体来说，设计模式有以下几个主要目的：
 1.代码重用：设计模式提供了一种抽象化和标准化的方式，使开发者能够针对常见的设计问题重用已有的解决方案，而无需每次都从头开始设计。
@@ -10392,14 +11105,13 @@ Java程序通过设计模式、数据结构与算法等技术组成框架
 4.促进团队协作：团队成员之间共享对设计模式的理解和经验，可以促进团队之间的沟通和协作，提高开发效率。
 5.系统灵活性：设计模式有助于构建一个灵活且可扩展的系统，能够应对不断变化的需求。
 
-
 设计模式的七大原则：
 开闭原则：
 软件实体（类、模块、函数等）应该对扩展开放，对修改关闭。
 对扩展开放：意味着软件实体应该允许在不修改原有代码的情况下，通过添加新功能来扩展其行为。
 对修改关闭：意味着一旦软件实体被开发并投入使用后，应该尽量避免对其进行修改，尤其是修改核心业务逻辑。
 
-单一指责原则：一个类只做一件事。
+单一职责原则：一个类只做一件事。
 该原则强调一个类或者一个模块应该只有一个引起变化的原因，也就是说，它应该只负责一项职责。
 当一个类或模块承担过多的职责时，它的可维护性和可读性都会受到影响，因为任何一个职责的变化都可能导致整个类或模块需要重新设计或修改。
 
@@ -10410,115 +11122,128 @@ Java程序通过设计模式、数据结构与算法等技术组成框架
 这意味着在软件设计中，我们应该尽量通过接口或抽象类去定义类的行为，而不是直接依赖于具体的实现类。这样，当具体实现发生变化时，只要它们仍然遵循接口或抽象类的约定，高层模块就不需要修改，从而提高了系统的灵活性和可维护性。
 
 依赖倒置原则在Java里要遵循以下规范：
+
 1. 依赖于抽象，而不是依赖于具体类
-高层模块（业务逻辑）不应该依赖于低层模块（具体实现），而应该依赖于抽象（接口或抽象类）。低层模块也应该依赖于这些抽象。
+  高层模块（业务逻辑）不应该依赖于低层模块（具体实现），而应该依赖于抽象（接口或抽象类）。低层模块也应该依赖于这些抽象。
 
 示例代码：
 interface PaymentProcessor {
-    void processPayment(double amount);
+ void processPayment(double amount);
 }
 
 class PayPalProcessor implements PaymentProcessor {
-    @Override
-    public void processPayment(double amount) {
-        // PayPal payment logic
-    }
+ @Override
+ public void processPayment(double amount) {
+ // PayPal payment logic
+ }
 }
 
 class ShoppingCart {
-    private PaymentProcessor paymentProcessor;
+ private PaymentProcessor paymentProcessor;
 
-    public ShoppingCart(PaymentProcessor paymentProcessor) {
-        this.paymentProcessor = paymentProcessor;
-    }
+```
+public ShoppingCart(PaymentProcessor paymentProcessor) {
+    this.paymentProcessor = paymentProcessor;
+}
 
-    public void checkout(double amount) {
-        paymentProcessor.processPayment(amount);
-    }
+public void checkout(double amount) {
+    paymentProcessor.processPayment(amount);
+}
+```
+
 }
 
 在这个例子中，ShoppingCart 依赖于 PaymentProcessor 接口，而不是 PayPalProcessor 具体类。
 
 2. 高层模块不应该直接创建低层模块的实例
-高层模块不应该直接实例化低层模块的对象。这可以通过依赖注入（Dependency Injection, DI）来实现，即通过构造函数、setter 方法，或依赖注入框架（如 Spring）传递依赖对象。
+  高层模块不应该直接实例化低层模块的对象。这可以通过依赖注入（Dependency Injection, DI）来实现，即通过构造函数、setter 方法，或依赖注入框架（如 Spring）传递依赖对象。
 
 示例代码：
 class ShoppingCart {
-    private PaymentProcessor paymentProcessor;
+ private PaymentProcessor paymentProcessor;
 
-    public ShoppingCart(PaymentProcessor paymentProcessor) {
-        this.paymentProcessor = paymentProcessor;
-    }
+```
+public ShoppingCart(PaymentProcessor paymentProcessor) {
+    this.paymentProcessor = paymentProcessor;
+}
+```
+
 }
 
 public static void main(String[] args) {
-    PaymentProcessor processor = new PayPalProcessor(); // 创建具体实现
-    ShoppingCart cart = new ShoppingCart(processor); // 注入依赖
-    cart.checkout(100.0);
+ PaymentProcessor processor = new PayPalProcessor(); // 创建具体实现
+ ShoppingCart cart = new ShoppingCart(processor); // 注入依赖
+ cart.checkout(100.0);
 }
 
 这里，ShoppingCart 类并不直接创建 PayPalProcessor 对象，而是通过依赖注入来获得它。
 
 3. 遵循接口分离原则（ISP）
-接口应该尽可能小，避免臃肿。这样可以确保依赖于接口的类不会被迫实现它们不需要的方法。通过精简的接口，每个模块只依赖于它所需要的功能。
+  接口应该尽可能小，避免臃肿。这样可以确保依赖于接口的类不会被迫实现它们不需要的方法。通过精简的接口，每个模块只依赖于它所需要的功能。
 
 示例代码：
 interface Printer {
-    void print(Document doc);
+ void print(Document doc);
 }
 
 interface Scanner {
-    void scan(Document doc);
+ void scan(Document doc);
 }
 
 class MultiFunctionPrinter implements Printer, Scanner {
-    @Override
-    public void print(Document doc) {
-        // Print logic
-    }
+ @Override
+ public void print(Document doc) {
+ // Print logic
+ }
 
-    @Override
-    public void scan(Document doc) {
-        // Scan logic
-    }
+```
+@Override
+public void scan(Document doc) {
+    // Scan logic
+}
+```
+
 }
 
 Printer 和 Scanner 是两个独立的接口，遵循了接口分离原则。
 
 4. 使用依赖注入框架
-在实际开发中，使用依赖注入框架（如 Spring、Guice）可以更容易地遵循依赖倒置原则。框架会自动管理对象的创建和依赖关系，使代码更加松耦合。
+  在实际开发中，使用依赖注入框架（如 Spring、Guice）可以更容易地遵循依赖倒置原则。框架会自动管理对象的创建和依赖关系，使代码更加松耦合。
 
 示例代码：
 @Service
 public class ShoppingCartService {
-    private final PaymentProcessor paymentProcessor;
+ private final PaymentProcessor paymentProcessor;
 
-    @Autowired
-    public ShoppingCartService(PaymentProcessor paymentProcessor) {
-        this.paymentProcessor = paymentProcessor;
-    }
+```
+@Autowired
+public ShoppingCartService(PaymentProcessor paymentProcessor) {
+    this.paymentProcessor = paymentProcessor;
+}
 
-    public void checkout(double amount) {
-        paymentProcessor.processPayment(amount);
-    }
+public void checkout(double amount) {
+    paymentProcessor.processPayment(amount);
+}
+```
+
 }
 
 在这个示例中，ShoppingCartService 中的 PaymentProcessor 依赖通过 Spring 框架自动注入，减少了直接依赖具体实现的风险。
 
 5. 避免静态方法和静态依赖
-静态方法和依赖于静态类的设计会破坏依赖倒置原则，因为它们使高层模块依赖于具体实现，难以替换或测试。因此，尽量避免使用静态依赖。
+  静态方法和依赖于静态类的设计会破坏依赖倒置原则，因为它们使高层模块依赖于具体实现，难以替换或测试。因此，尽量避免使用静态依赖。
 
 示例代码：
 class FileLogger {
-    public static void log(String message) {
-        // Log message to file
-    }
+ public static void log(String message) {
+ // Log message to file
+ }
 }
 
 class BusinessService {
-    public void doBusinessLogic() {
-        FileLogger.log("Business logic executed."); // 违反依赖倒置原则
-    }
+ public void doBusinessLogic() {
+ FileLogger.log("Business logic executed."); // 违反依赖倒置原则
+ }
 }
 
 在这个示例中，BusinessService 依赖于 FileLogger 的静态方法，无法轻易替换或测试。
@@ -10534,12 +11259,10 @@ class BusinessService {
 类间解耦：迪米特原则强调类之间的低耦合，即减少类之间的直接依赖关系。
 只和朋友交流：这里的“朋友”指的是与当前对象有直接关联的对象，如成员变量、方法的输入输出参数等。一个对象应该只与它的“朋友”通信，而不应该与“陌生人”通信。
 
-
 实现方式
 减少公共方法和属性：在设计类时，应该尽量减少类的公共方法和属性，只暴露必要的接口给外部使用。
 使用中介类：如果两个类之间需要通信，但又不想直接建立依赖关系，可以通过引入中介类来实现间接通信。
 封装：通过封装将类的内部实现细节隐藏起来，只提供公共的接口供外部调用。
-
 
 优缺点
 优点：
@@ -10553,96 +11276,110 @@ class BusinessService {
 示例代码：
 // Book 类，代表书籍  
 class Book {  
-    private String title;  
-  
-    public Book(String title) {  
-        this.title = title;  
-    }  
-  
-    public String getTitle() {  
-        return title;  
-    }  
-  
-    // 其他书籍相关的方法...  
+ private String title;
+
+```
+public Book(String title) {  
+    this.title = title;  
 }  
-  
+
+public String getTitle() {  
+    return title;  
+}  
+
+// 其他书籍相关的方法...  
+```
+
+}
+
 // Library 类，代表图书馆（在这个示例中，我们主要用它来存储书籍）  
 class Library {  
-    private List<Book> books = new ArrayList<>();  
-  
-    public void addBook(Book book) {  
-        books.add(book);  
-    }  
-  
-    // 获取所有书籍的方法（实际中可能不会这么直接暴露，但为了示例）  
-    public List<Book> getBooks() {  
-        return books;  
-    }  
-  
-    // 其他图书馆管理的方法...  
+ private List<Book> books = new ArrayList<>();
+
+```
+public void addBook(Book book) {  
+    books.add(book);  
 }  
-  
+
+// 获取所有书籍的方法（实际中可能不会这么直接暴露，但为了示例）  
+public List<Book> getBooks() {  
+    return books;  
+}  
+
+// 其他图书馆管理的方法...  
+```
+
+}
+
 // Librarian 类，图书管理员，作为中介类  
 class Librarian {  
-    private Library library;  
-  
-    public Librarian(Library library) {  
-        this.library = library;  
-    }  
-  
-    // 读者请求借书，图书管理员处理  
-    public Book borrowBook(String title) {  
-        for (Book book : library.getBooks()) {  
-            if (book.getTitle().equals(title)) {  
-                // 假设这里有一个借书逻辑，比如从列表中移除书籍  
-                // 但为了简化，我们只是返回书籍对象  
-                return book;  
-            }  
-        }  
-        return null; // 没有找到书籍  
-    }  
-  
-    // 其他图书管理的方法...  
+ private Library library;
+
+```
+public Librarian(Library library) {  
+    this.library = library;  
 }  
-  
+
+// 读者请求借书，图书管理员处理  
+public Book borrowBook(String title) {  
+    for (Book book : library.getBooks()) {  
+        if (book.getTitle().equals(title)) {  
+            // 假设这里有一个借书逻辑，比如从列表中移除书籍  
+            // 但为了简化，我们只是返回书籍对象  
+            return book;  
+        }  
+    }  
+    return null; // 没有找到书籍  
+}  
+
+// 其他图书管理的方法...  
+```
+
+}
+
 // Reader 类，代表读者  
 class Reader {  
-    private Librarian librarian;  
-  
-    public Reader(Librarian librarian) {  
-        this.librarian = librarian;  
-    }  
-  
-    // 读者借书，通过图书管理员进行  
-    public void borrowBook(String title) {  
-        Book book = librarian.borrowBook(title);  
-        if (book != null) {  
-            System.out.println("Borrowed: " + book.getTitle());  
-        } else {  
-            System.out.println("Book not found.");  
-        }  
-    }  
-  
-    // 读者其他与书籍交互的方法...  
+ private Librarian librarian;
+
+```
+public Reader(Librarian librarian) {  
+    this.librarian = librarian;  
 }  
-  
+
+// 读者借书，通过图书管理员进行  
+public void borrowBook(String title) {  
+    Book book = librarian.borrowBook(title);  
+    if (book != null) {  
+        System.out.println("Borrowed: " + book.getTitle());  
+    } else {  
+        System.out.println("Book not found.");  
+    }  
+}  
+
+// 读者其他与书籍交互的方法...  
+```
+
+}
+
 // 主类，用于演示  
 public class Demo {  
-    public static void main(String[] args) {  
-        Library library = new Library();  
-        library.addBook(new Book("Java Programming"));  
-        library.addBook(new Book("Design Patterns"));  
-  
-        Librarian librarian = new Librarian(library);  
-        Reader reader = new Reader(librarian);  
-  
-        reader.borrowBook("Java Programming");  
-        reader.borrowBook("Non-Existent Book");  
-    }  
+ public static void main(String[] args) {  
+ Library library = new Library();  
+ library.addBook(new Book("Java Programming"));  
+ library.addBook(new Book("Design Patterns"));
+
+```
+    Librarian librarian = new Librarian(library);  
+    Reader reader = new Reader(librarian);  
+
+    reader.borrowBook("Java Programming");  
+    reader.borrowBook("Non-Existent Book");  
+}  
+```
+
 }
 在这个示例中，Reader类不需要直接知道Book类的内部结构，也不需要直接与Library类交互。相反，它通过Librarian类（图书管理员）来借书，这符合迪米特原则的要求。
 Librarian类作为中介，封装了与Library和Book的交互细节，从而降低了Reader与这些类之间的耦合度。
-
 
 接口隔离原则：
 接口隔离原则是一种面向对象设计原则，其核心思想是客户端不应该依赖它不需要的接口，或者说一个类对另一个类的依赖应该建立在最小的接口上。
@@ -10652,7 +11389,6 @@ Librarian类作为中介，封装了与Library和Book的交互细节，从而降
 最小接口：一个类对另一个类的依赖应该建立在最小的接口上。
 细化接口：尽量细化接口，避免接口中的方法过多，接口中的方法应该尽量少（但也不是越少越好，要适度）。
 高聚合、低耦合：符合“高聚合、低耦合”的设计思想，使得类具有很好的可读性、可扩展性和可维护性。
-
 
 合成复用原则：
 设计模式中的合成复用原则（Composite/Aggregate Reuse Principle, CARP），又称为组合/聚合复用原则，是面向对象设计中的一个重要原则。其核心思想是尽量使用对象组合（Composition）或聚合（Aggregation）的方式，而不是使用继承（Inheritance）来达到复用的目的。这一原则有助于构建更加灵活、松耦合的系统，降低类与类之间的依赖关系，从而提高系统的可维护性和可扩展性。
@@ -10674,36 +11410,38 @@ Librarian类作为中介，封装了与Library和Book的交互细节，从而降
 
 // 发动机类  
 public class Engine {  
-    public void start() {  
-        System.out.println("发动机启动");  
-    }  
-}  
-  
+ public void start() {  
+ System.out.println("发动机启动");  
+ }  
+}
+
 // 交通工具类，使用组合方式复用发动机功能  
 public class Vehicle {  
-    private Engine engine;  
-  
-    public Vehicle(Engine engine) {  
-        this.engine = engine;  
-    }  
-  
-    public void start() {  
-        engine.start(); // 委派调用发动机的方法  
-        System.out.println("交通工具启动");  
-    }  
+ private Engine engine;
+
+```
+public Vehicle(Engine engine) {  
+    this.engine = engine;  
 }  
-  
+
+public void start() {  
+    engine.start(); // 委派调用发动机的方法  
+    System.out.println("交通工具启动");  
+}  
+```
+
+}
+
 // 使用示例  
 public class Main {  
-    public static void main(String[] args) {  
-        Engine engine = new Engine();  
-        Vehicle car = new Vehicle(engine);  
-        car.start(); // 输出：发动机启动，交通工具启动  
-    }  
+ public static void main(String[] args) {  
+ Engine engine = new Engine();  
+ Vehicle car = new Vehicle(engine);  
+ car.start(); // 输出：发动机启动，交通工具启动  
+ }  
 }
 在这个示例中，Vehicle类通过组合的方式复用了Engine类的功能，而没有使用继承。这样做的好处是Vehicle类不需要关心Engine类的具体实现细节，只需要知道如何使用它即可。
 同时，这也使得系统更加灵活和可扩展，例如我们可以很容易地替换Engine类的实现或添加新的功能到Vehicle类中。
-
 
 里氏替换原则：
 里氏替换原则是指任何基类（父类）可以出现的地方，子类一定可以出现。换言之，所有引用基类的地方必须能透明地使用其子类的对象。这一原则强调了子类对象对基类对象的可替换性，从而保证了程序的稳定性和可维护性。
@@ -10725,7 +11463,6 @@ public class Main {
 
 应用场景
 里氏替换原则广泛应用于面向对象的设计和开发中，特别是在构建复杂的软件系统和框架时。它要求开发者在设计和实现类时，要充分考虑子类对父类的可替换性，确保系统能够稳定、可靠地运行。
-
 
 Java的23种设计模式：
 设计模式的分类，根据目的来划分，主要可以分为三种类型：创建型模式、结构型模式和行为型模式。
@@ -10771,7 +11508,6 @@ Java的23种设计模式：
 职责链模式：为请求创建一个接收者对象的链。这条链上的对象每一个都对请求进行某些处理，并可以传递给链上的下一个对象；直到有一个对象处理这个请求为止。
 访问者模式：表示一个作用于某对象结构中的各元素的操作。它使你可以在不改变各元素的类的前提下定义作用于这些元素的新操作。
 
-
 1、创建型-工厂方法模式：
 工厂方法模式分为三种：
 
@@ -10783,66 +11519,69 @@ Java的23种设计模式：
 
 首先，定义一个日志记录器的接口：
 public interface Logger {  
-    void log(String message);  
+ void log(String message);  
 }
 
 然后，实现两个具体的日志记录器类：
 public class ConsoleLogger implements Logger {  
-    @Override  
-    public void log(String message) {  
-        System.out.println("Console: " + message);  
-    }  
-}  
-  
-public class FileLogger implements Logger {  
-    @Override  
-    public void log(String message) {  
-        // 这里只是简单模拟，实际应写入文件  
-        System.out.println("File: " + message);  
-    }  
+ @Override  
+ public void log(String message) {  
+ System.out.println("Console: " + message);  
+ }  
 }
 
+public class FileLogger implements Logger {  
+ @Override  
+ public void log(String message) {  
+ // 这里只是简单模拟，实际应写入文件  
+ System.out.println("File: " + message);  
+ }  
+}
 
 接下来，创建一个简单工厂类，用于根据传入的类型参数返回相应的日志记录器实例：
 public class LoggerFactory {  
-    // 使用getLogger方法获取Logger对象  
-    public static Logger getLogger(String type) {  
-        if (type == null) {  
-            return null;  
-        }  
-        if (type.equalsIgnoreCase("console")) {  
-            return new ConsoleLogger();  
-        } else if (type.equalsIgnoreCase("file")) {  
-            return new FileLogger();  
-        }  
-          
-        // 可以抛出一个异常或者返回一个默认类型的Logger  
-        throw new IllegalArgumentException("Invalid logger type: " + type);  
-    }  
-}
+ // 使用getLogger方法获取Logger对象  
+ public static Logger getLogger(String type) {  
+ if (type == null) {  
+ return null;  
+ }  
+ if (type.equalsIgnoreCase("console")) {  
+ return new ConsoleLogger();  
+ } else if (type.equalsIgnoreCase("file")) {  
+ return new FileLogger();  
+ }
 
+```
+    // 可以抛出一个异常或者返回一个默认类型的Logger  
+    throw new IllegalArgumentException("Invalid logger type: " + type);  
+}  
+```
+
+}
 
 最后，使用工厂类来获取日志记录器实例，并调用其log方法：
 public class FactoryPatternDemo {  
-    private static final String LOGGER_TYPE = "console";  
+ private static final String LOGGER_TYPE = "console";
 
-    public static void main(String[] args) {  
-        Logger logger = LoggerFactory.getLogger(LOGGER_TYPE);  
-  
-        if (logger != null) {  
-            logger.log("This is a debug message");  
-        }  
-  
-        // 尝试获取不同类型的Logger  
-        logger = LoggerFactory.getLogger("file");  
-        if (logger != null) {  
-            logger.log("This is an error message");  
-        }  
+```
+public static void main(String[] args) {  
+    Logger logger = LoggerFactory.getLogger(LOGGER_TYPE);  
+
+    if (logger != null) {  
+        logger.log("This is a debug message");  
     }  
+
+    // 尝试获取不同类型的Logger  
+    logger = LoggerFactory.getLogger("file");  
+    if (logger != null) {  
+        logger.log("This is an error message");  
+    }  
+}  
+```
+
 }
 在这个例子中，LoggerFactory类是一个简单工厂类，它根据传入的字符串类型（"console"或"file"）来决定实例化哪个日志记录器类。客户端代码通过调用LoggerFactory.getLogger()方法来获取Logger对象，而不需要知道具体日志记录器类的实现细节。
 这种方式简化了对象的创建过程，并使得系统更加灵活和可扩展。
-
 
 （2）工厂方法模式：
 工厂方法模式（Factory Method Pattern）是一种常用的类创建型设计模式，其核心在于定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类当中。
@@ -10865,7 +11604,6 @@ public class FactoryPatternDemo {
 当一个类不知道它所需要的对象的类时，在工厂方法模式中，客户端不需要知道具体产品类的类名，只需要知道所对应的工厂即可。
 当创建对象的任务由多个具体子工厂中的某一个完成时，客户端可以动态指定使用哪个工厂子类来创建对象。
 当需要创建的对象较少且种类不会增加时，可以使用工厂方法模式来封装对象的创建过程。
-
 
 优缺点
 优点：
@@ -10890,71 +11628,84 @@ public class FactoryPatternDemo {
 最后，我们有一个客户端类（GraphicTest），它使用这些工厂来创建图形对象并调用它们的绘制方法。
 
 1. 抽象图形接口（Product）
-public interface Shape {  
-    void draw();  
-}
-
-2. 具体图形类（Concrete Product）
-// Circle.java  
-public class Circle implements Shape {  
-    @Override  
-    public void draw() {  
-        System.out.println("Inside Circle::draw() method.");  
-    }  
-}  
+  public interface Shape {  
+   void draw();  
+  }
   
+2. 具体图形类（Concrete Product）
+  // Circle.java  
+  public class Circle implements Shape {  
+   @Override  
+   public void draw() {
+  
+  ```
+   System.out.println("Inside Circle::draw() method.");  
+  ```
+  
+  }  
+  }
+  
+
 // Rectangle.java  
 public class Rectangle implements Shape {  
-    @Override  
-    public void draw() {  
-        System.out.println("Inside Rectangle::draw() method.");  
-    }  
+ @Override  
+ public void draw() {  
+ System.out.println("Inside Rectangle::draw() method.");  
+ }  
 }
 
 3. 抽象图形工厂接口（Abstract Factory）
-public interface ShapeFactory {  
-    Shape getShape();  
-}
-
-4. 具体图形工厂类（Concrete Factory）
-// CircleFactory.java  
-public class CircleFactory implements ShapeFactory {  
-    @Override  
-    public Shape getShape() {  
-        return new Circle();  
-    }  
-}  
+  public interface ShapeFactory {  
+   Shape getShape();  
+  }
   
+4. 具体图形工厂类（Concrete Factory）
+  // CircleFactory.java  
+  public class CircleFactory implements ShapeFactory {  
+   @Override  
+   public Shape getShape() {
+  
+  ```
+   return new Circle();  
+  ```
+  
+  }  
+  }
+  
+
 // RectangleFactory.java  
 public class RectangleFactory implements ShapeFactory {  
-    @Override  
-    public Shape getShape() {  
-        return new Rectangle();  
-    }  
+ @Override  
+ public Shape getShape() {  
+ return new Rectangle();  
+ }  
 }
 
 5. 客户端类（Client）
-public class GraphicTest {  
-    public static void main(String[] args) {  
-        // 获取 Circle 的对象，并调用它的 draw 方法  
-        ShapeFactory circleFactory = new CircleFactory();  
-        Shape shape1 = circleFactory.getShape();  
-        shape1.draw();  
+  public class GraphicTest {  
+   public static void main(String[] args) {
   
-        // 获取 Rectangle 的对象，并调用它的 draw 方法  
-        ShapeFactory rectangleFactory = new RectangleFactory();  
-        Shape shape2 = rectangleFactory.getShape();  
-        shape2.draw();  
+  ```
+   // 获取 Circle 的对象，并调用它的 draw 方法  
+   ShapeFactory circleFactory = new CircleFactory();  
+   Shape shape1 = circleFactory.getShape();  
+   shape1.draw();  
   
-        // 输出结果  
-        // Inside Circle::draw() method.  
-        // Inside Rectangle::draw() method.  
-    }  
-}
-在这个例子中，Shape 是抽象产品接口，Circle 和 Rectangle 是实现了这个接口的具体产品类。ShapeFactory 是抽象工厂接口，它声明了一个用于获取形状对象的 getShape 方法。
-CircleFactory 和 RectangleFactory 是实现了这个接口的具体工厂类，它们分别返回 Circle 和 Rectangle 类型的对象。最后，在 GraphicTest 客户端类中，我们通过不同的工厂实例来创建不同类型的图形对象，并调用它们的 draw 方法。
-
-
+   // 获取 Rectangle 的对象，并调用它的 draw 方法  
+   ShapeFactory rectangleFactory = new RectangleFactory();  
+   Shape shape2 = rectangleFactory.getShape();  
+   shape2.draw();  
+  
+   // 输出结果  
+   // Inside Circle::draw() method.  
+   // Inside Rectangle::draw() method.  
+  ```
+  
+  }  
+  }
+  在这个例子中，Shape 是抽象产品接口，Circle 和 Rectangle 是实现了这个接口的具体产品类。ShapeFactory 是抽象工厂接口，它声明了一个用于获取形状对象的 getShape 方法。
+  CircleFactory 和 RectangleFactory 是实现了这个接口的具体工厂类，它们分别返回 Circle 和 Rectangle 类型的对象。最后，在 GraphicTest 客户端类中，我们通过不同的工厂实例来创建不同类型的图形对象，并调用它们的 draw 方法。
+  
 
 （3）静态工厂方法模式：通过将对象的创建过程封装在一个专门的工厂类中，并根据传入的参数决定创建哪个类的对象，从而达到解耦的目的。
 
@@ -10989,51 +11740,52 @@ CircleFactory 和 RectangleFactory 是实现了这个接口的具体工厂类，
 
 // 抽象产品  
 interface Operation {  
-    double getResult(double a, double b);  
-}  
-  
+ double getResult(double a, double b);  
+}
+
 // 具体产品  
 class OperationAdd implements Operation {  
-    public double getResult(double a, double b) {  
-        return a + b;  
-    }  
-}  
-  
+ public double getResult(double a, double b) {  
+ return a + b;  
+ }  
+}
+
 class OperationSub implements Operation {  
-    public double getResult(double a, double b) {  
-        return a - b;  
-    }  
-}  
-  
+ public double getResult(double a, double b) {  
+ return a - b;  
+ }  
+}
+
 // 工厂类  
 class OperationFactory {  
-    public static Operation createOperation(String operate) {  
-        switch (operate) {  
-            case "+":  
-                return new OperationAdd();  
-            case "-":  
-                return new OperationSub();  
-            // 可以继续添加其他运算的实现  
-            default:  
-                return null;  
-        }  
-    }  
-}  
-  
+ public static Operation createOperation(String operate) {  
+ switch (operate) {  
+ case "+":  
+ return new OperationAdd();  
+ case "-":  
+ return new OperationSub();  
+ // 可以继续添加其他运算的实现  
+ default:  
+ return null;  
+ }  
+ }  
+}
+
 // 客户端代码  
 public class Main {  
-    public static void main(String[] args) {  
-        Operation add = OperationFactory.createOperation("+");  
-        System.out.println("10 + 5 = " + add.getResult(10, 5));  
-  
-        Operation sub = OperationFactory.createOperation("-");  
-        System.out.println("10 - 5 = " + sub.getResult(10, 5));  
-    }  
+ public static void main(String[] args) {  
+ Operation add = OperationFactory.createOperation("+");  
+ System.out.println("10 + 5 = " + add.getResult(10, 5));
+
+```
+    Operation sub = OperationFactory.createOperation("-");  
+    System.out.println("10 - 5 = " + sub.getResult(10, 5));  
+}  
+```
+
 }
 在这个例子中，Operation是抽象产品角色，OperationAdd和OperationSub是具体产品角色，OperationFactory是工厂类。客户端通过传入运算符作为参数来获取相应的运算对象，并调用其getResult方法来执行运算。
 这样，客户端就无需关心运算对象的创建过程，只需关心如何使用这些对象。
-
-
 
 2、创建型-抽象工厂模式：
 抽象工厂模式主要用于创建相关对象的家族。当一个产品族中需要被设计在一起工作时，
@@ -11043,57 +11795,54 @@ public class Main {
 但该模式的缺点在于添加新的行为时比较麻烦，如果需要添加一个新产品族对象时，
 需要更改接口及其下所有子类，这必然会带来很大的麻烦。
 
-	//抽象类
-	public interface Sender {
-		public void Send();
-	}
-	
-	//两个具体实现类
-    public class MailSender implements Sender {
-    	@Override
-    	public void Send() {
-    		System.out.println("this is mailsender!");
-    	}
+```
+//抽象类
+public interface Sender {
+    public void Send();
+}
+
+//两个具体实现类
+public class MailSender implements Sender {
+    @Override
+    public void Send() {
+        System.out.println("this is mailsender!");
     }
-    public class MailSender implements Sender {
-    	@Override
-    	public void Send() {
-    		System.out.println("this is mailsender!");
-    	}
+}
+public class MailSender implements Sender {
+    @Override
+    public void Send() {
+        System.out.println("this is mailsender!");
     }
-    
-    //提供的接口类
-    public interface Provider {
-		public Sender produce();
-	}
+}
 
-	//两个工厂类
-    public class SendMailFactory implements Provider {
-    	@Override
-    	public Sender produce(){
-    		return new MailSender();
-    	}
+//提供的接口类
+public interface Provider {
+    public Sender produce();
+}
+
+//两个工厂类
+public class SendMailFactory implements Provider {
+    @Override
+    public Sender produce(){
+        return new MailSender();
     }
-    public class SendSmsFactory implements Provider{
-    	@Override
-    	public Sender produce() {
-    		return new SmsSender();
-    	}
+}
+public class SendSmsFactory implements Provider{
+    @Override
+    public Sender produce() {
+        return new SmsSender();
     }
+}
 
-	//测试类
-	public class Test {
-		public static void main(String[] args) {
-			Provider provider = new SendMailFactory();
-			Sender sender = provider.produce();
-			sender.Send();
-		}
-	}
-        
-
-
-
-
+//测试类
+public class Test {
+    public static void main(String[] args) {
+        Provider provider = new SendMailFactory();
+        Sender sender = provider.produce();
+        sender.Send();
+    }
+}
+```
 
 3、创建型-建造者模式：
 建造者模式将复杂产品的创建步骤分解在在不同的方法中，使得创建过程更加清晰，从而更精确控制复杂对象的产生过程；
@@ -11106,198 +11855,220 @@ Builder: 创建一个产品对象的各个部件指定抽象接口。
 ConcreteBuilder： 实现Builder的接口以构造和装配该产品的各个部件，定义并明确它所创建的表示。
 Director： 调用具体建造者角色以创建产品对象。
 
-	//抽象类
-	public interface Sender {
-		public void Send();
-	}
-	
-	//两个具体实现类
-    public class MailSender implements Sender {
-    	@Override
-    	public void Send() {
-    		System.out.println("this is mailsender!");
-    	}
-    }
-    public class MailSender implements Sender {
-    	@Override
-    	public void Send() {
-    		System.out.println("this is mailsender!");
-    	}
-    }
-    
-    public class Builder {
-		private List<Sender> list = new ArrayList<Sender>();
-	
-		public void produceMailSender(int count){
-			for(int i=0; i<count; i++){
-				list.add(new MailSender());
-			}
-		}
-	
-		public void produceSmsSender(int count){
-			for(int i=0; i<count; i++){
-				list.add(new SmsSender());
-			}
-		}
-	}
+```
+//抽象类
+public interface Sender {
+    public void Send();
+}
 
-	//测试类
-	public class Test {
-		public static void main(String[] args) {
-			Builder builder = new Builder();
-			builder.produceMailSender(10);
-		}
-	}
+//两个具体实现类
+public class MailSender implements Sender {
+    @Override
+    public void Send() {
+        System.out.println("this is mailsender!");
+    }
+}
+public class MailSender implements Sender {
+    @Override
+    public void Send() {
+        System.out.println("this is mailsender!");
+    }
+}
 
+public class Builder {
+    private List<Sender> list = new ArrayList<Sender>();
+
+    public void produceMailSender(int count){
+        for(int i=0; i<count; i++){
+            list.add(new MailSender());
+        }
+    }
+
+    public void produceSmsSender(int count){
+        for(int i=0; i<count; i++){
+            list.add(new SmsSender());
+        }
+    }
+}
+
+//测试类
+public class Test {
+    public static void main(String[] args) {
+        Builder builder = new Builder();
+        builder.produceMailSender(10);
+    }
+}
+```
 
 4、创建型-单例模式：
-        单例模式可以确保系统中某个类只有一个实例，该类自行实例化并向整个系统提供这个实例的公共访问点，除了该公共访问点，不能通过其他途径访问该实例。单例模式的优点在于：
-	>系统中只存在一个共用的实例对象，无需频繁创建和销毁对象，节约了系统资源，提高系统的性能
-	>可以严格控制客户怎么样以及何时访问单例对象。
-	>单例模式的写法有好几种，主要有三种：懒汉式单例、饿汉式单例、登记式单例。
+ 单例模式可以确保系统中某个类只有一个实例，该类自行实例化并向整个系统提供这个实例的公共访问点，除了该公共访问点，不能通过其他途径访问该实例。单例模式的优点在于：
+ >系统中只存在一个共用的实例对象，无需频繁创建和销毁对象，节约了系统资源，提高系统的性能
+ >可以严格控制客户怎么样以及何时访问单例对象。
+ >单例模式的写法有好几种，主要有三种：懒汉式单例、饿汉式单例、登记式单例。
 
 单例模式（Singleton Pattern）是一种常用的软件设计模式，旨在确保一个类仅有一个实例，并提供一个全局访问点来获取该实例。以下是九种常见的单例模式实现方式：
 
 1. 饿汉式（静态常量）
-这是最简单的单例模式实现方式。类加载时就完成了初始化，所以类加载较慢，但获取对象的速度快。
+  这是最简单的单例模式实现方式。类加载时就完成了初始化，所以类加载较慢，但获取对象的速度快。
 
 public class Singleton {  
-    // 构造方法私有化  
-    private Singleton() {}  
-      
-    // 创建一个类的唯一实例  
-    private static final Singleton instance = new Singleton();  
-      
-    // 提供一个全局的静态方法，用于获取唯一的实例  
-    public static Singleton getInstance() {  
-        return instance;  
-    }  
+ // 构造方法私有化  
+ private Singleton() {}
+
+```
+// 创建一个类的唯一实例  
+private static final Singleton instance = new Singleton();  
+
+// 提供一个全局的静态方法，用于获取唯一的实例  
+public static Singleton getInstance() {  
+    return instance;  
+}  
+```
+
 }
 2. 饿汉式（静态代码块）
 与静态常量类似，但实例的初始化放在静态代码块中。
 
 public class Singleton {  
-    // 构造方法私有化  
-    private Singleton() {}  
-      
-    // 静态代码块中初始化实例  
-    private static Singleton instance;  
-    static {  
-        instance = new Singleton();  
-    }  
-      
-    // 提供一个全局的静态方法，用于获取唯一的实例  
-    public static Singleton getInstance() {  
-        return instance;  
-    }  
+ // 构造方法私有化  
+ private Singleton() {}
+
+```
+// 静态代码块中初始化实例  
+private static Singleton instance;  
+static {  
+    instance = new Singleton();  
+}  
+
+// 提供一个全局的静态方法，用于获取唯一的实例  
+public static Singleton getInstance() {  
+    return instance;  
+}  
+```
+
 }
 3. 懒汉式（线程不安全）
 在第一次调用getInstance()方法时才创建实例，但这种方法在多线程环境下是不安全的。
 
 public class Singleton {  
-    // 构造方法私有化  
-    private Singleton() {}  
-      
-    // 注意，这里没有使用volatile关键字，所以不是线程安全的  
-    private static Singleton instance;  
-      
-    public static Singleton getInstance() {  
-        if (instance == null) {  
-            instance = new Singleton();  
-        }  
-        return instance;  
+ // 构造方法私有化  
+ private Singleton() {}
+
+```
+// 注意，这里没有使用volatile关键字，所以不是线程安全的  
+private static Singleton instance;  
+
+public static Singleton getInstance() {  
+    if (instance == null) {  
+        instance = new Singleton();  
     }  
+    return instance;  
+}  
+```
+
 }
 4. 懒汉式（线程安全，同步方法）
 通过在方法上添加synchronized关键字来保证线程安全，但会降低效率。
 
 public class Singleton {  
-    // 构造方法私有化  
-    private Singleton() {}  
-      
-    private static Singleton instance;  
-      
-    public static synchronized Singleton getInstance() {  
-        if (instance == null) {  
-            instance = new Singleton();  
-        }  
-        return instance;  
+ // 构造方法私有化  
+ private Singleton() {}
+
+```
+private static Singleton instance;  
+
+public static synchronized Singleton getInstance() {  
+    if (instance == null) {  
+        instance = new Singleton();  
     }  
+    return instance;  
+}  
+```
+
 }
 5. 懒汉式（线程安全，同步代码块）
 只对实例化部分进行同步，减少同步范围，提高效率。
 
 public class Singleton {  
-    // 构造方法私有化  
-    private Singleton() {}  
-      
-    private static Singleton instance;  
-      
-    public static Singleton getInstance() {  
-        if (instance == null) {  
-            synchronized (Singleton.class) {  
-                if (instance == null) {  
-                    instance = new Singleton();  
-                }  
+ // 构造方法私有化  
+ private Singleton() {}
+
+```
+private static Singleton instance;  
+
+public static Singleton getInstance() {  
+    if (instance == null) {  
+        synchronized (Singleton.class) {  
+            if (instance == null) {  
+                instance = new Singleton();  
             }  
         }  
-        return instance;  
     }  
+    return instance;  
+}  
+```
+
 }
 6. 双重检查锁定（Double-Checked Locking）
 进一步优化懒汉式，使用volatile关键字防止指令重排序，提高效率。
 
 public class Singleton {  
-    // 构造方法私有化  
-    private Singleton() {}  
-      
-    // volatile防止指令重排序  
-    private static volatile Singleton instance;  
-      
-    public static Singleton getInstance() {  
-        if (instance == null) {  
-            synchronized (Singleton.class) {  
-                if (instance == null) {  
-                    instance = new Singleton();  
-                }  
+ // 构造方法私有化  
+ private Singleton() {}
+
+```
+// volatile防止指令重排序  
+private static volatile Singleton instance;  
+
+public static Singleton getInstance() {  
+    if (instance == null) {  
+        synchronized (Singleton.class) {  
+            if (instance == null) {  
+                instance = new Singleton();  
             }  
         }  
-        return instance;  
     }  
+    return instance;  
+}  
+```
+
 }
 7. 静态内部类
 利用classloader机制保证单例的唯一性，同时实现了延迟加载。
 
 public class Singleton {  
-    // 构造方法私有化  
-    private Singleton() {}  
-      
-    // 静态内部类  
-    private static class SingletonHolder {  
-        private static final Singleton INSTANCE = new Singleton();  
-    }  
-      
-    public static Singleton getInstance() {  
-        return SingletonHolder.INSTANCE;  
-    }  
+ // 构造方法私有化  
+ private Singleton() {}
+
+```
+// 静态内部类  
+private static class SingletonHolder {  
+    private static final Singleton INSTANCE = new Singleton();  
+}  
+
+public static Singleton getInstance() {  
+    return SingletonHolder.INSTANCE;  
+}  
+```
+
 }
 8. 枚举方式
 利用枚举的特性实现单例模式，自动支持序列化机制，绝对防止多次实例化。
 
 public enum Singleton {  
-    INSTANCE;  
-      
-    // 可以添加其他方法  
-    public void whateverMethod() {  
-    }  
+ INSTANCE;
+
+```
+// 可以添加其他方法  
+public void whateverMethod() {  
+}  
+```
+
 }
 
 区分饿汉式单例和懒汉式单例：
 饿汉式：好处：线程安全 坏处：对象加载时间过长
 懒汉式：好处：延迟对象的创建 坏处：线程不安全
-
-
-
 
 5、创建型-原型模式：
 原型模式也是用于对象的创建，通过将一个对象作为原型，对其进行复制克隆，产生一个与源对象类似的新对象。
@@ -11305,7 +12076,6 @@ public enum Singleton {
 抽象原型类：规定了具体原型对象必须实现的的 clone() 方法。
 具体原型类：实现抽象原型类的 clone() 方法，它是可被复制的对象。
 访问类：使用具体原型类中的 clone() 方法来复制新的对象。
-
 
 在 Java 中，原型模式的核心是就是原型类 Prototype，Prototype 类需要具备以下两个条件：
 实现 Cloneable 接口：
@@ -11316,102 +12086,110 @@ Object 类中的 clone() 方法默认是浅拷贝，如果想要深拷贝对象�
 @AllArgsConstructor
 @NoArgsConstructor
 public class Student implements Cloneable {
-    private String name;
-    private String sex;
-    private Integer age;
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
- 
-    public static void main(String[] args) throws Exception{
-        Student stu1 = new Student("张三", "男", 18);
-        Student stu2 = (Student)stu1.clone();
-        stu2.setName("李四");
-        System.out.println(stu1);// Student(name=张三, sex=男, age=18)
-        System.out.println(stu2);// Student(name=李四, sex=男, age=18)
-    }
+ private String name;
+ private String sex;
+ private Integer age;
+ @Override
+ protected Object clone() throws CloneNotSupportedException {
+ return super.clone();
+ }
+
+```
+public static void main(String[] args) throws Exception{
+    Student stu1 = new Student("张三", "男", 18);
+    Student stu2 = (Student)stu1.clone();
+    stu2.setName("李四");
+    System.out.println(stu1);// Student(name=张三, sex=男, age=18)
+    System.out.println(stu2);// Student(name=李四, sex=男, age=18)
+}
+```
+
 }
 
 可以看到，把一个学生复制过来，只是改了姓名而已，其他属性完全一样没有改变，
 需要注意的是，一定要在被拷贝的对象上实现Cloneable接口，否则会抛出CloneNotSupportedException异常。
 
-
 浅复制：将一个对象复制后，基本数据类型的变量会重新创建，而引用类型指向的还是原对象所指向的内存地址。
 
 @Data
 public class Clazz implements Cloneable {
-    private String name;
-    private Student student;
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
+ private String name;
+ private Student student;
+ @Override
+ protected Object clone() throws CloneNotSupportedException {
+ return super.clone();
+ }
 }
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Student implements Serializable {
-    private String name;
-    private String sex;
-    private Integer age;
+ private String name;
+ private String sex;
+ private Integer age;
 }
- 
-    public static void main(String[] args) throws Exception{
-        Clazz clazz1 = new Clazz();
-        clazz1.setName("高三一班");
-        Student stu1 = new Student("张三", "男", 18);
-        clazz1.setStudent(stu1);
-        System.out.println(clazz1); // Clazz(name=高三一班, student=Student(name=张三, sex=男, age=18))
-        Clazz clazz2 = (Clazz)clazz1.clone();
-        Student stu2 = clazz2.getStudent();
-        stu2.setName("李四");
-        System.out.println(clazz1); // Clazz(name=高三一班, student=Student(name=李四, sex=男, age=18))
-        System.out.println(clazz2); // Clazz(name=高三一班, student=Student(name=李四, sex=男, age=18))
-    }
-	
+
+```
+public static void main(String[] args) throws Exception{
+    Clazz clazz1 = new Clazz();
+    clazz1.setName("高三一班");
+    Student stu1 = new Student("张三", "男", 18);
+    clazz1.setStudent(stu1);
+    System.out.println(clazz1); // Clazz(name=高三一班, student=Student(name=张三, sex=男, age=18))
+    Clazz clazz2 = (Clazz)clazz1.clone();
+    Student stu2 = clazz2.getStudent();
+    stu2.setName("李四");
+    System.out.println(clazz1); // Clazz(name=高三一班, student=Student(name=李四, sex=男, age=18))
+    System.out.println(clazz2); // Clazz(name=高三一班, student=Student(name=李四, sex=男, age=18))
+}
+```
+
 可以看到，当修改了stu2的姓名时，stu1的姓名同样也被修改了，这说明stu1和stu2是同一个对象，这就是浅克隆的特点，
 对具体原型类中的引用类型的属性进行引用的复制。同时，这也可能是浅克隆所带来的弊端，因为结合该例子的原意，
 显然是想在班级中新增一名叫李四的学生，而非让所有的学生都改名叫李四，于是我们这里就要使用深克隆。
-	
+
 深复制：将一个对象复制后，不论是基本数据类型还有引用类型，都是重新创建的。
-        使用原型模式进行创建对象不仅简化对象的创建步骤，还比 new 方式创建对象的性能要好的多，
-		因为 Object 类的 clone() 方法是一个本地方法，直接操作内存中的二进制流，特别是复制大对象时，性能的差别非常明显；
+ 使用原型模式进行创建对象不仅简化对象的创建步骤，还比 new 方式创建对象的性能要好的多，
+ 因为 Object 类的 clone() 方法是一个本地方法，直接操作内存中的二进制流，特别是复制大对象时，性能的差别非常明显；
 
 @Data
 public class Clazz implements Cloneable, Serializable {
-    private String name;
-    private Student student;
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
- 
-    protected Object deepClone() throws IOException, ClassNotFoundException {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(bos);
-        oos.writeObject(this);
-        ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
-        ObjectInputStream ois = new ObjectInputStream(bis);
-        return ois.readObject();
-    }
+ private String name;
+ private Student student;
+ @Override
+ protected Object clone() throws CloneNotSupportedException {
+ return super.clone();
+ }
+
+```
+protected Object deepClone() throws IOException, ClassNotFoundException {
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(bos);
+    oos.writeObject(this);
+    ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+    ObjectInputStream ois = new ObjectInputStream(bis);
+    return ois.readObject();
 }
- 
-    public static void main(String[] args) throws Exception{
-        Clazz clazz1 = new Clazz();
-        clazz1.setName("高三一班");
-        Student stu1 = new Student("张三", "男", 18);
-        clazz1.setStudent(stu1);
-        Clazz clazz3 = (Clazz)clazz1.deepClone();
-        Student stu3 = clazz3.getStudent();
-        stu3.setName("王五");
-        System.out.println(clazz1); // Clazz(name=高三一班, student=Student(name=张三, sex=男, age=18))
-        System.out.println(clazz3); // Clazz(name=高三一班, student=Student(name=王五, sex=男, age=18))
-    }
+```
+
+}
+
+```
+public static void main(String[] args) throws Exception{
+    Clazz clazz1 = new Clazz();
+    clazz1.setName("高三一班");
+    Student stu1 = new Student("张三", "男", 18);
+    clazz1.setStudent(stu1);
+    Clazz clazz3 = (Clazz)clazz1.deepClone();
+    Student stu3 = clazz3.getStudent();
+    stu3.setName("王五");
+    System.out.println(clazz1); // Clazz(name=高三一班, student=Student(name=张三, sex=男, age=18))
+    System.out.println(clazz3); // Clazz(name=高三一班, student=Student(name=王五, sex=男, age=18))
+}
+```
 
 可以看到，当修改了stu3的姓名时，stu1的姓名并没有被修改了，这说明stu3和stu1已经是不同的对象了，说明Clazz中的Student也被克隆了，不再指向原有对象地址，这就是深克隆。
 这里需要注意的是，Clazz类和Student类都需要实现Serializable接口，否则会抛出NotSerializableException异常。
-
 
 6、结构型-适配器模式：
 适配器模式主要用于将一个类或者接口转化成客户端希望的格式，使得原本不兼容的类可以在一起工作，
@@ -11431,34 +12209,34 @@ public class Clazz implements Cloneable, Serializable {
 
 // 适配者 220V电压
 public class AC220 {
-    public int output() {
-        System.out.println("输出220V交流电");
-        return 220;
-    }
+ public int output() {
+ System.out.println("输出220V交流电");
+ return 220;
+ }
 }
 // 目标 5V
 public interface DC5 {
-    public int output5();
+ public int output5();
 }
 // 适配器类（电源适配器）
 public class PowerAdapter extends AC220 implements DC5 {
-    @Override
-    public int output5() {
-        int output220 = super.output();
-        int output5 = output220 / 44;
-        System.out.println(output220 + "V适配转换成" + output5 + "V");
-        return output5;
-    }
+ @Override
+ public int output5() {
+ int output220 = super.output();
+ int output5 = output220 / 44;
+ System.out.println(output220 + "V适配转换成" + output5 + "V");
+ return output5;
+ }
 }
-    // 测试
-    public static void main(String[] args) {
-        PowerAdapter powerAdapter = new PowerAdapter();
-        // 输出220V交流电
-        powerAdapter.output();
-        // 输出220V交流电
-        // 220V适配转换成5V
-        powerAdapter.output5();
-    }
+ // 测试
+ public static void main(String[] args) {
+ PowerAdapter powerAdapter = new PowerAdapter();
+ // 输出220V交流电
+ powerAdapter.output();
+ // 输出220V交流电
+ // 220V适配转换成5V
+ powerAdapter.output5();
+ }
 
 通过上面代码例子可以看出，类适配器有一个很明显的缺点，就是违背了合成复用原则。
 结合上面的例子，假如我不是220V的电压了，是380V电压呢？那就要多建一个380V电压的适配器了。
@@ -11467,41 +12245,44 @@ public class PowerAdapter extends AC220 implements DC5 {
 对象适配器：
 // 电源接口
 public interface Power {
-    int output();
+ int output();
 }
 // 适配者 220V电压
 public class AC220 implements Power {
-    @Override
-    public int output() {
-        System.out.println("输出220V交流电");
-        return 220;
-    }
+ @Override
+ public int output() {
+ System.out.println("输出220V交流电");
+ return 220;
+ }
 }
 // 目标 5V
 public interface DC5 {
-    public int output5();
+ public int output5();
 }
 @AllArgsConstructor
 public class PowerAdapter implements DC5 {
- 
-    // 适配者
-    private Power power;
-    @Override
-    public int output5() {
-        int output220 = power.output();
-        int output5 = output220 / 44;
-        System.out.println(output220 + "V适配转换成" + output5 + "V");
-        return output5;
-    }
+
+```
+// 适配者
+private Power power;
+@Override
+public int output5() {
+    int output220 = power.output();
+    int output5 = output220 / 44;
+    System.out.println(output220 + "V适配转换成" + output5 + "V");
+    return output5;
 }
-    // 测试
-    public static void main(String[] args) {
-        DC5 powerAdapter = new PowerAdapter(new AC220());
-        // 输出220V交流电
-        // 220V适配转换成5V
-        powerAdapter.output5();
-    }
-	
+```
+
+}
+ // 测试
+ public static void main(String[] args) {
+ DC5 powerAdapter = new PowerAdapter(new AC220());
+ // 输出220V交流电
+ // 220V适配转换成5V
+ powerAdapter.output5();
+ }
+
 可以看到，上面代码中，只实现了目标接口，并没有继承适配者，而是将适配者类实现适配者接口，
 在适配器中引入适配者接口，当我们需要使用不同的适配者通过适配器进行转换时，就无需再新建适配器类了，
 如上面例子，假如我需要380V的电源转换成5V的，那么客户端只需要调用适配器时传入380V电源的类即可，就无需再新建一个380V电源的适配器了
@@ -11516,35 +12297,35 @@ public class PowerAdapter implements DC5 {
 
 // 这里例子 输出不同直流电接口
 public interface DC {
-    int output5();
-    int output12();
-    int output24();
-    int output30();
+ int output5();
+ int output12();
+ int output24();
+ int output30();
 }
 // 适配器类（电源适配器）
 @AllArgsConstructor
 public class PowerAdapter implements DC {
-    private Power power;
-    @Override
-    public int output5() {
-        // 具体实现逻辑
-        return 5;
-    }
-    @Override
-    public int output12() {
-        // 具体实现逻辑
-        return 12;
-    }
-    @Override
-    public int output24() {
-        // 具体实现逻辑
-        return 24;
-    }
-    @Override
-    public int output30() {
-        // 具体实现逻辑
-        return 30;
-    }
+ private Power power;
+ @Override
+ public int output5() {
+ // 具体实现逻辑
+ return 5;
+ }
+ @Override
+ public int output12() {
+ // 具体实现逻辑
+ return 12;
+ }
+ @Override
+ public int output24() {
+ // 具体实现逻辑
+ return 24;
+ }
+ @Override
+ public int output30() {
+ // 具体实现逻辑
+ return 30;
+ }
 }
 
 7、结构型-装饰器模式：
@@ -11562,61 +12343,61 @@ public class PowerAdapter implements DC {
 
 // 炒饭类
 public class FriedRice {
-    String getDesc() {
-        return "炒饭";
-    }
-    Integer getPrice() {
-        return 5;
-    }
+ String getDesc() {
+ return "炒饭";
+ }
+ Integer getPrice() {
+ return 5;
+ }
 }
 // 配料表
 public abstract class Ingredients extends FriedRice{
-    private FriedRice friedRice;
-    public Ingredients(FriedRice friedRice) {
-        this.friedRice = friedRice;
-    }
-    String getDesc() {
-        return this.friedRice.getDesc();
-    }
-    Integer getPrice() {
-        return this.friedRice.getPrice();
-    }
+ private FriedRice friedRice;
+ public Ingredients(FriedRice friedRice) {
+ this.friedRice = friedRice;
+ }
+ String getDesc() {
+ return this.friedRice.getDesc();
+ }
+ Integer getPrice() {
+ return this.friedRice.getPrice();
+ }
 }
 // 鸡蛋配料
 public class Egg extends Ingredients {
-    public Egg(FriedRice friedRice) {
-        super(friedRice);
-    }
-    String getDesc() {
-        return super.getDesc() + "+鸡蛋";
-    }
-    Integer getPrice() {
-        return super.getPrice() + 2;
-    }
+ public Egg(FriedRice friedRice) {
+ super(friedRice);
+ }
+ String getDesc() {
+ return super.getDesc() + "+鸡蛋";
+ }
+ Integer getPrice() {
+ return super.getPrice() + 2;
+ }
 }
 // 火腿配料
 public class Ham extends Ingredients {
-    public Ham(FriedRice friedRice){
-        super(friedRice);
-    }
-    String getDesc() {
-        return super.getDesc() + "+火腿";
-    }
-    Integer getPrice() {
-        return super.getPrice() + 3;
-    }
+ public Ham(FriedRice friedRice){
+ super(friedRice);
+ }
+ String getDesc() {
+ return super.getDesc() + "+火腿";
+ }
+ Integer getPrice() {
+ return super.getPrice() + 3;
+ }
 }
-    // 测试方法
-    public static void main(String[] args) {
-        FriedRice friedRice = new FriedRice();
-        System.out.println(friedRice.getDesc() + friedRice.getPrice() + "元"); // 炒饭5元
-        friedRice = new Egg(friedRice);
-        System.out.println(friedRice.getDesc() + friedRice.getPrice() + "元"); // 炒饭+鸡蛋7元
-        friedRice = new Egg(friedRice);
-        System.out.println(friedRice.getDesc() + friedRice.getPrice() + "元");// 炒饭+鸡蛋+鸡蛋9元
-        friedRice = new Ham(friedRice);
-        System.out.println(friedRice.getDesc() + friedRice.getPrice() + "元");// 炒饭+鸡蛋+鸡蛋+火腿12元
-    }
+ // 测试方法
+ public static void main(String[] args) {
+ FriedRice friedRice = new FriedRice();
+ System.out.println(friedRice.getDesc() + friedRice.getPrice() + "元"); // 炒饭5元
+ friedRice = new Egg(friedRice);
+ System.out.println(friedRice.getDesc() + friedRice.getPrice() + "元"); // 炒饭+鸡蛋7元
+ friedRice = new Egg(friedRice);
+ System.out.println(friedRice.getDesc() + friedRice.getPrice() + "元");// 炒饭+鸡蛋+鸡蛋9元
+ friedRice = new Ham(friedRice);
+ System.out.println(friedRice.getDesc() + friedRice.getPrice() + "元");// 炒饭+鸡蛋+鸡蛋+火腿12元
+ }
 
 装饰器模式与代理模式对比：
 装饰器模式就是一种特殊的代理模式。
@@ -11636,7 +12417,7 @@ public class Ham extends Ingredients {
 缺点：
 会出现更多的代码，更多的类，增加程序的复杂性。
 动态装饰时，多层装饰会更复杂。
-	
+
 8、结构型-代理模式：
 代理模式的设计动机是通过代理对象来访问真实对象，通过建立一个对象代理类，
 由代理对象控制原对象的引用，从而实现对真实对象的操作。在代理模式中，代理对象主要起到一个中介的作用，
@@ -11649,86 +12430,86 @@ public class Ham extends Ingredients {
 
 // 火车站接口，有卖票功能
 public interface TrainStation {
-    void sellTickets();
+ void sellTickets();
 }
 // 广州火车站卖票
 public class GuangzhouTrainStation implements TrainStation {
-    @Override
-    public void sellTickets() {
-        System.out.println("广州火车站卖票啦");
-    }
+ @Override
+ public void sellTickets() {
+ System.out.println("广州火车站卖票啦");
+ }
 }
 // 代售点卖票（代理类）
 public class ProxyPoint implements TrainStation {
-    // 目标对象（代理火车站售票）
-    private GuangzhouTrainStation station = new GuangzhouTrainStation();
-    @Override
-    public void sellTickets() {
-        System.out.println("代售加收5%手续费");
-        station.sellTickets();
-    }
-    public static void main(String[] args) {
-        ProxyPoint proxyPoint = new ProxyPoint();
-        // 代售加收5%手续费
-        // 广州火车站卖票啦
-        proxyPoint.sellTickets();
-    }
+ // 目标对象（代理火车站售票）
+ private GuangzhouTrainStation station = new GuangzhouTrainStation();
+ @Override
+ public void sellTickets() {
+ System.out.println("代售加收5%手续费");
+ station.sellTickets();
+ }
+ public static void main(String[] args) {
+ ProxyPoint proxyPoint = new ProxyPoint();
+ // 代售加收5%手续费
+ // 广州火车站卖票啦
+ proxyPoint.sellTickets();
+ }
 }
-    // 测试
-    public static void main(String[] args) {
-        ProxyPoint proxyPoint = new ProxyPoint();
-        // 代售加收5%手续费
-        // 火车站卖票啦
-        proxyPoint.sellTickets();
-    }
-	
+ // 测试
+ public static void main(String[] args) {
+ ProxyPoint proxyPoint = new ProxyPoint();
+ // 代售加收5%手续费
+ // 火车站卖票啦
+ proxyPoint.sellTickets();
+ }
+
 动态代理：
 代理类在代码运行时创建的代理称之为动态代理。
-动态代理中代理类并不是预先在Java代码中定义好的，而是运行时由JVM动态生成，并且可以代理多个目标对象。	
+动态代理中代理类并不是预先在Java代码中定义好的，而是运行时由JVM动态生成，并且可以代理多个目标对象。  
 // 火车站接口，有卖票功能
 public interface TrainStation {
-    void sellTickets();
+ void sellTickets();
 }
 // 广州火车站卖票
 public class GuangzhouTrainStation implements TrainStation {
-    @Override
-    public void sellTickets() {
-        System.out.println("广州火车站卖票啦");
-    }
+ @Override
+ public void sellTickets() {
+ System.out.println("广州火车站卖票啦");
+ }
 }
 // 深圳火车站卖票
 public class ShenzhenTrainStation implements TrainStation {
-    @Override
-    public void sellTickets() {
-        System.out.println("深圳火车站卖票啦");
-    }
+ @Override
+ public void sellTickets() {
+ System.out.println("深圳火车站卖票啦");
+ }
 }
 // 代售点卖票（代理类）
 public class ProxyPoint implements InvocationHandler {
-    private TrainStation trainStation;
-    public TrainStation getProxyObject(TrainStation trainStation) {
-        this.trainStation = trainStation;
-        Class<? extends TrainStation> clazz = trainStation.getClass();
-        return (TrainStation) Proxy.newProxyInstance(clazz.getClassLoader(), clazz.getInterfaces(), this);
-    }
-    @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        System.out.println("代售火车票收取5%手续费");
-        return method.invoke(this.trainStation, args);
-    }
+ private TrainStation trainStation;
+ public TrainStation getProxyObject(TrainStation trainStation) {
+ this.trainStation = trainStation;
+ Class<? extends TrainStation> clazz = trainStation.getClass();
+ return (TrainStation) Proxy.newProxyInstance(clazz.getClassLoader(), clazz.getInterfaces(), this);
+ }
+ @Override
+ public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+ System.out.println("代售火车票收取5%手续费");
+ return method.invoke(this.trainStation, args);
+ }
 }
-    // 测试
-    public static void main(String[] args) {
-        ProxyPoint proxy = new ProxyPoint();
-        TrainStation guangzhouTrainStation = proxy.getProxyObject(new GuangzhouTrainStation());
-        // 代售火车票收取5%手续费
-        // 广州火车站卖票啦
-        guangzhouTrainStation.sellTickets();
-        TrainStation shenzhenTrainStation = proxy.getProxyObject(new ShenzhenTrainStation());
-        // 代售火车票收取5%手续费
-        // 深圳火车站卖票啦
-        shenzhenTrainStation.sellTickets();
-    }
+ // 测试
+ public static void main(String[] args) {
+ ProxyPoint proxy = new ProxyPoint();
+ TrainStation guangzhouTrainStation = proxy.getProxyObject(new GuangzhouTrainStation());
+ // 代售火车票收取5%手续费
+ // 广州火车站卖票啦
+ guangzhouTrainStation.sellTickets();
+ TrainStation shenzhenTrainStation = proxy.getProxyObject(new ShenzhenTrainStation());
+ // 代售火车票收取5%手续费
+ // 深圳火车站卖票啦
+ shenzhenTrainStation.sellTickets();
+ }
 
 9、结构型-桥接模式：
 桥接模式也称为桥梁模式、接口模式或者柄体（Handle and Body）模式，是将抽象部分与他的具体实现部分分离，使它们都可以独立地变化，通过组合的方式建立两个类之间的联系，而不是继承。
@@ -11740,49 +12521,49 @@ public class ProxyPoint implements InvocationHandler {
 
 // 视频接口
 public interface Video {
-    void decode(String fileName);
+ void decode(String fileName);
 }
- 
+
 // MP4格式类
 public class Mp4 implements Video{
-    @Override
-    public void decode(String fileName) {
-        System.out.println("MP4视频文件："+ fileName);
-    }
+ @Override
+ public void decode(String fileName) {
+ System.out.println("MP4视频文件："+ fileName);
+ }
 }
 // RMVB格式类
 public class Rmvb implements Video{
-    @Override
-    public void decode(String fileName) {
-        System.out.println("rmvb文件：" + fileName);
-    }
+ @Override
+ public void decode(String fileName) {
+ System.out.println("rmvb文件：" + fileName);
+ }
 }
 // 操作系统抽象类
 @AllArgsConstructor
 public abstract class OperatingSystem {
-    Video video;
-    public abstract void play(String fileName);
- 
+ Video video;
+ public abstract void play(String fileName);
+
 }
 // iOS系统
 public class Ios extends OperatingSystem {
-    public Ios(Video video){
-        super(video);
-    }
-    @Override
-    public void play(String fileName) {
-        video.decode(fileName);
-    }
+ public Ios(Video video){
+ super(video);
+ }
+ @Override
+ public void play(String fileName) {
+ video.decode(fileName);
+ }
 }
 // windows系统
 public class Windows extends OperatingSystem {
-    public Windows(Video video){
-        super(video);
-    }
-    @Override
-    public void play(String fileName) {
-        video.decode(fileName);
-    }
+ public Windows(Video video){
+ super(video);
+ }
+ @Override
+ public void play(String fileName) {
+ video.decode(fileName);
+ }
 }
 视频类和操作系统类之间通过OperatingSystem类桥接关联起来。
 
@@ -11817,14 +12598,14 @@ public class Windows extends OperatingSystem {
 目的相似：两者都是为了解决不同接口或类之间的兼容性问题，使得原本无法直接协作的组件能够协同工作。
 灵活性强：通过引入中间层或适配器类，提高了系统的灵活性和可扩展性。
 差异
-桥接模式	适配器模式
-定义	将抽象与实现分离，使它们可以独立变化。桥接模式用组合关系代替继承关系来实现，从而降低了抽象和实现这两个可变维度的耦合度。	将一个类的接口转换成客户希望的另一个接口，使类因接口不兼容而不能一起工作的类可以一起工作。
-目的	分离抽象化和实现，使两者的接口可以不同，目的是分离。	改变已有的两个接口，让它们相容。
-出发点	桥接是先有桥，才有两端的东西。如果还什么都没有，但是想分开实现，那么桥接是一个选择。	适配是先有两边的东西，才有适配器。如果拿到两个已有模块，想让他们同时工作，那么使用的就是适配器。
-关注点	关注于抽象和实现之间的分离，使得它们可以独立变化，便于维护和扩展。	关注于接口之间的转换，使得不兼容的接口能够协同工作。
-应用场景	当一个类存在两个或多个独立变化的维度，且这些维度需要被独立扩展时，可以使用桥接模式。	当需要使用一些已存在的类，而这些类的接口和当前系统不兼容时，可以使用适配器模式进行接口转换。
-优点	1. 抽象和实现分离，扩展能力强。2. 实现细节对客户透明。	1. 提高了类的复用性。2. 增加了类的透明度。3. 灵活性好。
-缺点	由于聚合关系建立在抽象层，要求开发者针对抽象化进行设计与编程，这增加了系统的理解与设计难度。	过多地使用适配器，会让系统非常零乱，不易整体进行把握。
+桥接模式 适配器模式
+定义 将抽象与实现分离，使它们可以独立变化。桥接模式用组合关系代替继承关系来实现，从而降低了抽象和实现这两个可变维度的耦合度。 将一个类的接口转换成客户希望的另一个接口，使类因接口不兼容而不能一起工作的类可以一起工作。
+目的 分离抽象化和实现，使两者的接口可以不同，目的是分离。 改变已有的两个接口，让它们相容。
+出发点 桥接是先有桥，才有两端的东西。如果还什么都没有，但是想分开实现，那么桥接是一个选择。 适配是先有两边的东西，才有适配器。如果拿到两个已有模块，想让他们同时工作，那么使用的就是适配器。
+关注点 关注于抽象和实现之间的分离，使得它们可以独立变化，便于维护和扩展。 关注于接口之间的转换，使得不兼容的接口能够协同工作。
+应用场景 当一个类存在两个或多个独立变化的维度，且这些维度需要被独立扩展时，可以使用桥接模式。 当需要使用一些已存在的类，而这些类的接口和当前系统不兼容时，可以使用适配器模式进行接口转换。
+优点 1. 抽象和实现分离，扩展能力强。2. 实现细节对客户透明。 1. 提高了类的复用性。2. 增加了类的透明度。3. 灵活性好。
+缺点 由于聚合关系建立在抽象层，要求开发者针对抽象化进行设计与编程，这增加了系统的理解与设计难度。 过多地使用适配器，会让系统非常零乱，不易整体进行把握。
 
 总结
 桥接模式和适配器模式都是设计模式中用于解决接口或类之间兼容性问题的重要模式。桥接模式更侧重于抽象和实现的分离，以应对系统中可能的多维变化；
@@ -11840,77 +12621,76 @@ public class Windows extends OperatingSystem {
 子系统（Sub System）角色：实现系统的部分功能，客户可以通过外观角色访问它。
 
 public class Light {
-    public void on() {
-        System.out.println("开灯");
-    }
-    public void off() {
-        System.out.println("关灯");
-    }
+ public void on() {
+ System.out.println("开灯");
+ }
+ public void off() {
+ System.out.println("关灯");
+ }
 }
 public class Tv {
-    public void on() {
-        System.out.println("开电视");
-    }
-    public void off() {
-        System.out.println("关电视");
-    }
+ public void on() {
+ System.out.println("开电视");
+ }
+ public void off() {
+ System.out.println("关电视");
+ }
 }
 public class Fan {
-    public void on() {
-        System.out.println("开风扇");
-    }
-    public void off() {
-        System.out.println("关风扇");
-    }
+ public void on() {
+ System.out.println("开风扇");
+ }
+ public void off() {
+ System.out.println("关风扇");
+ }
 }
 
 public class SmartSpeaker {
-    private Light light;
-    private Tv tv;
-    private Fan fan;
-    public SmartSpeaker() {
-        light = new Light();
-        tv = new Tv();
-        fan = new Fan();
-    }
-    public void say(String order) {
-        if (order.contains("起床")) {
-            getUp();
-        } else if (order.contains("睡觉")) {
-            sleep();
-        } else {
-            System.out.println("我还听不懂你说的啥！");
-        }
-    }
-    public void getUp() {
-        System.out.println("起床");
-        light.on();
-        tv.on();
-        fan.off();
-    }
-    public void sleep() {
-        System.out.println("睡觉");
-        light.off();
-        tv.off();
-        fan.on();
-    }
+ private Light light;
+ private Tv tv;
+ private Fan fan;
+ public SmartSpeaker() {
+ light = new Light();
+ tv = new Tv();
+ fan = new Fan();
+ }
+ public void say(String order) {
+ if (order.contains("起床")) {
+ getUp();
+ } else if (order.contains("睡觉")) {
+ sleep();
+ } else {
+ System.out.println("我还听不懂你说的啥！");
+ }
+ }
+ public void getUp() {
+ System.out.println("起床");
+ light.on();
+ tv.on();
+ fan.off();
+ }
+ public void sleep() {
+ System.out.println("睡觉");
+ light.off();
+ tv.off();
+ fan.on();
+ }
 }
-    public static void main(String[] args) {
-        SmartSpeaker smartSpeaker = new SmartSpeaker();
-        //睡觉
-        //关灯
-        //关电视
-        //开风扇
-        smartSpeaker.say("我要睡觉了!");
-        //起床
-        //开灯
-        //开电视
-        //关风扇
-        smartSpeaker.say("我起床了!");
-        //我还听不懂你说的啥！
-        smartSpeaker.say("Emmm");
-    }
-
+ public static void main(String[] args) {
+ SmartSpeaker smartSpeaker = new SmartSpeaker();
+ //睡觉
+ //关灯
+ //关电视
+ //开风扇
+ smartSpeaker.say("我要睡觉了!");
+ //起床
+ //开灯
+ //开电视
+ //关风扇
+ smartSpeaker.say("我起床了!");
+ //我还听不懂你说的啥！
+ smartSpeaker.say("Emmm");
+ }
 
 适用场景：
 对分层结构系统构建时，使用外观模式定义子系统中每层的入口点可以简化子系统之间的依赖关系。
@@ -11928,7 +12708,6 @@ public class SmartSpeaker {
 不符合开闭原则。
 某些情况下可能违背单一职责原则。
 
-
 11、结构型-组合模式：
 组合模式也称为整体-部分（Part-Whole）模式，它的宗旨是通过将单个对象（叶子结点）和组合对象（树枝节点）用相同的接口进行表示。
 作用：使客户端对单个对象和组合对象保持一致的方式处理。
@@ -11940,91 +12719,94 @@ public class SmartSpeaker {
 
 // 菜单组件
 public abstract class MenuComponent {
-    String name;
-    Integer level;
-    public void add(MenuComponent menuComponent) {
-        throw new UnsupportedOperationException("不支持添加操作!");
-    }
-    public void remove(MenuComponent menuComponent) {
-        throw new UnsupportedOperationException("不支持删除操作!");
-    }
-    public MenuComponent getChild(Integer i) {
-        throw new UnsupportedOperationException("不支持获取子菜单操作!");
-    }
-    public String getName() {
-        throw new UnsupportedOperationException("不支持获取名字操作!");
-    }
-    public void print() {
-        throw new UnsupportedOperationException("不支持打印操作!");
-    }
+ String name;
+ Integer level;
+ public void add(MenuComponent menuComponent) {
+ throw new UnsupportedOperationException("不支持添加操作!");
+ }
+ public void remove(MenuComponent menuComponent) {
+ throw new UnsupportedOperationException("不支持删除操作!");
+ }
+ public MenuComponent getChild(Integer i) {
+ throw new UnsupportedOperationException("不支持获取子菜单操作!");
+ }
+ public String getName() {
+ throw new UnsupportedOperationException("不支持获取名字操作!");
+ }
+ public void print() {
+ throw new UnsupportedOperationException("不支持打印操作!");
+ }
 }
 // 菜单类
 public class Menu extends MenuComponent {
-    private List<MenuComponent> menuComponentList = new ArrayList<>();
-    public Menu(String name,int level){
-        this.level = level;
-        this.name = name;
-    }
-    @Override
-    public void add(MenuComponent menuComponent) {
-        menuComponentList.add(menuComponent);
-    }
-    @Override
-    public void remove(MenuComponent menuComponent) {
-        menuComponentList.remove(menuComponent);
-    }
-    @Override
-    public MenuComponent getChild(Integer i) {
-        return menuComponentList.get(i);
-    }
-    @Override
-    public void print() {
-        for (int i = 1; i < level; i++) {
-            System.out.print("--");
-        }
-        System.out.println(name);
-        for (MenuComponent menuComponent : menuComponentList) {
-            menuComponent.print();
-        }
-    }
+ private List<MenuComponent> menuComponentList = new ArrayList<>();
+ public Menu(String name,int level){
+ this.level = level;
+ this.name = name;
+ }
+ @Override
+ public void add(MenuComponent menuComponent) {
+ menuComponentList.add(menuComponent);
+ }
+ @Override
+ public void remove(MenuComponent menuComponent) {
+ menuComponentList.remove(menuComponent);
+ }
+ @Override
+ public MenuComponent getChild(Integer i) {
+ return menuComponentList.get(i);
+ }
+ @Override
+ public void print() {
+ for (int i = 1; i < level; i++) {
+ System.out.print("--");
+ }
+ System.out.println(name);
+ for (MenuComponent menuComponent : menuComponentList) {
+ menuComponent.print();
+ }
+ }
 }
 // 子菜单类
 public class MenuItem extends MenuComponent {
-    public MenuItem(String name,int level) {
-        this.name = name;
-        this.level = level;
-    }
-    @Override
-    public void print() {
-        for (int i = 1; i < level; i++) {
-            System.out.print("--");
-        }
-        System.out.println(name);
-    }
+ public MenuItem(String name,int level) {
+ this.name = name;
+ this.level = level;
+ }
+ @Override
+ public void print() {
+ for (int i = 1; i < level; i++) {
+ System.out.print("--");
+ }
+ System.out.println(name);
+ }
 }
-    // 测试方法
-    public static void main(String[] args) {
-        //创建一级菜单
-        MenuComponent component = new Menu("系统管理",1);
- 
-        MenuComponent menu1 = new Menu("用户管理",2);
-        menu1.add(new MenuItem("新增用户",3));
-        menu1.add(new MenuItem("修改用户",3));
-        menu1.add(new MenuItem("删除用户",3));
- 
-        MenuComponent menu2 = new Menu("角色管理",2);
-        menu2.add(new MenuItem("新增角色",3));
-        menu2.add(new MenuItem("修改角色",3));
-        menu2.add(new MenuItem("删除角色",3));
-        menu2.add(new MenuItem("绑定用户",3));
- 
-        //将二级菜单添加到一级菜单中
-        component.add(menu1);
-        component.add(menu2);
- 
-        //打印菜单名称(如果有子菜单一块打印)
-        component.print();
-    }
+ // 测试方法
+ public static void main(String[] args) {
+ //创建一级菜单
+ MenuComponent component = new Menu("系统管理",1);
+
+```
+    MenuComponent menu1 = new Menu("用户管理",2);
+    menu1.add(new MenuItem("新增用户",3));
+    menu1.add(new MenuItem("修改用户",3));
+    menu1.add(new MenuItem("删除用户",3));
+
+    MenuComponent menu2 = new Menu("角色管理",2);
+    menu2.add(new MenuItem("新增角色",3));
+    menu2.add(new MenuItem("修改角色",3));
+    menu2.add(new MenuItem("删除角色",3));
+    menu2.add(new MenuItem("绑定用户",3));
+
+    //将二级菜单添加到一级菜单中
+    component.add(menu1);
+    component.add(menu2);
+
+    //打印菜单名称(如果有子菜单一块打印)
+    component.print();
+}
+```
+
 // 测试结果
 系统管理
 --用户管理
@@ -12036,7 +12818,6 @@ public class MenuItem extends MenuComponent {
 ----修改角色
 ----删除角色
 ----绑定用户
- 
 
 12、结构型-享元模式：
 享元模式又称为轻量级模式，是对象池的一种实现，类似于线程池，线程池可以避免不停的创建和销毁多个对象，消耗性能。
@@ -12062,55 +12843,55 @@ public class MenuItem extends MenuComponent {
 
 // 抽象接口
 public interface ITicket {
-    void show(String seat);
+ void show(String seat);
 }
 public class TrainTicket implements ITicket {
-    private String from;
-    private String to;
-    private Integer price;
-    public TrainTicket(String from, String to) {
-        this.from = from;
-        this.to = to;
-    }
-    @Override
-    public void show(String seat) {
-        this.price = new Random().nextInt(500);
-        System.out.println(from + "->" + to + ":" + seat + "价格:" + this.price);
-    }
+ private String from;
+ private String to;
+ private Integer price;
+ public TrainTicket(String from, String to) {
+ this.from = from;
+ this.to = to;
+ }
+ @Override
+ public void show(String seat) {
+ this.price = new Random().nextInt(500);
+ System.out.println(from + "->" + to + ":" + seat + "价格:" + this.price);
+ }
 }
 // 工厂类
 public class TicketFactory {
-    private static Map<String, ITicket> pool = new ConcurrentHashMap<>();
-    public static ITicket getTicket(String from, String to) {
-        String key = from + "->" + to;
-        if (pool.containsKey(key)) {
-            System.out.println("使用缓存获取火车票:" + key);
-            return pool.get(key);
-        }
-        System.out.println("使用数据库获取火车票:" + key);
-        ITicket ticket = new TrainTicket(from, to);
-        pool.put(key, ticket);
-        return ticket;
-    }
+ private static Map<String, ITicket> pool = new ConcurrentHashMap<>();
+ public static ITicket getTicket(String from, String to) {
+ String key = from + "->" + to;
+ if (pool.containsKey(key)) {
+ System.out.println("使用缓存获取火车票:" + key);
+ return pool.get(key);
+ }
+ System.out.println("使用数据库获取火车票:" + key);
+ ITicket ticket = new TrainTicket(from, to);
+ pool.put(key, ticket);
+ return ticket;
+ }
 }
-    // 测试
-    public static void main(String[] args) {
-        ITicket ticket = getTicket("北京", "上海");
-        //使用数据库获取火车票:北京->上海
-        //北京->上海:二等座价格:20
-        ticket.show("二等座");
-        ITicket ticket1 = getTicket("北京", "上海");
-        //使用缓存获取火车票:北京->上海
-        //北京->上海:商务座价格:69
-        ticket1.show("商务座");
-        ITicket ticket2 = getTicket("上海", "北京");
-        //使用数据库获取火车票:上海->北京
-        //上海->北京:一等座价格:406
-        ticket2.show("一等座");
-        System.out.println(ticket == ticket1);//true
-        System.out.println(ticket == ticket2);//false
-    }
-	
+ // 测试
+ public static void main(String[] args) {
+ ITicket ticket = getTicket("北京", "上海");
+ //使用数据库获取火车票:北京->上海
+ //北京->上海:二等座价格:20
+ ticket.show("二等座");
+ ITicket ticket1 = getTicket("北京", "上海");
+ //使用缓存获取火车票:北京->上海
+ //北京->上海:商务座价格:69
+ ticket1.show("商务座");
+ ITicket ticket2 = getTicket("上海", "北京");
+ //使用数据库获取火车票:上海->北京
+ //上海->北京:一等座价格:406
+ ticket2.show("一等座");
+ System.out.println(ticket == ticket1);//true
+ System.out.println(ticket == ticket2);//false
+ }
+
 注意：
 可以看到ticket和ticket2是使用数据库查询的，而ticket1是使用缓存查询的，
 同时ticket == ticket1返回的是true，ticket == ticket2返回的是false，证明ticket和ticket1是共享的对象。
@@ -12134,8 +12915,7 @@ Java 中，String 类型就是使用享元模式，String 对象是 final 类型
 而且提到共享池，我们也很容易联想到 Java 里面的JDBC连接池，通过连接池的管理，实现了数据库连接的共享，
 不需要每一次都重新创建连接，节省了数据库重新创建的开销，提升了系统的性能！
 
-
- 13、行为型-策略模式：
+13、行为型-策略模式：
 策略模式又叫政策模式（Policy Pattern），它是将定义的算法家族分别封装起来，让它们之间可以互相替换，从而让算法的变化不会影响到使用算法的用户。可以避免多重分支的if......else和switch语句。
 
 策略模式的主要角色如下：
@@ -12151,55 +12931,55 @@ Java 中，String 类型就是使用享元模式，String 对象是 final 类型
 
 // 会员卡接口
 public interface VipCard {
-    public void discount();
+ public void discount();
 }
 public class GoldCard implements VipCard {
-    @Override
-    public void discount() {
-        System.out.println("金卡打7折");
-    }
+ @Override
+ public void discount() {
+ System.out.println("金卡打7折");
+ }
 }
 public class SilverCard implements VipCard {
-    @Override
-    public void discount() {
-        System.out.println("银卡打8折");
-    }
+ @Override
+ public void discount() {
+ System.out.println("银卡打8折");
+ }
 }
 public class CopperCard implements VipCard {
-    @Override
-    public void discount() {
-        System.out.println("铜卡打9折");
-    }
+ @Override
+ public void discount() {
+ System.out.println("铜卡打9折");
+ }
 }
 public class Normal implements VipCard {
-    @Override
-    public void discount() {
-        System.out.println("普通会员没有折扣");
-    }
+ @Override
+ public void discount() {
+ System.out.println("普通会员没有折扣");
+ }
 }
 // 会员卡容器类
 public class VipCardFactory {
-    private static Map<String, VipCard> map = new ConcurrentHashMap<>();
-    static {
-        map.put("gold", new GoldCard());
-        map.put("silver", new SilverCard());
-        map.put("copper", new CopperCard());
-    }
-    public static VipCard getVIPCard(String level) {
-        return map.get(level) != null ? map.get(level) : new Normal();
-    }
- 
+ private static Map<String, VipCard> map = new ConcurrentHashMap<>();
+ static {
+ map.put("gold", new GoldCard());
+ map.put("silver", new SilverCard());
+ map.put("copper", new CopperCard());
+ }
+ public static VipCard getVIPCard(String level) {
+ return map.get(level) != null ? map.get(level) : new Normal();
+ }
+
 }
-    // 测试方法
-    public static void main(String[] args) {
-        //金卡打7折
-        VipCardFactory.getVIPCard("gold").discount();
-        //银卡打8折
-        VipCardFactory.getVIPCard("silver").discount();
-        //普通会员没有折扣
-        VipCardFactory.getVIPCard("other").discount();
-    }
-	
+ // 测试方法
+ public static void main(String[] args) {
+ //金卡打7折
+ VipCardFactory.getVIPCard("gold").discount();
+ //银卡打8折
+ VipCardFactory.getVIPCard("silver").discount();
+ //普通会员没有折扣
+ VipCardFactory.getVIPCard("other").discount();
+ }
+
 总结：
 适用场景：
 系统中有很多类，而它们的区别仅仅在于它们的行为不同。
@@ -12215,7 +12995,7 @@ public class VipCardFactory {
 缺点：
 客户端必须知道所有的策略，并且自行决定使用哪一个策略类。
 代码中会产生非常多的策略类，增加维护难度。
-	
+
 14、行为型-模板方法：
 模板方法模式通常又叫模板模式，是指定义一个算法的骨架，并允许之类为其中的一个或者多个步骤提供实现。模板方法模式使得子类可以在不改变算法结构的情况下，重新定义算法的某些步骤。
 
@@ -12230,69 +13010,68 @@ public class VipCardFactory {
 具体子类（Concrete Class）：实现抽象类中所定义的抽象方法和钩子方法，它们是一个顶级逻辑的组成步骤。
 
 public abstract class DayOffProcess {
-    // 请假模板
-    public final void dayOffProcess() {
-        // 领取申请表
-        this.pickUpForm();
-        // 填写申请信息
-        this.writeInfo();
-        // 签名
-        this.signUp();
-        // 提交到不同部门审批
-        this.summit();
-        // 行政部备案
-        this.filing();
-    }
-    private void filing() {
-        System.out.println("行政部备案");
-    }
-    protected abstract void summit();
-    protected abstract void signUp();
-    private void writeInfo() {
-        System.out.println("填写申请信息");
-    }
-    private void pickUpForm() {
-        System.out.println("领取申请表");
-    }
+ // 请假模板
+ public final void dayOffProcess() {
+ // 领取申请表
+ this.pickUpForm();
+ // 填写申请信息
+ this.writeInfo();
+ // 签名
+ this.signUp();
+ // 提交到不同部门审批
+ this.summit();
+ // 行政部备案
+ this.filing();
+ }
+ private void filing() {
+ System.out.println("行政部备案");
+ }
+ protected abstract void summit();
+ protected abstract void signUp();
+ private void writeInfo() {
+ System.out.println("填写申请信息");
+ }
+ private void pickUpForm() {
+ System.out.println("领取申请表");
+ }
 }
 public class ZhangSan extends DayOffProcess {
-    @Override
-    protected void summit() {
-        System.out.println("张三签名");
-    }
-    @Override
-    protected void signUp() {
-        System.out.println("提交到技术部审批");
-    }
+ @Override
+ protected void summit() {
+ System.out.println("张三签名");
+ }
+ @Override
+ protected void signUp() {
+ System.out.println("提交到技术部审批");
+ }
 }
 public class Lisi extends DayOffProcess {
-    @Override
-    protected void summit() {
-        System.out.println("李四签名");
-    }
-    @Override
-    protected void signUp() {
-        System.out.println("提交到市场部审批");
-    }
+ @Override
+ protected void summit() {
+ System.out.println("李四签名");
+ }
+ @Override
+ protected void signUp() {
+ System.out.println("提交到市场部审批");
+ }
 }
-    // 测试方法
-    public static void main(String[] args) {
-        DayOffProcess zhangsan = new ZhangSan();
-        //领取申请表
-        //填写申请信息
-        //提交到技术部审批
-        //张三签名
-        //行政部备案
-        zhangsan.dayOffProcess();
-        DayOffProcess lisi = new Lisi();
-        //领取申请表
-        //填写申请信息
-        //提交到市场部审批
-        //李四签名
-        //行政部备案
-        lisi.dayOffProcess();
-    }
-
+ // 测试方法
+ public static void main(String[] args) {
+ DayOffProcess zhangsan = new ZhangSan();
+ //领取申请表
+ //填写申请信息
+ //提交到技术部审批
+ //张三签名
+ //行政部备案
+ zhangsan.dayOffProcess();
+ DayOffProcess lisi = new Lisi();
+ //领取申请表
+ //填写申请信息
+ //提交到市场部审批
+ //李四签名
+ //行政部备案
+ lisi.dayOffProcess();
+ }
 
 适用场景：
 一次性实现一个算法不变的部分，并将可变的行为留给子类来实现。
@@ -12307,7 +13086,6 @@ public class Lisi extends DayOffProcess {
 类数目的增加，每一个抽象类都需要一个子类来实现，这样导致类的个数增加。
 类数量的增加，间接地增加了系统实现的复杂度。
 继承关系自身缺点，如果父类添加新的抽象方法，所有子类都要改一遍。
-
 
 15、行为型-责任链模式：
 职责链可以将请求的处理者组织成一条链，并将请求沿着链传递，如果某个处理者能够处理请求则处理，否则将该请求交由上级处理。客户端只需将请求发送到职责链上，无须关注请求的处理细节，通过职责链将请求的发送者和处理者解耦了，这也是职责链的设计动机。
@@ -12324,91 +13102,88 @@ public class Lisi extends DayOffProcess {
 （1）不能保证请求一定被成功处理
 （2）系统性能将受到一定影响，并且可能会造成循环调用。
 （3）可能不容易观察运行时的特征，而且在进行代码调试时不太方便，有碍于除错。
- 
 
 // 用户实体类
 @Data
 public class User {
-    private String username;
-    private String password;
-    private String role;
+ private String username;
+ private String password;
+ private String role;
 }
 // handler抽象类
 public abstract class Handler {
-    protected Handler next;
-    // 返回handler方便链式操作
-    public void next(Handler next) {
-        this.next = next;
-    }
-    // 流程开始的方法
-    public abstract void doHandler(User user);
+ protected Handler next;
+ // 返回handler方便链式操作
+ public void next(Handler next) {
+ this.next = next;
+ }
+ // 流程开始的方法
+ public abstract void doHandler(User user);
 }
 // 校验用户名或者密码是否为空
 public class ValidateHandler extends Handler {
-    @Override
-    public void doHandler(User user) {
-        if (StringUtils.isBlank(user.getUsername()) || StringUtils.isBlank(user.getPassword())) {
-            System.out.println("用户名或者密码为空!");
-            return;
-        }
-        System.out.println("校验通过");
-        next.doHandler(user);
-    }
+ @Override
+ public void doHandler(User user) {
+ if (StringUtils.isBlank(user.getUsername()) || StringUtils.isBlank(user.getPassword())) {
+ System.out.println("用户名或者密码为空!");
+ return;
+ }
+ System.out.println("校验通过");
+ next.doHandler(user);
+ }
 }
 // 登录校验，校验用户名是否匹配密码
 public class LoginHandler extends Handler {
-    @Override
-    public void doHandler(User user) {
-        if (!"pyy52hz".equals(user.getUsername()) || !"123456".equals(user.getPassword())) {
-            System.out.println("用户名或者密码不正确!请检查!");
-            return;
-        }
-        user.setRole("admin");
-        System.out.println("登陆成功!角色为管理员!");
-        next.doHandler(user);
-    }
+ @Override
+ public void doHandler(User user) {
+ if (!"pyy52hz".equals(user.getUsername()) || !"123456".equals(user.getPassword())) {
+ System.out.println("用户名或者密码不正确!请检查!");
+ return;
+ }
+ user.setRole("admin");
+ System.out.println("登陆成功!角色为管理员!");
+ next.doHandler(user);
+ }
 }
 // 权限校验
 public class AuthHandler extends Handler {
-    @Override
-    public void doHandler(User user) {
-        if (!"admin".equals(user.getRole())) {
-            System.out.println("无权限操作!");
-            return;
-        }
-        System.out.println("角色为管理员,可以进行下一步操作!");
-    }
+ @Override
+ public void doHandler(User user) {
+ if (!"admin".equals(user.getRole())) {
+ System.out.println("无权限操作!");
+ return;
+ }
+ System.out.println("角色为管理员,可以进行下一步操作!");
+ }
 }
 // 登录流程
 public class LoginService {
-    public void login(User user) {
-        Handler validateHandler = new ValidateHandler();
-        Handler loginHandler = new LoginHandler();
-        Handler authHandler = new AuthHandler();
-        validateHandler.next(loginHandler);
-        loginHandler.next(authHandler);
-        validateHandler.doHandler(user);
-    }
+ public void login(User user) {
+ Handler validateHandler = new ValidateHandler();
+ Handler loginHandler = new LoginHandler();
+ Handler authHandler = new AuthHandler();
+ validateHandler.next(loginHandler);
+ loginHandler.next(authHandler);
+ validateHandler.doHandler(user);
+ }
 }
-    // 测试方法
-    public static void main(String[] args){
-      User user = new User();
-      //校验通过
-      //用户名或者密码不正确!请检查!
-      user.setUsername("pyy52hz");
-      user.setPassword("1234567");
-      LoginService loginService = new LoginService();
-      loginService.login(user);
-      //校验通过
-      //登陆成功!角色为管理员!
-      //角色为管理员,可以进行下一步操作!
-      user.setUsername("pyy52hz");
-      user.setPassword("123456");
-      loginService.login(user);
-    }
+ // 测试方法
+ public static void main(String[] args){
+ User user = new User();
+ //校验通过
+ //用户名或者密码不正确!请检查!
+ user.setUsername("pyy52hz");
+ user.setPassword("1234567");
+ LoginService loginService = new LoginService();
+ loginService.login(user);
+ //校验通过
+ //登陆成功!角色为管理员!
+ //角色为管理员,可以进行下一步操作!
+ user.setUsername("pyy52hz");
+ user.setPassword("123456");
+ loginService.login(user);
+ }
 
-
-       
 16、行为型-观察者模式：
 观察者模式又称为 发布-订阅模式，定义了对象之间一对多依赖关系，当目标对象(被观察者)的状态发生改变时，它的所有依赖者(观察者)都会收到通知。
 一个观察目标可以对应多个观察者，而这些观察者之间没有相互联系，所以能够根据需要增加和删除观察者，使得系统更易于扩展，符合开闭原则；
@@ -12419,61 +13194,61 @@ public class LoginService {
 
 // 抽象观察者接口
 public interface Observer {
-    void update(String message);
+ void update(String message);
 }
 // 微信用户类 具体的观察者
 @AllArgsConstructor
 public class WeixinUser implements Observer {
-    private String name;
-    @Override
-    public void update(String message) {
-        System.out.println(name + "接收到了消息(观察到了):" + message);
-    }
+ private String name;
+ @Override
+ public void update(String message) {
+ System.out.println(name + "接收到了消息(观察到了):" + message);
+ }
 }
 // 被观察者接口
 public interface Observable {
-    // 新增用户(新增观察者)
-    void add(Observer observer);
-    // 移除用户,或者说用户取消订阅(移除观察者)
-    void del(Observer observer);
-    // 发布 推送消息
-    void notify(String message);
+ // 新增用户(新增观察者)
+ void add(Observer observer);
+ // 移除用户,或者说用户取消订阅(移除观察者)
+ void del(Observer observer);
+ // 发布 推送消息
+ void notify(String message);
 }
 // 具体的被观察者(公众号)
 public class Subject implements Observable {
-    // 观察者列表(订阅用户)
-    private List<Observer> list = new ArrayList<>();
-    @Override
-    public void add(Observer observer) {
-        list.add(observer);
-    }
-    @Override
-    public void del(Observer observer) {
-        list.remove(observer);
-    }
-    // 给每一个观察者(订阅者)推送消息
-    @Override
-    public void notify(String message) {
-        list.forEach(observer -> observer.update(message));
-    }
- 
+ // 观察者列表(订阅用户)
+ private List<Observer> list = new ArrayList<>();
+ @Override
+ public void add(Observer observer) {
+ list.add(observer);
+ }
+ @Override
+ public void del(Observer observer) {
+ list.remove(observer);
+ }
+ // 给每一个观察者(订阅者)推送消息
+ @Override
+ public void notify(String message) {
+ list.forEach(observer -> observer.update(message));
+ }
+
 }
-    // 测试
-    public static void main(String[] args){
-      Observable o = new Subject();
-      WeixinUser user1 = new WeixinUser("张三");
-      WeixinUser user2 = new WeixinUser("李四");
-      WeixinUser user3 = new WeixinUser("王五");
-      o.add(user1);
-      o.add(user2);
-      o.add(user3);
-      o.notify("薛之谦演唱会要来到广州啦!");
-      // 运行结果
-      // 张三接收到了消息(观察到了):薛之谦演唱会要来到广州啦!
-      // 李四接收到了消息(观察到了):薛之谦演唱会要来到广州啦!
-      // 王五接收到了消息(观察到了):薛之谦演唱会要来到广州啦!
-    }
- 
+ // 测试
+ public static void main(String[] args){
+ Observable o = new Subject();
+ WeixinUser user1 = new WeixinUser("张三");
+ WeixinUser user2 = new WeixinUser("李四");
+ WeixinUser user3 = new WeixinUser("王五");
+ o.add(user1);
+ o.add(user2);
+ o.add(user3);
+ o.notify("薛之谦演唱会要来到广州啦!");
+ // 运行结果
+ // 张三接收到了消息(观察到了):薛之谦演唱会要来到广州啦!
+ // 李四接收到了消息(观察到了):薛之谦演唱会要来到广州啦!
+ // 王五接收到了消息(观察到了):薛之谦演唱会要来到广州啦!
+ }
+
 JDK实现
 在 Java 中，通过java.util.Observable类和 java.util.Observer接口定义了观察者模式，只要实现它们的子类就可以编写观察者模式实例。
 
@@ -12491,43 +13266,43 @@ Observer 接口是抽象观察者，它监视目标对象的变化，当目标�
 @Data
 @AllArgsConstructor
 public class Subject extends Observable {
-    // 公众号的名字
-    private String name;
-    // 公众号发布消息
-    public void notifyMessage(String message) {
-        System.out.println(this.name + "公众号发布消息:" + message + "请关注用户留意接收!");
-        super.setChanged();
-        super.notifyObservers(message);
-    }
+ // 公众号的名字
+ private String name;
+ // 公众号发布消息
+ public void notifyMessage(String message) {
+ System.out.println(this.name + "公众号发布消息:" + message + "请关注用户留意接收!");
+ super.setChanged();
+ super.notifyObservers(message);
+ }
 }
 @AllArgsConstructor
 public class WeixinUser implements Observer {
-    private String name;
-    /**
-     * @param o 被观察者
-     * @param arg 被观察者带过来的参数，此例子中是公众号发布的消息
-     */
-    @Override
-    public void update(Observable o, Object arg) {
-        System.out.println(name + "关注了公众号(被观察者):" + ((Subject)o).getName() + ",接收到消息:" + arg);
-    }
+ private String name;
+ /**
+ * @param o 被观察者
+ * @param arg 被观察者带过来的参数，此例子中是公众号发布的消息
+ */
+ @Override
+ public void update(Observable o, Object arg) {
+ System.out.println(name + "关注了公众号(被观察者):" + ((Subject)o).getName() + ",接收到消息:" + arg);
+ }
 }
-    // 测试
-    public static void main(String[] args){
-        WeixinUser user1 = new WeixinUser("张三");
-        WeixinUser user2 = new WeixinUser("李四");
-        WeixinUser user3 = new WeixinUser("王五");
-        Subject subject = new Subject("演唱会消息发布");
-        subject.addObserver(user1);
-        subject.addObserver(user2);
-        subject.addObserver(user3);
-        subject.notifyMessage("薛之谦演唱会要来到广州啦!");
-        // 返回结果
-        // 演唱会消息发布公众号发布消息:薛之谦演唱会要来到广州啦!请关注用户留意接收!
-        // 王五关注了公众号(被观察者):演唱会消息发布,接收到消息:薛之谦演唱会要来到广州啦!
-        // 李四关注了公众号(被观察者):演唱会消息发布,接收到消息:薛之谦演唱会要来到广州啦!
-        // 张三关注了公众号(被观察者):演唱会消息发布,接收到消息:薛之谦演唱会要来到广州啦!
-    }
+ // 测试
+ public static void main(String[] args){
+ WeixinUser user1 = new WeixinUser("张三");
+ WeixinUser user2 = new WeixinUser("李四");
+ WeixinUser user3 = new WeixinUser("王五");
+ Subject subject = new Subject("演唱会消息发布");
+ subject.addObserver(user1);
+ subject.addObserver(user2);
+ subject.addObserver(user3);
+ subject.notifyMessage("薛之谦演唱会要来到广州啦!");
+ // 返回结果
+ // 演唱会消息发布公众号发布消息:薛之谦演唱会要来到广州啦!请关注用户留意接收!
+ // 王五关注了公众号(被观察者):演唱会消息发布,接收到消息:薛之谦演唱会要来到广州啦!
+ // 李四关注了公众号(被观察者):演唱会消息发布,接收到消息:薛之谦演唱会要来到广州啦!
+ // 张三关注了公众号(被观察者):演唱会消息发布,接收到消息:薛之谦演唱会要来到广州啦!
+ }
 
 适用场景：
 当一个抽象模型包含两个方面内容，其中一个方面依赖于另一个方面。
@@ -12557,111 +13332,108 @@ public class WeixinUser implements Observer {
 具体元素（ConcreteElement）角色： 提供接受访问方法的具体实现，而这个具体的实现，通常情况下是使用访问者提供的访问该元素类的方法。
 对象结构（Object Structure）角色：定义当中所提到的对象结构，对象结构是一个抽象表述，具体点可以理解为一个具有容器性质或者复合对象特性的类，它会含有一组元素（ Element ），并且可以迭代这些元素，供访问者访问。
 
-
 // 访问者接口
 public interface IVisitor {
-    void visit(Engineer engineer);
-    void visit(Pm pm);
+ void visit(Engineer engineer);
+ void visit(Pm pm);
 }
 // 具体的访问者类,访问者角色(CEO)
 public class CeoVisitor implements IVisitor {
-    @Override
-    public void visit(Engineer engineer) {
-        System.out.println(engineer.getName() + "KPI为:" + engineer.getKpi());
-    }
-    @Override
-    public void visit(Pm pm) {
-        System.out.println(pm.getName() + "KPI为:" + pm.getKpi());
-    }
+ @Override
+ public void visit(Engineer engineer) {
+ System.out.println(engineer.getName() + "KPI为:" + engineer.getKpi());
+ }
+ @Override
+ public void visit(Pm pm) {
+ System.out.println(pm.getName() + "KPI为:" + pm.getKpi());
+ }
 }
 // 具体的访问者类,访问者角色(CTO)
 public class CtoVisitor implements IVisitor {
-    @Override
-    public void visit(Engineer engineer) {
-        System.out.println(engineer.getName() + "工作内容:" + engineer.getCodeLine() + "行代码");
-    }
-    @Override
-    public void visit(Pm pm) {
-        System.out.println(pm.getName() + "工作内容:" + pm.getProject() + "个项目");
-    }
+ @Override
+ public void visit(Engineer engineer) {
+ System.out.println(engineer.getName() + "工作内容:" + engineer.getCodeLine() + "行代码");
+ }
+ @Override
+ public void visit(Pm pm) {
+ System.out.println(pm.getName() + "工作内容:" + pm.getProject() + "个项目");
+ }
 }
 @Data
 // 抽象元素(员工)
 public abstract class Employee {
-    private String name;
-    private Integer kpi;
-    public Employee(String name) {
-        this.name = name;
-        this.kpi = new Random().nextInt(10);
-    }
-    public abstract void accept(IVisitor visitor);
+ private String name;
+ private Integer kpi;
+ public Employee(String name) {
+ this.name = name;
+ this.kpi = new Random().nextInt(10);
+ }
+ public abstract void accept(IVisitor visitor);
 }
 // 具体元素(程序员)
 public class Engineer extends Employee {
-    public Engineer(String name) {
-        super(name);
-    }
-    @Override
-    public void accept(IVisitor visitor) {
-        visitor.visit(this);
-    }
-    public Integer getCodeLine() {
-        return new Random().nextInt(10000);
-    }
+ public Engineer(String name) {
+ super(name);
+ }
+ @Override
+ public void accept(IVisitor visitor) {
+ visitor.visit(this);
+ }
+ public Integer getCodeLine() {
+ return new Random().nextInt(10000);
+ }
 }
 // 具体元素(项目经理)
 public class Pm extends Employee {
-    public Pm(String name) {
-        super(name);
-    }
-    @Override
-    public void accept(IVisitor visitor) {
-        visitor.visit(this);
-    }
-    public Integer getProject() {
-        return new Random().nextInt(10);
-    }
+ public Pm(String name) {
+ super(name);
+ }
+ @Override
+ public void accept(IVisitor visitor) {
+ visitor.visit(this);
+ }
+ public Integer getProject() {
+ return new Random().nextInt(10);
+ }
 }
 @AllArgsConstructor
 public class Report {
-    private List<Employee> employeeList;
-    public void showReport(IVisitor visitor) {
-        for (Employee employee : employeeList) {
-            employee.accept(visitor);
-        }
-    }
+ private List<Employee> employeeList;
+ public void showReport(IVisitor visitor) {
+ for (Employee employee : employeeList) {
+ employee.accept(visitor);
+ }
+ }
 }
-    // 测试
-    public static void main(String[] args){
-      List<Employee> employeeList = new ArrayList<>();
-      employeeList.add(new Engineer("工程师A"));
-      employeeList.add(new Engineer("工程师B"));
-      employeeList.add(new Engineer("项目经理A"));
-      employeeList.add(new Engineer("工程师C"));
-      employeeList.add(new Engineer("工程师D"));
-      employeeList.add(new Engineer("项目经理B"));
-      Report report = new Report(employeeList);
-      System.out.println("=============CEO==============");
-      report.showReport(new CeoVisitor());
-      System.out.println("=============CTO==============");
-      report.showReport(new CtoVisitor());
-      // =============CEO==============
-      // 工程师AKPI为:2
-      // 工程师BKPI为:4
-      // 项目经理AKPI为:4
-      // 工程师CKPI为:2
-      // 工程师DKPI为:0
-      // 项目经理BKPI为:0
-      // =============CTO==============
-      // 工程师A工作内容:5811行代码
-      // 工程师B工作内容:9930行代码
-      // 项目经理A工作内容:2163行代码
-      // 工程师C工作内容:4591行代码
-      // 工程师D工作内容:333行代码
-      // 项目经理B工作内容:3940行代码
-    }
-
-
+ // 测试
+ public static void main(String[] args){
+ List<Employee> employeeList = new ArrayList<>();
+ employeeList.add(new Engineer("工程师A"));
+ employeeList.add(new Engineer("工程师B"));
+ employeeList.add(new Engineer("项目经理A"));
+ employeeList.add(new Engineer("工程师C"));
+ employeeList.add(new Engineer("工程师D"));
+ employeeList.add(new Engineer("项目经理B"));
+ Report report = new Report(employeeList);
+ System.out.println("=============CEO==============");
+ report.showReport(new CeoVisitor());
+ System.out.println("=============CTO==============");
+ report.showReport(new CtoVisitor());
+ // =============CEO==============
+ // 工程师AKPI为:2
+ // 工程师BKPI为:4
+ // 项目经理AKPI为:4
+ // 工程师CKPI为:2
+ // 工程师DKPI为:0
+ // 项目经理BKPI为:0
+ // =============CTO==============
+ // 工程师A工作内容:5811行代码
+ // 工程师B工作内容:9930行代码
+ // 项目经理A工作内容:2163行代码
+ // 工程师C工作内容:4591行代码
+ // 工程师D工作内容:333行代码
+ // 项目经理B工作内容:3940行代码
+ }
 
 在访问者模式使用了双分派技术，所谓双分派技术就是在选择方法的时候，不仅仅要根据消息接收者的运行时区别，还要根据参数的运行时区别。
 在访问者模式中，客户端将具体状态当做参数传递给具体访问者，这里完成第一次分派，然后具体访问者作为参数的“具体状态”中的方法，同时也将自己this作为参数传递进去，
@@ -12684,7 +13456,6 @@ public class Report {
 具体元素变更困难：具体元素增加属性，删除属性等操作会导致对应的访问者类需要进行相应的修改，尤其当有大量访问者类时，修改访问太大。
 违背依赖倒置原则：为了达到“区别对待”，访问者依赖的是具体元素类型，而不是抽象。
 
-
 18、行为型-中介者模式：
 中介者模式又称为调解者模式或调停者模式。用一个中介对象封装一系列的对象交互，中介者使各对象不需要显示地相互作用，从而使其耦合松散，而且可以独立地改变它们之间的交互。
 
@@ -12700,67 +13471,66 @@ public class Report {
 // 抽象同事类
 @AllArgsConstructor
 public class Person {
-    protected String name;
-    protected MediatorCompany mediatorCompany;
+ protected String name;
+ protected MediatorCompany mediatorCompany;
 }
 // 房主
 public class HouseOwner extends Person {
-    public HouseOwner(String name, MediatorCompany mediatorCompany) {
-        super(name, mediatorCompany);
-    }
-    // 联络方法
-    public void connection(String message) {
-        mediatorCompany.connection(this, message);
-    }
-    // 获取消息
-    public void getMessage(String message) {
-        System.out.println("房主" + name + "获取到的信息:" + message);
-    }
+ public HouseOwner(String name, MediatorCompany mediatorCompany) {
+ super(name, mediatorCompany);
+ }
+ // 联络方法
+ public void connection(String message) {
+ mediatorCompany.connection(this, message);
+ }
+ // 获取消息
+ public void getMessage(String message) {
+ System.out.println("房主" + name + "获取到的信息:" + message);
+ }
 }
 // 租客
 public class Tenant extends Person {
-    public Tenant(String name, MediatorCompany mediatorCompany) {
-        super(name, mediatorCompany);
-    }
-    public void connection(String message) {
-        mediatorCompany.connection(this, message);
-    }
-    public void getMessage(String message) {
-        System.out.println("租客" + name + "获取到的信息:" + message);
-    }
+ public Tenant(String name, MediatorCompany mediatorCompany) {
+ super(name, mediatorCompany);
+ }
+ public void connection(String message) {
+ mediatorCompany.connection(this, message);
+ }
+ public void getMessage(String message) {
+ System.out.println("租客" + name + "获取到的信息:" + message);
+ }
 }
 // 中介公司(中介者)
 @Data
 public class MediatorCompany {
-    private HouseOwner houseOwner;
-    private Tenant tenant;
-    public void connection(Person person, String message) {
-        // 房主需要通过中介获取租客信息
-        if (person.equals(houseOwner)) {
-            this.tenant.getMessage(message);
-        } else { // 反之租客通过中介获取房主信息
-            this.houseOwner.getMessage(message);
-        }
-    }
+ private HouseOwner houseOwner;
+ private Tenant tenant;
+ public void connection(Person person, String message) {
+ // 房主需要通过中介获取租客信息
+ if (person.equals(houseOwner)) {
+ this.tenant.getMessage(message);
+ } else { // 反之租客通过中介获取房主信息
+ this.houseOwner.getMessage(message);
+ }
+ }
 }
-    // 测试
-    public static void main(String[] args){
-        // 先创建三个角色，中介公司，房主，租客
-        MediatorCompany mediatorCompany = new MediatorCompany();
-        // 房主和租客都在同一家中介公司
-        HouseOwner houseOwner = new HouseOwner("张三", mediatorCompany);
-        Tenant tenant = new Tenant("李四", mediatorCompany);
-        // 中介公司获取房主和租客的信息
-        mediatorCompany.setHouseOwner(houseOwner);
-        mediatorCompany.setTenant(tenant);
-        // 房主和租客都在这家中介公司发布消息，获取到对应的消息
-        tenant.connection(tenant.name + "想租一房一厅!");
-        houseOwner.connection(houseOwner.name + "这里有!来看看呗!");
-        // 测试结果
-        // 房主张三获取到的信息:李四想租一房一厅!
-        // 租客李四获取到的信息:张三这里有!来看看呗!
-    }
-
+ // 测试
+ public static void main(String[] args){
+ // 先创建三个角色，中介公司，房主，租客
+ MediatorCompany mediatorCompany = new MediatorCompany();
+ // 房主和租客都在同一家中介公司
+ HouseOwner houseOwner = new HouseOwner("张三", mediatorCompany);
+ Tenant tenant = new Tenant("李四", mediatorCompany);
+ // 中介公司获取房主和租客的信息
+ mediatorCompany.setHouseOwner(houseOwner);
+ mediatorCompany.setTenant(tenant);
+ // 房主和租客都在这家中介公司发布消息，获取到对应的消息
+ tenant.connection(tenant.name + "想租一房一厅!");
+ houseOwner.connection(houseOwner.name + "这里有!来看看呗!");
+ // 测试结果
+ // 房主张三获取到的信息:李四想租一房一厅!
+ // 租客李四获取到的信息:张三这里有!来看看呗!
+ }
 
 但是，中介者对象封装了对象之间的关联关系，导致中介者对象变得比较庞大复杂，所承担的责任也比较多，维护起来也比较困难，
 它需要知道每个对象和他们之间的交互细节，如果它出问题，将会导致整个系统都会出问题。
@@ -12775,7 +13545,6 @@ public class MediatorCompany {
 
 缺点：
 中介者模式中将原本多个对象直接的相互依赖变成了中介者和多个同事类的依赖关系。当同事类越多时，中介者就会越臃肿，变得复杂且难以维护。
-
 
 19、行为型-命令模式：
 命令模式的本质是将请求封装成对象，将发出命令与执行命令的责任分开，命令的发送者和接收者完全解耦，发送者只需知道如何发送命令，不需要关心命令是如何实现的，甚至是否执行成功都不需要理会。
@@ -12807,94 +13576,107 @@ public class MediatorCompany {
 
 // 命令接口  
 public interface Command {  
-    void execute();  
+ void execute();  
 }
-
 
 然后，我们定义电视类（TV），它是接收者（Receiver），具有打开和关闭的方法。
 // 接收者 - 电视  
 public class TV {  
-    public void on() {  
-        System.out.println("电视已打开");  
-    }  
-  
-    public void off() {  
-        System.out.println("电视已关闭");  
-    }  
+ public void on() {  
+ System.out.println("电视已打开");  
+ }
+
+```
+public void off() {  
+    System.out.println("电视已关闭");  
+}  
+```
+
 }
 
 接下来，我们定义两个具体命令类（TVOnCommand 和 TVOffCommand），它们实现了命令接口，并持有电视对象的引用。
 // 具体命令 - 打开电视  
 public class TVOnCommand implements Command {  
-    private TV tv;  
-  
-    public TVOnCommand(TV tv) {  
-        this.tv = tv;  
-    }  
-  
-    @Override  
-    public void execute() {  
-        tv.on();  
-    }  
+ private TV tv;
+
+```
+public TVOnCommand(TV tv) {  
+    this.tv = tv;  
 }  
-  
+
+@Override  
+public void execute() {  
+    tv.on();  
+}  
+```
+
+}
+
 // 具体命令 - 关闭电视  
 public class TVOffCommand implements Command {  
-    private TV tv;  
-  
-    public TVOffCommand(TV tv) {  
-        this.tv = tv;  
-    }  
-  
-    @Override  
-    public void execute() {  
-        tv.off();  
-    }  
+ private TV tv;
+
+```
+public TVOffCommand(TV tv) {  
+    this.tv = tv;  
+}  
+
+@Override  
+public void execute() {  
+    tv.off();  
+}  
+```
+
 }
 
 最后，我们定义遥控器类（RemoteControl），它是调用者（Invoker），可以存储命令对象，并调用它们的执行方法。
 // 调用者 - 遥控器  
 public class RemoteControl {  
-    private Command command;  
-  
-    // 设置命令  
-    public void setCommand(Command command) {  
-        this.command = command;  
+ private Command command;
+
+```
+// 设置命令  
+public void setCommand(Command command) {  
+    this.command = command;  
+}  
+
+// 执行命令  
+public void pressButton() {  
+    if (command != null) {  
+        command.execute();  
     }  
-  
-    // 执行命令  
-    public void pressButton() {  
-        if (command != null) {  
-            command.execute();  
-        }  
-    }  
+}  
+```
+
 }
 
 现在，我们可以编写一个客户端（Client）来测试这个命令模式。
 public class CommandPatternDemo {  
-    public static void main(String[] args) {  
-        // 创建接收者  
-        TV tv = new TV();  
-  
-        // 创建具体命令  
-        Command tvOnCommand = new TVOnCommand(tv);  
-        Command tvOffCommand = new TVOffCommand(tv);  
-  
-        // 创建调用者  
-        RemoteControl remote = new RemoteControl();  
-  
-        // 设置命令并执行  
-        remote.setCommand(tvOnCommand);  
-        remote.pressButton(); // 输出：电视已打开  
-  
-        remote.setCommand(tvOffCommand);  
-        remote.pressButton(); // 输出：电视已关闭  
-    }  
+ public static void main(String[] args) {  
+ // 创建接收者  
+ TV tv = new TV();
+
+```
+    // 创建具体命令  
+    Command tvOnCommand = new TVOnCommand(tv);  
+    Command tvOffCommand = new TVOffCommand(tv);  
+
+    // 创建调用者  
+    RemoteControl remote = new RemoteControl();  
+
+    // 设置命令并执行  
+    remote.setCommand(tvOnCommand);  
+    remote.pressButton(); // 输出：电视已打开  
+
+    remote.setCommand(tvOffCommand);  
+    remote.pressButton(); // 输出：电视已关闭  
+}  
+```
+
 }
 
 在这个示例中，遥控器（RemoteControl）是调用者，它持有一个命令对象（Command）的引用。通过调用setCommand方法，我们可以将不同的命令对象（如TVOnCommand或TVOffCommand）传递给遥控器。
 然后，通过调用pressButton方法，遥控器会执行当前设置的命令对象的execute方法，从而控制电视的开关。这样，遥控器与电视之间的耦合度就降低了，因为遥控器不需要知道电视的具体实现细节，只需要知道如何执行命令即可。
-
 
 20、行为型-状态模式：
 命令模式是对命令的封装，每一个命令都是一个操作：请求的一方发出请求要求执行一个操作；接收的一方收到请求，并执行操作。命令模式解耦了请求方和接收方，请求方只需请求执行命令，不用关心命令是怎样被接收，怎样被操作以及是否被执行等。本质：解耦命令的请求与处理。
@@ -12908,63 +13690,62 @@ public class CommandPatternDemo {
 
 // 播放器类
 public class Player {
-    public void play() {
-        System.out.println("正常播放");
-    }
-    public void pause() {
-        System.out.println("暂停播放");
-    }
-    public void stop() {
-        System.out.println("停止播放");
-    }
+ public void play() {
+ System.out.println("正常播放");
+ }
+ public void pause() {
+ System.out.println("暂停播放");
+ }
+ public void stop() {
+ System.out.println("停止播放");
+ }
 }
 // 命令接口
 public interface IAction {
-    void excuse();
+ void excuse();
 }
 // 播放命令类
 @AllArgsConstructor
 public class PlayAction implements IAction {
-    private Player player;
-    @Override
-    public void excuse() {
-        this.player.play();
-    }
+ private Player player;
+ @Override
+ public void excuse() {
+ this.player.play();
+ }
 }
 // 暂停命令类
 @AllArgsConstructor
 public class PauseAction implements IAction {
-    private Player player;
-    @Override
-    public void excuse() {
-        this.player.pause();
-    }
+ private Player player;
+ @Override
+ public void excuse() {
+ this.player.pause();
+ }
 }
 // 停止命令类
 @AllArgsConstructor
 public class StopAction implements IAction{
-    private Player player;
-    @Override
-    public void excuse() {
-        this.player.stop();
-    }
+ private Player player;
+ @Override
+ public void excuse() {
+ this.player.stop();
+ }
 }
 // 控制器
 public class Controller {
-    public void excuse(IAction action) {
-        action.excuse();
-    }
+ public void excuse(IAction action) {
+ action.excuse();
+ }
 }
-   // 测试方法
-   public static void main(String[] args) {
-        // 正常播放
-        new Controller().excuse(new PlayAction(new Player()));
-        // 暂停播放
-        new Controller().excuse(new PauseAction(new Player()));
-        // 停止播放
-        new Controller().excuse(new StopAction(new Player()));
-    }
-
+ // 测试方法
+ public static void main(String[] args) {
+ // 正常播放
+ new Controller().excuse(new PlayAction(new Player()));
+ // 暂停播放
+ new Controller().excuse(new PauseAction(new Player()));
+ // 停止播放
+ new Controller().excuse(new StopAction(new Player()));
+ }
 
 适用场景：
 现实语义中具备“命令”的操作（如命令菜单，shell命令...）。
@@ -12981,7 +13762,6 @@ public class Controller {
 缺点：
 具体命令类可能过多。
 增加 了程序的复杂度，理解更加困难。
-
 
 21、行为型-备忘录模式：
 备忘录模式又称为快照模式（Snapshot Pattern）或令牌模式（Token Pattern），是指在不破坏封装的前提下，
@@ -13001,84 +13781,83 @@ public class Controller {
 下面就以游戏打怪为简单的例子进行代码实现（下面“黑箱”同这个例子）：
 备忘录角色对任何对象都提供一个宽接口，备忘录角色的内部所存储的状态就对所有对象公开。
 
-
 // 游戏角色类
 @Data
 public class GameRole {
-    private Integer vit; // 生命力
-    private Integer atk; // 攻击力
-    private Integer def; // 防御力
-    // 初始化状态
-    public void init() {
-        this.vit = 100;
-        this.atk = 100;
-        this.def = 100;
-    }
-    // 战斗到0
-    public void fight() {
-        this.vit = 0;
-        this.atk = 0;
-        this.def = 0;
-    }
-    // 保存角色状态
-    public RoleStateMemento saveState() {
-        return new RoleStateMemento(this.vit, this.atk, this.def);
-    }
-    // 回复角色状态
-    public void recoverState(RoleStateMemento roleStateMemento) {
-        this.vit = roleStateMemento.getVit();
-        this.atk = roleStateMemento.getAtk();
-        this.def = roleStateMemento.getDef();
-    }
-    // 展示状态
-    public void showState() {
-        System.out.println("角色生命力:" + this.vit);
-        System.out.println("角色攻击力:" + this.atk);
-        System.out.println("角色防御力:" + this.def);
-    }
+ private Integer vit; // 生命力
+ private Integer atk; // 攻击力
+ private Integer def; // 防御力
+ // 初始化状态
+ public void init() {
+ this.vit = 100;
+ this.atk = 100;
+ this.def = 100;
+ }
+ // 战斗到0
+ public void fight() {
+ this.vit = 0;
+ this.atk = 0;
+ this.def = 0;
+ }
+ // 保存角色状态
+ public RoleStateMemento saveState() {
+ return new RoleStateMemento(this.vit, this.atk, this.def);
+ }
+ // 回复角色状态
+ public void recoverState(RoleStateMemento roleStateMemento) {
+ this.vit = roleStateMemento.getVit();
+ this.atk = roleStateMemento.getAtk();
+ this.def = roleStateMemento.getDef();
+ }
+ // 展示状态
+ public void showState() {
+ System.out.println("角色生命力:" + this.vit);
+ System.out.println("角色攻击力:" + this.atk);
+ System.out.println("角色防御力:" + this.def);
+ }
 }
 // 游戏状态存储类(备忘录类)
 @Data
 @AllArgsConstructor
 public class RoleStateMemento {
-    private Integer vit; // 生命力
-    private Integer atk; // 攻击力
-    private Integer def; // 防御力
+ private Integer vit; // 生命力
+ private Integer atk; // 攻击力
+ private Integer def; // 防御力
 }
 // 角色状态管理者类
 @Data
 public class RoleStateCaretaker {
-    private RoleStateMemento roleStateMemento;
+ private RoleStateMemento roleStateMemento;
 }
-    // 测试结果
-    public static void main(String[] args){
-      System.out.println("===========打boss前状态===========");
-      GameRole gameRole = new GameRole();
-      gameRole.init();
-      gameRole.showState();
-      // 保存进度
-      RoleStateCaretaker roleStateCaretaker = new RoleStateCaretaker();
-      roleStateCaretaker.setRoleStateMemento(gameRole.saveState());
-      System.out.println("===========打boss后状态===========");
-      gameRole.fight();
-      gameRole.showState();
-      System.out.println("===========恢复状态===========");
-      gameRole.recoverState(roleStateCaretaker.getRoleStateMemento());
-      gameRole.showState();
-      // ===========打boss前状态===========
-      // 角色生命力:100
-      // 角色攻击力:100
-      // 角色防御力:100
-      // ===========打boss后状态===========
-      // 角色生命力:0
-      // 角色攻击力:0
-      // 角色防御力:0
-      // ===========恢复状态===========
-      // 角色生命力:100
-      // 角色攻击力:100
-      // 角色防御力:100
-    }
- 
+ // 测试结果
+ public static void main(String[] args){
+ System.out.println("===========打boss前状态===========");
+ GameRole gameRole = new GameRole();
+ gameRole.init();
+ gameRole.showState();
+ // 保存进度
+ RoleStateCaretaker roleStateCaretaker = new RoleStateCaretaker();
+ roleStateCaretaker.setRoleStateMemento(gameRole.saveState());
+ System.out.println("===========打boss后状态===========");
+ gameRole.fight();
+ gameRole.showState();
+ System.out.println("===========恢复状态===========");
+ gameRole.recoverState(roleStateCaretaker.getRoleStateMemento());
+ gameRole.showState();
+ // ===========打boss前状态===========
+ // 角色生命力:100
+ // 角色攻击力:100
+ // 角色防御力:100
+ // ===========打boss后状态===========
+ // 角色生命力:0
+ // 角色攻击力:0
+ // 角色防御力:0
+ // ===========恢复状态===========
+ // 角色生命力:100
+ // 角色攻击力:100
+ // 角色防御力:100
+ }
+
 "白箱"备忘录模式是破坏封装性的，但是通过程序员自律，同样可以在一定程度上实现大部分的用意。
 
 “黑箱”备忘录模式:
@@ -13089,87 +13868,86 @@ public class RoleStateCaretaker {
 这样GameRole类看到的是RoleStateMemento所有的接口，
 而RoleStateCaretaker及其他对象看到的仅仅是标识接口Memento所暴露出来的接口，从而维护了封装型。
 
-
 // 窄接口,标识接口
 public interface Memento {
 }
 // 角色状态管理者类
 @Data
 public class RoleStateCaretaker {
-    private Memento memento;
+ private Memento memento;
 }
 // 游戏角色类
 @Data
 public class GameRole {
-    private Integer vit; // 生命力
-    private Integer atk; // 攻击力
-    private Integer def; // 防御力
-    // 初始化状态
-    public void init() {
-        this.vit = 100;
-        this.atk = 100;
-        this.def = 100;
-    }
-    // 战斗到0
-    public void fight() {
-        this.vit = 0;
-        this.atk = 0;
-        this.def = 0;
-    }
-    // 保存角色状态
-    public RoleStateMemento saveState() {
-        return new RoleStateMemento(this.vit, this.atk, this.def);
-    }
-    // 回复角色状态
-    public void recoverState(Memento memento) {
-        RoleStateMemento roleStateMemento = (RoleStateMemento) memento;
-        this.vit = roleStateMemento.getVit();
-        this.atk = roleStateMemento.getAtk();
-        this.def = roleStateMemento.getDef();
-    }
-    // 展示状态
-    public void showState() {
-        System.out.println("角色生命力:" + this.vit);
-        System.out.println("角色攻击力:" + this.atk);
-        System.out.println("角色防御力:" + this.def);
-    }
-    // 备忘录内部类
-    @Data
-    @AllArgsConstructor
-    private class RoleStateMemento implements Memento {
-        private Integer vit; // 生命力
-        private Integer atk; // 攻击力
-        private Integer def; // 防御力
-    }
+ private Integer vit; // 生命力
+ private Integer atk; // 攻击力
+ private Integer def; // 防御力
+ // 初始化状态
+ public void init() {
+ this.vit = 100;
+ this.atk = 100;
+ this.def = 100;
+ }
+ // 战斗到0
+ public void fight() {
+ this.vit = 0;
+ this.atk = 0;
+ this.def = 0;
+ }
+ // 保存角色状态
+ public RoleStateMemento saveState() {
+ return new RoleStateMemento(this.vit, this.atk, this.def);
+ }
+ // 回复角色状态
+ public void recoverState(Memento memento) {
+ RoleStateMemento roleStateMemento = (RoleStateMemento) memento;
+ this.vit = roleStateMemento.getVit();
+ this.atk = roleStateMemento.getAtk();
+ this.def = roleStateMemento.getDef();
+ }
+ // 展示状态
+ public void showState() {
+ System.out.println("角色生命力:" + this.vit);
+ System.out.println("角色攻击力:" + this.atk);
+ System.out.println("角色防御力:" + this.def);
+ }
+ // 备忘录内部类
+ @Data
+ @AllArgsConstructor
+ private class RoleStateMemento implements Memento {
+ private Integer vit; // 生命力
+ private Integer atk; // 攻击力
+ private Integer def; // 防御力
+ }
 }
-    // 测试结果
-    public static void main(String[] args){
-      System.out.println("===========打boss前状态===========");
-      GameRole gameRole = new GameRole();
-      gameRole.init();
-      gameRole.showState();
-      // 保存进度
-      RoleStateCaretaker roleStateCaretaker = new RoleStateCaretaker();
-      roleStateCaretaker.setMemento(gameRole.saveState());
-      System.out.println("===========打boss后状态===========");
-      gameRole.fight();
-      gameRole.showState();
-      System.out.println("===========恢复状态===========");
-      gameRole.recoverState(roleStateCaretaker.getMemento());
-      gameRole.showState();
-      // ===========打boss前状态===========
-      // 角色生命力:100
-      // 角色攻击力:100
-      // 角色防御力:100
-      // ===========打boss后状态===========
-      // 角色生命力:0
-      // 角色攻击力:0
-      // 角色防御力:0
-      // ===========恢复状态===========
-      // 角色生命力:100
-      // 角色攻击力:100
-      // 角色防御力:100
-    }
+ // 测试结果
+ public static void main(String[] args){
+ System.out.println("===========打boss前状态===========");
+ GameRole gameRole = new GameRole();
+ gameRole.init();
+ gameRole.showState();
+ // 保存进度
+ RoleStateCaretaker roleStateCaretaker = new RoleStateCaretaker();
+ roleStateCaretaker.setMemento(gameRole.saveState());
+ System.out.println("===========打boss后状态===========");
+ gameRole.fight();
+ gameRole.showState();
+ System.out.println("===========恢复状态===========");
+ gameRole.recoverState(roleStateCaretaker.getMemento());
+ gameRole.showState();
+ // ===========打boss前状态===========
+ // 角色生命力:100
+ // 角色攻击力:100
+ // 角色防御力:100
+ // ===========打boss后状态===========
+ // 角色生命力:0
+ // 角色攻击力:0
+ // 角色防御力:0
+ // ===========恢复状态===========
+ // 角色生命力:100
+ // 角色攻击力:100
+ // 角色防御力:100
+ }
 
 适用场景：
 需要保存历史快照的场景。
@@ -13182,7 +13960,6 @@ public class GameRole {
 缺点：
 消耗资源：如果需要保存的状态过多时，每一次保存都会消耗很多内存。
 
-	
 22、行为型-迭代器模式：
 迭代器模式又称为游标模式（Cursor Pattern），它提供一种顺序访问集合/容器对象元素的方法，而又无须暴露结合内部表示。
 本质：抽离集合对象迭代行为到迭代器中，提供一致访问接口。
@@ -13195,50 +13972,53 @@ public class GameRole {
 
 // 迭代器接口
 public interface Iterator<T> {
-    Boolean hasNext();
-    T next();
+ Boolean hasNext();
+ T next();
 }
 // 迭代器接口实现类
 public class IteratorImpl<T> implements Iterator<T> {
-    private List<T> list;
-    private Integer cursor;
-    private T element;
- 
-    public IteratorImpl(List<T> list) {
-        this.list = list;
-    }
-    @Override
-    public Boolean hasNext() {
-        return cursor < list.size();
-    }
-    @Override
-    public T next() {
-        element = list.get(cursor);
-        cursor++;
-        return element;
-    }
+ private List<T> list;
+ private Integer cursor;
+ private T element;
+
+```
+public IteratorImpl(List<T> list) {
+    this.list = list;
+}
+@Override
+public Boolean hasNext() {
+    return cursor < list.size();
+}
+@Override
+public T next() {
+    element = list.get(cursor);
+    cursor++;
+    return element;
+}
+```
+
 }
 // 容器接口
 public interface Aggregate<T> {
-    void add(T t);
-    void remove(T t);
-    Iterator<T> iterator();
+ void add(T t);
+ void remove(T t);
+ Iterator<T> iterator();
 }
 // 容器接口实现类
 public class AggregateImpl<T> implements Aggregate<T> {
-    private List<T> list = new ArrayList<>();
-    @Override
-    public void add(T t) {
-        list.add(t);
-    }
-    @Override
-    public void remove(T t) {
-        list.remove(t);
-    }
-    @Override
-    public Iterator<T> iterator() {
-        return new IteratorImpl<>(list);
-    }
+ private List<T> list = new ArrayList<>();
+ @Override
+ public void add(T t) {
+ list.add(t);
+ }
+ @Override
+ public void remove(T t) {
+ list.remove(t);
+ }
+ @Override
+ public Iterator<T> iterator() {
+ return new IteratorImpl<>(list);
+ }
 }
 
 适用场景：
@@ -13255,7 +14035,6 @@ public class AggregateImpl<T> implements Aggregate<T> {
 对于比较简单的遍历（像数组或者有序列表），使用迭代器方式遍历较为繁琐。
 增加了类的个数，在一定程度上增加了系统的复杂性。
 
-
 23、行为型-解释器模式：
 解释器模式给定一个语言，定义它的文法的一种表示，并定义一个解释器，这个解释器使用该表示来解释语言中的句子。
 特征：为了解释一种语言，而为语言创建的解释器。
@@ -13267,135 +14046,134 @@ public class AggregateImpl<T> implements Aggregate<T> {
 环境（Context）角色：通常包含各个解释器需要的数据或是公共的功能，一般用来传递被所有解释器共享的数据，后面的解释器可以从这里获取这些值。
 客户端（Client）：主要任务是将需要分析的句子或表达式转换成使用解释器对象描述的抽象语法树，然后调用解释器的解释方法，当然也可以通过环境角色间接访问解释器的解释方法。
 
-
 // 抽象角色 定义解释器
 public interface Expression {
-    int interpret();
+ int interpret();
 }
 @AllArgsConstructor
 public class NumberTerminal implements Expression {
-    private int number;
-    @Override
-    public int interpret() {
-        return this.number;
-    }
+ private int number;
+ @Override
+ public int interpret() {
+ return this.number;
+ }
 }
 // 非终结表达式（抽象类）
 @AllArgsConstructor
 public abstract class NonTerminal implements Expression {
-    protected Expression left;
-    protected Expression right;
+ protected Expression left;
+ protected Expression right;
 }
 // 非终结表达式（加法）
 public class PlusNonTerminal extends NonTerminal implements Expression {
-    public PlusNonTerminal(Expression left, Expression right) {
-        super(left, right);
-    }
-    @Override
-    public int interpret() {
-        return left.interpret() + right.interpret();
-    }
+ public PlusNonTerminal(Expression left, Expression right) {
+ super(left, right);
+ }
+ @Override
+ public int interpret() {
+ return left.interpret() + right.interpret();
+ }
 }
 // 非终结表达式（减法）
 public class MinusNonTerminal extends NonTerminal implements Expression {
-    public MinusNonTerminal(Expression left, Expression right) {
-        super(left, right);
-    }
-    @Override
-    public int interpret() {
-        return left.interpret() - right.interpret();
-    }
+ public MinusNonTerminal(Expression left, Expression right) {
+ super(left, right);
+ }
+ @Override
+ public int interpret() {
+ return left.interpret() - right.interpret();
+ }
 }
 // 非终结表达式（乘法）
 public class MclNonTerminal extends NonTerminal implements Expression {
-    public MclNonTerminal(Expression left, Expression right) {
-        super(left, right);
-    }
-    @Override
-    public int interpret() {
-        return left.interpret() * right.interpret();
-    }
+ public MclNonTerminal(Expression left, Expression right) {
+ super(left, right);
+ }
+ @Override
+ public int interpret() {
+ return left.interpret() * right.interpret();
+ }
 }
 // 非终结表达式（除法）
 public class DivisionNonTerminal extends NonTerminal implements Expression {
-    public DivisionNonTerminal(Expression left, Expression right) {
-        super(left, right);
-    }
-    @Override
-    public int interpret() {
-        return left.interpret() / right.interpret();
-    }
+ public DivisionNonTerminal(Expression left, Expression right) {
+ super(left, right);
+ }
+ @Override
+ public int interpret() {
+ return left.interpret() / right.interpret();
+ }
 }
 // 计算器类（实现运算逻辑）
 public class Cal {
-    private Expression left;
-    private Expression right;
-    private Integer result;
-    public Cal(String expression) {
-        this.parse(expression);
-    }
-    private Integer parse(String expression) {
-        // 获取表达式元素
-        String [] elements = expression.split(" ");
-        for (int i = 0; i < elements.length; i++) {
-            String element = elements[i];
-            // 判断是否是运算符号
-            if (OperatorUtils.isOperator(element)) {
-                // 运算符号的右边就是右终结符
-                right = new NumberTerminal(Integer.valueOf(elements[++i]));
-                //计算结果
-                result = OperatorUtils.getNonTerminal(left, right, element).interpret();
-                // 计算结果重新成为左终结符
-                left = new NumberTerminal(result);
-            } else {
-                left = new NumberTerminal(Integer.valueOf(element));
-            }
-        }
-        return result;
-    }
-    public Integer cal() {
-        return result;
-    }
- 
+ private Expression left;
+ private Expression right;
+ private Integer result;
+ public Cal(String expression) {
+ this.parse(expression);
+ }
+ private Integer parse(String expression) {
+ // 获取表达式元素
+ String [] elements = expression.split(" ");
+ for (int i = 0; i < elements.length; i++) {
+ String element = elements[i];
+ // 判断是否是运算符号
+ if (OperatorUtils.isOperator(element)) {
+ // 运算符号的右边就是右终结符
+ right = new NumberTerminal(Integer.valueOf(elements[++i]));
+ //计算结果
+ result = OperatorUtils.getNonTerminal(left, right, element).interpret();
+ // 计算结果重新成为左终结符
+ left = new NumberTerminal(result);
+ } else {
+ left = new NumberTerminal(Integer.valueOf(element));
+ }
+ }
+ return result;
+ }
+ public Integer cal() {
+ return result;
+ }
+
 }
 // 操作工具类
 public class OperatorUtils {
-    // 判断是不是非终结符
-    public static boolean isOperator(String symbol) {
-        return symbol.equals("+") || symbol.equals("-") || symbol.equals("*")|| symbol.equals("/");
-    }
-    // 简单工厂
-    public static NonTerminal getNonTerminal(Expression left, Expression right, String symbol) {
-        if (symbol.equals("+")) {
-            return new PlusNonTerminal(left, right);
-        } else if (symbol.equals("-")) {
-            return new MinusNonTerminal(left, right);
-        } else if (symbol.equals("*")) {
-            return new MclNonTerminal(left, right);
-        } else if (symbol.equals("/")) {
-            return new DivisionNonTerminal(left, right);
-        }
-        return null;
-    }
+ // 判断是不是非终结符
+ public static boolean isOperator(String symbol) {
+ return symbol.equals("+") || symbol.equals("-") || symbol.equals("*")|| symbol.equals("/");
+ }
+ // 简单工厂
+ public static NonTerminal getNonTerminal(Expression left, Expression right, String symbol) {
+ if (symbol.equals("+")) {
+ return new PlusNonTerminal(left, right);
+ } else if (symbol.equals("-")) {
+ return new MinusNonTerminal(left, right);
+ } else if (symbol.equals("*")) {
+ return new MclNonTerminal(left, right);
+ } else if (symbol.equals("/")) {
+ return new DivisionNonTerminal(left, right);
+ }
+ return null;
+ }
 }
-    // 测试
-    // PS：此处进行的逻辑仅仅实现从左到右运算，并没有先乘除后加减的逻辑
-    public static void main(String[] args) {
-        System.out.println(new Cal("10 + 20 - 40 * 60").cal()); // -600
-        System.out.println(new Cal("20 + 50 - 60 * 2").cal()); // 20
-    }
-	
+ // 测试
+ // PS：此处进行的逻辑仅仅实现从左到右运算，并没有先乘除后加减的逻辑
+ public static void main(String[] args) {
+ System.out.println(new Cal("10 + 20 - 40 * 60").cal()); // -600
+ System.out.println(new Cal("20 + 50 - 60 * 2").cal()); // 20
+ }
+
 Spring中的解释器模式：
 
 public static void main(String[] args) {
-        ExpressionParser expressionParser = new SpelExpressionParser();
-        org.springframework.expression.Expression expression = expressionParser.parseExpression("10 + 20 + 30 * 4");
-        Integer value = expression.getValue(Integer.class);
-        System.out.println(value); // 150
-        expression = expressionParser.parseExpression("(10+20+30)*4");
-        value = expression.getValue(Integer.class);
-        System.out.println(value); // 240
-    }
+ ExpressionParser expressionParser = new SpelExpressionParser();
+ org.springframework.expression.Expression expression = expressionParser.parseExpression("10 + 20 + 30 * 4");
+ Integer value = expression.getValue(Integer.class);
+ System.out.println(value); // 150
+ expression = expressionParser.parseExpression("(10+20+30)*4");
+ value = expression.getValue(Integer.class);
+ System.out.println(value); // 240
+ }
 
 可以看到Spring中解释器写的是比较完善的，不仅有先乘除后加减和先括号进行运算的日常计算规则，
 而且对于空格也并没有要求，仅需要写出完整的表达式即可运算出来。
@@ -13423,119 +14201,135 @@ public static void main(String[] args) {
 3.依赖倒置：面向抽象编程
 
 二、高频模式与业务场景对应
+
 1. 策略模式（支付/计算场景）
-// 支付接口
-public interface PaymentStrategy {
-    void pay(BigDecimal amount);
-}
+  // 支付接口
+  public interface PaymentStrategy {
+   void pay(BigDecimal amount);
+  }
 
 // 具体策略
 public class AlipayStrategy implements PaymentStrategy {
-    @Override
-    public void pay(BigDecimal amount) {
-        // 支付宝支付逻辑
-    }
+ @Override
+ public void pay(BigDecimal amount) {
+ // 支付宝支付逻辑
+ }
 }
 
 // 策略上下文
 public class PaymentContext {
-    private PaymentStrategy strategy;
+ private PaymentStrategy strategy;
 
-    public void setStrategy(PaymentStrategy strategy) {
-        this.strategy = strategy;
-    }
+```
+public void setStrategy(PaymentStrategy strategy) {
+    this.strategy = strategy;
+}
 
-    public void executePayment(BigDecimal amount) {
-        strategy.pay(amount);
-    }
+public void executePayment(BigDecimal amount) {
+    strategy.pay(amount);
+}
+```
+
 }
 
 适用场景：支付方式切换、优惠计算规则、物流计费策略
 
 2. 工厂模式（多态对象创建）
-// 用户认证接口
-public interface AuthProvider {
-    CompletableFuture<User> authenticate(Object credentials);
-}
+  // 用户认证接口
+  public interface AuthProvider {
+   CompletableFuture<User> authenticate(Object credentials);
+  }
 
 // 工厂类
 public class AuthFactory {
-    public enum AuthType {
-        JWT, OAUTH, LDAP
-    }
+ public enum AuthType {
+ JWT, OAUTH, LDAP
+ }
 
-    public static AuthProvider createProvider(AuthType type) {
-        switch(type) {
-            case JWT: return new JwtAuth();
-            case OAUTH: return new OAuthHandler();
-            case LDAP: return new LdapAdapter();
-            default: throw new IllegalArgumentException("Unsupported auth type: " + type);
-        }
+```
+public static AuthProvider createProvider(AuthType type) {
+    switch(type) {
+        case JWT: return new JwtAuth();
+        case OAUTH: return new OAuthHandler();
+        case LDAP: return new LdapAdapter();
+        default: throw new IllegalArgumentException("Unsupported auth type: " + type);
     }
+}
+```
+
 }
 
 // 具体实现示例
 public class JwtAuth implements AuthProvider {
-    @Override
-    public CompletableFuture<User> authenticate(Object credentials) {
-        // JWT 验证逻辑
-        return CompletableFuture.completedFuture(new User());
-    }
+ @Override
+ public CompletableFuture<User> authenticate(Object credentials) {
+ // JWT 验证逻辑
+ return CompletableFuture.completedFuture(new User());
+ }
 }
 
 适用场景：多登录方式、文件解析器创建、报表生成器
 
 3. 装饰器模式（功能扩展）
-// 增强版基础接口（带泛型）
-public interface DataAPI<T> {
-    T fetchData();
-}
+  // 增强版基础接口（带泛型）
+  public interface DataAPI<T> {
+   T fetchData();
+  }
 
 // 抽象装饰器（带泛型）
 public abstract class DataAPIDecorator<T> implements DataAPI<T> {
-    protected final DataAPI<T> wrapped;
-    
-    public DataAPIDecorator(DataAPI<T> wrapped) {
-        this.wrapped = wrapped;
-    }
+ protected final DataAPI<T> wrapped;
+
+```
+public DataAPIDecorator(DataAPI<T> wrapped) {
+    this.wrapped = wrapped;
+}
+```
+
 }
 
 // 函数式装饰器构建器
 public class APIDecorators {
-    public static <T> DataAPI<T> logging(DataAPI<T> api) {
-        return new DataAPIDecorator<T>(api) {
-            @Override
-            public T fetchData() {
-                System.out.println("Request at " + Instant.now());
-                return wrapped.fetchData();
+ public static <T> DataAPI<T> logging(DataAPI<T> api) {
+ return new DataAPIDecorator<T>(api) {
+ @Override
+ public T fetchData() {
+ System.out.println("Request at " + Instant.now());
+ return wrapped.fetchData();
+ }
+ };
+ }
+
+```
+public static <T> DataAPI<T> caching(DataAPI<T> api) {
+    return new DataAPIDecorator<T>(api) {
+        private T cache;
+
+        @Override
+        public T fetchData() {
+            if (cache == null) {
+                cache = wrapped.fetchData();
             }
-        };
-    }
-    
-    public static <T> DataAPI<T> caching(DataAPI<T> api) {
-        return new DataAPIDecorator<T>(api) {
-            private T cache;
-            
-            @Override
-            public T fetchData() {
-                if (cache == null) {
-                    cache = wrapped.fetchData();
-                }
-                return cache;
-            }
-        };
-    }
+            return cache;
+        }
+    };
+}
+```
+
 }
 
 // 使用示例（流畅接口风格）
 public class Main {
-    public static void main(String[] args) {
-        DataAPI<String> api = APIDecorators.caching(
-                                APIDecorators.logging(
-                                    new CoreDataAPI()));
-                                    
-        System.out.println(api.fetchData());
-    }
+ public static void main(String[] args) {
+ DataAPI<String> api = APIDecorators.caching(
+ APIDecorators.logging(
+ new CoreDataAPI()));
+
+```
+    System.out.println(api.fetchData());
+}
+```
+
 }
 
 适用场景：接口日志记录、缓存层封装、权限校验增强
@@ -13547,77 +14341,89 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 // 使用枚举定义订单状态
 public enum OrderState {
-    CREATED, PAID, SHIPPED, DELIVERED, CANCELLED
+ CREATED, PAID, SHIPPED, DELIVERED, CANCELLED
 }
 
 // 泛型观察者接口
 public interface Observer<T> {
-    void update(T event);
+ void update(T event);
 }
 
 // 增强版主题（线程安全）
 public class OrderSubject {
-    private final List<Observer<OrderState>> observers = new CopyOnWriteArrayList<>();
-    
-    public void register(Observer<OrderState> observer) {
-        observers.add(observer);
-    }
-    
-    public void unregister(Observer<OrderState> observer) {
-        observers.remove(observer);
-    }
-    
-    public void notifyObservers(OrderState state) {
-        observers.forEach(observer -> observer.update(state));
-    }
+ private final List<Observer<OrderState>> observers = new CopyOnWriteArrayList<>();
+
+```
+public void register(Observer<OrderState> observer) {
+    observers.add(observer);
+}
+
+public void unregister(Observer<OrderState> observer) {
+    observers.remove(observer);
+}
+
+public void notifyObservers(OrderState state) {
+    observers.forEach(observer -> observer.update(state));
+}
+```
+
 }
 
 // 具体观察者实现
 public class InventoryObserver implements Observer<OrderState> {
-    @Override
-    public void update(OrderState state) {
-        if (state == OrderState.PAID) {
-            System.out.println("[Inventory] Deducting stock for paid order");
-            updateStock();
-        }
-    }
-    
-    private void updateStock() {
-        // 库存更新逻辑
-    }
+ @Override
+ public void update(OrderState state) {
+ if (state == OrderState.PAID) {
+ System.out.println("[Inventory] Deducting stock for paid order");
+ updateStock();
+ }
+ }
+
+```
+private void updateStock() {
+    // 库存更新逻辑
+}
+```
+
 }
 
 public class NotificationObserver implements Observer<OrderState> {
-    @Override
-    public void update(OrderState state) {
-        switch (state) {
-            case SHIPPED:
-                System.out.println("[Notification] Sending shipping alert");
-                sendSMS();
-                break;
-            case DELIVERED:
-                System.out.println("[Notification] Sending delivery confirmation");
-                sendEmail();
-                break;
-        }
-    }
-    
-    private void sendSMS() { /* SMS 发送逻辑 */ }
-    private void sendEmail() { /* Email 发送逻辑 */ }
+ @Override
+ public void update(OrderState state) {
+ switch (state) {
+ case SHIPPED:
+ System.out.println("[Notification] Sending shipping alert");
+ sendSMS();
+ break;
+ case DELIVERED:
+ System.out.println("[Notification] Sending delivery confirmation");
+ sendEmail();
+ break;
+ }
+ }
+
+```
+private void sendSMS() { /* SMS 发送逻辑 */ }
+private void sendEmail() { /* Email 发送逻辑 */ }
+```
+
 }
 
 // 使用示例
 public class Main {
-    public static void main(String[] args) {
-        OrderSubject orderTracker = new OrderSubject();
-        
-        orderTracker.register(new InventoryObserver());
-        orderTracker.register(new NotificationObserver());
-        
-        // 模拟订单状态变化
-        orderTracker.notifyObservers(OrderState.PAID);
-        orderTracker.notifyObservers(OrderState.SHIPPED);
-    }
+ public static void main(String[] args) {
+ OrderSubject orderTracker = new OrderSubject();
+
+```
+    orderTracker.register(new InventoryObserver());
+    orderTracker.register(new NotificationObserver());
+
+    // 模拟订单状态变化
+    orderTracker.notifyObservers(OrderState.PAID);
+    orderTracker.notifyObservers(OrderState.SHIPPED);
+}
+```
+
 }
 
 适用场景：订单状态变更通知、库存同步、审计日志记录
@@ -13655,7 +14461,6 @@ public class Main {
 
 最终达到提升代码可维护性、降低系统耦合度、增强业务适应性的目标。关键是根据实际业务复杂度选择恰当的模式，避免陷入过度设计的陷阱。
 
-
 数据结构与算法：
 数据结构与算法相辅相成，不会孤立存在；数据结构是为算法服务的，算法是作用在特定的数据结构之上（如数组具有随机访问的特点，二分查找算法需要用数组来存储数据）。
 数据结构是静态的，只是组织数据的一种形式，若不在它的基础上操作、构建算法、孤立存在的数据结构是没有意义的。
@@ -13685,7 +14490,6 @@ public class Main {
 因此，在学习和实践计算机科学时，算法和数据结构通常是同时学习和掌握的。
 
 算法中的时间复杂度和空间复杂度是衡量算法性能的重要指标，它们的计算方法分别如下：
-
 
 算法中关于时间复杂度的计算
 定义：
@@ -13720,197 +14524,201 @@ public class Main {
 递归空间O(n)（对于递归算法）：递归过程所需的栈空间与递归深度成正比，递归深度通常与输入规模有关。
 在实际应用中，通常更关注算法的时间复杂度和空间复杂度的上限，即最坏情况下的复杂度。这是因为在实际应用中，输入规模可能非常大，而算法的性能将直接影响系统的响应时间和资源消耗。因此，在设计算法时，需要努力降低算法的时间复杂度和空间复杂度，以提高系统的性能和效率。
 
-
 数据结构与算法之数组：
 数组是一种线性表数据结构，它用一组连续的内存空间，来存储一组具有相同类型的数据。
 
 无序数组：
 public class MyArray {
-	//声明一个数组
-	private long[] arr;
-	
-	//有效数据的长度
-	private int elements;
-	
-	//无参构造函数，默认长度为50
-	public MyArray(){
-		arr = new long[50];
-	}
-	
-	public MyArray(int maxsize){
-		arr = new long[maxsize];
-	}
-	
-	
-	//添加数据
-	public void insert(long value){
-		arr[elements] = value;
-		elements++;
-	}
-	
-	//显示数据
-	public void display(){
-		System.out.print("[");
-		for(int i = 0;i < elements;i++){
-			System.out.print(arr[i] + " ");
-		}
-		System.out.println("]");
-	}
-	
-	//根据下标查找数据
-	public long get(int index){
-		if(index >= elements || index < 0){
-			throw new ArrayIndexOutOfBoundsException();
-		}else{
-			return arr[index];
-		}
-	}
-	
-	/**
-	 * 根据值查询
-	 * @param value 需要被查询的值
-	 * @return 被查询值的下标
-	 */
-	public int search(int value){
-		//声明一个变量i用来记录该数据的下标值
-		int i ;
-		for(i = 0;i < elements;i++){
-			if(value == arr[i]){
-				break;
-			}
-		}
-		//如果查询到最后一个元素依然没有找到
-		if(i == elements){
-			return -1;
-		}else{
-			return i;
-		}
-	}
-	
-	//根据下标删除数据
-	public void delete(int index){
-		if(index >= elements || index < 0){
-			throw new ArrayIndexOutOfBoundsException();
-		}else{
-			//删除该元素后，后面所有元素前移一位
-			for(int i = index; i < elements;i++){
-				arr[i] = arr[i+1];
-			}
-			elements--;
-		}
-		
-	}
-	/**
-	 * 替换数据
-	 * @param index 被替换的下标
-	 * @param newvalue 新的数据
-	 */
-	public void change(int index,int newvalue){
-		if(index >= elements || index < 0){
-			throw new ArrayIndexOutOfBoundsException();
-		}else{
-			arr[index] = newvalue;
-		}
-	} 
+ //声明一个数组
+ private long[] arr;
+
+```
+//有效数据的长度
+private int elements;
+
+//无参构造函数，默认长度为50
+public MyArray(){
+    arr = new long[50];
+}
+
+public MyArray(int maxsize){
+    arr = new long[maxsize];
+}
+
+
+//添加数据
+public void insert(long value){
+    arr[elements] = value;
+    elements++;
+}
+
+//显示数据
+public void display(){
+    System.out.print("[");
+    for(int i = 0;i < elements;i++){
+        System.out.print(arr[i] + " ");
+    }
+    System.out.println("]");
+}
+
+//根据下标查找数据
+public long get(int index){
+    if(index >= elements || index < 0){
+        throw new ArrayIndexOutOfBoundsException();
+    }else{
+        return arr[index];
+    }
+}
+
+/**
+ * 根据值查询
+ * @param value 需要被查询的值
+ * @return 被查询值的下标
+ */
+public int search(int value){
+    //声明一个变量i用来记录该数据的下标值
+    int i ;
+    for(i = 0;i < elements;i++){
+        if(value == arr[i]){
+            break;
+        }
+    }
+    //如果查询到最后一个元素依然没有找到
+    if(i == elements){
+        return -1;
+    }else{
+        return i;
+    }
+}
+
+//根据下标删除数据
+public void delete(int index){
+    if(index >= elements || index < 0){
+        throw new ArrayIndexOutOfBoundsException();
+    }else{
+        //删除该元素后，后面所有元素前移一位
+        for(int i = index; i < elements;i++){
+            arr[i] = arr[i+1];
+        }
+        elements--;
+    }
+
+}
+/**
+ * 替换数据
+ * @param index 被替换的下标
+ * @param newvalue 新的数据
+ */
+public void change(int index,int newvalue){
+    if(index >= elements || index < 0){
+        throw new ArrayIndexOutOfBoundsException();
+    }else{
+        arr[index] = newvalue;
+    }
+} 
+```
+
 }
 
 有序数组：
 public class MyOrderArray { 
-	private long[] arr;
-	
-	private int elements;
-	
-	public MyOrderArray(){
-		arr = new long[50];
-	}
-	
-	public MyOrderArray(int maxsize){
-		arr = new long[maxsize];
-	}
-	
-	//添加数据
-	public void insert(int value){
-		int i;
-		for(i = 0;i < elements;i++){
-			if(arr[i] > value){
-				break;
-			}
-		}
-		for(int j = elements;j > i;j--){
-			arr[j] = arr[j -1];
-		}
-		arr[i] = value;
-		elements++;
-	}
-	
-	
-	//删除数据
-	public void delete(int index){
-		if(index >=elements || index <0){
-			throw new ArrayIndexOutOfBoundsException();
-		}else{
-			for(int i = index;i < elements; i++){
-				arr[i] = arr[i+1];
-			}
-			elements--;
-		}
-	}
-	
-	//修改数据
-	public void change(int index,int value){
-		if(index >= elements || index < 0){
-			throw new IndexOutOfBoundsException();
-		}else{
-			arr[index] = value;
-		}
-	}
-	
-	//根据下标查询数据
-	public long get(int index){
-		if(index >= elements || index < 0){
-			throw new IndexOutOfBoundsException();
-		}else{
-			return arr[index];
-		}
-	}
-	
-	//展示数据
-	public void display(){
-		System.out.print("[");
-		for(int i = 0; i < elements;i++){
-			System.out.print(arr[i] + " ");
-		}
-		System.out.println("]");
-	}
-	
-	
-	//二分法查找数据
-	public int binarySearch(long value){
-			//声明三个指针分别指向数组的头，尾，中间
-			int low = 0;
-			int pow = elements;
-			int middle = 0;
-			
-			while(true){
-				middle = (low + pow) / 2;
-				//如果中指针所指的值等于带查询数
-				if(arr[middle] == value){
-					return middle;
-				}else if(low > pow){
-					return -1;
-				}else{
-					if(arr[middle] > value){
-						//待查询的数在左边,右指针重新改变指向
-						pow = middle-1;
-					}else{
-						//带查询的数在右边，左指针重新改变指向
-						low = middle +1;
-					}
-				}
-			}
-	}
+private long[] arr;
+
+```
+private int elements;
+
+public MyOrderArray(){
+    arr = new long[50];
 }
 
+public MyOrderArray(int maxsize){
+    arr = new long[maxsize];
+}
+
+//添加数据
+public void insert(int value){
+    int i;
+    for(i = 0;i < elements;i++){
+        if(arr[i] > value){
+            break;
+        }
+    }
+    for(int j = elements;j > i;j--){
+        arr[j] = arr[j -1];
+    }
+    arr[i] = value;
+    elements++;
+}
+
+
+//删除数据
+public void delete(int index){
+    if(index >=elements || index <0){
+        throw new ArrayIndexOutOfBoundsException();
+    }else{
+        for(int i = index;i < elements; i++){
+            arr[i] = arr[i+1];
+        }
+        elements--;
+    }
+}
+
+//修改数据
+public void change(int index,int value){
+    if(index >= elements || index < 0){
+        throw new IndexOutOfBoundsException();
+    }else{
+        arr[index] = value;
+    }
+}
+
+//根据下标查询数据
+public long get(int index){
+    if(index >= elements || index < 0){
+        throw new IndexOutOfBoundsException();
+    }else{
+        return arr[index];
+    }
+}
+
+//展示数据
+public void display(){
+    System.out.print("[");
+    for(int i = 0; i < elements;i++){
+        System.out.print(arr[i] + " ");
+    }
+    System.out.println("]");
+}
+
+
+//二分法查找数据
+public int binarySearch(long value){
+        //声明三个指针分别指向数组的头，尾，中间
+        int low = 0;
+        int pow = elements;
+        int middle = 0;
+
+        while(true){
+            middle = (low + pow) / 2;
+            //如果中指针所指的值等于带查询数
+            if(arr[middle] == value){
+                return middle;
+            }else if(low > pow){
+                return -1;
+            }else{
+                if(arr[middle] > value){
+                    //待查询的数在左边,右指针重新改变指向
+                    pow = middle-1;
+                }else{
+                    //带查询的数在右边，左指针重新改变指向
+                    low = middle +1;
+                }
+            }
+        }
+}
+```
+
+}
 
 数据结构与算法之栈：
 栈（stack）是一种容器，可存入数据元素、访问元素、删除元素，它的特点在于只能允许在容器的一端（称为栈顶端指标，英语：top）
@@ -13923,62 +14731,64 @@ package mystack;
 
 public class MyStack {
 
-    //栈的底层使用数组来存储数据
-    //private int[] elements;
-    int[] elements; //测试时使用
+```
+//栈的底层使用数组来存储数据
+//private int[] elements;
+int[] elements; //测试时使用
 
-    public MyStack() {
-        elements = new int[0];
-    }
-
-    //添加元素
-    public void push(int element) {
-        //创建一个新的数组
-        int[] newArr = new int[elements.length + 1];
-        //把原数组中的元素复制到新数组中
-        for (int i = 0; i < elements.length; i++) {
-            newArr[i] = elements[i];
-        }
-        //把添加的元素放入新数组中
-        newArr[elements.length] = element;
-        //使用新数组替换旧数组
-        elements = newArr;
-    }
-
-    //取出栈顶元素
-    public int pop() {
-        //当栈中没有元素
-        if (is_empty()) {
-            throw new RuntimeException("栈空");
-        }
-        //取出数组的最后一个元素
-        int element = elements[elements.length - 1];
-        //创建一个新数组
-        int[] newArr = new int[elements.length - 1];
-        //原数组中除了最后一个元素其他元素放入新数组
-        for (int i = 0; i < elements.length - 1; i++) {
-            newArr[i] = elements[i];
-        }
-        elements = newArr;
-        return element;
-    }
-
-    //查看栈顶元素
-    public int peek() {
-        return elements[elements.length - 1];
-    }
-
-    //判断栈是否为空
-    public boolean is_empty() {
-        return elements.length == 0;
-    }
-
-    //查看栈的元素个数
-    public int size() {
-        return elements.length;
-    }
+public MyStack() {
+    elements = new int[0];
 }
-	
+
+//添加元素
+public void push(int element) {
+    //创建一个新的数组
+    int[] newArr = new int[elements.length + 1];
+    //把原数组中的元素复制到新数组中
+    for (int i = 0; i < elements.length; i++) {
+        newArr[i] = elements[i];
+    }
+    //把添加的元素放入新数组中
+    newArr[elements.length] = element;
+    //使用新数组替换旧数组
+    elements = newArr;
+}
+
+//取出栈顶元素
+public int pop() {
+    //当栈中没有元素
+    if (is_empty()) {
+        throw new RuntimeException("栈空");
+    }
+    //取出数组的最后一个元素
+    int element = elements[elements.length - 1];
+    //创建一个新数组
+    int[] newArr = new int[elements.length - 1];
+    //原数组中除了最后一个元素其他元素放入新数组
+    for (int i = 0; i < elements.length - 1; i++) {
+        newArr[i] = elements[i];
+    }
+    elements = newArr;
+    return element;
+}
+
+//查看栈顶元素
+public int peek() {
+    return elements[elements.length - 1];
+}
+
+//判断栈是否为空
+public boolean is_empty() {
+    return elements.length == 0;
+}
+
+//查看栈的元素个数
+public int size() {
+    return elements.length;
+}
+```
+
+}
 
 数据结构与算法之队列：
 队列（Queue）是只允许在一端进行插入操作，而在另一端进行删除操作的线性表。
@@ -13988,143 +14798,148 @@ public class MyStack {
 
 public class MyQueue {
 
-    int[] elements;
+```
+int[] elements;
 
-    public MyQueue() {
-        elements = new int[0];
+public MyQueue() {
+    elements = new int[0];
+}
+
+//入队
+public void enqueue(int element) {
+    //创建一个新的数组
+    int[] newArr = new int[elements.length + 1];
+    //把原数组中的元素复制到新数组中
+    for (int i = 0; i < elements.length; i++) {
+        newArr[i] = elements[i];
     }
+    //把添加的元素放入新数组中
+    newArr[elements.length] = element;
+    //使用新数组替换旧数组
+    elements = newArr;
+}
 
-    //入队
-    public void enqueue(int element) {
-        //创建一个新的数组
-        int[] newArr = new int[elements.length + 1];
-        //把原数组中的元素复制到新数组中
-        for (int i = 0; i < elements.length; i++) {
-            newArr[i] = elements[i];
-        }
-        //把添加的元素放入新数组中
-        newArr[elements.length] = element;
-        //使用新数组替换旧数组
-        elements = newArr;
+//出队
+public int dequeue() {
+    if (isEmpty()) {
+        throw new RuntimeException("队空，无数据");
     }
-
-    //出队
-    public int dequeue() {
-        if (isEmpty()) {
-            throw new RuntimeException("队空，无数据");
-        }
-        //把数组中第1个元素取出来
-        int element = elements[0];
-        //创建一个新数组
-        int[] newArr = new int[elements.length - 1];
-        //把原数组除了第一个数据，其他存入新数组
-        for (int i = 0; i < newArr.length; i++) {
-            newArr[i] = elements[i + 1];
-        }
-        //新数组替换旧数组
-        elements = newArr;
-
-        return element;
+    //把数组中第1个元素取出来
+    int element = elements[0];
+    //创建一个新数组
+    int[] newArr = new int[elements.length - 1];
+    //把原数组除了第一个数据，其他存入新数组
+    for (int i = 0; i < newArr.length; i++) {
+        newArr[i] = elements[i + 1];
     }
+    //新数组替换旧数组
+    elements = newArr;
 
-    //判断是否队空
-    public boolean isEmpty() {
-        return elements.length==0;
-    }
+    return element;
+}
 
-    //获取队列长度
-    public int size() {
-        return elements.length;
-    }
+//判断是否队空
+public boolean isEmpty() {
+    return elements.length==0;
+}
+
+//获取队列长度
+public int size() {
+    return elements.length;
+}
+```
+
 }
 
 数据结构与算法之链表：
 单链表：
 单链表也叫单向链表，是链表中最简单的一种形式，它的每个节点包含两个域，一个信息域（元素域）和一个链接域。
-这个链接指向链表中的下一个节点，而最后一个节点的链接域则指向一个空值。	
+这个链接指向链表中的下一个节点，而最后一个节点的链接域则指向一个空值。  
 1.表元素域data用来存放具体的数据。
 2.链接域next用来存放下一个节点的位置。
 
 //一个节点
 public class Node {
 
-    //节点内容
-    int data;
-    //下一个节点
-    Node next;
+```
+//节点内容
+int data;
+//下一个节点
+Node next;
 
-    public Node(int data) {
-        this.data = data;
-    }
+public Node(int data) {
+    this.data = data;
+}
 
-    //为节点追加节点
-    public Node append(Node node) {
-        //当前节点
-        Node currentNode = this;
-        //循环向后找
-        while (true) {
-            //取出下一个节点
-            Node nextNode = currentNode.next();
-            //如果下一个节点为null，当前节点已经是最后一个节点
-            if (nextNode == null) {
-                break;
-            }
-            //赋给当前节点，无线向后找
-            currentNode = nextNode;
+//为节点追加节点
+public Node append(Node node) {
+    //当前节点
+    Node currentNode = this;
+    //循环向后找
+    while (true) {
+        //取出下一个节点
+        Node nextNode = currentNode.next();
+        //如果下一个节点为null，当前节点已经是最后一个节点
+        if (nextNode == null) {
+            break;
         }
-        //把需要追加的节点，追加为找到的当前节点（最后一个节点）的下一个节点
-        currentNode.next = node;
-        return this;
+        //赋给当前节点，无线向后找
+        currentNode = nextNode;
     }
+    //把需要追加的节点，追加为找到的当前节点（最后一个节点）的下一个节点
+    currentNode.next = node;
+    return this;
+}
 
-    //显示所有节点信息
-    public void show() {
-        Node currentNode = this;
-        while (true) {
-            System.out.print(currentNode.data + " ");
-            //取出下一个节点
-            currentNode = currentNode.next;
-            //如果是最后一个节点
-            if (currentNode == null) {
-                break;
-            }
+//显示所有节点信息
+public void show() {
+    Node currentNode = this;
+    while (true) {
+        System.out.print(currentNode.data + " ");
+        //取出下一个节点
+        currentNode = currentNode.next;
+        //如果是最后一个节点
+        if (currentNode == null) {
+            break;
         }
-        System.out.println();
     }
+    System.out.println();
+}
 
-    //插入一个节点作为当前节点的下一个节点
-    public void after(Node node) {
-        //取出下一个节点，作为下下一个节点
-        Node nextNext = next;
-        //把新节点作为当前节点的下一个节点
-        this.next = node;
-        //把下下一个节点设置为新节点的下一个节点
-        node.next = nextNext;
+//插入一个节点作为当前节点的下一个节点
+public void after(Node node) {
+    //取出下一个节点，作为下下一个节点
+    Node nextNext = next;
+    //把新节点作为当前节点的下一个节点
+    this.next = node;
+    //把下下一个节点设置为新节点的下一个节点
+    node.next = nextNext;
 
-    }
+}
 
-    //删除下一个节点
-    public void removeNode() {
-        //取出下下一个节点
-        Node newNext = next.next;
-        //把下下一个节点设置为当前节点的下一个节点
-        this.next = newNext;
-    }
+//删除下一个节点
+public void removeNode() {
+    //取出下下一个节点
+    Node newNext = next.next;
+    //把下下一个节点设置为当前节点的下一个节点
+    this.next = newNext;
+}
 
-    //获取下一个节点
-    public Node next() {
-        return this.next;
-    }
+//获取下一个节点
+public Node next() {
+    return this.next;
+}
 
-    //获取节点中的数据
-    public int getData() {
-        return this.data;
-    }
+//获取节点中的数据
+public int getData() {
+    return this.data;
+}
 
-    //判断节点是否为最后一个节点
-    public boolean isLast() {
-        return next == null;
-    }
+//判断节点是否为最后一个节点
+public boolean isLast() {
+    return next == null;
+}
+```
 
 }
 
@@ -14132,45 +14947,48 @@ public class Node {
 在双向链表中有两个指针域，一个是指向前驱结点的prev，一个是指向后继结点的next指针。
 
 public class DoubleNode {
-    //上一个节点
-    DoubleNode pre = this;
-    //下一个节点
-    DoubleNode next = this;
-    //节点数据
-    int data;
+ //上一个节点
+ DoubleNode pre = this;
+ //下一个节点
+ DoubleNode next = this;
+ //节点数据
+ int data;
 
-    public DoubleNode(int data) {
-        this.data = data;
-    }
+```
+public DoubleNode(int data) {
+    this.data = data;
+}
 
-    //增加节点
-    public void after(DoubleNode node) {
-        //原来的下一个节点
-        DoubleNode nextNext = next;
-        //新节点作为当前节点的下一个节点
-        this.next = node;
-        //当前节点作为新节点的前一个节点
-        node.pre = this;
-        //原来的下一个节点作为新节点的下一个节点
-        node.next = nextNext;
-        //原来的下一个节点的上一个节点为新节点
-        nextNext.pre = node;
-    }
+//增加节点
+public void after(DoubleNode node) {
+    //原来的下一个节点
+    DoubleNode nextNext = next;
+    //新节点作为当前节点的下一个节点
+    this.next = node;
+    //当前节点作为新节点的前一个节点
+    node.pre = this;
+    //原来的下一个节点作为新节点的下一个节点
+    node.next = nextNext;
+    //原来的下一个节点的上一个节点为新节点
+    nextNext.pre = node;
+}
 
-    //获取下一个节点
-    public DoubleNode getNext() {
-        return this.next;
-    }
+//获取下一个节点
+public DoubleNode getNext() {
+    return this.next;
+}
 
-    //获取上一个节点
-    public DoubleNode getPre() {
-        return this.pre;
-    }
+//获取上一个节点
+public DoubleNode getPre() {
+    return this.pre;
+}
 
-    //获取数据
-    public int getData() {
-        return this.data;
-    }
+//获取数据
+public int getData() {
+    return this.data;
+}
+```
+
 }
 
 数据结构与算法之树：
@@ -14219,16 +15037,16 @@ B树：一种对读写操作进行优化的自平衡的二叉查找树，能够�
 
 代码实现：
 def insert_sort(L):
-    --遍历数组中的所有元素，其中0号索引元素默认已排序，因此从1开始
-    for x in range(1,len(L)):
-    --将该元素与已排序好的前序数组依次比较，如果该元素小，则交换
-    --range(x-1,-1,-1):从x-1倒序循环到0
-        for i in range(x-1,-1,-1):
-    --判断：如果符合条件则交换
-            if L[i] > L[i+1]:
-                temp = L[i+1]
-                L[i+1] = L[i]
-                L[i] = temp
+ --遍历数组中的所有元素，其中0号索引元素默认已排序，因此从1开始
+ for x in range(1,len(L)):
+ --将该元素与已排序好的前序数组依次比较，如果该元素小，则交换
+ --range(x-1,-1,-1):从x-1倒序循环到0
+ for i in range(x-1,-1,-1):
+ --判断：如果符合条件则交换
+ if L[i] > L[i+1]:
+ temp = L[i+1]
+ L[i+1] = L[i]
+ L[i] = temp
 
 **希尔排序**
 算法思想：
@@ -14241,23 +15059,22 @@ def insert_sort(L):
 
 代码实现：
 def insert_shell(L):
-    --初始化gap值，此处利用序列长度的一般为其赋值
-    gap = (int)(len(L)/2)
-    --第一层循环：依次改变gap值对列表进行分组
-    while (gap >= 1):
-    --下面：利用直接插入排序的思想对分组数据进行排序
-    --range(gap,len(L)):从gap开始
-        for x in range(gap,len(L)):
-    --range(x-gap,-1,-gap):从x-gap开始与选定元素开始倒序比较，每个比较元素之间间隔gap
-            for i in range(x-gap,-1,-gap):
-    --如果该组当中两个元素满足交换条件，则进行交换
-                if L[i] > L[i+gap]:
-                    temp = L[i+gap]
-                    L[i+gap] = L[i]
-                    L[i] =temp
-    --while循环条件折半
-        gap = (int)(gap/2)
-
+ --初始化gap值，此处利用序列长度的一般为其赋值
+ gap = (int)(len(L)/2)
+ --第一层循环：依次改变gap值对列表进行分组
+ while (gap >= 1):
+ --下面：利用直接插入排序的思想对分组数据进行排序
+ --range(gap,len(L)):从gap开始
+ for x in range(gap,len(L)):
+ --range(x-gap,-1,-gap):从x-gap开始与选定元素开始倒序比较，每个比较元素之间间隔gap
+ for i in range(x-gap,-1,-gap):
+ --如果该组当中两个元素满足交换条件，则进行交换
+ if L[i] > L[i+gap]:
+ temp = L[i+gap]
+ L[i+gap] = L[i]
+ L[i] =temp
+ --while循环条件折半
+ gap = (int)(gap/2)
 
 简单选择排序
 算法思想：
@@ -14274,21 +15091,21 @@ def insert_shell(L):
 --简单选择排序
 def select_sort(L):
 --依次遍历序列中的每一个元素
-    for x in range(0,len(L)):
+ for x in range(0,len(L)):
 --将当前位置的元素定义此轮循环当中的最小值
-        minimum = L[x]
+ minimum = L[x]
 --将该元素与剩下的元素依次比较寻找最小元素
-        for i in range(x+1,len(L)):
-            if L[i] < minimum:
-                temp = L[i];
-                L[i] = minimum;
-                minimum = temp
+ for i in range(x+1,len(L)):
+ if L[i] < minimum:
+ temp = L[i];
+ L[i] = minimum;
+ minimum = temp
 --将比较后得到的真正的最小值赋值给当前位置
-        L[x] = minimum	
+ L[x] = minimum
 
 堆排序
 堆的概念
-堆：本质是一种数组对象。特别重要的一点性质：<b>任意的叶子节点小于（或大于）它所有的父节点</b>。
+堆：本质是一种数组对象。特别重要的一点性质：<b>**任意的叶子节点小于（或大于）它所有的父节点**</b>。
 对此，又分为大顶堆和小顶堆，大顶堆要求节点的元素都要大于其孩子，
 小顶堆要求节点元素都小于其左右孩子，两者对左右孩子的大小关系不做任何要求。
 利用堆排序，就是基于大顶堆或者小顶堆的一种排序方法。下面，我们通过大顶堆来实现。
@@ -14304,63 +15121,63 @@ def select_sort(L):
 对交换后的n-1个序列元素进行调整，使其满足大顶堆的性质；
 
 3.重复2.3步骤，直至堆中只有1个元素为止
-	
+
 --------------------------堆排序--------------------------------
 **********获取左右叶子节点**********
 def LEFT(i):
-    return 2*i + 1
+ return 2*i + 1
 def RIGHT(i):
-    return 2*i + 2
+ return 2*i + 2
 ********** 调整大顶堆 **********
 --L:待调整序列 length: 序列长度 i:需要调整的结点
 def adjust_max_heap(L,length,i):
 --定义一个int值保存当前序列最大值的下标
-    largest = i
+ largest = i
 --执行循环操作：两个任务：1 寻找最大值的下标；2.最大值与父节点交换
-    while (1):
+ while (1):
 --获得序列左右叶子节点的下标
-        left,right = LEFT(i),RIGHT(i)
+ left,right = LEFT(i),RIGHT(i)
 --当左叶子节点的下标小于序列长度 并且 左叶子节点的值大于父节点时，将左叶子节点的下标赋值给largest
-        if (left < length) and (L[left] > L[i]):
-            largest = left
-            print('左叶子节点')
-        else:
-            largest = i
+ if (left < length) and (L[left] > L[i]):
+ largest = left
+ print('左叶子节点')
+ else:
+ largest = i
 --当右叶子节点的下标小于序列长度 并且 右叶子节点的值大于父节点时，将右叶子节点的下标值赋值给largest
-        if (right < length) and (L[right] > L[largest]):
-            largest = right
-            print('右叶子节点')
+ if (right < length) and (L[right] > L[largest]):
+ largest = right
+ print('右叶子节点')
 --如果largest不等于i 说明当前的父节点不是最大值，需要交换值
-        if (largest != i):
-            temp = L[i]
-            L[i] = L[largest]
-            L[largest] = temp
-            i = largest
-            print(largest)
-            continue
-        else:
-            break
+ if (largest != i):
+ temp = L[i]
+ L[i] = L[largest]
+ L[largest] = temp
+ i = largest
+ print(largest)
+ continue
+ else:
+ break
 ********** 建立大顶堆 **********
 def build_max_heap(L):
-    length = len(L)
-    for x in range((int)((length-1)/2),-1,-1):
-        adjust_max_heap(L,length,x)
+ length = len(L)
+ for x in range((int)((length-1)/2),-1,-1):
+ adjust_max_heap(L,length,x)
 ********** 堆排序 **********
 def heap_sort(L):
 --先建立大顶堆，保证最大值位于根节点；并且父节点的值大于叶子结点
-    build_max_heap(L)
+ build_max_heap(L)
 --i：当前堆中序列的长度.初始化为序列的长度
-    i = len(L)
+ i = len(L)
 --执行循环：1. 每次取出堆顶元素置于序列的最后(len-1,len-2,len-3...)
-           2. 调整堆，使其继续满足大顶堆的性质，注意实时修改堆中序列的长度
-    while (i > 0):
-        temp = L[i-1]
-        L[i-1] = L[0]
-        L[0] = temp
+ 2. 调整堆，使其继续满足大顶堆的性质，注意实时修改堆中序列的长度
+ while (i > 0):
+ temp = L[i-1]
+ L[i-1] = L[0]
+ L[0] = temp
 --堆中序列长度减1
-        i = i-1
+ i = i-1
 --调整大顶堆
-        adjust_max_heap(L,i,0)
+ adjust_max_heap(L,i,0)
 
 冒泡排序
 基本思想:
@@ -14373,16 +15190,16 @@ def heap_sort(L):
 （利用while循环可以减少执行次数）
 
 def bubble_sort(L):
-    length = len(L)
+ length = len(L)
 --序列长度为length，需要执行length-1轮交换
-    for x in range(1,length):
+ for x in range(1,length):
 --对于每一轮交换，都将序列当中的左右元素进行比较
 --每轮交换当中，由于序列最后的元素一定是最大的，因此每轮循环到序列未排序的位置即可
-        for i in range(0,length-x):
-            if L[i] > L[i+1]:
-                temp = L[i]
-                L[i] = L[i+1]
-                L[i+1] = temp
+ for i in range(0,length-x):
+ if L[i] > L[i+1]:
+ temp = L[i]
+ L[i] = L[i+1]
+ L[i+1] = temp
 
 快速排序
 算法思想：
@@ -14401,31 +15218,31 @@ def bubble_sort(L):
 --L：待排序的序列；start排序的开始index,end序列末尾的index
 --对于长度为length的序列：start = 0;end = length-1
 def quick_sort(L,start,end):
-    if start < end:
-        i , j , pivot = start , end , L[start]
-        while i < j:
+ if start < end:
+ i , j , pivot = start , end , L[start]
+ while i < j:
 --从右开始向左寻找第一个小于pivot的值
-            while (i < j) and (L[j] >= pivot):
-                j = j-1
+ while (i < j) and (L[j] >= pivot):
+ j = j-1
 --将小于pivot的值移到左边
-            if (i < j):
-                L[i] = L[j]
-                i = i+1 
+ if (i < j):
+ L[i] = L[j]
+ i = i+1 
 --从左开始向右寻找第一个大于pivot的值
-            while (i < j) and (L[i] < pivot):
-                i = i+1
+ while (i < j) and (L[i] < pivot):
+ i = i+1
 --将大于pivot的值移到右边
-            if (i < j):
-                L[j] = L[i]
-                j = j-1
+ if (i < j):
+ L[j] = L[i]
+ j = j-1
 --循环结束后，说明 i=j，此时左边的值全都小于pivot,右边的值全都大于pivot
 --pivot的位置移动正确，那么此时只需对左右两侧的序列调用此函数进一步排序即可
 --递归调用函数：依次对左侧序列：从0 ~ i-1//右侧序列：从i+1 ~ end
-        L[i] = pivot
+ L[i] = pivot
 --左侧序列继续排序
-        quick_sort(L,start,i-1)
+ quick_sort(L,start,i-1)
 --右侧序列继续排序
-        quick_sort(L,i+1,end)
+ quick_sort(L,i+1,end)
 
 归并排序
 算法思想：
@@ -14449,47 +15266,46 @@ L[first...mid]为第一段，L[mid+1...last]为第二段，并且两端已经有
 --将序列L[first...mid]与序列L[mid+1...last]进行合并
 def mergearray(L,first,mid,last,temp):
 --对i,j,k分别进行赋值
-    i,j,k = first,mid+1,0
+ i,j,k = first,mid+1,0
 --当左右两边都有数时进行比较，取较小的数
-    while (i <= mid) and (j <= last):
-        if L[i] <= L[j]:
-            temp[k] = L[i]
-            i = i+1
-            k = k+1
-        else:
-            temp[k] = L[j]
-            j = j+1
-            k = k+1
+ while (i <= mid) and (j <= last):
+ if L[i] <= L[j]:
+ temp[k] = L[i]
+ i = i+1
+ k = k+1
+ else:
+ temp[k] = L[j]
+ j = j+1
+ k = k+1
 --如果左边序列还有数
-    while (i <= mid):
-        temp[k] = L[i]
-        i = i+1
-        k = k+1
+ while (i <= mid):
+ temp[k] = L[i]
+ i = i+1
+ k = k+1
 --如果右边序列还有数
-    while (j <= last):
-        temp[k] = L[j]
-        j = j+1
-        k = k+1
+ while (j <= last):
+ temp[k] = L[j]
+ j = j+1
+ k = k+1
 --将temp当中该段有序元素赋值给L待排序列使之部分有序
-    for x in range(0,k):
-        L[first+x] = temp[x]
+ for x in range(0,k):
+ L[first+x] = temp[x]
 --这是分组的函数
 def merge_sort(L,first,last,temp):
-    if first < last:
-        mid = (int)((first + last) / 2)
+ if first < last:
+ mid = (int)((first + last) / 2)
 --使左边序列有序
-       merge_sort(L,first,mid,temp)
+ merge_sort(L,first,mid,temp)
 --使右边序列有序
-       merge_sort(L,mid+1,last,temp)
+ merge_sort(L,mid+1,last,temp)
 --将两个有序序列合并
-       mergearray(L,first,mid,last,temp)
+ mergearray(L,first,mid,last,temp)
 --归并排序的函数
 def merge_sort_array(L):
 --声明一个长度为len(L)的空列表
-    temp = len(L)*[None]
+ temp = len(L)*[None]
 --调用归并排序
-    merge_sort(L,0,len(L)-1,temp)	
-
+ merge_sort(L,0,len(L)-1,temp)
 
 基数排序
 算法思想:
@@ -14503,56 +15319,55 @@ def merge_sort_array(L):
 --确定排序的次数
 --排序的顺序跟序列中最大数的位数相关
 def radix_sort_nums(L):
-    maxNum = L[0]
+ maxNum = L[0]
 --寻找序列中的最大数
-    for x in L:
-        if maxNum < x:
-            maxNum = x
+ for x in L:
+ if maxNum < x:
+ maxNum = x
 --确定序列中的最大元素的位数
-    times = 0
-    while (maxNum > 0):
-        maxNum = (int)(maxNum/10)
-        times = times+1
-    return times
+ times = 0
+ while (maxNum > 0):
+ maxNum = (int)(maxNum/10)
+ times = times+1
+ return times
 --找到num从低到高第pos位的数据
 def get_num_pos(num,pos):
-    return ((int)(num/(10**(pos-1))))%10
+ return ((int)(num/(10**(pos-1))))%10
 
 **基数排序**
 def radix_sort(L):
-    count = 10*[None]       --存放各个桶的数据统计个数
-    bucket = len(L)*[None]  --暂时存放排序结果
+ count = 10*[None] --存放各个桶的数据统计个数
+ bucket = len(L)*[None] --暂时存放排序结果
 --从低位到高位依次执行循环--
-    for pos in range(1,radix_sort_nums(L)+1):
-        --置空各个桶的数据统计
-        for x in range(0,10):
-            count[x] = 0
-        --统计当前该位(个位，十位，百位....)的元素数目
-        for x in range(0,len(L)):
-            --统计各个桶将要装进去的元素个数
-            j = get_num_pos(int(L[x]),pos)
-            count[j] = count[j]+1
-        --count[i]表示第i个桶的右边界索引
-        for x in range(1,10):
-            count[x] = count[x] + count[x-1]
-        --将数据依次装入桶中
-        for x in range(len(L)-1,-1,-1):
-            --求出元素第K位的数字
-            j = get_num_pos(L[x],pos)
-            --放入对应的桶中，count[j]-1是第j个桶的右边界索引
-            bucket[count[j]-1] = L[x]
-            --对应桶的装入数据索引-1
-            count[j] = count[j]-1
-        -- 将已分配好的桶中数据再倒出来，此时已是对应当前位数有序的表
-        for x in range(0,len(L)):
-            L[x] = bucket[x]
-
+ for pos in range(1,radix_sort_nums(L)+1):
+ --置空各个桶的数据统计
+ for x in range(0,10):
+ count[x] = 0
+ --统计当前该位(个位，十位，百位....)的元素数目
+ for x in range(0,len(L)):
+ --统计各个桶将要装进去的元素个数
+ j = get_num_pos(int(L[x]),pos)
+ count[j] = count[j]+1
+ --count[i]表示第i个桶的右边界索引
+ for x in range(1,10):
+ count[x] = count[x] + count[x-1]
+ --将数据依次装入桶中
+ for x in range(len(L)-1,-1,-1):
+ --求出元素第K位的数字
+ j = get_num_pos(L[x],pos)
+ --放入对应的桶中，count[j]-1是第j个桶的右边界索引
+ bucket[count[j]-1] = L[x]
+ --对应桶的装入数据索引-1
+ count[j] = count[j]-1
+ -- 将已分配好的桶中数据再倒出来，此时已是对应当前位数有序的表
+ for x in range(0,len(L)):
+ L[x] = bucket[x]
 
 # Java数据库及持久层技术以及多种数据库的应用：
 
-* MYSQL：
-MySQL 是一个开源的关系型数据库管理系统（RDBMS），由瑞典 MySQL AB 公司开发，现属 Oracle 旗下。它使用 **SQL（结构化查询语言）** 来管理和操作数据，支持多线程、多用户，并具备高性能、高可靠性和易扩展性。
-MySQL 常用于 Web 应用开发，与 PHP、Apache/Nginx 等组成经典“LAMP”或“LNMP”架构，支持事务、索引、视图、存储过程等核心关系型特性，也提供主从复制、分区、全文检索等企业级功能。
+- MYSQL：
+  MySQL 是一个开源的关系型数据库管理系统（RDBMS），由瑞典 MySQL AB 公司开发，现属 Oracle 旗下。它使用 **SQL（结构化查询语言）** 来管理和操作数据，支持多线程、多用户，并具备高性能、高可靠性和易扩展性。
+  MySQL 常用于 Web 应用开发，与 PHP、Apache/Nginx 等组成经典“LAMP”或“LNMP”架构，支持事务、索引、视图、存储过程等核心关系型特性，也提供主从复制、分区、全文检索等企业级功能。
 
 ## MYSQL的核心概念：数据库、表和数据
 
@@ -14560,12 +15375,13 @@ MySQL 常用于 Web 应用开发，与 PHP、Apache/Nginx 等组成经典“LAMP
 
 **数据库** 是一个用于存储和管理数据的容器。它是一个有组织的、命名的数据集合。
 
-*   **核心功能**：隔离。在一个 MySQL 服务器实例上，你可以创建多个数据库。每个数据库在逻辑上是相互独立的，它们有自己的权限、设置和存储内容，互不干扰。
-*   **实际例子**：
-    *   一个电商系统可能会有 `shop_user_db`（用户数据库）、`shop_product_db`（商品数据库）、`shop_order_db`（订单数据库）。
-    *   一个博客系统可能会有 `blog_db`，里面包含了文章、评论、用户等信息。
+- **核心功能**：隔离。在一个 MySQL 服务器实例上，你可以创建多个数据库。每个数据库在逻辑上是相互独立的，它们有自己的权限、设置和存储内容，互不干扰。
+- **实际例子**：
+  - 一个电商系统可能会有 `shop_user_db`（用户数据库）、`shop_product_db`（商品数据库）、`shop_order_db`（订单数据库）。
+  - 一个博客系统可能会有 `blog_db`，里面包含了文章、评论、用户等信息。
 
 **相关SQL命令示例：**
+
 ```sql
 -- 创建一个名为 my_blog 的数据库
 CREATE DATABASE my_blog;
@@ -14583,17 +15399,18 @@ SHOW DATABASES;
 
 **表** 是数据库中实际存储数据的基本单位。它由行和列组成，结构类似于 Excel 表格。
 
-*   **结构定义**：
-    *   **列**：也称为“字段”。每一列都有一个特定的数据类型（如整数、字符串、日期等），定义了该列可以存储什么类型的信息。这就像是书架上的分类标签，比如“书名”、“作者”、“出版日期”。
-    *   **行**：也称为“记录”。每一行代表一条完整的数据实体。
-*   **在图书馆比喻中**：在“文学分馆”（数据库）里，你会有多个书架（表），比如“小说书架”（`novels`表）、“诗歌书架”（`poems`表）、“历史书架”（`history_books`表）。每个书架都有固定的分类规则（列的定义）。
-*   **实际例子**：
-    在 `my_blog` 数据库中，你可能会创建以下几张表：
-    *   `users` 表：存储用户信息（列：`user_id`, `username`, `password`, `email`）。
-    *   `posts` 表：存储文章信息（列：`post_id`, `title`, `content`, `author_id`, `created_time`）。
-    *   `comments` 表：存储评论信息（列：`comment_id`, `post_id`, `user_id`, `comment_content`）。
+- **结构定义**：
+  - **列**：也称为“字段”。每一列都有一个特定的数据类型（如整数、字符串、日期等），定义了该列可以存储什么类型的信息。这就像是书架上的分类标签，比如“书名”、“作者”、“出版日期”。
+  - **行**：也称为“记录”。每一行代表一条完整的数据实体。
+- **在图书馆比喻中**：在“文学分馆”（数据库）里，你会有多个书架（表），比如“小说书架”（`novels`表）、“诗歌书架”（`poems`表）、“历史书架”（`history_books`表）。每个书架都有固定的分类规则（列的定义）。
+- **实际例子**：
+  在 `my_blog` 数据库中，你可能会创建以下几张表：
+  - `users` 表：存储用户信息（列：`user_id`, `username`, `password`, `email`）。
+  - `posts` 表：存储文章信息（列：`post_id`, `title`, `content`, `author_id`, `created_time`）。
+  - `comments` 表：存储评论信息（列：`comment_id`, `post_id`, `user_id`, `comment_content`）。
 
 **相关SQL命令示例：**
+
 ```sql
 -- 在当前数据库中创建一个 users 表
 CREATE TABLE users (
@@ -14616,18 +15433,21 @@ DESCRIBE users;
 
 **数据** 是存储在表中的实际值，也就是表中的每一行记录。它是信息的载体，是数据库的最终内容。
 
-*   **核心特点**：数据是动态的，会不断地被**增加**、**查询**、**修改**和**删除**（这四种操作常被合称为 **CRUD**）。
-*   **实际例子**：
-    在 `users` 表中，一条数据（一行记录）可能是这样的：
-
-    | user_id | username | email | created_at |
-    | :--- | :--- | :--- | :--- |
-    | 1 | 张三 | zhangsan@example.com | 2023-10-27 10:00:00 |
-    | 2 | 李四 | lisi@example.com | 2023-10-27 11:30:00 |
-
-    这两行就是具体的“数据”。
+- **核心特点**：数据是动态的，会不断地被**增加**、**查询**、**修改**和**删除**（这四种操作常被合称为 **CRUD**）。
+  
+- **实际例子**：
+  在 `users` 表中，一条数据（一行记录）可能是这样的：
+  
+  | user_id | username | email | created_at |
+  | --- | --- | --- | --- |
+  | 1   | 张三  | zhangsan@example.com | 2023-10-27 10:00:00 |
+  | 2   | 李四  | lisi@example.com | 2023-10-27 11:30:00 |
+  
+  这两行就是具体的“数据”。
+  
 
 **相关SQL命令示例：**
+
 ```sql
 -- 向 users 表中插入一条数据（增，Create）
 INSERT INTO users (username, email) VALUES ('王五', 'wangwu@example.com');
@@ -14646,8 +15466,8 @@ DELETE FROM users WHERE username = ‘李四’;
 
 ### 总结与关系
 
-| 概念 | 定义 | 作用 | 关系 |
-| :--- | :--- | :--- | :--- |
+| 概念  | 定义  | 作用  | 关系  |
+| --- | --- | --- | --- |
 | **数据库** | 数据的逻辑容器 | **隔离**和**组织**不同应用或模块的数据 | **一个数据库**包含**多张表** |
 | **表** | 具有固定结构的数据集合 | **定义**数据的结构和**分类**存储数据 | **一张表**包含**多条数据（行）** |
 | **数据** | 表中的具体记录 | **存储**实际的业务信息 | **数据**是表的**内容和价值**所在 |
@@ -14655,200 +15475,210 @@ DELETE FROM users WHERE username = ‘李四’;
 **层级关系：**
 **MySQL服务器 -> 多个[数据库] -> 多个[表] -> 多个[数据行]**
 
-
 ## MYSQL的SQL语言
 
 ### 1. 数据定义语言 DDL（Data Definition Language）
+
 作用：  
 声明或变更“数据字典”——也就是数据库、表、索引、视图、触发器、分区等对象的元数据。  
 执行即 **提交（auto-commit）**，不可回滚，因此线上操作必须带“变更流程”。
 
-* 1.1 CREATE DATABASE  
+- 1.1 CREATE DATABASE  
    本质：在数据目录下新建一个×××.db 目录，并在系统表 mysql.db 中插入一行权限记录。  
    场景：多租户、多环境（dev/test/prod）隔离。  
-   注意：  
-   - 字符集/排序规则要一次性指定，否则后续表继承可能不一致。  
-   - 新建库不要忘记 GRANT 授权用户，否则新建库默认只有 root 能访问。
-
-* 1.2 ALTER DATABASE  
+   注意：
+  
+  - 字符集/排序规则要一次性指定，否则后续表继承可能不一致。
+  - 新建库不要忘记 GRANT 授权用户，否则新建库默认只有 root 能访问。
+- 1.2 ALTER DATABASE  
    只改“默认属性”（字符集、排序规则、加密选项），不改已有表，它们保持原字符集。  
    线上操作几乎零阻塞，但容易误解为“批量改表”。
-
-* 1.3 DROP DATABASE  
+  
+- 1.3 DROP DATABASE  
    递归删除该目录下所有 *.ibd / *.frm 文件，系统表记录一并清理，**不可恢复**。  
    高危操作 → 必须“二次确认 + 全备”。
-
-* 1.4 CREATE TABLE  
-   除了列定义，还能一次搞定：  
-   - 存储引擎（ENGINE=InnoDB）  
-   - 分区策略 (PARTITION BY RANGE/LIST/HASH/KEY)  
-   - 二级索引、外键、CHECK 约束、生成列 (GENERATED)  
-   - 行格式（ROW_FORMAT=DYNAMIC/COMPRESSED）  
-   最佳实践：  
-   - 所有表必须显式指定主键，即使业务无自增列，也可用“逻辑主键”。  
-   - 预估 1~2 年数据量，提前做分区或分表，避免后续 ALTER 锁表。
-
-* 1.5 ALTER TABLE  
-   MySQL 8.0 以后 90% 场景支持“在线 DDL”（ALGORITHM=INPLACE, LOCK=NONE），但以下仍要拷表：  
-   - 改列类型（VARCHAR→JSON）  
-   - 减列长度  
-   - 改列顺序  
-   技巧：  
-   - 用 pt-osc/gh-ost 工具对 5.7 之前版本做“无锁变更”。  
-   - 大表加索引可先用 CREATE INDEX ... ALGORITHM=INPLACE。
-
-* 1.6 DROP TABLE  
+  
+- 1.4 CREATE TABLE  
+   除了列定义，还能一次搞定：
+  
+  - 存储引擎（ENGINE=InnoDB）
+  - 分区策略 (PARTITION BY RANGE/LIST/HASH/KEY)
+  - 二级索引、外键、CHECK 约束、生成列 (GENERATED)
+  - 行格式（ROW_FORMAT=DYNAMIC/COMPRESSED）  
+    最佳实践：
+  - 所有表必须显式指定主键，即使业务无自增列，也可用“逻辑主键”。
+  - 预估 1~2 年数据量，提前做分区或分表，避免后续 ALTER 锁表。
+- 1.5 ALTER TABLE  
+   MySQL 8.0 以后 90% 场景支持“在线 DDL”（ALGORITHM=INPLACE, LOCK=NONE），但以下仍要拷表：
+  
+  - 改列类型（VARCHAR→JSON）
+  - 减列长度
+  - 改列顺序  
+    技巧：
+  - 用 pt-osc/gh-ost 工具对 5.7 之前版本做“无锁变更”。
+  - 大表加索引可先用 CREATE INDEX ... ALGORITHM=INPLACE。
+- 1.6 DROP TABLE  
    对 InnoDB 会放进“回收站”(innodb_file_per_table=1 且 8.0 的 innodb_undo_tablespaces>0 可闪回)，但生产环境别指望。  
-   建议：  
-   - 软删除：先 RENAME TABLE foo TO foo_bak_20251116，观察 7 天再 DROP。  
-   - 备份脚本里开启 --single-transaction --master-data=2，以便时点恢复。
-
-* 1.7 CREATE / DROP INDEX  
+   建议：
+  
+  - 软删除：先 RENAME TABLE foo TO foo_bak_20251116，观察 7 天再 DROP。
+  - 备份脚本里开启 --single-transaction --master-data=2，以便时点恢复。
+- 1.7 CREATE / DROP INDEX  
    二级索引在 8.0 可“并行构建”，速度提升 3~5 倍；  
    前缀索引 (text(20)) 可省空间，但无法覆盖索引，用时要权衡。
-
-* 1.8 TRUNCATE TABLE  
+  
+- 1.8 TRUNCATE TABLE  
    内部 DROP+CREATE，所以自增计数器归零、且不可回滚。  
    比 DELETE 全表快（不逐行写 undo/redo），但触发器不会触发行级 DELETE 事件。
-
+  
 
 ### 2. 数据操纵语言 DML（Data Manipulation Language）
+
 作用：对数据行进行增、删、改。  
 默认开启隐式事务，一条语句就是一个事务；也可显式 START TRANSACTION。
 
-* 2.1 INSERT  
+- 2.1 INSERT  
    三种写法：  
    1.1 单行 VALUES ()  
    1.2 多行 VALUES (),(),() —— 一次网络往返，批量提交  
    1.3 INSERT ... SELECT —— 导数/归档必用  
-   注意：  
-   - 自增列用 NULL 或 0 让 MySQL 分配，可避免主键冲突。  
-   - 8.0 支持 INSERT ... SET 语法，与 UPDATE 类似，写起来更直观。  
-   - 大批量插入前先关闭唯一检查（SET unique_checks=0）和外键检查（foreign_key_checks=0），插完再打开，可提速 50%+。
-
-* 2.2 UPDATE  
+   注意：
+  
+  - 自增列用 NULL 或 0 让 MySQL 分配，可避免主键冲突。
+  - 8.0 支持 INSERT ... SET 语法，与 UPDATE 类似，写起来更直观。
+  - 大批量插入前先关闭唯一检查（SET unique_checks=0）和外键检查（foreign_key_checks=0），插完再打开，可提速 50%+。
+- 2.2 UPDATE  
    必须带 WHERE，否则全表更新。  
    行锁粒度：若 WHERE 命中索引则行锁，否则退化为表锁（InnoDB）。  
-   技巧：  
-   - 用 LIMIT 分批更新，降低锁持有时间。  
-   - 先 SELECT 主键，再 UPDATE ... WHERE pk IN (...) 可稳定走索引。
-
-* 2.3 DELETE  
+   技巧：
+  
+  - 用 LIMIT 分批更新，降低锁持有时间。
+  - 先 SELECT 主键，再 UPDATE ... WHERE pk IN (...) 可稳定走索引。
+- 2.3 DELETE  
    逐行写 undo，产生大量 redo，大表删除很慢。  
-   替代方案：  
-   - 按主键范围分区删除（PARTITION DROP）  
-   - 归档场景直接 CREATE TABLE foo_new LIKE foo; INSERT INTO foo_new SELECT ... WHERE 条件; RENAME 交换。
-
+   替代方案：
+  
+  - 按主键范围分区删除（PARTITION DROP）
+  - 归档场景直接 CREATE TABLE foo_new LIKE foo; INSERT INTO foo_new SELECT ... WHERE 条件; RENAME 交换。
 
 ### 3. 数据查询语言 DQL（Data Query Language）
+
 作用：把数据行读出来；是最大头的性能占用场景。
 
-* 3.1 SELECT 基本执行路径  
+- 3.1 SELECT 基本执行路径  
    客户端→解析器→权限验证→查询优化器→执行引擎→存储引擎→返回  
-   关键看“优化器”：  
-   - 基于成本（CBO）选索引  
-   - 会改写恒真/恒假条件  
-   - 8.0 引入直方图 (Histogram) 解决数据倾斜
-
-* 3.2 子句组合  
+   关键看“优化器”：
+  
+  - 基于成本（CBO）选索引
+  - 会改写恒真/恒假条件
+  - 8.0 引入直方图 (Histogram) 解决数据倾斜
+- 3.2 子句组合  
    WHERE → 过滤行  
    GROUP BY → 分组，可带 WITH ROLLUP 做小计  
    HAVING → 过滤分组结果  
    ORDER BY → 排序，走索引或 Filesort（内存+磁盘临时表）  
    LIMIT/OFFSET → 分页深翻（OFFSET 100000,10）会全表扫，用“游标分页”(WHERE id>? LIMIT 10) 替代
-
-* 3.3 JOIN 算法  
-   - Nested Loop（默认）  
-   - Block Nested Loop（无索引时）  
-   - Hash Join（8.0.18 开始支持，仅用于等值连接，无索引大表关联提速明显）  
-   调优：  
-   - 小表驱动大表  
-   - ON 条件列类型、字符集、排序规则必须一致，否则无法走索引
-
-* 3.4 UNION vs UNION ALL  
+  
+- 3.3 JOIN 算法
+  
+  - Nested Loop（默认）
+  - Block Nested Loop（无索引时）
+  - Hash Join（8.0.18 开始支持，仅用于等值连接，无索引大表关联提速明显）  
+    调优：
+  - 小表驱动大表
+  - ON 条件列类型、字符集、排序规则必须一致，否则无法走索引
+- 3.4 UNION vs UNION ALL  
    前者多一步“去重”(临时表+唯一索引)，代价高；业务允许重复行务必用 UNION ALL。
+  
 
 ### 4. 数据控制语言 DCL（Data Control Language）
+
 作用：把“谁能看什么/改什么”注册到 mysql.* 权限表，并实时生效。
 
-* 4.1. GRANT  
+- 4.1. GRANT  
    粒度：全局、库、表、列、存储过程、代理用户。  
    8.0 支持 ROLE（角色），先 CREATE ROLE r1; GRANT SELECT ON db.* TO r1; GRANT r1 TO 'app_user'@'%';  
-   注意：  
-   - 权限变更立即生效，无需 FLUSH PRIVILEGES（除非直接 UPDATE mysql.user 表）。  
-   - 不要把 FILE, PROCESS, SUPER 随便给业务账号。
-
-* 4.2. REVOKE  
+   注意：
+  
+  - 权限变更立即生效，无需 FLUSH PRIVILEGES（除非直接 UPDATE mysql.user 表）。
+  - 不要把 FILE, PROCESS, SUPER 随便给业务账号。
+- 4.2. REVOKE  
    级联回收：若用户通过角色继承权限， revoke 角色即可。  
    如果之前用 GRANT 给过 WITH GRANT OPTION，回收时要加 CASCADE，否则报错。
+  
 
 ### 5. 其它“高频但不好归类”的语句
-* 5.1 USE / SHOW / DESCRIBE  
-   属于“客户端便利指令”，服务端只是把系统表 mysql.db、information_schema 内容格式化返回。
 
-* 5.2 EXPLAIN  
+- 5.1 USE / SHOW / DESCRIBE  
+   属于“客户端便利指令”，服务端只是把系统表 mysql.db、information_schema 内容格式化返回。
+  
+- 5.2 EXPLAIN  
    8.0 默认用 EXPLAIN FORMAT=TREE 显示“成本估算+执行步骤”，再加 ANALYZE 会**真正跑一遍**给出实际行数。  
    关键列：type（访问类型，至少到 range 才合格）、Extra（Using filesort/Using temporary 需优化）。
-
-* 5.3 LIMIT / OFFSET  
+  
+- 5.3 LIMIT / OFFSET  
    语法糖，但会全表扫+丢弃前 OFFSET 行；深分页用“游标”或“覆盖索引+子查询”优化。
-
-* 5.4 JOIN / UNION / UNION ALL  
+  
+- 5.4 JOIN / UNION / UNION ALL  
    已并入 DQL 讲解，注意 UNION 会去重导致内存临时表暴涨。
+  
 
 ### 小结速记
+
 - DDL 管“壳”——建库建表建索引，动作即提交。
 - DML 管“行”——增删改，可回滚。
 - DQL 管“读”——SELECT 千变万化，性能核心。
 - DCL 管“权”——GRANT/REVOKE，决定谁能碰数据。
 - 其余指令是“辅助导航”，让开发和运维更快定位问题。
 
-
 **SQL语句中DROP和TRANCATE有什么不同？**
 在SQL中，`DROP` 和 `TRUNCATE` 都用于操作数据库对象（主要是表），但它们的作用和影响有显著区别，核心差异如下：
 
 ### 1. **操作对象与结果**
+
 - **`DROP`**：  
   用于**删除整个数据库对象**（如表、数据库、索引等）。如果操作的是表，会直接删除表的结构（定义）和所有数据，同时释放表所占用的空间，表本身不再存在。  
   示例：`DROP TABLE students;`  
   执行后，`students` 表完全消失，无法再对其进行查询或插入操作。
-
+  
 - **`TRUNCATE`**：  
   仅用于**清空表中的所有数据**，但会保留表的结构（定义）。执行后，表依然存在，只是数据被全部删除，相当于保留空表。  
   示例：`TRUNCATE TABLE students;`  
   执行后，`students` 表结构不变，但里面的数据被清空，可继续向表中插入新数据。
-
+  
 
 ### 2. **事务与回滚**
+
 - **`DROP`**：  
   是**隐式提交的操作**（自动提交事务），执行后无法通过 `ROLLBACK` 回滚，操作具有不可逆性。
-
+  
 - **`TRUNCATE`**：  
   多数数据库中（如MySQL的InnoDB、PostgreSQL），`TRUNCATE` 也会隐式提交事务，无法回滚；但少数场景下（如某些数据库的特定存储引擎），可能支持回滚。不过通常认为其操作是“近似不可逆”的，需谨慎使用。
-
+  
 
 ### 3. **性能与日志**
+
 - **`DROP`**：  
   操作会删除表结构，涉及元数据（表定义）的修改，性能相对较慢（尤其是大表），且会记录少量日志（主要是结构删除）。
-
+  
 - **`TRUNCATE`**：  
   仅清空数据，不处理表结构，通过释放数据页直接删除数据，性能远快于 `DELETE`（逐行删除），但日志记录较少（通常不记录每行删除，只记录数据页释放）。
-
+  
 
 ### 4. **依赖对象影响**
+
 - **`DROP`**：  
   删除表时，会同时删除依赖该表的对象（如索引、触发器、外键约束等），可能导致关联表的外键失效。
-
+  
 - **`TRUNCATE`**：  
   仅清空数据，表的索引、约束、触发器等结构依然保留，不影响表的依赖关系。
-
+  
 
 ### 总结
-- 想**彻底删除表（包括结构）** → 用 `DROP`。  
+
+- 想**彻底删除表（包括结构）** → 用 `DROP`。
 - 想**保留表结构但清空所有数据** → 用 `TRUNCATE`。  
-两者都属于高危操作，执行前务必确认是否需要备份数据。
-
-
+  两者都属于高危操作，执行前务必确认是否需要备份数据。
 
 ## MYSQL是关系型数据库，关系型数据库的特点是什么？
 
@@ -14860,9 +15690,9 @@ DELETE FROM users WHERE username = ‘李四’;
 
 关系型数据库的根基是**埃德加·科德（E.F. Codd）在1970年提出的关系模型**。这不是一个简单的工程概念，而是一个严谨的**数学理论**，建立在**集合论**和**谓词逻辑**之上。
 
-*   **关系**：在数学上，一个"关系"是一个由元组（在数据库中就是"行"）组成的集合。我们日常所说的"表"，就是这个数学关系的一种可视化呈现。
-*   **属性**：关系的列被称为"属性"，每个属性都有一个明确定义的**域**，也就是数据类型（如整数、字符串、日期）。这确保了数据的类型安全。
-*   **核心原则：数据与关系都表示为值**。所有数据都通过表中的值来表示，甚至连表与表之间的关联，也是通过存储在其他表中的值（如外键）来建立的。
+- **关系**：在数学上，一个"关系"是一个由元组（在数据库中就是"行"）组成的集合。我们日常所说的"表"，就是这个数学关系的一种可视化呈现。
+- **属性**：关系的列被称为"属性"，每个属性都有一个明确定义的**域**，也就是数据类型（如整数、字符串、日期）。这确保了数据的类型安全。
+- **核心原则：数据与关系都表示为值**。所有数据都通过表中的值来表示，甚至连表与表之间的关联，也是通过存储在其他表中的值（如外键）来建立的。
 
 **这意味着，你在SQL中写的每一条查询，背后都对应着一次关系代数运算（如选择、投影、连接等）。**
 
@@ -14872,10 +15702,10 @@ DELETE FROM users WHERE username = ‘李四’;
 
 关系型数据库通过**事务**来保证业务操作的可靠性和一致性，而事务必须满足ACID属性：
 
-*   **原子性**：一个事务内的所有操作，要么**全部完成**，要么**全部不完成**。不存在中间状态。例如，银行转账必须同时完成扣款和入款，如果其中一步失败，整个交易必须回滚。
-*   **一致性**：事务必须使数据库从一个**一致的状态**转换到另一个**一致的状态**。这保证了所有预定义的规则（如约束、触发器）都会被遵守，不会破坏数据的完整性。
-*   **隔离性**：并发执行的事务之间是**相互隔离**的，一个事务的执行不应影响其他事务。这防止了"脏读"、"不可重复读"和"幻读"等问题。数据库通过不同的**隔离级别**（如读已提交、可重复读）来实现这种平衡。
-*   **持久性**：一旦事务提交，它对数据库的修改就是**永久性**的，即使系统发生故障（如断电），数据也不会丢失。这通常通过预写日志等机制实现。
+- **原子性**：一个事务内的所有操作，要么**全部完成**，要么**全部不完成**。不存在中间状态。例如，银行转账必须同时完成扣款和入款，如果其中一步失败，整个交易必须回滚。
+- **一致性**：事务必须使数据库从一个**一致的状态**转换到另一个**一致的状态**。这保证了所有预定义的规则（如约束、触发器）都会被遵守，不会破坏数据的完整性。
+- **隔离性**：并发执行的事务之间是**相互隔离**的，一个事务的执行不应影响其他事务。这防止了"脏读"、"不可重复读"和"幻读"等问题。数据库通过不同的**隔离级别**（如读已提交、可重复读）来实现这种平衡。
+- **持久性**：一旦事务提交，它对数据库的修改就是**永久性**的，即使系统发生故障（如断电），数据也不会丢失。这通常通过预写日志等机制实现。
 
 **ACID特性是关系型数据库在企业级应用（如金融、电商）中不可替代的关键原因。**
 
@@ -14885,10 +15715,10 @@ DELETE FROM users WHERE username = ‘李四’;
 
 关系型数据库通过一系列**约束**来强制保证数据的准确性和可靠性，这是"数据完整性"的核心体现：
 
-*   **实体完整性**：通过**主键** 实现。要求每个表都必须有一个主键，且主键的值必须唯一且非空。这确保了表中的每一行都是可唯一标识的实体。
-*   **参照完整性**：通过**外键** 实现。确保一个表（子表）中的外键值必须在另一个表（父表）的主键值中存在（或者为空）。这维护了表与表之间关系的有效性。例如，`orders`表中的`user_id`必须存在于`users`表中。
-*   **域完整性**：通过数据类型、`NOT NULL`约束、`CHECK`约束等，确保列中的值符合特定的规则和范围。
-*   **用户定义的完整性**：根据业务需求自定义的规则。
+- **实体完整性**：通过**主键** 实现。要求每个表都必须有一个主键，且主键的值必须唯一且非空。这确保了表中的每一行都是可唯一标识的实体。
+- **参照完整性**：通过**外键** 实现。确保一个表（子表）中的外键值必须在另一个表（父表）的主键值中存在（或者为空）。这维护了表与表之间关系的有效性。例如，`orders`表中的`user_id`必须存在于`users`表中。
+- **域完整性**：通过数据类型、`NOT NULL`约束、`CHECK`约束等，确保列中的值符合特定的规则和范围。
+- **用户定义的完整性**：根据业务需求自定义的规则。
 
 **这些约束将业务规则固化在数据库层面，而非应用层面，提供了更可靠的数据质量保障。**
 
@@ -14898,8 +15728,8 @@ DELETE FROM users WHERE username = ‘李四’;
 
 SQL不仅仅是"查询语言"，它是一种声明式的、集成了数据定义、操作和控制的强大语言。
 
-*   **声明式编程**：你只需要告诉数据库 **"你想要什么"**（例如，"找出所有来自北京的用户"），而不需要指定 **"如何去做"**（例如，是先遍历索引还是全表扫描）。数据库的**查询优化器**会自动选择最高效的执行路径。
-*   **强大的关联能力**：SQL的核心威力在于`JOIN`操作。它能够基于关系模型，轻松地将多个表中的数据动态地关联起来，形成一个新的、临时的结果集，这是关系型数据库处理复杂查询的基石。
+- **声明式编程**：你只需要告诉数据库 **"你想要什么"**（例如，"找出所有来自北京的用户"），而不需要指定 **"如何去做"**（例如，是先遍历索引还是全表扫描）。数据库的**查询优化器**会自动选择最高效的执行路径。
+- **强大的关联能力**：SQL的核心威力在于`JOIN`操作。它能够基于关系模型，轻松地将多个表中的数据动态地关联起来，形成一个新的、临时的结果集，这是关系型数据库处理复杂查询的基石。
 
 ---
 
@@ -14907,11 +15737,11 @@ SQL不仅仅是"查询语言"，它是一种声明式的、集成了数据定义
 
 这是关系型数据库设计的艺术和科学，旨在通过分解表来**消除数据冗余**和**避免数据异常**（插入、更新、删除异常）。
 
-*   **目标**：让每个事实只出现在一个地方。
-*   **范式**：从第一范式到第五范式，每一级范式都有更严格的要求。通常，设计到**第三范式** 就已经能很好地平衡性能和结构清晰度。
-    *   **第一范式**：确保每列都是原子的（不可再分）。
-    *   **第二范式**：消除部分依赖，确保所有非主属性完全依赖于主键。
-    *   **第三范式**：消除传递依赖，确保非主属性不依赖于其他非主属性。
+- **目标**：让每个事实只出现在一个地方。
+- **范式**：从第一范式到第五范式，每一级范式都有更严格的要求。通常，设计到**第三范式** 就已经能很好地平衡性能和结构清晰度。
+  - **第一范式**：确保每列都是原子的（不可再分）。
+  - **第二范式**：消除部分依赖，确保所有非主属性完全依赖于主键。
+  - **第三范式**：消除传递依赖，确保非主属性不依赖于其他非主属性。
 
 **规范化虽然可能导致查询时需要更多的`JOIN`，但它保证了数据的一致性，是维护大型、复杂系统长期健康的关键。**
 
@@ -14919,8 +15749,8 @@ SQL不仅仅是"查询语言"，它是一种声明式的、集成了数据定义
 
 ### 与NoSQL的对比（加深理解）
 
-| 特性 | 关系型数据库 | NoSQL数据库 |
-| :--- | :--- | :--- |
+| 特性  | 关系型数据库 | NoSQL数据库 |
+| --- | --- | --- |
 | **模型** | 严格的表结构，预定义模式 | 灵活的模式，可以是文档、键值对、图等 |
 | **ACID** | 强一致性，完整ACID支持 | 通常支持**最终一致性**，牺牲一致性换取可用性和分区容错性 |
 | **扩展性** | 垂直扩展（升级硬件）为主，水平扩展（分库分表）复杂 | 天生为水平扩展设计 |
@@ -14935,8 +15765,8 @@ SQL不仅仅是"查询语言"，它是一种声明式的、集成了数据定义
 
 它不仅仅是一个存储工具，更是一个**可靠、一致、可预测的数据生态系统**，尤其适合处理结构化数据和需要高度可靠事务的业务逻辑。
 
-
 ## SQL的基本数据类型
+
 SQL的数据类型定义了列中可以存储的数据种类，是数据库设计的基石。选择合适的数据类型对于数据的完整性、查询性能和存储效率至关重要。
 
 ### 一、数值类型
@@ -14945,13 +15775,14 @@ SQL的数据类型定义了列中可以存储的数据种类，是数据库设�
 
 #### 1. 精确数字类型
 
-| 类型 | 描述 | MySQL | PostgreSQL | SQL Server |
-| :--- | :--- | :--- | :--- | :--- |
+| 类型  | 描述  | MySQL | PostgreSQL | SQL Server |
+| --- | --- | --- | --- | --- |
 | **整数** | 存储没有小数部分的数字。 | `TINYINT` (1字节) <br> `SMALLINT` (2字节) <br> **`INT` / `INTEGER`** (4字节) <br> `BIGINT` (8字节) | `SMALLINT` (2字节) <br> **`INT` / `INTEGER`** (4字节) <br> `BIGINT` (8字节) | `TINYINT` (1字节) <br> `SMALLINT` (2字节) <br> **`INT`** (4字节) <br> `BIGINT` (8字节) |
 | **定点数** | 存储精确的小数，适用于金融、货币计算。 | `DECIMAL(M, D)` <br> `NUMERIC(M, D)` <br> *M是总位数，D是小数位数。* | `DECIMAL(M, D)` <br> `NUMERIC(M, D)` | `DECIMAL(M, D)` <br> `NUMERIC(M, D)` |
 | **位类型** | 存储二进制位。 | `BIT(M)` | `BIT(M)` <br> `BIT VARYING(M)` | `BIT` (只能存1位：0或1) |
 
 **说明**：
+
 - **整数**是最常用的类型，根据数值范围选择。`INT` 是通用选择。
 - **定点数**（如 `DECIMAL(10,2)`）可以精确表示像 `12345.67` 这样的数字，而浮点数可能会因为舍入误差而不精确。
 
@@ -14959,8 +15790,8 @@ SQL的数据类型定义了列中可以存储的数据种类，是数据库设�
 
 用于存储非常大或非常小的浮点数，但可能会有微小的舍入误差。
 
-| 类型 | 描述 | MySQL | PostgreSQL | SQL Server |
-| :--- | :--- | :--- | :--- | :--- |
+| 类型  | 描述  | MySQL | PostgreSQL | SQL Server |
+| --- | --- | --- | --- | --- |
 | **单精度** | `Single`。 | `FLOAT` | `REAL` 或 `FLOAT(24)` | `REAL` |
 | **双精度** | `Double`。 | `DOUBLE` | `DOUBLE PRECISION` 或 `FLOAT(53)` | `FLOAT` |
 
@@ -14972,13 +15803,14 @@ SQL的数据类型定义了列中可以存储的数据种类，是数据库设�
 
 用于存储文本信息。
 
-| 类型 | 描述 | MySQL | PostgreSQL | SQL Server |
-| :--- | :--- | :--- | :--- | :--- |
+| 类型  | 描述  | MySQL | PostgreSQL | SQL Server |
+| --- | --- | --- | --- | --- |
 | **固定长度** | `Char`，始终占用固定的存储空间，不足部分用空格填充。 | `CHAR(n)` | `CHAR(n)` | `CHAR(n)` |
-| **可变长度** | `VarChar`，按实际内容长度占用存储空间，有上限。     | `VARCHAR(n)` | `VARCHAR(n)` 或 `CHARACTER VARYING(n)` | `VARCHAR(n)` |
-| **长文本**   | `长型` 和 `文本`，用于存储大段文本，如文章、日志。 | `TEXT` (有多种变体，如 `TINYTEXT`, `LONGTEXT`) | `TEXT` | `TEXT` (已过时) <br> **`VARCHAR(MAX)`** (推荐) |
+| **可变长度** | `VarChar`，按实际内容长度占用存储空间，有上限。 | `VARCHAR(n)` | `VARCHAR(n)` 或 `CHARACTER VARYING(n)` | `VARCHAR(n)` |
+| **长文本** | `长型` 和 `文本`，用于存储大段文本，如文章、日志。 | `TEXT` (有多种变体，如 `TINYTEXT`, `LONGTEXT`) | `TEXT` | `TEXT` (已过时) <br> **`VARCHAR(MAX)`** (推荐) |
 
 **说明与选择**：
+
 - **`CHAR(n)`**：适合存储长度**固定或几乎固定**的数据，如国家代码(‘CN’, ‘US’)、MD5哈希值(固定32字符)、性别(‘M’, ‘F’)。
 - **`VARCHAR(n)`**：适合存储长度**变化较大**的数据，如姓名、地址、描述。`n` 应设置为合理的最大值。
 - **`TEXT` / `VARCHAR(MAX)`**：当文本长度可能超过 `VARCHAR` 的最大限制（通常是65535字节）时使用。
@@ -14989,14 +15821,15 @@ SQL的数据类型定义了列中可以存储的数据种类，是数据库设�
 
 用于存储日期、时间或两者的组合。
 
-| 类型 | 描述 | MySQL | PostgreSQL | SQL Server |
-| :--- | :--- | :--- | :--- | :--- |
+| 类型  | 描述  | MySQL | PostgreSQL | SQL Server |
+| --- | --- | --- | --- | --- |
 | **日期** | 仅存储年月日。 | `DATE` | `DATE` | `DATE` |
 | **时间** | 仅存储时分秒，有时区可选。 | `TIME` | `TIME [WITHOUT TIME ZONE]` | `TIME` |
 | **日期时间** | 您材料中的 `Date` (通常包含时间)。存储年月日时分秒。 | `DATETIME` <br> `TIMESTAMP` | `TIMESTAMP [WITHOUT TIME ZONE]` | `DATETIME` <br> `DATETIME2` (更精确) |
 | **时间戳** | 通常指自动记录数据修改时间的列。与时区相关。 | `TIMESTAMP` | `TIMESTAMP WITH TIME ZONE` | `DATETIME` 或专用类型 |
 
 **说明**：
+
 - **`DATETIME` vs `TIMESTAMP`**：
   - `DATETIME`： 存储一个具体的日期时间，与时区无关。例如 `'2023-10-27 10:00:00'` 在任何时区查询都是这个值。
   - `TIMESTAMP`： 存储的是自 **'1970-01-01 00:00:00' UTC** 以来的秒数。它会根据数据库服务器的时区设置进行转换和显示。通常用于记录行的创建或最后更新时间（自动填充）。
@@ -15006,33 +15839,40 @@ SQL的数据类型定义了列中可以存储的数据种类，是数据库设�
 ### 四、其他重要类型
 
 #### 1. 二进制类型
+
 用于存储原始字节数据，如图片、PDF文件、ZIP包等。
+
 - **`BLOB`** (Binary Large Object)： MySQL。
 - **`BYTEA`**： PostgreSQL。
 - **`VARBINARY(MAX)`**： SQL Server。
 
 #### 2. 布尔类型
+
 存储逻辑值 `TRUE` 或 `FALSE`。
+
 - **`BOOLEAN`** 或 `BOOL`： MySQL、PostgreSQL。
 - **`BIT`**： SQL Server（通常用 `BIT` 来模拟，1代表TRUE，0代表FALSE）。
 
 #### 3. 货币类型
+
 您材料中提到的 `货币`。用于存储货币值。
+
 - **`MONEY`** / `SMALLMONEY`： SQL Server、PostgreSQL。
 - *在其他数据库中，通常使用 `DECIMAL(19,4)` 来模拟。*
 
 #### 4. 枚举类型
+
 定义一个允许值的列表，列值必须从列表中选取。
+
 - **`ENUM('value1', 'value2')`**： MySQL。
 - PostgreSQL 也有自定义的枚举类型。
 
 #### 5. JSON 与 XML 类型（现代数据库）
+
 用于存储和查询结构化/半结构化数据。
+
 - **`JSON`**： MySQL 5.7+、PostgreSQL。
 - **`XML`**： SQL Server、PostgreSQL。
-
-
-
 
 ## SQL 语句在 MySQL 中的执行过程
 
@@ -15040,26 +15880,26 @@ SQL的数据类型定义了列中可以存储的数据种类，是数据库设�
 
 ```mermaid
 flowchart TD
-    A[客户端发送SQL请求] --> B[连接器<br>管理连接/权限验证]
-    B --> C{查询缓存<br>是否命中？}
+    A[客户端发送SQL请求] --> B[连接器管理连接/权限验证]
+    B --> C{查询缓存是否命中？}
     C -- 命中 --> D[直接返回缓存结果]
     C -- 未命中 --> E
-    
+
     subgraph E [核心处理层：Server层]
         direction TB
-        F[分析器<br>语法/词法分析] --> G[优化器<br>生成执行计划]
-        G --> H[执行器<br>调用存储引擎]
+        F[分析器语法/词法分析] --> G[优化器生成执行计划]
+        G --> H[执行器调用存储引擎]
     end
 
-    H --> I[存储引擎<br>读写数据]
+    H --> I[存储引擎读写数据]
     I --> J[结果返回客户端]
     D --> J
 ```
 
 ### 第一阶段：连接管理与认证
 
-1.  **建立连接**：客户端应用程序（如 Java 程序、MySQL Workbench）通过 MySQL 客户端协议与数据库服务器建立 TCP 连接。
-2.  **权限认证**：连接器负责处理连接请求，验证用户名、密码以及主机权限。如果认证失败，连接会被立即拒绝。
+1. **建立连接**：客户端应用程序（如 Java 程序、MySQL Workbench）通过 MySQL 客户端协议与数据库服务器建立 TCP 连接。
+2. **权限认证**：连接器负责处理连接请求，验证用户名、密码以及主机权限。如果认证失败，连接会被立即拒绝。
 
 ### 第二阶段：核心处理（解析与优化）
 
@@ -15067,26 +15907,29 @@ flowchart TD
 
 **1. 分析器（Parser）—— “理解你的意图”**
 分析器就像一个编译器的前端，负责将 SQL 语句“翻译”成数据库内部可理解的结构。
-*   **词法分析**：将完整的 SQL 语句“打碎”成一个个的令牌（Token）。例如，识别出 `SELECT` 是一个关键字，`column_name` 是一个标识符，`=` 是一个操作符。
-*   **语法分析**：根据 MySQL 的语法规则，检查这些令牌的组合是否构成一条合法的 SQL 语句。如果语句写法错误（如缺少关键字、括号不匹配），会在此阶段抛出错误。
+
+- **词法分析**：将完整的 SQL 语句“打碎”成一个个的令牌（Token）。例如，识别出 `SELECT` 是一个关键字，`column_name` 是一个标识符，`=` 是一个操作符。
+- **语法分析**：根据 MySQL 的语法规则，检查这些令牌的组合是否构成一条合法的 SQL 语句。如果语句写法错误（如缺少关键字、括号不匹配），会在此阶段抛出错误。
 
 **2. 优化器（Optimizer）—— “制定最佳方案”**
 对于合法的 SQL 语句，优化器会决定如何最高效地执行它。
-*   它会考虑多种执行方案（例如，应该使用哪个索引？对于多表连接 `JOIN`，应该以什么顺序连接各表？）。
-*   优化器基于**成本模型**（Cost-Based Optimizer, CBO）进行决策，它会预测每种执行计划的 I/O、CPU 等资源消耗，并选择它认为成本最低的那个。
-*   你可以使用 `EXPLAIN` 命令来查看 MySQL 为一条语句选择的最终执行计划。
+
+- 它会考虑多种执行方案（例如，应该使用哪个索引？对于多表连接 `JOIN`，应该以什么顺序连接各表？）。
+- 优化器基于**成本模型**（Cost-Based Optimizer, CBO）进行决策，它会预测每种执行计划的 I/O、CPU 等资源消耗，并选择它认为成本最低的那个。
+- 你可以使用 `EXPLAIN` 命令来查看 MySQL 为一条语句选择的最终执行计划。
 
 ### 第三阶段：执行器与存储引擎—— “付诸行动”
 
-1.  **执行器（Executor）—— “执行计划的指挥官”**
-    *   执行器根据优化器生成的执行计划，调用**存储引擎**的接口来执行操作。
-    *   在执行之前，它会先检查用户对涉及的表是否有相应的**执行权限**。如果无权，则会返回权限错误。
-    *   它按照计划的指示，一步步地驱动存储引擎完成工作。
-
-2.  **存储引擎（Storage Engine）—— “数据的保管员”**
-    *   MySQL 的架构特点是其**可插拔的存储引擎**。它负责数据的**存储和提取**。常见的有 InnoDB、MyISAM（现已较少使用）等。
-    *   **执行器**通过存储引擎的 API，指示它“读取这一行”或“更新这一行”。
-    *   存储引擎负责与磁盘文件交互，管理内存缓冲区（Buffer Pool），处理事务，维护索引等。
+1. **执行器（Executor）—— “执行计划的指挥官”**
+  
+  - 执行器根据优化器生成的执行计划，调用**存储引擎**的接口来执行操作。
+  - 在执行之前，它会先检查用户对涉及的表是否有相应的**执行权限**。如果无权，则会返回权限错误。
+  - 它按照计划的指示，一步步地驱动存储引擎完成工作。
+2. **存储引擎（Storage Engine）—— “数据的保管员”**
+  
+  - MySQL 的架构特点是其**可插拔的存储引擎**。它负责数据的**存储和提取**。常见的有 InnoDB、MyISAM（现已较少使用）等。
+  - **执行器**通过存储引擎的 API，指示它“读取这一行”或“更新这一行”。
+  - 存储引擎负责与磁盘文件交互，管理内存缓冲区（Buffer Pool），处理事务，维护索引等。
 
 ### 关于“查询缓存”的重要说明
 
@@ -15096,15 +15939,14 @@ flowchart TD
 
 ### 总结与要点
 
-*   **分层协作**：整个过程体现了 MySQL 的分层架构思想。Server 层（连接器、分析器、优化器、执行器）负责 SQL 处理逻辑，而存储引擎层负责数据存取。
-*   **性能关键**：**优化器**生成的执行计划对查询性能至关重要。**存储引擎**（特别是 InnoDB 的 Buffer Pool）的 I/O 效率是影响速度的关键因素。
-*   **权限检查时机**：权限验证实际上发生了两次：第一次在连接建立时（连接器），第二次在语句执行前（执行器）。
-
-
+- **分层协作**：整个过程体现了 MySQL 的分层架构思想。Server 层（连接器、分析器、优化器、执行器）负责 SQL 处理逻辑，而存储引擎层负责数据存取。
+- **性能关键**：**优化器**生成的执行计划对查询性能至关重要。**存储引擎**（特别是 InnoDB 的 Buffer Pool）的 I/O 效率是影响速度的关键因素。
+- **权限检查时机**：权限验证实际上发生了两次：第一次在连接建立时（连接器），第二次在语句执行前（执行器）。
 
 ## SQL语句的完整逻辑处理顺序
 
 ### 核心处理顺序（逻辑上的）
+
 ```sql
 1. FROM 和 JOINs
 2. WHERE
@@ -15119,7 +15961,9 @@ flowchart TD
 ### 各阶段深度解析
 
 #### 1. FROM 和 JOINs 阶段
+
 **详细过程：**
+
 - **表识别**：解析器首先识别所有涉及的表、视图或子查询
 - **笛卡尔积**：如果没有JOIN条件，会生成所有表的笛卡尔积
 - **JOIN执行**：按照JOIN类型处理连接：
@@ -15130,24 +15974,30 @@ flowchart TD
 - **派生表处理**：如果FROM中包含子查询，先执行子查询生成临时结果集
 
 **示例说明：**
+
 ```sql
 SELECT *
 FROM orders o
 LEFT JOIN customers c ON o.customer_id = c.id
 INNER JOIN products p ON o.product_id = p.id;
 ```
+
 执行顺序：
+
 1. 读取`orders`表所有数据
 2. 执行`LEFT JOIN`与`customers`表连接
 3. 对上一步结果执行`INNER JOIN`与`products`表连接
 
 #### 2. WHERE 阶段
+
 **关键特性：**
+
 - **行级过滤**：逐行检查条件，不满足的直接丢弃
 - **不能使用别名**：由于SELECT尚未执行，WHERE中不能引用SELECT中定义的列别名
 - **不能使用聚合函数**：此时还未分组，无法进行聚合计算
 
 **执行细节：**
+
 ```sql
 -- ✅ 正确：使用原始列名
 SELECT order_date as od, amount 
@@ -15161,32 +16011,40 @@ WHERE od > '2023-01-01'; -- 错误！od别名在WHERE中不可见
 ```
 
 #### **3. GROUP BY 阶段**
+
 **分组机制：**
+
 - 将剩余行按照GROUP BY指定的列值进行分组
 - 每个唯一的值组合形成一个分组
 - 如果使用了`ROLLUP`或`CUBE`，还会生成小计和总计行
 
 **示例深度分析：**
+
 ```sql
 SELECT department, COUNT(*) as emp_count, AVG(salary) as avg_salary
 FROM employees
 WHERE hire_date > '2020-01-01'
 GROUP BY department;
 ```
+
 执行过程：
+
 1. 先WHERE过滤出2020年后入职的员工
 2. 按`department`列值分组，相同部门的员工被分到同一组
 3. 为每个分组生成一行结果
 
 #### **4. 聚合函数计算阶段**
+
 **计算时机：** 在分组完成后立即计算
 
 **常见聚合函数：**
+
 - `COUNT()`, `SUM()`, `AVG()`, `MIN()`, `MAX()`
 - `GROUP_CONCAT()` (MySQL), `STRING_AGG()` (PostgreSQL)
 - `STDDEV()`, `VARIANCE()` 等统计函数
 
 **重要细节：**
+
 ```sql
 -- COUNT(*) vs COUNT(column) 的区别
 SELECT 
@@ -15197,12 +16055,15 @@ FROM employees;
 ```
 
 #### **5. HAVING 阶段**
+
 **与WHERE的关键区别：**
+
 - **WHERE**：过滤单个行，在分组前执行
 - **HAVING**：过滤分组，在分组后执行
 - **HAVING**：可以使用聚合函数结果进行过滤
 
 **对比示例：**
+
 ```sql
 -- WHERE过滤行，HAVING过滤分组
 SELECT department, AVG(salary) as avg_salary
@@ -15219,9 +16080,11 @@ GROUP BY department;
 ```
 
 #### **6. SELECT 阶段（表达式与CASE WHEN）**
+
 **详细执行过程：**
 
 **6.1 CASE WHEN 的执行机制**
+
 ```sql
 SELECT 
     name,
@@ -15237,12 +16100,15 @@ SELECT
     END as adjusted_salary
 FROM employees;
 ```
+
 **执行特点：**
+
 - CASE WHEN按书写顺序从上到下判断
 - 第一个满足条件的WHEN子句执行后即停止
 - 可以嵌套使用，但要注意可读性
 
 **6.2 表达式计算顺序**
+
 ```sql
 SELECT 
     name,
@@ -15254,12 +16120,15 @@ FROM employees;
 ```
 
 #### **7. ORDER BY 阶段**
+
 **排序规则：**
+
 - 可以使用SELECT中定义的别名
 - 可以使用SELECT中未包含的列（但通常不推荐）
 - 支持多列排序和指定排序方向
 
 **示例：**
+
 ```sql
 SELECT 
     department,
@@ -15270,7 +16139,9 @@ ORDER BY avg_salary DESC, department ASC;  -- 先按平均薪资降序，再按�
 ```
 
 #### **8. LIMIT / OFFSET 阶段**
+
 **执行细节：**
+
 - **LIMIT**：限制返回的行数
 - **OFFSET**：跳过指定行数（性能注意：大数据集OFFSET可能较慢）
 - 通常与ORDER BY配合使用以确保结果确定性
@@ -15304,6 +16175,7 @@ LIMIT 10;                            -- 5. 只返回前10个部门
 ```
 
 **执行步骤分解：**
+
 1. **FROM**：读取employees表
 2. **WHERE**：过滤出2018年后入职的员工
 3. **GROUP BY**：按部门分组
@@ -15316,6 +16188,7 @@ LIMIT 10;                            -- 5. 只返回前10个部门
 ### 特殊场景说明
 
 #### **窗口函数的执行时机**
+
 窗口函数在WHERE、GROUP BY、HAVING之后，但在ORDER BY之前执行：
 
 ```sql
@@ -15329,18 +16202,21 @@ ORDER BY salary DESC;
 ```
 
 #### **DISTINCT的执行位置**
+
 DISTINCT在SELECT之后，ORDER BY之前执行：
+
 ```sql
 SELECT DISTINCT department, location  -- 去除(department, location)重复的组合
 FROM employees
 ORDER BY department;
 ```
 
-
 ## Mysql的调优方法有哪些？
+
 MySQL的调优是一个复杂但重要的过程，它涉及到多个方面，包括硬件、软件配置、查询优化、索引优化等。以下是一些MySQL调优的主要方法，按照不同的类别进行归纳：
 
 ### 一、硬件与软件配置
+
 服务器硬件：
 增加内存：提高缓存的效果，例如增加InnoDB缓冲池的大小。
 使用固态硬盘（SSD）：加快数据读取和写入速度。
@@ -15353,6 +16229,7 @@ MySQL配置：
 调整table_open_cache：增加打开表的数量缓存，以加速表访问。
 
 ### 二、查询优化
+
 优化查询语句：
 避免使用SELECT *，只选择需要的字段。
 使用JOIN语句连接多个表，而非多次单表查询。
@@ -15365,18 +16242,21 @@ MySQL配置：
 使用EXPLAIN语句分析查询的执行计划，找出可能的性能瓶颈。
 
 ### 三、表结构与设计
+
 选择合适的数据类型：在创建表时，选择合适的数据类型可以节省存储空间并提高查询性能。例如，对于小数字，使用TINYINT比INT更节省空间。
 规范化与反规范化：规范化可以减少数据冗余和提高数据完整性，但可能会导致查询性能下降。在需要时，可以考虑使用反规范化来提高查询性能。
 
 ### 四、其他调优方法
+
 分区和分表：对于数据量巨大的表，可以考虑使用分区或分表来提高查询效率。分区将一个表物理上分割成多个较小的、更易于管理的片段，而分表则是将一个大表拆分成多个结构相同的小表。
 使用缓存：在应用程序中使用缓存可以减少对数据库的访问次数，提高读取速度。可以考虑使用如Redis或Memcached等内存数据库作为缓存层。
 监控和调优：定期监控数据库的性能指标，如查询响应时间、连接数、磁盘I/O等，并根据需要进行调优。可以使用如Percona Monitoring and Management (PMM)或MySQL Enterprise Monitor等工具进行监控和调优。
 应用负载均衡：如果单个MySQL服务器无法满足性能需求，可以考虑使用负载均衡技术将请求分发到多个MySQL服务器上。这可以提高系统的吞吐量和可用性。
 
-
 ## MySQL的底层工作原理：
+
 ### 逻辑架构：
+
 客户层：处理连接处理、授权认证、安全等功能。
 
 Server层：
@@ -15396,7 +16276,6 @@ Server层：
 查询处理：
 逻辑查询处理：确定执行查询应该产生什么样的结果，如JOIN、WHERE、GROUP BY等操作的顺序。
 物理查询处理：代表MySQL数据库是如何得到逻辑查询处理所确定的结果的，可能涉及索引的选择、数据的读取方式等。
-
 
 MYSQL存储引擎：
 MYSQL存储引擎是一种数据库存储数据的机制、索引的技巧以及锁定水平，即存储的方式和存储的格式。它决定了MySQL数据库如何存储数据、如何为存储的数据建立索引以及如何锁定数据等。MySQL支持多种存储引擎，每种引擎都有其特定的设计目的和适用场景。
@@ -15418,6 +16297,13 @@ MyISAM
 支持全文索引：是MySQL唯一支持全文索引的存储引擎。
 数据紧凑存储：可获得更小的索引和更快的全表扫描性能。
 应用场景：适合读多写少的场景，如只读数据报表、静态内容存储等。
+
+### 常见的MySQL存储引擎面试题
+
+#### 1. InnoDB和MyISAM的区别？
+
+- InnoDB：支持事务、行锁、外键、MVCC、崩溃恢复；主键是聚簇索引。默认引擎，写多、要一致性就用它。
+- MyISAM：表锁、不支持事务和外键，读快，适合读多写少或只读报表。现在几乎不再选它做业务表。
 
 Memory
 特性：
@@ -15448,7 +16334,6 @@ Archive
 如果需要导出数据到Excel或进行简单数据交换，可以选择CSV存储引擎。
 如果需要存储大量历史数据且不需要频繁更新，可以选择Archive存储引擎。
 
-
 页：
 关于MySQL的数据页（Page）结构，特别是InnoDB存储引擎下的，它是InnoDB存储数据的基本单位。一个InnoDB页通常大小为16KB（尽管这个大小可以配置，但16KB是最常见的设置）。InnoDB页用于存储表中的数据、索引以及其他系统信息。
 
@@ -15467,7 +16352,6 @@ InnoDB存储引擎的数据页结构支持了高效的数据存储、检索和�
 数据更新和删除：记录更新时，如果更新后的记录大小没有变化或变化很小，记录可能会被原地修改（in-place update）。如果记录变大或需要移动到不同的页，则会发生记录的移动或页的分裂。记录删除时，相应的空间会被标记为空闲空间，等待后续使用。
 事务和并发控制：InnoDB通过MVCC（多版本并发控制）机制支持高并发的事务处理。每个页头中保存的最小和最大事务ID用于确定哪些事务可以看到该页中的记录。
 MySQL的InnoDB存储引擎的数据页结构是其高性能和可靠性的基石之一。通过精心设计的页结构，InnoDB能够高效地处理大量数据的存储和访问需求。
-
 
 页目录：
 MySQL的Page Directory（页目录）是InnoDB存储引擎中一个重要的数据结构，它用于提高在数据页中查找记录的效率。
@@ -15496,37 +16380,36 @@ Infimum和Supremum记录：InnoDB在每个数据页中自动添加了两条特�
 五、总结
 MySQL的Page Directory是InnoDB存储引擎中用于提高数据页查找效率的重要数据结构。通过分组和索引的方式，它使得在大量数据中快速定位特定记录成为可能。了解Page Directory的工作原理对于优化MySQL数据库的性能具有重要意义。
 
-
-
 在MySQL中，页是如何插入数据的？
 在MySQL中，特别是在使用InnoDB存储引擎时，页（Page）是数据存储和管理的基本单位。数据插入到页中的过程涉及到多个步骤和底层机制，这些机制确保了数据的完整性、一致性和高效性。
 
 数据插入到页中的大致过程：
+
 1. 确定插入位置
-索引查找：首先，InnoDB会根据插入数据的索引（通常是主键索引或二级索引）来查找数据应该被插入到哪个页中。如果数据是插入到主键索引中，那么会先通过B+树结构来定位到正确的页。
-页内查找：一旦定位到页，InnoDB会在页内查找是否有足够的空间来插入新的数据行。页内通常会维护一个自由空间链表（Free Space List），用于记录页中空闲的空间块。
-
+  索引查找：首先，InnoDB会根据插入数据的索引（通常是主键索引或二级索引）来查找数据应该被插入到哪个页中。如果数据是插入到主键索引中，那么会先通过B+树结构来定位到正确的页。
+  页内查找：一旦定位到页，InnoDB会在页内查找是否有足够的空间来插入新的数据行。页内通常会维护一个自由空间链表（Free Space List），用于记录页中空闲的空间块。
+  
 2. 插入数据
-空间分配：如果页内有足够的空间，InnoDB会从自由空间链表中分配一个足够大的空间块给新的数据行。如果页内空间不足，则会触发页分裂（Page Split）操作。
-数据写入：新的数据行会被写入到分配的空间中，并且会更新页内的数据结构（如记录链表）来反映新数据行的存在。
-索引更新：如果插入的数据涉及到索引的更新（如主键索引或唯一索引），那么InnoDB会同时更新索引结构，以确保索引的一致性和准确性。
-
+  空间分配：如果页内有足够的空间，InnoDB会从自由空间链表中分配一个足够大的空间块给新的数据行。如果页内空间不足，则会触发页分裂（Page Split）操作。
+  数据写入：新的数据行会被写入到分配的空间中，并且会更新页内的数据结构（如记录链表）来反映新数据行的存在。
+  索引更新：如果插入的数据涉及到索引的更新（如主键索引或唯一索引），那么InnoDB会同时更新索引结构，以确保索引的一致性和准确性。
+  
 3. 日志记录
-重做日志（Redo Log）：InnoDB使用重做日志来确保事务的持久性。在数据被写入到页之前，相关的更改会首先被记录到重做日志中。这样，即使发生系统崩溃或电源故障，也可以通过重做日志来恢复数据。
-撤销日志（Undo Log）：对于需要支持事务回滚的操作，InnoDB还会记录撤销日志。这些日志记录了如何将数据行回滚到之前的状态，以支持事务的原子性。
-
+  重做日志（Redo Log）：InnoDB使用重做日志来确保事务的持久性。在数据被写入到页之前，相关的更改会首先被记录到重做日志中。这样，即使发生系统崩溃或电源故障，也可以通过重做日志来恢复数据。
+  撤销日志（Undo Log）：对于需要支持事务回滚的操作，InnoDB还会记录撤销日志。这些日志记录了如何将数据行回滚到之前的状态，以支持事务的原子性。
+  
 4. 缓存管理
-缓冲池（Buffer Pool）：InnoDB使用缓冲池来缓存数据和索引页，以减少对磁盘的访问次数。当数据被插入到页中时，这些页可能会被加载到缓冲池中。如果缓冲池已满，InnoDB会使用LRU（Least Recently Used）算法来淘汰最近最少使用的页。
-
+  缓冲池（Buffer Pool）：InnoDB使用缓冲池来缓存数据和索引页，以减少对磁盘的访问次数。当数据被插入到页中时，这些页可能会被加载到缓冲池中。如果缓冲池已满，InnoDB会使用LRU（Least Recently Used）算法来淘汰最近最少使用的页。
+  
 5. 并发控制
-锁机制：在并发环境下，InnoDB使用锁机制来确保多个事务之间不会相互干扰。当数据被插入到页中时，可能会涉及到行锁或表锁的使用，以确保数据的一致性和完整性。
-
+  锁机制：在并发环境下，InnoDB使用锁机制来确保多个事务之间不会相互干扰。当数据被插入到页中时，可能会涉及到行锁或表锁的使用，以确保数据的一致性和完整性。
+  
 6. 插入性能优化
-批量插入：对于需要插入大量数据的情况，可以使用批量插入（Batch Insert）来提高性能。批量插入可以减少SQL语句的解析和编译次数，并且可以减少网络往返次数（对于远程数据库操作）。
-插入缓冲（Insert Buffer）：对于非聚集索引的插入操作，InnoDB提供了插入缓冲来优化性能。插入缓冲可以将非聚集索引的插入操作缓存起来，并在后台异步地合并到索引页中。
+  批量插入：对于需要插入大量数据的情况，可以使用批量插入（Batch Insert）来提高性能。批量插入可以减少SQL语句的解析和编译次数，并且可以减少网络往返次数（对于远程数据库操作）。
+  插入缓冲（Insert Buffer）：对于非聚集索引的插入操作，InnoDB提供了插入缓冲来优化性能。插入缓冲可以将非聚集索引的插入操作缓存起来，并在后台异步地合并到索引页中。
+  
 
 总的来说，MySQL中数据插入到页中的过程是一个复杂的、涉及多个层面的操作。InnoDB存储引擎通过一系列高效的数据结构和算法来确保数据的快速插入和高效管理。
-
 
 溢出页：
 在MySQL中，尤其是使用InnoDB存储引擎时，数据是以页（Page）为单位进行存储的，每页的大小通常为16KB（即16384字节）。对于某些包含大量数据的数据类型，如BLOB、TEXT或非常大的VARCHAR字段，单条记录的数据量可能会超过一页的容量限制。
@@ -15543,29 +16426,28 @@ MySQL的Page Directory是InnoDB存储引擎中用于提高数据页查找效率�
 数据访问：
 当需要访问完整的数据时，MySQL会根据原始数据页中的指针信息，定位到溢出页并读取相关数据。
 
-
-
 在innodb引擎的数据页中，是如何保证数据的有序性的？
 在InnoDB引擎的数据页中，数据的有序性主要通过以下几个机制来保证：
+
 1. 主键索引与聚簇索引
-聚簇索引：InnoDB使用聚簇索引来存储数据，即将表中的数据按主键的顺序存储。这意味着数据本身就是索引的一部分，索引的顺序与数据的物理存储顺序相同。如果表定义了主键，那么主键索引就是聚簇索引；如果没有显式定义主键，InnoDB会选择第一个唯一索引作为聚簇索引；如果都没有，InnoDB会隐式地生成一个唯一的ROWID作为聚簇索引。
-数据排序：由于数据是按照主键索引的顺序存储的，因此数据在物理存储上自然就是有序的。
-
+  聚簇索引：InnoDB使用聚簇索引来存储数据，即将表中的数据按主键的顺序存储。这意味着数据本身就是索引的一部分，索引的顺序与数据的物理存储顺序相同。如果表定义了主键，那么主键索引就是聚簇索引；如果没有显式定义主键，InnoDB会选择第一个唯一索引作为聚簇索引；如果都没有，InnoDB会隐式地生成一个唯一的ROWID作为聚簇索引。
+  数据排序：由于数据是按照主键索引的顺序存储的，因此数据在物理存储上自然就是有序的。
+  
 2. 页内数据的组织
-数据页结构：InnoDB的数据页是存储和读取数据的基本单位，每个页的大小默认为16KB。数据页内部会存储一行一行的数据，并且每一行数据都会按照主键大小进行排序存储。
-记录堆：数据页内的记录存储区称为记录堆，分为有效记录和已删除记录两种。有效记录按照主键顺序排列，而已删除的记录会组成一个垃圾链表，等待后续被覆盖或回收。
-页分裂：当数据页中的空闲空间不足以插入新记录时，会发生页分裂。新记录会被插入到新的数据页中，并且保证新页中的记录也是有序的。页分裂过程会确保索引的连续性和有序性。
-
+  数据页结构：InnoDB的数据页是存储和读取数据的基本单位，每个页的大小默认为16KB。数据页内部会存储一行一行的数据，并且每一行数据都会按照主键大小进行排序存储。
+  记录堆：数据页内的记录存储区称为记录堆，分为有效记录和已删除记录两种。有效记录按照主键顺序排列，而已删除的记录会组成一个垃圾链表，等待后续被覆盖或回收。
+  页分裂：当数据页中的空闲空间不足以插入新记录时，会发生页分裂。新记录会被插入到新的数据页中，并且保证新页中的记录也是有序的。页分裂过程会确保索引的连续性和有序性。
+  
 3. 索引页与B+树结构
-索引页：索引页是存储索引信息的数据页，它们组成了一个B+树结构。B+树的每个节点都是一个索引页，非叶子节点存储的是索引键和指向子节点的指针，而叶子节点存储的是实际的记录或主键值。
-有序性保证：B+树通过维护索引键的有序性来保证数据的有序性。在B+树中，每个节点的索引键都是按照顺序排列的，这使得在查找、插入和删除操作时能够保持数据的有序性。
-
+  索引页：索引页是存储索引信息的数据页，它们组成了一个B+树结构。B+树的每个节点都是一个索引页，非叶子节点存储的是索引键和指向子节点的指针，而叶子节点存储的是实际的记录或主键值。
+  有序性保证：B+树通过维护索引键的有序性来保证数据的有序性。在B+树中，每个节点的索引键都是按照顺序排列的，这使得在查找、插入和删除操作时能够保持数据的有序性。
+  
 4. 查找与定位
-二分查找：在数据页和索引页中，都使用了二分查找来提高查找效率。通过二分查找，可以快速定位到所需的数据或索引页。
-数据页目录：在数据页内部，还使用了一个数据页目录来存储主键ID和行位置的映射关系。这使得在数据页内部查找特定记录时也能够快速定位。
+  二分查找：在数据页和索引页中，都使用了二分查找来提高查找效率。通过二分查找，可以快速定位到所需的数据或索引页。
+  数据页目录：在数据页内部，还使用了一个数据页目录来存储主键ID和行位置的映射关系。这使得在数据页内部查找特定记录时也能够快速定位。
+  
 
 综上所述，InnoDB引擎通过聚簇索引、页内数据的组织、索引页与B+树结构以及高效的查找与定位机制来保证数据的有序性。这种有序性不仅提高了查询效率，还保证了数据的完整性和一致性。
-
 
 索引：
 MySQL使用索引来加速数据的查找。常见的索引数据结构包括B树和B+树。
@@ -15581,7 +16463,6 @@ MySQL支持数据复制功能，可以将一个数据库服务器的数据同步
 复制功能有助于实现数据备份、负载均衡、故障恢复等目的。
 
 总结来说，MySQL的底层工作原理涉及逻辑架构的分层处理、查询的逻辑和物理处理、存储引擎的数据存储和提取、索引的加速查找、事务的完整性维护以及数据的复制等多个方面。这些组件和机制共同协作，使得MySQL能够高效地处理各种数据库操作。
-
 
 MYSQL体系结构：
 Client Connectors
@@ -15624,8 +16505,6 @@ MYSQL架构：
 
 存储层：第四层为数据存储层，主要是将数据存储在运行于该设备的文件系统之上，并完成与存储引擎的交互
 
-
-
 MYSQL语句的优化：
 MySQL语句优化涉及多个方面，旨在提高查询效率、减少资源消耗。以下是一些关键的优化策略：
 
@@ -15657,7 +16536,6 @@ MySQL语句优化涉及多个方面，旨在提高查询效率、减少资源消
 定期分析和优化表：使用ANALYZE TABLE和OPTIMIZE TABLE命令可以定期分析和优化表，以提高查询性能。
 
 综上所述，MySQL语句优化涉及多个方面，需要综合考虑查询需求、表结构、索引设计等多个因素。通过合理的优化策略，可以显著提高MySQL的查询效率并减少资源消耗。
-
 
 在MySQL执行计划中，执行时间不长，为什么还需要进行优化？优化的点是什么？
 在MySQL执行计划中，即使某个查询的执行时间不长，仍然有可能存在优化的空间。优化并不仅仅是为了缩短执行时间，还包括提高查询的稳定性、减少资源消耗、提升用户体验等多个方面。以下是一些可能的优化点：
@@ -15699,10 +16577,9 @@ MySQL语句优化涉及多个方面，旨在提高查询效率、减少资源消
 
 综上所述，MySQL优化并不仅仅是为了缩短执行时间，还包括提高查询的稳定性、减少资源消耗、提升用户体验等多个方面。因此，即使某个查询的执行时间不长，仍然有必要进行优化。
 
-
 MYSQL视图：
 MySQL视图是一种虚拟表，它是存储在数据库中的查询语句，并不实际存在于数据库中。视图的结构和数据是建立在对表的查询基础上的，视图包括几个被定义的数据列和多个数据行，这些数据列和数据行来源于其所引用的表。
-视图所对应的数据并不实际地以视图结构存储在数据库中，而是存储在视图所引用的表中，通过视图看到的数据只是存放在基本表中的数据。对视图的操作与对表的操作一样，可以对其进行查询、修改（有一定的限制）、删除。 
+视图所对应的数据并不实际地以视图结构存储在数据库中，而是存储在视图所引用的表中，通过视图看到的数据只是存放在基本表中的数据。对视图的操作与对表的操作一样，可以对其进行查询、修改（有一定的限制）、删除。
 
 当对视图中的数据进行修改时，相应的基本表的数据也要发生变化，同时，若基本表的数据发生变化，则这种变化也可以自动地反映到视图中。视图能够对机密数据提供安全保证，可以在设计数据库的时候，对不同的用户定义不同的视图，使机密数据不出现在不应该看到这些数据的用户所使用的视图中。
 
@@ -15713,8 +16590,9 @@ FROM employees
 WHERE department_id = 10;
 
 常见的使用MySQL视图的场景：
+
 1. 简化复杂查询
-当一个查询非常复杂，包含多次连接、多层嵌套或计算时，可以将其封装在一个视图中。这样，用户只需查询视图，而不必每次都编写复杂的SQL语句。
+  当一个查询非常复杂，包含多次连接、多层嵌套或计算时，可以将其封装在一个视图中。这样，用户只需查询视图，而不必每次都编写复杂的SQL语句。
 
 CREATE VIEW simple_view AS
 SELECT a.column1, b.column2
@@ -15723,10 +16601,11 @@ JOIN table2 b ON a.id = b.id
 WHERE a.status = 'active';
 
 2. 提高可读性和可维护性
-通过使用视图，可以将复杂的逻辑隐藏在视图背后，使得查询代码更加简洁、易读和易于维护。
-
+  通过使用视图，可以将复杂的逻辑隐藏在视图背后，使得查询代码更加简洁、易读和易于维护。
+  
 3. 数据抽象和安全
-视图可以用于数据抽象，只展示给用户需要的数据，同时隐藏底层表结构。还可以用来限制用户访问特定的数据，提高数据的安全性。
+  视图可以用于数据抽象，只展示给用户需要的数据，同时隐藏底层表结构。还可以用来限制用户访问特定的数据，提高数据的安全性。
+  
 
 CREATE VIEW limited_view AS
 SELECT column1, column2
@@ -15734,19 +16613,19 @@ FROM table1
 WHERE column3 = 'some_value';
 
 4. 重用SQL代码
-将常用的查询封装成视图，方便在多个地方重用，避免重复编写相同的SQL代码。
-
+  将常用的查询封装成视图，方便在多个地方重用，避免重复编写相同的SQL代码。
+  
 5. 兼容性和迁移
-在数据库结构变化时，通过修改视图定义而不是修改大量的应用程序代码，可以实现数据库结构的迁移和兼容性。
-
+  在数据库结构变化时，通过修改视图定义而不是修改大量的应用程序代码，可以实现数据库结构的迁移和兼容性。
+  
 6. 权限管理
-通过视图，可以为不同的用户分配不同的访问权限。例如，只允许某些用户访问特定视图，而不允许他们访问底层表。
+  通过视图，可以为不同的用户分配不同的访问权限。例如，只允许某些用户访问特定视图，而不允许他们访问底层表。
+  
 
 GRANT SELECT ON simple_view TO 'user'@'localhost';
 
 7. 聚合和计算
-视图可以用于存储聚合和计算结果，以便在需要时快速访问这些结果，而不必每次都执行复杂的计算。
-
+  视图可以用于存储聚合和计算结果，以便在需要时快速访问这些结果，而不必每次都执行复杂的计算。
 
 CREATE VIEW sales_summary AS
 SELECT product_id, SUM(sales_amount) AS total_sales
@@ -15754,15 +16633,13 @@ FROM sales
 GROUP BY product_id;
 
 8. 联合多个表的数据
-视图可以将多个表的数据联合起来，提供一个统一的接口，以便于查询和分析。
+  视图可以将多个表的数据联合起来，提供一个统一的接口，以便于查询和分析。
 
 CREATE VIEW combined_view AS
 SELECT a.column1, b.column2, c.column3
 FROM table1 a
 JOIN table2 b ON a.id = b.id
 JOIN table3 c ON b.id = c.id;
-
-
 
 MySQL索引：
 MySQL索引（Index）是帮助MySQL高效获取数据的数据结构。它可以被看作是一本书的目录，通过索引，数据库系统可以快速地定位到表中的某一行数据，而不需要扫描整个表。索引可以大大提高数据库查询的速度，特别是在处理大量数据时。
@@ -15781,15 +16658,13 @@ B-Tree索引：最常见的索引类型，适用于全键值、键值范围或�
 
 在MySQL中，可以使用CREATE INDEX语句或ALTER TABLE语句来创建索引。
 
-CREATE INDEX idx_name ON table_name(column_name);  
-  
+CREATE INDEX idx_name ON table_name(column_name);
+
 ALTER TABLE table_name ADD INDEX idx_name(column_name);
 虽然索引可以极大地提高查询性能，但索引也不是越多越好。每个索引都需要占用物理空间，并且在插入、删除和更新数据时，索引也需要被更新，这可能会降低这些操作的性能。因此，在设计数据库和索引时，需要权衡查询性能和数据修改性能的需求。
 
-
 索引的维护：
 随着数据量的增加和表结构的变更，索引的性能可能会下降。因此，定期检查和优化索引是数据库维护的重要工作之一。这包括重新组织索引、删除不再需要的索引以及根据查询模式调整索引策略等。
-
 
 使用索引的注意事项：
 1.索引列的数据长度能少则少；较短的索引列可以节省存储空间，并且可能提高索引的效率，尤其是在进行全表扫描或索引重建时。
@@ -15841,7 +16716,6 @@ ALTER TABLE table_name ADD INDEX idx_name(column_name);
 
 总之，在项目中为哪些字段添加索引需要根据实际情况进行权衡和决策。通过合理的索引设计，可以显著提高数据库的查询性能并降低维护成本。
 
-
 在项目过程中，架构师在考虑是否添加索引时，会综合考虑多个方面，以确保数据库的性能、可扩展性和维护性。以下是一些架构师可能会考虑的方面：
 一、业务需求与查询模式
 查询频率与重要性：
@@ -15884,22 +16758,22 @@ ALTER TABLE table_name ADD INDEX idx_name(column_name);
 架构师需要评估索引对查询性能的影响，并确定是否需要添加索引。
 综上所述，架构师在考虑是否添加索引时，会综合考虑业务需求、数据规模、索引类型、维护管理以及成本与性能的权衡等多个方面。通过合理的索引设计，可以显著提高数据库的查询性能并降低维护成本。
 
-
-
 索引在哪些情况下会失效：
+
 1. 查询条件中使用函数或表达式
-当在查询条件中对列使用函数或表达式时，MySQL无法直接利用索引进行快速定位，因为索引是基于列的原始值建立的。例如，使用YEAR(create_date) = 2023这样的查询条件时，由于YEAR函数的作用，索引会失效。
-正确的做法是避免在查询条件中使用函数，而是通过其他方式（如范围查询）来替代。
-
+  当在查询条件中对列使用函数或表达式时，MySQL无法直接利用索引进行快速定位，因为索引是基于列的原始值建立的。例如，使用YEAR(create_date) = 2023这样的查询条件时，由于YEAR函数的作用，索引会失效。
+  正确的做法是避免在查询条件中使用函数，而是通过其他方式（如范围查询）来替代。
+  
 2. 数据类型不匹配
-如果查询条件中的数据类型与列的数据类型不匹配，MySQL可能会进行隐式类型转换，这会导致索引失效。例如，如果列是字符类型（VARCHAR），
-而查询条件中使用了数字类型（INT），MySQL会尝试将字符类型转换为数字类型进行比较，这个过程中索引可能无法被有效利用。
-
+  如果查询条件中的数据类型与列的数据类型不匹配，MySQL可能会进行隐式类型转换，这会导致索引失效。例如，如果列是字符类型（VARCHAR），
+  而查询条件中使用了数字类型（INT），MySQL会尝试将字符类型转换为数字类型进行比较，这个过程中索引可能无法被有效利用。
+  
 3. 未遵循最左前缀原则（针对复合索引）
-复合索引是基于多个列建立的索引。在查询时，如果没有从复合索引的最左列开始使用索引列，那么索引可能会失效。例如，如果有一个复合索引(first_name, last_name)，而查询条件只使用了last_name列，那么索引就不会被有效利用。
-
+  复合索引是基于多个列建立的索引。在查询时，如果没有从复合索引的最左列开始使用索引列，那么索引可能会失效。例如，如果有一个复合索引(first_name, last_name)，而查询条件只使用了last_name列，那么索引就不会被有效利用。
+  
 4. LIKE查询中的通配符使用不当
-在使用LIKE查询时，如果通配符%出现在模式的开头，MySQL将无法进行索引优化，因为无法预测哪些行可能包含匹配的值。例如，LIKE '%AA'这样的查询会导致索引失效。如果通配符只出现在末尾或中间，那么索引仍然可以被有效利用。
+  在使用LIKE查询时，如果通配符%出现在模式的开头，MySQL将无法进行索引优化，因为无法预测哪些行可能包含匹配的值。例如，LIKE '%AA'这样的查询会导致索引失效。如果通配符只出现在末尾或中间，那么索引仍然可以被有效利用。
+  
 
 LIKE '%AA'索引失效的原因：
 通配符在开头：
@@ -15913,10 +16787,11 @@ LIKE '%AA'索引失效的原因：
 MySQL的查询优化器会分析查询并决定是否使用索引。在LIKE '%AA'的情况下，由于上述原因，优化器可能判断使用索引的成本高于全表扫描的成本，因此选择不进行索引查找。
 
 5. 使用OR连接不同的索引列
-当查询条件使用OR连接不同的索引列时，如果OR两边的列没有同时包含索引，或者MySQL评估认为使用索引的成本高于全表扫描的成本，那么索引可能会失效。为了优化这类查询，可以考虑将查询拆分成多个查询，并使用UNION来合并结果。
-
+  当查询条件使用OR连接不同的索引列时，如果OR两边的列没有同时包含索引，或者MySQL评估认为使用索引的成本高于全表扫描的成本，那么索引可能会失效。为了优化这类查询，可以考虑将查询拆分成多个查询，并使用UNION来合并结果。
+  
 6. 使用负向条件
-使用负向条件（如NOT IN、NOT LIKE、!=等）时，索引可能会失效。这是因为负向条件通常要求数据库检查每一行数据来确定是否满足条件，这导致了全表扫描。在某些情况下，可以通过子查询或其他查询优化技术来避免索引失效。
+  使用负向条件（如NOT IN、NOT LIKE、!=等）时，索引可能会失效。这是因为负向条件通常要求数据库检查每一行数据来确定是否满足条件，这导致了全表扫描。在某些情况下，可以通过子查询或其他查询优化技术来避免索引失效。
+  
 
 MySQL不等于（!= 或者<>）操作为什么会导致索引失效？
 MySQL中不等于（!= 或者<>）操作会导致索引失效的原因主要有以下几点：
@@ -15935,17 +16810,30 @@ MySQL中不等于（!= 或者<>）操作会导致索引失效的原因主要有�
 此外，对于需要使用不等于操作的场景，可以考虑使用其他查询策略或优化方法，如使用NOT EXISTS、LEFT JOIN等替代不等于操作，或者使用覆盖索引来优化查询性能。
 
 7. 索引列包含大量空值
-如果索引列包含大量空值（NULL），那么这些空值在索引中不会被特别处理，这可能导致索引在某些查询中的效率降低。在设计数据库和索引时，应尽量避免索引列包含大量空值。
-
+  如果索引列包含大量空值（NULL），那么这些空值在索引中不会被特别处理，这可能导致索引在某些查询中的效率降低。在设计数据库和索引时，应尽量避免索引列包含大量空值。
+  
 8. 索引列参与计算或函数操作
-除了前面提到的在查询条件中使用函数会导致索引失效外，如果索引列在查询过程中参与了计算或函数操作（如+、-、*、/等运算），那么索引也可能无法被有效利用。
-
+  除了前面提到的在查询条件中使用函数会导致索引失效外，如果索引列在查询过程中参与了计算或函数操作（如+、-、*、/等运算），那么索引也可能无法被有效利用。
+  
 9. 索引统计信息过时
-MySQL会维护索引的统计信息来帮助查询优化器选择最佳的查询计划。如果索引统计信息过时或不准确，那么查询优化器可能会做出错误的决策，导致索引失效。因此，定期更新索引统计信息是提高查询性能的重要手段之一。
-
+  MySQL会维护索引的统计信息来帮助查询优化器选择最佳的查询计划。如果索引统计信息过时或不准确，那么查询优化器可能会做出错误的决策，导致索引失效。因此，定期更新索引统计信息是提高查询性能的重要手段之一。
+  
 10. 使用了不合适的索引类型
-不同的索引类型（如B-Tree索引、哈希索引等）适用于不同的查询场景。如果选择了不合适的索引类型，那么索引可能无法发挥应有的作用。因此，在设计索引时需要根据实际的查询需求和数据特点来选择合适的索引类型。
+  不同的索引类型（如B-Tree索引、哈希索引等）适用于不同的查询场景。如果选择了不合适的索引类型，那么索引可能无法发挥应有的作用。因此，在设计索引时需要根据实际的查询需求和数据特点来选择合适的索引类型。
+  
 
+### 常见的MySQL索引面试题
+
+#### 1. 为什么用B+树做索引？聚簇索引、覆盖索引是什么？
+
+- B+ 树叶子存数据或主键，内部节点只存键，扇出大、树高低，适合磁盘。
+- 主键是聚簇索引，叶子就是整行。二级索引叶子存主键，回表再拿整行。覆盖索引指查询列都能从二级索引拿到，不用回表。
+
+#### 2. 什么是最左前缀原则？哪些情况索引会失效？
+
+- 联合索引 `(a,b,c)` 能用 a、a+b、a+b+c，不能跳过 a 只用 b、c。
+- 常见失效：对索引列函数/运算、前导模糊 `'%xx'`、隐式类型转换、`OR` 一侧无索引、负向条件（`!=` / `NOT IN`）在不少场景不走索引。
+- 用 `EXPLAIN` 看 type、key、rows、Extra。
 
 MYSQL索引的种类：
 MySQL中的索引是帮助MySQL高效获取数据的数据结构，可以大大提高数据库的查询速度。MySQL支持多种类型的索引，每种索引类型都有其特定的使用场景和优势。
@@ -15978,82 +16866,82 @@ MyISAM存储引擎支持空间索引，用于地理数据类型的字段（如GI
 组合索引是将多个列组合在一起创建的索引，一个表可以有多个组合索引。
 在查询条件中，MySQL可以使用组合索引中的部分列来优化查询。
 
-
 聚集索引和非聚集索引有什么区别？
 聚集索引（Clustered Index）和非聚集索引（Non-Clustered Index）是MySQL中两种主要的索引类型，它们之间存在显著的区别，主要体现在以下几个方面：
 
 1. 存储方式
-聚集索引：聚集索引的叶子节点存储了表中的数据行的实际数据。在MySQL的InnoDB存储引擎中，表中的数据行实际上是按照聚集索引键的顺序物理存储的。通常，表的主键会被用作聚集索引，但如果没有显式定义主键，MySQL会选择唯一索引作为聚集索引；如果没有唯一索引，则会自动创建一个隐藏的聚集索引（即行ID）。
-非聚集索引：非聚集索引的叶子节点不存储数据行的实际数据，而是存储了指向数据行的指针（通常是主键的值或数据行的物理地址）。这意味着，通过非聚集索引查找数据时，需要先定位到索引的叶子节点，再通过指针找到实际的数据行。
-
+  聚集索引：聚集索引的叶子节点存储了表中的数据行的实际数据。在MySQL的InnoDB存储引擎中，表中的数据行实际上是按照聚集索引键的顺序物理存储的。通常，表的主键会被用作聚集索引，但如果没有显式定义主键，MySQL会选择唯一索引作为聚集索引；如果没有唯一索引，则会自动创建一个隐藏的聚集索引（即行ID）。
+  非聚集索引：非聚集索引的叶子节点不存储数据行的实际数据，而是存储了指向数据行的指针（通常是主键的值或数据行的物理地址）。这意味着，通过非聚集索引查找数据时，需要先定位到索引的叶子节点，再通过指针找到实际的数据行。
+  
 2. 查询速度
-聚集索引：由于聚集索引的叶子节点直接存储了数据行的实际数据，因此在使用聚集索引进行查询时，可以直接获取到数据，查询速度相对较快。
-非聚集索引：非聚集索引在查询过程中需要额外的步骤来定位数据行，即先通过索引找到指针，再通过指针找到数据行，因此查询速度相对较慢。
-
+  聚集索引：由于聚集索引的叶子节点直接存储了数据行的实际数据，因此在使用聚集索引进行查询时，可以直接获取到数据，查询速度相对较快。
+  非聚集索引：非聚集索引在查询过程中需要额外的步骤来定位数据行，即先通过索引找到指针，再通过指针找到数据行，因此查询速度相对较慢。
+  
 3. 索引唯一性
-聚集索引：在InnoDB存储引擎中，聚集索引通常是唯一的，因为表中的数据行只能按照一种顺序物理存储。每个表只能有一个聚集索引。
-非聚集索引：非聚集索引可以有多个，可以根据不同的字段创建多个非聚集索引。这些索引可以独立存在，互不影响。
-
+  聚集索引：在InnoDB存储引擎中，聚集索引通常是唯一的，因为表中的数据行只能按照一种顺序物理存储。每个表只能有一个聚集索引。
+  非聚集索引：非聚集索引可以有多个，可以根据不同的字段创建多个非聚集索引。这些索引可以独立存在，互不影响。
+  
 4. 数据存储位置
-聚集索引：决定了表中数据的物理存储顺序。当表中有聚集索引时，数据行会按照聚集索引键的顺序物理存储。
-非聚集索引：不影响表中数据的物理存储顺序。非聚集索引与数据行的物理存储位置是独立的，它们通过指针来关联数据行。
-
+  聚集索引：决定了表中数据的物理存储顺序。当表中有聚集索引时，数据行会按照聚集索引键的顺序物理存储。
+  非聚集索引：不影响表中数据的物理存储顺序。非聚集索引与数据行的物理存储位置是独立的，它们通过指针来关联数据行。
+  
 5. 适用范围
-聚集索引：适合用于主键查询、范围查询等场景。由于聚集索引决定了数据的物理存储顺序，因此这些查询操作可以高效地利用索引。
-非聚集索引：适合用于优化特定的查询条件，特别是当这些查询条件不是主键或聚集索引键时。非聚集索引可以提供额外的索引路径，从而加快查询速度。
+  聚集索引：适合用于主键查询、范围查询等场景。由于聚集索引决定了数据的物理存储顺序，因此这些查询操作可以高效地利用索引。
+  非聚集索引：适合用于优化特定的查询条件，特别是当这些查询条件不是主键或聚集索引键时。非聚集索引可以提供额外的索引路径，从而加快查询速度。
+  
 
 综上所述，聚集索引和非聚集索引在MySQL中各有其独特的作用和优势。在设计和优化数据库时，应根据实际的数据使用情况和查询需求来选择合适的索引类型。
-
 
 MYSQL索引的数据结构:
 MySQL索引的数据结构主要包括以下几种，这些结构是在存储引擎层实现的，不同的存储引擎可能会采用不同的索引结构：
 
 1. B+Tree索引
-定义：B+Tree索引是MySQL中最常见的索引类型，它是对经典的B+Tree进行了优化，增加了一个指向相邻叶子节点的链表指针，以提高区间访问的性能。
-特点：
-相对于二叉树，B+Tree的层级更少，搜索效率更高。
-支持范围匹配及排序操作。
-叶子节点包含了全部的数据信息（对于聚簇索引）或主键值（对于非聚簇索引）。
-叶子节点之间通过链表相连，便于范围查询。
-
+  定义：B+Tree索引是MySQL中最常见的索引类型，它是对经典的B+Tree进行了优化，增加了一个指向相邻叶子节点的链表指针，以提高区间访问的性能。
+  特点：
+  相对于二叉树，B+Tree的层级更少，搜索效率更高。
+  支持范围匹配及排序操作。
+  叶子节点包含了全部的数据信息（对于聚簇索引）或主键值（对于非聚簇索引）。
+  叶子节点之间通过链表相连，便于范围查询。
+  
 2. Hash索引
-定义：Hash索引是通过哈希表实现的，只有精确匹配索引所有列的查询才有效。
-特点：
-查询效率非常高，时间复杂度为O(1)。
-不支持范围查询，只能用于等值查询。
-在出现Hash冲突时，性能会下降。
-在MySQL中，只有Memory存储引擎支持Hash索引，而InnoDB存储引擎具有自适应Hash功能，但这不是用户创建的Hash索引。
-
+  定义：Hash索引是通过哈希表实现的，只有精确匹配索引所有列的查询才有效。
+  特点：
+  查询效率非常高，时间复杂度为O(1)。
+  不支持范围查询，只能用于等值查询。
+  在出现Hash冲突时，性能会下降。
+  在MySQL中，只有Memory存储引擎支持Hash索引，而InnoDB存储引擎具有自适应Hash功能，但这不是用户创建的Hash索引。
+  
 3. R-tree空间索引
-定义：R-tree索引是MyISAM存储引擎的一个特殊索引，主要用于地理空间数据类型。
-特点：
-适用于多维空间数据的索引。
-底层通过R树实现，能够有效管理空间数据。
-
+  定义：R-tree索引是MyISAM存储引擎的一个特殊索引，主要用于地理空间数据类型。
+  特点：
+  适用于多维空间数据的索引。
+  底层通过R树实现，能够有效管理空间数据。
+  
 4. Full-text全文索引
-定义：全文索引通过建立倒排索引，快速匹配文档，类似于搜索引擎的索引机制。
-特点：
-适用于对文本内容进行搜索。
-只能在文本类型（如CHAR、VARCHAR、TEXT）字段上创建。
-Memory存储引擎不支持该索引。
-
+  定义：全文索引通过建立倒排索引，快速匹配文档，类似于搜索引擎的索引机制。
+  特点：
+  适用于对文本内容进行搜索。
+  只能在文本类型（如CHAR、VARCHAR、TEXT）字段上创建。
+  Memory存储引擎不支持该索引。
+  
 
 为什么MYSQL索引使用B+树是更合适的选择：
+
 1. 磁盘I/O效率
-数据库索引通常存储在磁盘上，而不是内存中。由于磁盘I/O操作的速度远慢于内存访问，因此减少磁盘I/O次数是提高数据库查询性能的关键。B+树相比二叉查找树，在保持数据有序的同时，通过增加每个节点的子节点数（即分支因子），大大降低了树的高度，从而减少了查询时所需的磁盘I/O次数。
-
+  数据库索引通常存储在磁盘上，而不是内存中。由于磁盘I/O操作的速度远慢于内存访问，因此减少磁盘I/O次数是提高数据库查询性能的关键。B+树相比二叉查找树，在保持数据有序的同时，通过增加每个节点的子节点数（即分支因子），大大降低了树的高度，从而减少了查询时所需的磁盘I/O次数。
+  
 2. 节点存储效率
-B+树的每个节点可以存储多个关键字（或键值对）和子节点指针，这使得树更加“矮胖”。相比之下，二叉查找树的一个节点通常只存储一个关键字和两个子节点指针（对于非叶子节点）。在相同数量的数据下，B+树的高度远低于二叉查找树，从而减少了查询过程中的磁盘I/O次数。
-
+  B+树的每个节点可以存储多个关键字（或键值对）和子节点指针，这使得树更加“矮胖”。相比之下，二叉查找树的一个节点通常只存储一个关键字和两个子节点指针（对于非叶子节点）。在相同数量的数据下，B+树的高度远低于二叉查找树，从而减少了查询过程中的磁盘I/O次数。
+  
 3. 叶子节点之间的链表
-B+树的一个关键特性是所有数据都存储在叶子节点中，并且叶子节点之间通过链表相连。这种结构非常适合进行范围查询，因为可以直接在叶子节点链表中遍历，而无需回溯到父节点。此外，这种结构还使得B+树在进行顺序访问时（如全表扫描或范围查询）更加高效。
-
+  B+树的一个关键特性是所有数据都存储在叶子节点中，并且叶子节点之间通过链表相连。这种结构非常适合进行范围查询，因为可以直接在叶子节点链表中遍历，而无需回溯到父节点。此外，这种结构还使得B+树在进行顺序访问时（如全表扫描或范围查询）更加高效。
+  
 4. 内部节点不存储数据
-B+树的内部节点（非叶子节点）仅存储键值（用于指导搜索）和子节点指针，不存储实际的数据记录。这减少了内部节点的空间占用，使得B+树能够拥有更多的分支因子，进一步降低树的高度。相比之下，二叉查找树的每个节点都需要存储数据，限制了节点的分支因子。
-
+  B+树的内部节点（非叶子节点）仅存储键值（用于指导搜索）和子节点指针，不存储实际的数据记录。这减少了内部节点的空间占用，使得B+树能够拥有更多的分支因子，进一步降低树的高度。相比之下，二叉查找树的每个节点都需要存储数据，限制了节点的分支因子。
+  
 5. 缓存友好性
-由于B+树的结构更加紧凑，且叶子节点之间通过链表相连，这使得B+树在缓存中的表现更加出色。当进行范围查询或顺序访问时，已经加载到缓存中的叶子节点可能包含多个相邻的数据记录，这些记录可能都会被后续操作使用，从而提高了缓存的利用率。
-
+  由于B+树的结构更加紧凑，且叶子节点之间通过链表相连，这使得B+树在缓存中的表现更加出色。当进行范围查询或顺序访问时，已经加载到缓存中的叶子节点可能包含多个相邻的数据记录，这些记录可能都会被后续操作使用，从而提高了缓存的利用率。
+  
 
 什么是B-树？
 B-树（B类树）的特点就是每层节点数目非常多，层数很少，目的就是为了减少磁盘IO次数。
@@ -16066,14 +16954,12 @@ B-树是一种多路平衡查找树，它的每一个节点最多包含K个孩�
 4.所有的叶子结点都位于同一层。
 5.每个节点中的元素从小到大排列，节点当中k-1个元素正好是k个孩子包含的元素的值域分划。
 
-
 B-树用作索引：
 在B-树中进行查询时，在查询的中的比较次数其实不比二叉查找树少，尤其当单一节点中的元素数量很多时。可是相比磁盘IO的速度，内存中的耗时几乎可以忽略，所以只要树的高度足够低，IO次数足够少，就可以提高查询性能。
 相比之下节点内部元素多一点也没有关系，仅仅是多了几次内存交互，只要不超过磁盘页的大小即可。这就是B-树的优势之一。B树在插入和删除节点的时候如果导致树不平衡，就通过自动调整节点的位置来保持树的自平衡。
 非关系型数据库MongoDB使用B树作为数据库索引。大部分关系型数据库，比如Mysql，则使用B+树作为索引。
 B+树是基于B-树的一种变体，有着比B-树更高的查询性能。
 B+树和B-树有一些共同点，但是B+树也具备一些新的特征。
-
 
 什么是B+树？
 B+树是B-树的一种变体，它针对数据库索引的需求进行了优化：
@@ -16087,7 +16973,6 @@ B+树是B-树的一种变体，它针对数据库索引的需求进行了优化�
 1.有k个子树的中间节点包含有k个元素（B树中是k-1个元素），每个元素不保存数据，只用来索引，所有数据都保存在叶子节点。
 2.所有的叶子结点中包含了全部元素的信息，及指向含这些元素记录的指针，且叶子结点本身依关键字的大小自小而大顺序链接。
 3.所有的中间节点元素都同时存在于子节点，在子节点元素中是最大（或最小）元素。
-
 
 B+树中的节点之间不但含有重复元素，而且叶子节点还用指针连在一起。在B+树中，每一个父节点的中的元素都出现在子节点中，是子节点的最大（或最小元素）。
 由于父节点的所有元素都出现在子节点，因此所有叶子节点包含了全量元素信息。并且每个叶子节点都有指向下一个叶子节点的指针，形成了有序链表。
@@ -16114,7 +16999,6 @@ B+树中间节点没有存储数据，只有叶节点存放数据，其余节点
 数据库索引采用B+树的主要原因是B树在提高了磁盘IO性能的同时并没有解决元素遍历的效率低下的问题。正是为了解决这个问题，B+树应运而生。B+树只要遍历叶子节点就可以实现整棵树的遍历。
 而且在数据库中基于范围的查询是非常频繁的，而B树不支持这样的操作（或者说效率太低）。
 
-
 那么MongoDB为什么使用B-树而不是B+树？
 至于MongoDB为什么使用B-树而不是B+树，可以从它的设计角度来考虑，它并不是传统的关系性数据库，而是以Json格式作为存储的nosql，目的就是高性能，高可用，易扩展。首先它摆脱了关系模型，上面所述的范围查询的优点就没那么强烈了，其次Mysql由于使用B+树，数据都在叶节点上，每次查询都需要访问到叶节点，而MongoDB使用B-树，所有节点都有Data域，只要找到指定索引就可以进行访问，无疑单次查询平均快于Mysql（但侧面来看Mysql至少平均查询耗时差不多）。
 总体来说，Mysql选用B+树和MongoDB选用B-树还是以自己的需求来选择的。
@@ -16128,7 +17012,6 @@ B+树中间节点没有存储数据，只有叶节点存放数据，其余节点
 4 每个红色节点的两个子节点都是黑色。(从每个叶子到根的所有路径上不能有两个连续的红色节点)
 5.从任一节点到其每个叶子的所有路径都包含相同数目的黑色节点。
 
-
 这是因为这些规则限制，才保证了红黑树的自平衡。红黑树从根到叶子的最长路径不会超过最短路径的2倍。当插入或删除节点的时候，红黑树的规则可能被打破。这时候就需要做出一些调整， 来继续维持我们的规则。
 那么在大规模数据存储的时候，红黑树往往出现由于树的深度过大而造成磁盘IO读写过于频繁，进而导致效率低下的情况。磁盘查找存取的次数往往由树的高度所决定，所以，只要我们通过某种较好的树结构尽量减少树的高度，就可以提高查询性能。B树可以有多个子女，从几十到上千，可以降低树的高度。
 归结起来，使用B+树而不是用其他结构的原因就是为了减少磁盘IO的次数，减少数的高度，而B+树就很好的做到了这一点。
@@ -16136,8 +17019,6 @@ B+树中间节点没有存储数据，只有叶节点存放数据，其余节点
 那么什么情况下使用红黑树?红黑树和B树使用场合有什么不同？两者都是有序的数据结构，可用作数据容器。红黑树多用在内部排序，即全放在内存中的，微软STL的map和set的内部实现就是红黑树。
 B树多用在内存里放不下，大部分数据存储在外存上时。因为B树层数少，因此可以确保每次操作，读取磁盘的次数尽可能的少。
 在数据较小，可以完全放到内存中时，红黑树的时间复杂度比B树低。反之，数据量较大，外存中占主要部分时，B树因其读磁盘次数少，而具有更快的速度。
-
-
 
 MYSQL事务机制：
 MySQL事务机制是数据库管理系统（DBMS）提供的一组功能，用于确保一组SQL操作能够以原子方式执行，确保数据一致性、隔离性和持久性。
@@ -16168,6 +17049,17 @@ MySQL提供了四种隔离级别，每种隔离级别都对事务的可见性和
 3.可重复读 (Repeatable Read)：一个事务在开始时读取的数据在整个事务过程中保持一致，防止“脏读”和“不可重复读”，但可能导致“幻读”。InnoDB存储引擎在该隔离级别下通过间隙锁定避免了幻读。
 4.可序列化 (Serializable)：最高的隔离级别，通过强制事务顺序执行，完全防止“脏读”、“不可重复读”和“幻读”，但并发性最低。
 
+### 常见的MySQL事务面试题
+
+#### 1. 事务ACID是什么？脏读、不可重复读、幻读？
+
+- 原子性：全成或全回滚。一致性：约束在事务前后成立。隔离性：并发事务互不干扰。持久性：提交后宕机也不丢（redo）。
+- 脏读：读到别人未提交的改。不可重复读：同一行读两次，中间被别人改了。幻读：范围查询两次，中间被人插入新行。
+
+#### 2. 四种隔离级别是什么？MySQL默认哪级？
+
+- 读未提交：可能脏读。读已提交：防脏读，可能不可重复读。可重复读：防脏读和不可重复读。串行化：全防，并发最差。
+- InnoDB **默认可重复读**，并用 MVCC + 间隙锁/临键锁尽量避免幻读。MVCC 在读已提交和可重复读下工作。
 
 MySQL锁：
 锁的出现，就是用于解决不同事务对共享资源并发访问所引起的脏读、不可重复读、幻读问题。
@@ -16181,15 +17073,17 @@ MySQL表级锁：表级锁，每次操作锁住整张表。锁定粒度大，发
 应用在MyISAM、InnoDB、BDB等存储引擎中。
 对于表级锁，主要分为以下三类：
 表锁：通过LOCK TABLES语句手动锁定表，可以是读锁或写锁。
-    读锁（READ LOCK）：其他事务可以读取表，但不能写入。
-    LOCK TABLES my_table READ;
-    -- 执行读操作
-    UNLOCK TABLES;
+ 读锁（READ LOCK）：其他事务可以读取表，但不能写入。
+ LOCK TABLES my_table READ;
+ -- 执行读操作
+ UNLOCK TABLES;
 
-    写锁（WRITE LOCK）：其他事务既不能读取也不能写入。
-    LOCK TABLES my_table WRITE;
-    -- 执行写操作
-    UNLOCK TABLES;
+```
+写锁（WRITE LOCK）：其他事务既不能读取也不能写入。
+LOCK TABLES my_table WRITE;
+-- 执行写操作
+UNLOCK TABLES;
+```
 
 元数据锁（Meta Data Lock, MDL）：自动添加，用于保护表的结构和元数据的并发访问。MDL在执行诸如ALTER TABLE等操作时自动加上，不需要显式使用。
 意向锁（Intention Lock）
@@ -16200,11 +17094,12 @@ MySQL表级锁：表级锁，每次操作锁住整张表。锁定粒度大，发
 共享锁（S锁）：
 添加共享锁之后，如果查询未命中索引，则不会使用行锁，会退变为表锁。
 所以在没有创建name索引时，修改徐勇数据时，会被阻塞；
->当创建name索引后，由于查询命中索引，所以行锁将曹茜这条数据锁住，并不会影响表中其他数据的操作。此时修改徐勇这条数据能够成功。
->由于行锁、表锁的原因，其他事务会处于等待状态。锁超时等待，默认为 50 s。
-我们可通过命令：show variables like 'innodb_lock_wait_timeout';
-锁超时时间也分会话/全局级别，我们可通过set session innodb_lock_wait_timeout = 20; 
-或 set global innodb_lock_wait_timeout = 20; 来进行修改设置。
+
+> 当创建name索引后，由于查询命中索引，所以行锁将曹茜这条数据锁住，并不会影响表中其他数据的操作。此时修改徐勇这条数据能够成功。
+> 由于行锁、表锁的原因，其他事务会处于等待状态。锁超时等待，默认为 50 s。
+> 我们可通过命令：show variables like 'innodb_lock_wait_timeout';
+> 锁超时时间也分会话/全局级别，我们可通过set session innodb_lock_wait_timeout = 20; 
+> 或 set global innodb_lock_wait_timeout = 20; 来进行修改设置。
 
 允许事务读取一行数据，但不允许修改。
 SELECT * FROM my_table WHERE id = 1 LOCK IN SHARE MODE;
@@ -16212,11 +17107,12 @@ SELECT * FROM my_table WHERE id = 1 LOCK IN SHARE MODE;
 排他锁（X锁）：
 添加排他锁之后，如果 name 字段查询未命中索引，则不会使用行锁，会退变为表锁。
 所以在没有创建name索引时，修改徐勇数据时，会被阻塞；
->当创建name索引后，由于 name 字段查询命中索引，所以行锁会将曹茜这条数据锁住（其他会话无法获取该条数据的共享锁、排它锁），
-并不会影响表中其他数据的操作。此时修改徐勇这条数据能够成功。
->此时查询数据是可以正常进行的。是因为 InnoDB 还有一个"一致性的非锁定读"的概念，
-就是说行锁未释放之前，其他事务读取该行数据读取的是它的快照数据，并不会与行锁冲突
->由于行锁、表锁的原因，其他事务会处于等待状态。锁超时等待，默认为 50 s。
+
+> 当创建name索引后，由于 name 字段查询命中索引，所以行锁会将曹茜这条数据锁住（其他会话无法获取该条数据的共享锁、排它锁），
+> 并不会影响表中其他数据的操作。此时修改徐勇这条数据能够成功。
+> 此时查询数据是可以正常进行的。是因为 InnoDB 还有一个"一致性的非锁定读"的概念，
+> 就是说行锁未释放之前，其他事务读取该行数据读取的是它的快照数据，并不会与行锁冲突
+> 由于行锁、表锁的原因，其他事务会处于等待状态。锁超时等待，默认为 50 s。
 
 允许事务读取和修改一行数据，其他事务不能读取和修改该行。
 SELECT * FROM my_table WHERE id = 1 FOR UPDATE;
@@ -16289,36 +17185,36 @@ UPDATE：InnoDB为插入的一行新纪录保存当前系统版本号作为行�
 不足之处是每行记录都需要额外的存储空间，需要做更多的行检查工作和一些额外的维护工作。
 MVCC 只在 COMMITTED READ（读提交）和REPEATABLE READ（可重复读）两种隔离级别下工作。
 
-
 MYSQL 多线程：
 MySQL 的多线程处理是其高效并发操作的核心机制之一。它允许 MySQL 数据库管理系统同时处理多个客户端请求，从而提高了吞吐量和响应时间。以下是 MySQL 多线程处理的几个关键方面：
 
 1. 连接线程
-当客户端连接到 MySQL 服务器时，服务器会创建一个新的线程来处理该连接。这个线程负责接收客户端的 SQL 请求、执行这些请求并将结果返回给客户端。这些连接线程通常称为“客户端线程”或“会话线程”。
-
+  当客户端连接到 MySQL 服务器时，服务器会创建一个新的线程来处理该连接。这个线程负责接收客户端的 SQL 请求、执行这些请求并将结果返回给客户端。这些连接线程通常称为“客户端线程”或“会话线程”。
+  
 2. 线程池
-为了提高连接管理和资源利用的效率，MySQL 提供了线程池机制。线程池允许服务器预先创建和维护一组线程，而不是为每个新连接都创建一个新线程。当客户端请求连接时，服务器会从池中分配一个空闲线程来处理该连接。这样可以减少线程的创建和销毁开销，提高资源利用率。
-
+  为了提高连接管理和资源利用的效率，MySQL 提供了线程池机制。线程池允许服务器预先创建和维护一组线程，而不是为每个新连接都创建一个新线程。当客户端请求连接时，服务器会从池中分配一个空闲线程来处理该连接。这样可以减少线程的创建和销毁开销，提高资源利用率。
+  
 3. 线程的生命周期
-创建：当新的客户端连接时，MySQL 会创建一个新的线程来处理该连接。
-执行：线程接收并解析客户端的 SQL 请求，执行相应的数据库操作（如查询、更新等）。
-等待：如果请求需要等待（例如，等待锁释放、I/O 操作等），线程将进入等待状态。
-关闭：当客户端断开连接时，线程将被销毁或返回到线程池中。
-
+  创建：当新的客户端连接时，MySQL 会创建一个新的线程来处理该连接。
+  执行：线程接收并解析客户端的 SQL 请求，执行相应的数据库操作（如查询、更新等）。
+  等待：如果请求需要等待（例如，等待锁释放、I/O 操作等），线程将进入等待状态。
+  关闭：当客户端断开连接时，线程将被销毁或返回到线程池中。
+  
 4. 并发控制
-MySQL 通过锁机制、事务和隔离级别来控制并发操作，确保数据的一致性和完整性。例如，InnoDB 存储引擎使用行级锁来允许高并发访问，同时减少锁争用。
-
+  MySQL 通过锁机制、事务和隔离级别来控制并发操作，确保数据的一致性和完整性。例如，InnoDB 存储引擎使用行级锁来允许高并发访问，同时减少锁争用。
+  
 5. 配置和优化
-线程缓存：通过配置 thread_cache_size 参数，可以指定 MySQL 维护的线程池大小，以优化连接性能。
-最大连接数：max_connections 参数定义了 MySQL 服务器允许的最大客户端连接数。
-连接超时：wait_timeout 和 interactive_timeout 参数用于控制非交互式和交互式连接的空闲超时时间。
-
+  线程缓存：通过配置 thread_cache_size 参数，可以指定 MySQL 维护的线程池大小，以优化连接性能。
+  最大连接数：max_connections 参数定义了 MySQL 服务器允许的最大客户端连接数。
+  连接超时：wait_timeout 和 interactive_timeout 参数用于控制非交互式和交互式连接的空闲超时时间。
+  
 6. 线程竞争和上下文切换
-多线程环境可能导致线程竞争和上下文切换，这会增加 CPU 开销并可能影响性能。因此，合理的配置和监控对于优化 MySQL 的多线程性能至关重要。
-
+  多线程环境可能导致线程竞争和上下文切换，这会增加 CPU 开销并可能影响性能。因此，合理的配置和监控对于优化 MySQL 的多线程性能至关重要。
+  
 7. 监控和调优
-性能模式：MySQL 的性能模式（Performance Schema）提供了丰富的监控和诊断工具，可以帮助分析线程活动和性能瓶颈。
-慢查询日志：通过启用慢查询日志，可以记录执行时间较长的查询，以便进一步优化。
+  性能模式：MySQL 的性能模式（Performance Schema）提供了丰富的监控和诊断工具，可以帮助分析线程活动和性能瓶颈。
+  慢查询日志：通过启用慢查询日志，可以记录执行时间较长的查询，以便进一步优化。
+  
 
 总结
 MySQL 的多线程处理机制是实现高并发、高性能数据库操作的关键。通过合理配置和优化，可以充分利用多线程的优势，提高数据库的吞吐量和响应时间。然而，多线程也可能带来竞争和上下文切换等问题，因此持续的监控和调优是确保数据库性能稳定的关键。
@@ -16330,7 +17226,7 @@ MySQL 5.7 支持的存储引擎有 InnoDB、MyISAM、Memory、Merge、Archive、
 InnoDB：
 在 MySQL 5.5 及以后版本后，MySQL 选择使用 InnoDB为默认存储引擎。
 在创建数据库表时，不指定存储引擎时，使用的就是 InnoDB。如需使用其他存储引擎，可以手动来指定。
- 
+
 特点：
 InnoDB 支持事务操作；（每一条SQL都默认封装成事务，自动提交，会影响速度）
 InnoDB 支持外键；
@@ -16349,20 +17245,20 @@ InnoDB 和 MyISAM 作为 MySQL 中 B+Tree 索引的两种重要体现形式。
 InnoDB 推荐以主键作为索引来组织数据进行存储，它认为主键是一个非常重要的属性。
 InnoDB 表数据文件本身就是按B+Tree组织的一个索引结构，聚簇索引就是按照每张表的主键来构造一个B+树，
 叶子节点中存放的就是整张表的数据。
- 
+
 一般建表会用一个自增主键做聚簇索引，没有的话MySQL会默认创建，
 但是这个主键如果更改代价较高，故建表时要考虑自增ID不能频繁 update 这一点。
 MySQL一张表，比如有id(主键)，name，age等字段。我们可以建很多个索引，MySQL除了主键索引外，都是非聚簇索引。
 即只有我们创建的主键id索引，我们可以叫他id索引，它别名又叫做聚簇索引，
 （因为只有id索引，叶子节点包含了完整的记录行）理解成一个别名的即可。
 如果我们再创建一个name索引，它就叫做非聚簇索引，或者辅助索引。）
- 
+
 我们日常工作中，根据实际情况自行添加的索引都是辅助索引，辅助索引就是一个为了需找主键索引的二级索引，
 现在找到主键索引再通过主键索引找数据；
 
 MyISAM存储引擎：
 MyISAM 作为 MySQL 中 B+Tree 索引的另一种重要体现形式。
- 
+
 特点：
 MyISAM 是非聚集索引；
 MyISAM 有一个变量专门来保存整个表的行数，查询count很快(注意不能加任何 where 条件)
@@ -16397,7 +17293,6 @@ MySQL分库分表：
 在数据量及访问压力不是特别大的情况，首先考虑缓存、读写分离、索引技术等方案。
 若数据量极大，且连续增长，再考虑水平分库水平分表的方案。
 
-
 Oracle:
 SQL语句在Oracle中执行过程详解
 Oracle采用了共享池来判断SQL语句是否存在缓存和执行计划。
@@ -16407,15 +17302,14 @@ Oracle采用了共享池来判断SQL语句是否存在缓存和执行计划。
 4.共享池检查：最主要的作用是缓存SQL语句和该语句的执行计划→ 软解析
 5.优化器→硬解析
 
-
 数据库连接技术：
 JDBC：传统连接数据库的方法，容易产生硬编码问题，难以保证SQL注入安全性
 //步骤一:定义连接数据库的相关信息
 static String driver = "com.mysql.jdbc.Driver";
 连接数据库
-    static String url = "jdbc:mysql://localhost:3306/school?useSSL=false";
-    static String username = "root";
-    static String password = "root";
+ static String url = "jdbc:mysql://localhost:3306/school?useSSL=false";
+ static String username = "root";
+ static String password = "root";
 
 public static void main(String[] args) {
 //步骤二:加载jdbc驱动
@@ -16441,26 +17335,28 @@ ResultSet rs = pstmt.executeQuery();
 2.它允许应用程序重复使用一个现有的数据库连接，而不是再重新建立一个；
 3.释放空闲时间超过最大空闲时间的数据库连接来避免因为没有释放数据库连接而引起的数据库连接遗漏；
 public class Druid_ {
-    @Test
-    public void testDruid() throws Exception {
-        //1.加入Druid jar包
-        //2.加入配置文件，将该文件拷贝到项目的src目录下
-        //3.创建Properties对象，读取配置文件
-        Properties properties = new Properties();
-        properties.load(new FileInputStream("src\\druid.properties"));
+ @Test
+ public void testDruid() throws Exception {
+ //1.加入Druid jar包
+ //2.加入配置文件，将该文件拷贝到项目的src目录下
+ //3.创建Properties对象，读取配置文件
+ Properties properties = new Properties();
+ properties.load(new FileInputStream("src\\druid.properties"));
 
-        //4.创建一个指定参数的数据库连接池
-        DataSource dataSource = DruidDataSourceFactory.createDataSource(properties);
-        long start =System.currentTimeMillis();
-        for (int i = 0; i < 5000; i++) {
-            Connection connection = dataSource.getConnection();
-            connection.close();
-        }
-        long end =System.currentTimeMillis();
-        System.out.println("Druid 5000次连接mysql耗时：" + (end - start));//Druid 5000次连接mysql耗时：3608
+```
+    //4.创建一个指定参数的数据库连接池
+    DataSource dataSource = DruidDataSourceFactory.createDataSource(properties);
+    long start =System.currentTimeMillis();
+    for (int i = 0; i < 5000; i++) {
+        Connection connection = dataSource.getConnection();
+        connection.close();
     }
+    long end =System.currentTimeMillis();
+    System.out.println("Druid 5000次连接mysql耗时：" + (end - start));//Druid 5000次连接mysql耗时：3608
 }
+```
 
+}
 
 列式存储数据库：
 列存储不同于传统的关系型数据库，其数据在表中是按行存储的，列方式所带来的重要好处之一就是，由于查询中的选择规则是通过列来定义的，因此整个数据库是自动索引化的。
@@ -16468,14 +17364,17 @@ public class Druid_ {
 列存储数据库使用一个称为 keyspace 的概念。keyspace 有点像关系模型中的模式。keyspace 包含所有列族(有点像关系模型中的表)，其中包含行，包含列。
 列式存储多用于OLAP(Online analytical processing)联机分析处理系统
 
->列族由多行组成。
->每一行可以包含与其他行不同数量的列。而且这些列不必与其他行的列匹配(例如，它们可以有不同的列名、数据类型、数量等)。
->每行包含一列。它不像关系数据库那样跨所有行。每个列包含一个名称/值对，以及一个时间戳。
+> 列族由多行组成。
+> 每一行可以包含与其他行不同数量的列。而且这些列不必与其他行的列匹配(例如，它们可以有不同的列名、数据类型、数量等)。
+> 每行包含一列。它不像关系数据库那样跨所有行。每个列包含一个名称/值对，以及一个时间戳。
 
-		  Column 		Column 		   Column
-		  Name 			Name		   Name 
-Row Key   Value 		Value 		   Value
-		  Timestamp   	Timestamp	   Timestamp
+```
+      Column         Column            Column
+      Name             Name           Name 
+```
+
+Row Key Value Value Value
+ Timestamp Timestamp Timestamp
 
 每一行的结构：
 Row Key：每一行都有一个惟一的键，这是该行的惟一标识符。
@@ -16597,65 +17496,67 @@ ZSCORE key member：获取元素的评分。
 底层使用有序集合（Sorted Set）来实现地理空间索引，并通过GeoHash算法对地理位置进行编码和排序。
 
 Redis数据类型对应的编码：
+
 1. 字符串（String）
-编码方式：
-int：当字符串值只包含整数，且可以用64位有符号整数表示时，Redis会将其编码为int类型，以节省内存空间。
-raw（或称为embstr和SDS）：如果字符串值无法被int编码表示，Redis会将其编码为raw类型，即普通的字符串编码方式。
-raw编码方式中，Redis使用简单动态字符串（Simple Dynamic String, SDS）来存储字符串，SDS是一种动态字符串结构，由长度、空闲空间和字节数组三部分组成。
-在Redis 7.0之前，对于小于等于44字节的字符串，Redis使用embstr编码，该编码方式会分配一个固定大小的空间（如64字节），并将数据存储在内部。对于大于44字节的字符串，Redis则使用raw编码。
+  编码方式：
+  int：当字符串值只包含整数，且可以用64位有符号整数表示时，Redis会将其编码为int类型，以节省内存空间。
+  raw（或称为embstr和SDS）：如果字符串值无法被int编码表示，Redis会将其编码为raw类型，即普通的字符串编码方式。
+  raw编码方式中，Redis使用简单动态字符串（Simple Dynamic String, SDS）来存储字符串，SDS是一种动态字符串结构，由长度、空闲空间和字节数组三部分组成。
+  在Redis 7.0之前，对于小于等于44字节的字符串，Redis使用embstr编码，该编码方式会分配一个固定大小的空间（如64字节），并将数据存储在内部。对于大于44字节的字符串，Redis则使用raw编码。
 
 注意：从Redis 7.0开始，引入了新的数据结构ListPack来替代ZipList，但这一变化主要影响列表（List）和哈希（Hash）等类型的底层实现，对字符串类型的编码方式影响不大。
 
 2. 列表（List）
-编码方式：
-ziplist：当列表的元素都是小整数或较短的字符串时，Redis会将列表编码为ziplist类型。ziplist是一种紧凑的编码方式，可以节省内存空间。
-linkedlist（或称为quicklist）：在Redis 3.2之前，当列表的元素包含较长的字符串时，Redis会将列表编码为linkedlist类型，这是一种双向链表的编码方式。但从Redis 3.2开始，引入了quicklist，它是linkedlist和ziplist的结合体，用于优化列表的存储效率和内存使用。
-
+  编码方式：
+  ziplist：当列表的元素都是小整数或较短的字符串时，Redis会将列表编码为ziplist类型。ziplist是一种紧凑的编码方式，可以节省内存空间。
+  linkedlist（或称为quicklist）：在Redis 3.2之前，当列表的元素包含较长的字符串时，Redis会将列表编码为linkedlist类型，这是一种双向链表的编码方式。但从Redis 3.2开始，引入了quicklist，它是linkedlist和ziplist的结合体，用于优化列表的存储效率和内存使用。
+  
 3. 集合（Set）
-编码方式：
-intset：当集合的元素都是小整数时，Redis会将集合编码为intset类型，这是一种紧凑的编码方式，可以节省内存空间。
-hashtable：当集合的元素包含较长的字符串时，Redis会将集合编码为hashtable类型，通过哈希函数来快速定位元素。
-
+  编码方式：
+  intset：当集合的元素都是小整数时，Redis会将集合编码为intset类型，这是一种紧凑的编码方式，可以节省内存空间。
+  hashtable：当集合的元素包含较长的字符串时，Redis会将集合编码为hashtable类型，通过哈希函数来快速定位元素。
+  
 4. 哈希（Hash）
-编码方式：
-ziplist（Redis 7.0之前）或listpack（Redis 7.0及以后）：当哈希的字段和值都可以存储为小整数或较短的字符串时，Redis会将哈希编码为ziplist（或listpack）类型。这是一种紧凑的编码方式，可以节省内存空间。
-hashtable：当哈希的字段和值包含较长的字符串时，Redis会将哈希编码为hashtable类型，通过哈希函数来快速定位字段和值。
-
+  编码方式：
+  ziplist（Redis 7.0之前）或listpack（Redis 7.0及以后）：当哈希的字段和值都可以存储为小整数或较短的字符串时，Redis会将哈希编码为ziplist（或listpack）类型。这是一种紧凑的编码方式，可以节省内存空间。
+  hashtable：当哈希的字段和值包含较长的字符串时，Redis会将哈希编码为hashtable类型，通过哈希函数来快速定位字段和值。
+  
 5. 有序集合（Zset）
-编码方式：
-ziplist：当有序集合的元素数量较少，且每个元素的成员和分数都比较小时，Redis会使用ziplist编码。
-skiplist：当有序集合的元素数量较多，或元素较大时，Redis会使用skiplist编码。Skiplist是一种跳跃表数据结构，它可以在O(log N)时间复杂度内完成元素的查找、插入和删除操作。
+  编码方式：
+  ziplist：当有序集合的元素数量较少，且每个元素的成员和分数都比较小时，Redis会使用ziplist编码。
+  skiplist：当有序集合的元素数量较多，或元素较大时，Redis会使用skiplist编码。Skiplist是一种跳跃表数据结构，它可以在O(log N)时间复杂度内完成元素的查找、插入和删除操作。
+  
 
 总结
 Redis的数据类型及其编码方式设计得非常灵活，旨在根据不同的数据特性和使用场景来优化内存使用和访问效率。了解这些编码方式有助于更好地理解Redis的内部工作机制，并优化Redis的使用。
 
 SpringBoot整合Redis：
 1.xml配置redis
-  redis:
-    host: 127.0.0.1 #地址
-    port: 6379 #端口
-    password: 123456
-    timeout: 30000 # 连接超时时间（毫秒）
-    database: 9  #默认数据库
+ redis:
+ host: 127.0.0.1 #地址
+ port: 6379 #端口
+ password: 123456
+ timeout: 30000 # 连接超时时间（毫秒）
+ database: 9 #默认数据库
 
 2.SpringBoot配置Redis工具类
 @Configuration
 public class RedisConfig {
-    @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
-        template.setConnectionFactory(factory);
-        // key采用String的序列化方式
-        template.setKeySerializer(new StringRedisSerializer());
-        // hash的key也采用String的序列化方式
-        template.setHashKeySerializer(new StringRedisSerializer());
-        // value序列化方式采用jackson
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        // hash的value序列化方式采用jackson
-        template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
-        template.afterPropertiesSet();
-        return template;
-    }
+ @Bean
+ public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
+ RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
+ template.setConnectionFactory(factory);
+ // key采用String的序列化方式
+ template.setKeySerializer(new StringRedisSerializer());
+ // hash的key也采用String的序列化方式
+ template.setHashKeySerializer(new StringRedisSerializer());
+ // value序列化方式采用jackson
+ template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+ // hash的value序列化方式采用jackson
+ template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+ template.afterPropertiesSet();
+ return template;
+ }
 
 }
 
@@ -16668,8 +17569,8 @@ String rediscode = redisTemplate.opsforValue().get(AuthserverConstant.SMS_CODE_C
 ②取出验证码的时间，判断是否小于60s
 long l= Long.parseLong(rediscode.split( regex:"")[1]);
 if(System.currentTimeMillis()-l<60000){
-    //60秒内不能再发
-    return R.error(BizCodeEnume.SMs CODE EXCEPTION.getCode(),BizCodeEnume.SMS CODE EXCEPTION.getMSg());
+ //60秒内不能再发
+ return R.error(BizCodeEnume.SMs CODE EXCEPTION.getCode(),BizCodeEnume.SMS CODE EXCEPTION.getMSg());
 }
 
 2.验证码的再次校验
@@ -16678,7 +17579,6 @@ if(System.currentTimeMillis()-l<60000){
 String code = UuID.randomUUID().tostring().substring(0, 5)+""+System.currentTimeMillis();
 //redis缓存验证码，防止同一个phone在60秒内再次发送验证码.设定过期时间为2分钟
 redisTemplate.opsForValue().set( AuthServerConstant.SMs CODE CACHE PREFIX+phone,code, 2, TimeUnit.MINUTS);
-
 
 Redis SDS（Simple Dynamic String）：
 Redis中的SDS（Simple Dynamic String，简单动态字符串）是一种自定义的字符串数据结构，设计用于克服标准C语言中char数组（以\0结尾的字符串）的一些局限性。
@@ -16707,30 +17607,27 @@ SDS作为Redis的默认字符串表示，广泛应用于Redis的各种数据结�
 
 总之，SDS是Redis中一种非常重要的字符串数据结构，它通过记录字符串长度、动态扩容、安全性检查等特性，提高了字符串操作的效率和安全性，并广泛应用于Redis的各种数据结构中。
 
-
 Redis中为什么使用SDS而不是C字符串？
 主要是基于以下几个方面的考虑：
 
 1. 高效获取字符串长度
-C字符串的缺陷：在C语言中，获取一个以空字符\0结尾的字符串长度需要遍历整个字符串直到找到结束符，时间复杂度为O(N)。
-SDS的优势：SDS在结构体头部显式记录了字符串的长度（len字段），因此可以直接通过读取这个字段得知字符串长度，无需遍历整个字符串，时间复杂度降为O(1)。这对于频繁需要获取字符串长度的应用场景（如Redis）来说，是一个显著的性能提升。
+  C字符串的缺陷：在C语言中，获取一个以空字符\0结尾的字符串长度需要遍历整个字符串直到找到结束符，时间复杂度为O(N)。
+  SDS的优势：SDS在结构体头部显式记录了字符串的长度（len字段），因此可以直接通过读取这个字段得知字符串长度，无需遍历整个字符串，时间复杂度降为O(1)。这对于频繁需要获取字符串长度的应用场景（如Redis）来说，是一个显著的性能提升。
 2. 空间预分配与惰性释放
-C字符串的缺陷：C字符串在每次修改（如追加字符）时，如果空间不足，都需要重新分配内存并复制旧数据到新内存，这可能导致频繁的内存分配和释放操作，影响性能。同时，当字符串缩短时，C字符串需要立即回收不再使用的内存空间，否则会造成内存泄漏。
-SDS的优势：SDS在执行修改字符串操作时，会对内存进行预分配策略，预留一定的未使用空间（free字段）。这样当后续有连续的追加操作时，可以避免频繁的内存重分配。
-同时，当字符串缩短时，SDS不会立即回收内存，而是保持已分配内存，仅减少len的值，这样可以更快地执行字符串缩短操作，并在未来可能的扩展操作中重复利用这部分空间。这种策略被称为“空间预分配”和“惰性释放”。
-这一机制是为了保障缩短内存的空间的申请与释放，提高使用效率。
+  C字符串的缺陷：C字符串在每次修改（如追加字符）时，如果空间不足，都需要重新分配内存并复制旧数据到新内存，这可能导致频繁的内存分配和释放操作，影响性能。同时，当字符串缩短时，C字符串需要立即回收不再使用的内存空间，否则会造成内存泄漏。
+  SDS的优势：SDS在执行修改字符串操作时，会对内存进行预分配策略，预留一定的未使用空间（free字段）。这样当后续有连续的追加操作时，可以避免频繁的内存重分配。
+  同时，当字符串缩短时，SDS不会立即回收内存，而是保持已分配内存，仅减少len的值，这样可以更快地执行字符串缩短操作，并在未来可能的扩展操作中重复利用这部分空间。这种策略被称为“空间预分配”和“惰性释放”。
+  这一机制是为了保障缩短内存的空间的申请与释放，提高使用效率。
 3. 二进制安全
-C字符串的缺陷：C语言的字符串必须以空字符结束，不支持包含内部\0字符的二进制数据。这限制了C字符串在存储和处理二进制数据方面的能力。
-SDS的优势：SDS支持任意二进制数据存储，因为它不是基于空字符来判断字符串的结束，而是根据长度字段（len）来确定字符串内容。这使得SDS能够安全地存储和处理包含空字符的二进制数据。
+  C字符串的缺陷：C语言的字符串必须以空字符结束，不支持包含内部\0字符的二进制数据。这限制了C字符串在存储和处理二进制数据方面的能力。
+  SDS的优势：SDS支持任意二进制数据存储，因为它不是基于空字符来判断字符串的结束，而是根据长度字段（len）来确定字符串内容。这使得SDS能够安全地存储和处理包含空字符的二进制数据。
 4. 防止缓冲区溢出
-C字符串的缺陷：直接操作C字符串容易出现缓冲区溢出的问题，尤其是在拼接和修改字符串时，如果没有正确处理可能会导致安全问题。
-SDS的优势：SDS在执行修改操作时会检查现有空间是否足够，如果不够则会自动进行扩展，确保不会发生溢出。这种设计提高了Redis在处理字符串时的安全性。
+  C字符串的缺陷：直接操作C字符串容易出现缓冲区溢出的问题，尤其是在拼接和修改字符串时，如果没有正确处理可能会导致安全问题。
+  SDS的优势：SDS在执行修改操作时会检查现有空间是否足够，如果不够则会自动进行扩展，确保不会发生溢出。这种设计提高了Redis在处理字符串时的安全性。
 5. 兼容性
-SDS的兼容性：虽然SDS与C字符串在内部实现上有所不同，但SDS的buf数组仍然以空字符\0结尾，这使得SDS可以兼容部分C字符串函数。同时，SDS的API设计也考虑到了与C字符串的兼容性，使得开发者可以更容易地从C字符串迁移到SDS。
+  SDS的兼容性：虽然SDS与C字符串在内部实现上有所不同，但SDS的buf数组仍然以空字符\0结尾，这使得SDS可以兼容部分C字符串函数。同时，SDS的API设计也考虑到了与C字符串的兼容性，使得开发者可以更容易地从C字符串迁移到SDS。
 
 综上所述，Redis选择使用SDS而不是C字符串，主要是为了提高字符串操作的效率和安全性，同时保持与C字符串的一定兼容性。这些优势使得SDS成为Redis中处理字符串的理想选择。
-
-
 
 redis跳表：
 Redis跳表（Skip List）是一种基于并联的链表结构，用于在有序元素序列（Zset）中快速查找元素的数据结构。
@@ -16779,7 +17676,6 @@ RDB持久化是将Redis在内存中的数据，以二进制格式保存到硬盘
 AOF持久化（针对过程指令的备份）：
 AOF持久化是将Redis的写操作以追加的方式记录到一个文件（AOF文件）中，每当发生写操作时，Redis会将相应的命令追加到AOF文件的末尾。AOF文件保存的是基于数据的连续增量备份，日志文件内容是服务端执行的每一条指令的记录文本。
 
-
 redis RDB：Redis RDB（Redis Database）是Redis的一种数据持久化方式，它通过将内存中的数据快照保存到磁盘上来实现数据的持久化。这种方式允许Redis在重启后能够恢复之前的状态，确保数据的持久性和可靠性。
 
 RDB快照的原理
@@ -16815,7 +17711,6 @@ save 60 10000
 注意：
 当服务器启动的时候，RDB自动执行加载，没有专门的命令来加载RDB文件。只要Redis启动时检测到RDB文件的存在，那么就会自动载入RDB文件。加载过程中，会一直处于阻塞状态，直到加载完毕为止。
 由于AOF文件的更新频率一般比RDB文件的更新频率高，所以，如果服务期开启了AOF持久化功能，那么就优先加载AOF文件，否则，加载RDB文件。
-
 
 redis AOF：
 Redis AOF（Append Only File）是Redis的一种持久化机制，它通过记录Redis服务器接收到的所有写操作命令来确保数据的持久化。
@@ -16861,7 +17756,6 @@ AOF文件会根据appendfsync参数设置的持久化策略同步（fsync）到�
 always：每次写命令写入aof_buf后，同步将aof_buf中的写命令fsync到磁盘。这种策略保证了数据的最高安全性，但可能会降低Redis的性能，因为每次写命令都需要进行磁盘I/O操作。
 everysec：每次写命令写入aof_buf后，每隔一秒将aof_buf中的写命令fsync到磁盘。这是Redis的默认策略，它提供了较好的性能和数据安全性之间的平衡。即使出现故障停机，数据库也只丢失一秒钟的命令数据。
 no：每次写操作写入aof_buf后，aof_buf中写命令fsync到磁盘的时机交由操作系统控制。这种策略提供了最高的写入性能，但可能会增加数据丢失的风险，因为操作系统可能会在故障停机前没有将缓冲区中的数据同步到磁盘。
-
 
 AOF重写机制：
 Redis AOF（Append Only File）重写是一种优化机制，旨在解决AOF文件随着写操作不断增加而变得庞大，进而影响Redis性能和数据恢复速度的问题。
@@ -16909,51 +17803,50 @@ Redis还提供了自动触发AOF重写的机制，具体条件如下：
 3.系统状态稳定：
 Redis还会检查系统的整体状态，确保在触发AOF重写时系统处于稳定状态，例如没有正在进行集群切换或故障转移等操作。
 
-
 如何保证redis与mysql的双写一致性？
 
 1. 常见的更新策略
-1.1 先更新数据库，再删除缓存
-步骤：首先更新MySQL数据库中的数据，然后再删除Redis中的缓存项。
-优点：可以确保数据库中的数据是最新的，然后通过删除缓存，强制后续的读请求从数据库加载最新数据并重新填充缓存。
-缺点：在高并发情况下，可能会遇到缓存不一致的问题，特别是当缓存删除失败或来不及删除时，可能导致查询请求访问Redis时缓存命中，读取到的是缓存旧值。
-1.2 延时双删
-步骤：在更新数据库后，先删除缓存，然后通过异步任务在稍后的时间再次删除缓存。
-优点：可以减少在高并发情况下，缓存中出现脏数据的风险。
-缺点：实现起来可能更复杂，需要设置合理的延时时间，且延时时间难以精确估计。
-1.3 使用分布式锁
-方法：在更新数据库和缓存的过程中使用分布式锁，确保同一时间只有一个操作能够执行更新。
-优点：可以保证更新操作的原子性，避免并发写入导致的数据不一致问题。
-缺点：可能会影响系统的并发性能，且实现分布式锁本身也需要考虑一致性和可用性等问题。
-1.4 消息队列
-方法：将更新操作发布到消息队列，然后通过消费者服务异步地处理数据库更新和缓存更新。
-优点：可以降低系统的耦合性并提高扩展性，同时可以利用消息队列的可靠性机制来保证数据的一致性。
-缺点：可能会引入消息处理延迟，且需要额外处理消息队列的可靠性和一致性等问题。
-
+  1.1 先更新数据库，再删除缓存
+  步骤：首先更新MySQL数据库中的数据，然后再删除Redis中的缓存项。
+  优点：可以确保数据库中的数据是最新的，然后通过删除缓存，强制后续的读请求从数据库加载最新数据并重新填充缓存。
+  缺点：在高并发情况下，可能会遇到缓存不一致的问题，特别是当缓存删除失败或来不及删除时，可能导致查询请求访问Redis时缓存命中，读取到的是缓存旧值。
+  1.2 延时双删
+  步骤：在更新数据库后，先删除缓存，然后通过异步任务在稍后的时间再次删除缓存。
+  优点：可以减少在高并发情况下，缓存中出现脏数据的风险。
+  缺点：实现起来可能更复杂，需要设置合理的延时时间，且延时时间难以精确估计。
+  1.3 使用分布式锁
+  方法：在更新数据库和缓存的过程中使用分布式锁，确保同一时间只有一个操作能够执行更新。
+  优点：可以保证更新操作的原子性，避免并发写入导致的数据不一致问题。
+  缺点：可能会影响系统的并发性能，且实现分布式锁本身也需要考虑一致性和可用性等问题。
+  1.4 消息队列
+  方法：将更新操作发布到消息队列，然后通过消费者服务异步地处理数据库更新和缓存更新。
+  优点：可以降低系统的耦合性并提高扩展性，同时可以利用消息队列的可靠性机制来保证数据的一致性。
+  缺点：可能会引入消息处理延迟，且需要额外处理消息队列的可靠性和一致性等问题。
+  
 2. 异步更新策略
-方法：只将数据写入MySQL，然后异步地将数据写入Redis。
-优点：可以提高写入操作的效率，减少数据库的负载。
-缺点：Redis中的数据与MySQL中的数据会存在一定的延迟，对于需要强一致性的业务场景可能不适用。
-
+  方法：只将数据写入MySQL，然后异步地将数据写入Redis。
+  优点：可以提高写入操作的效率，减少数据库的负载。
+  缺点：Redis中的数据与MySQL中的数据会存在一定的延迟，对于需要强一致性的业务场景可能不适用。
+  
 3. 订阅数据库变更日志
-方法：通过订阅MySQL的binlog日志或其他数据库的变更日志，异步地更新Redis中的数据。
-优点：可以实现数据的实时同步，且对系统的侵入性较小。
-缺点：需要处理日志的解析和同步问题，且可能需要额外的工具和资源来支持。
-
+  方法：通过订阅MySQL的binlog日志或其他数据库的变更日志，异步地更新Redis中的数据。
+  优点：可以实现数据的实时同步，且对系统的侵入性较小。
+  缺点：需要处理日志的解析和同步问题，且可能需要额外的工具和资源来支持。
+  
 4. 定期全量同步
-方法：定期从MySQL中读取全量数据，然后覆盖Redis中的数据。
-优点：可以保证Redis中的数据与MySQL中的数据完全一致。
-缺点：对于大数据量的情况下可能会影响性能，且不适合实时性要求较高的业务场景。
-
+  方法：定期从MySQL中读取全量数据，然后覆盖Redis中的数据。
+  优点：可以保证Redis中的数据与MySQL中的数据完全一致。
+  缺点：对于大数据量的情况下可能会影响性能，且不适合实时性要求较高的业务场景。
+  
 5. 使用分布式事务
-方法：在一些场景下，可以使用分布式事务来保证Redis和MySQL之间的数据一致性。
-优点：可以确保跨多个服务的操作要么全部成功，要么全部失败，从而保持数据的一致性。
-缺点：实现复杂，且可能会影响系统的性能和可用性。
-结论
-在实际应用中，需要根据具体的业务场景和需求来选择合适的策略。对于读多写少且可以容忍短暂数据不一致的业务，可以使用Cache Aside Pattern结合适当的缓存失效策略。
-而对于写多读少或者对数据一致性要求极高的业务，则可能需要使用分布式锁、消息队列或订阅数据库变更日志等策略来保证强一致性。
-同时，还需要考虑各种异常情况下的处理，如网络故障、节点宕机等，以确保系统在异常情况下依然能够保持数据一致性。
-
+  方法：在一些场景下，可以使用分布式事务来保证Redis和MySQL之间的数据一致性。
+  优点：可以确保跨多个服务的操作要么全部成功，要么全部失败，从而保持数据的一致性。
+  缺点：实现复杂，且可能会影响系统的性能和可用性。
+  结论
+  在实际应用中，需要根据具体的业务场景和需求来选择合适的策略。对于读多写少且可以容忍短暂数据不一致的业务，可以使用Cache Aside Pattern结合适当的缓存失效策略。
+  而对于写多读少或者对数据一致性要求极高的业务，则可能需要使用分布式锁、消息队列或订阅数据库变更日志等策略来保证强一致性。
+  同时，还需要考虑各种异常情况下的处理，如网络故障、节点宕机等，以确保系统在异常情况下依然能够保持数据一致性。
+  
 
 redis事务：
 Redis事务是一种将多个Redis操作封装为一个原子性操作序列的机制，它确保了事务执行过程中不会受到其他客户端的干扰，从而在保证数据一致性的同时，协调并发，提高数据操作的效率和性能。
@@ -16986,8 +17879,6 @@ ACID特性不完全支持：Redis事务并不能完全保证事务的四大特�
 Redis事务适用于需要保证数据一致性和协调并发的场景，如批量操作、数据库迁移、分布式锁等。在分布式系统和高并发场景下，Redis事务可以确保数据的一致性，避免并发操作导致的数据不一致问题。
 
 综上所述，Redis事务是一种将多个Redis操作封装为一个原子性操作序列的机制，它通过MULTI、EXEC、DISCARD和WATCH等命令实现。然而，Redis事务并不支持回滚和事务内的条件判断，且在某些方面对ACID特性的支持也不完全。因此，在使用Redis事务时，需要根据具体的应用场景和需求来合理设计数据操作逻辑。
-
-
 
 如何用Redis做消息队列？
 Redis作为消息队列在现代软件开发中扮演着重要角色，其高性能、持久化、丰富的数据结构以及易于扩展的特性使其成为处理消息传递的理想选择。
@@ -17033,8 +17924,6 @@ Redis消息队列广泛应用于各种需要异步处理、解耦或提高系统
 消息发布与订阅：实现多个服务之间的实时通信和数据同步。
 系统解耦：通过消息队列将系统的不同部分解耦，降低系统间的耦合度，提高系统的可扩展性和可维护性。
 
-
-
 redis分布式系统：
 redis缓存穿透：
 Redis缓存穿透是指查询一个根本不存在的数据，由于缓存层和数据库层都没有命中，导致每次请求都会直接到达数据库。这种情况如果发生频繁，会对数据库造成很大的压力。
@@ -17047,12 +17936,12 @@ Redis缓存穿透是指查询一个根本不存在的数据，由于缓存层和
 String key = "user::" + userId;
 String value = redis.get(key);
 if (value == null) {
-    value = db.queryUser(userId);
-    if (value == null) {
-        redis.set(key, "", 60);  // 设置空结果缓存1分钟
-    } else {
-        redis.set(key, value, 3600);  // 缓存正常结果1小时
-    }
+ value = db.queryUser(userId);
+ if (value == null) {
+ redis.set(key, "", 60); // 设置空结果缓存1分钟
+ } else {
+ redis.set(key, value, 3600); // 缓存正常结果1小时
+ }
 }
 return value;
 
@@ -17063,17 +17952,17 @@ BloomFilter bloomFilter = ... // 初始化布隆过滤器并填充已有数据
 
 String key = "user::" + userId;
 if (!bloomFilter.mightContain(key)) {
-    return null;  // 布隆过滤器认为key不存在，直接返回空
+ return null; // 布隆过滤器认为key不存在，直接返回空
 }
 
 String value = redis.get(key);
 if (value == null) {
-    value = db.queryUser(userId);
-    if (value == null) {
-        redis.set(key, "", 60);  // 设置空结果缓存1分钟
-    } else {
-        redis.set(key, value, 3600);  // 缓存正常结果1小时
-    }
+ value = db.queryUser(userId);
+ if (value == null) {
+ redis.set(key, "", 60); // 设置空结果缓存1分钟
+ } else {
+ redis.set(key, value, 3600); // 缓存正常结果1小时
+ }
 }
 return value;
 
@@ -17082,7 +17971,6 @@ return value;
 
 4.限流：
 对于同一请求源（如IP地址）进行限流，防止恶意请求高频访问导致缓存穿透。
-
 
 redis缓存雪崩：
 Redis缓存雪崩问题是指大量缓存同时过期或Redis服务器宕机，导致大量请求直接打到数据库，造成数据库瞬时压力剧增，甚至导致系统崩溃。这种情况通常是因为缓存设置不当或服务器故障引起的。
@@ -17099,11 +17987,11 @@ redis.set(key, value, expirationTime);
 在系统启动时，提前将热点数据加载到缓存中，避免在流量高峰期缓存未命中。
 
 public void cachePreheat() {
-    List<String> hotKeys = getHotKeysFromDatabase();
-    for (String key : hotKeys) {
-        String value = db.query(key);
-        redis.set(key, value, 3600);
-    }
+ List<String> hotKeys = getHotKeysFromDatabase();
+ for (String key : hotKeys) {
+ String value = db.query(key);
+ redis.set(key, value, 3600);
+ }
 }
 
 双重缓存机制：
@@ -17112,14 +18000,14 @@ public void cachePreheat() {
 String key = "user::" + userId;
 String value = localCache.get(key);
 if (value == null) {
-    value = redis.get(key);
-    if (value == null) {
-        value = db.queryUser(userId);
-        if (value != null) {
-            redis.set(key, value, 3600);
-        }
-    }
-    localCache.put(key, value);
+ value = redis.get(key);
+ if (value == null) {
+ value = db.queryUser(userId);
+ if (value != null) {
+ redis.set(key, value, 3600);
+ }
+ }
+ localCache.put(key, value);
 }
 return value;
 
@@ -17128,18 +18016,18 @@ return value;
 
 RateLimiter rateLimiter = RateLimiter.create(100); // 每秒最多处理100个请求
 if (!rateLimiter.tryAcquire()) {
-    return "System busy, please try again later";
+ return "System busy, please try again later";
 }
 
 String key = "user::" + userId;
 String value = redis.get(key);
 if (value == null) {
-    value = db.queryUser(userId);
-    if (value != null) {
-        redis.set(key, value, 3600);
-    } else {
-        return "Data not available";
-    }
+ value = db.queryUser(userId);
+ if (value != null) {
+ redis.set(key, value, 3600);
+ } else {
+ return "Data not available";
+ }
 }
 return value;
 
@@ -17149,11 +18037,10 @@ return value;
 监控脚本示例
 redis-cli ping
 if [ $? -ne 0 ]; then
-    # 重启Redis服务或切换到备用服务
-    systemctl restart redis
+ # 重启Redis服务或切换到备用服务
+ systemctl restart redis
 fi
 通过这些措施，可以有效缓解Redis缓存雪崩问题，提升系统的稳定性和可靠性。根据具体情况，可以组合使用这些方法，达到最佳效果。
-
 
 Redis缓存击穿：
 Redis缓存击穿问题是指某个热点数据在缓存失效的瞬间，有大量并发请求同时查询这个数据，导致请求直接打到数据库，可能引起数据库压力骤增，甚至宕机。解决缓存击穿问题的常用方法有以下几种：
@@ -17164,13 +18051,13 @@ Redis缓存击穿问题是指某个热点数据在缓存失效的瞬间，有大
 String key = "user::" + userId;
 String value = redis.get(key);
 if (value == null) {
-    synchronized (this) { // 锁定
-        value = redis.get(key); // 再次检查缓存，防止重复加载
-        if (value == null) {
-            value = db.queryUser(userId);
-            redis.set(key, value, 3600);
-        }
-    }
+ synchronized (this) { // 锁定
+ value = redis.get(key); // 再次检查缓存，防止重复加载
+ if (value == null) {
+ value = db.queryUser(userId);
+ redis.set(key, value, 3600);
+ }
+ }
 }
 return value;
 
@@ -17181,18 +18068,18 @@ String key = "user::" + userId;
 String lockKey = "lock::" + key;
 String value = redis.get(key);
 if (value == null) {
-    if (redis.setnx(lockKey, "1")) { // 尝试获取锁
-        try {
-            value = db.queryUser(userId);
-            redis.set(key, value, 3600);
-        } finally {
-            redis.del(lockKey); // 释放锁
-        }
-    } else {
-        // 其他线程等待一段时间后重试
-        Thread.sleep(100);
-        value = redis.get(key);
-    }
+ if (redis.setnx(lockKey, "1")) { // 尝试获取锁
+ try {
+ value = db.queryUser(userId);
+ redis.set(key, value, 3600);
+ } finally {
+ redis.del(lockKey); // 释放锁
+ }
+ } else {
+ // 其他线程等待一段时间后重试
+ Thread.sleep(100);
+ value = redis.get(key);
+ }
 }
 return value;
 
@@ -17202,16 +18089,16 @@ return value;
 String key = "user::" + userId;
 String value = redis.get(key);
 if (value == null) {
-    if (shouldQueryDatabase()) { // 根据数据库负载情况决定是否查询
-        value = db.queryUser(userId);
-        if (value != null) {
-            redis.set(key, value, 3600);
-        } else {
-            value = "Default Data"; // 返回默认数据
-        }
-    } else {
-        value = "Service busy, please try again later";
-    }
+ if (shouldQueryDatabase()) { // 根据数据库负载情况决定是否查询
+ value = db.queryUser(userId);
+ if (value != null) {
+ redis.set(key, value, 3600);
+ } else {
+ value = "Default Data"; // 返回默认数据
+ }
+ } else {
+ value = "Service busy, please try again later";
+ }
 }
 return value;
 
@@ -17219,18 +18106,18 @@ return value;
 对于热点数据，定期刷新缓存的过期时间，或者在即将过期时提前加载新数据，确保缓存不过期。
 
 public void preloadCache() {
-    List<String> hotKeys = getHotKeys();
-    for (String key : hotKeys) {
-        String value = db.query(key);
-        redis.set(key, value, 3600);
-    }
+ List<String> hotKeys = getHotKeys();
+ for (String key : hotKeys) {
+ String value = db.query(key);
+ redis.set(key, value, 3600);
+ }
 }
 
 // 在缓存即将过期时续期
 String key = "user::" + userId;
 String value = redis.get(key);
 if (value != null && redis.ttl(key) < 600) { // 距离过期时间小于10分钟
-    redis.expire(key, 3600); // 续期1小时
+ redis.expire(key, 3600); // 续期1小时
 }
 
 使用多级缓存：
@@ -17239,21 +18126,40 @@ if (value != null && redis.ttl(key) < 600) { // 距离过期时间小于10分钟
 String key = "user::" + userId;
 String value = localCache.get(key);
 if (value == null) {
-    value = redis.get(key);
-    if (value == null) {
-        value = db.queryUser(userId);
-        redis.set(key, value, 3600);
-    }
-    localCache.put(key, value);
+ value = redis.get(key);
+ if (value == null) {
+ value = db.queryUser(userId);
+ redis.set(key, value, 3600);
+ }
+ localCache.put(key, value);
 }
 return value;
+
+### 常见的Redis面试题
+
+#### 1. 缓存穿透、击穿、雪崩分别是什么？怎么防？
+
+- **穿透**：查根本不存在的数据，缓存和库都没有。防：缓存空值（短 TTL）、布隆过滤器、参数校验、限流。
+- **击穿**：热点 key 刚好过期，并发一起打 DB。防：互斥锁/`SETNX` 只放一个线程回源、热点续期。
+- **雪崩**：大量 key 同时过期或 Redis 宕机。防：过期时间加随机、预热、多级缓存、高可用、限流降级。
+
+#### 2. Redis有哪些数据类型？RDB和AOF有什么区别？
+
+- 常用五种：String、Hash、List、Set、ZSet。另外还有 Bitmap、HyperLogLog、Stream 等。
+- RDB：某一时刻的内存快照，文件小、恢复快，可能丢最后一次快照后的数据。
+- AOF：追加写命令，丢数据更少，文件更大、恢复更慢。两者可一起开，重启时优先用 AOF。
+
+#### 3. Redis如何实现分布式锁？
+
+- 常用 `SET key value NX EX seconds`（比单独 `SETNX` 更安全，原子设置过期）。持锁方用唯一 value，释放时用 Lua 校验再 `DEL`，避免删掉别人的锁。
+- 注意：过期时间要大于业务耗时，或用看门狗续期；主从切换可能丢锁，高要求用 RedLock 或 ZooKeeper。
 
 Redis如何解决数据倾斜问题？
 数据倾斜是指数据在Redis节点之间分布不均匀，导致某些节点承载了过多的数据或流量，影响整体性能和可靠性。Redis在分布式环境中常采用分片（sharding）来解决数据倾斜问题。
 以下是几种常见的解决方法：
 
 1. 合理设计分片策略
-哈希分片：使用一致性哈希算法（Consistent Hashing）将数据分布到不同的节点上。这样可以减少因节点增加或减少导致的数据重分布问题。
+  哈希分片：使用一致性哈希算法（Consistent Hashing）将数据分布到不同的节点上。这样可以减少因节点增加或减少导致的数据重分布问题。
 
 // 计算key的哈希值并映射到相应的节点
 int hash = hashFunction(key);
@@ -17269,30 +18175,30 @@ RedisNode node = nodes.get(realNodeIndex);
 node.set(key, value);
 
 2. 动态调整分片
-数据重分布：监控每个节点的负载情况，定期或在负载不均衡时，重新分配数据，确保各个节点负载均衡。
+  数据重分布：监控每个节点的负载情况，定期或在负载不均衡时，重新分配数据，确保各个节点负载均衡。
 
 public void rebalance() {
-    // 计算每个节点的负载
-    for (RedisNode node : nodes) {
-        int load = node.getLoad();
-        if (load > threshold) {
-            redistribute(node);
-        }
-    }
+ // 计算每个节点的负载
+ for (RedisNode node : nodes) {
+ int load = node.getLoad();
+ if (load > threshold) {
+ redistribute(node);
+ }
+ }
 }
 
 private void redistribute(RedisNode overloadedNode) {
-    // 将部分数据迁移到负载较轻的节点
-    List<Data> dataToMove = overloadedNode.getHeavyData();
-    for (Data data : dataToMove) {
-        RedisNode targetNode = findTargetNode(data);
-        targetNode.set(data.getKey(), data.getValue());
-        overloadedNode.delete(data.getKey());
-    }
+ // 将部分数据迁移到负载较轻的节点
+ List<Data> dataToMove = overloadedNode.getHeavyData();
+ for (Data data : dataToMove) {
+ RedisNode targetNode = findTargetNode(data);
+ targetNode.set(data.getKey(), data.getValue());
+ overloadedNode.delete(data.getKey());
+ }
 }
 
 3. 使用Redis Cluster
-Redis Cluster：Redis官方提供的解决方案，可以自动进行数据分片和负载均衡。它将数据分为16384个插槽（slots），并将这些插槽分布在不同的节点上。Redis Cluster能够在节点增加或减少时自动调整数据分布。
+  Redis Cluster：Redis官方提供的解决方案，可以自动进行数据分片和负载均衡。它将数据分为16384个插槽（slots），并将这些插槽分布在不同的节点上。Redis Cluster能够在节点增加或减少时自动调整数据分布。
 
 创建Redis Cluster节点
 redis-server --cluster-enabled yes --cluster-config-file nodes.conf --cluster-node-timeout 5000 --appendonly yes --cluster-announce-ip 192.168.0.1 --port 7000
@@ -17301,40 +18207,39 @@ redis-server --cluster-enabled yes --cluster-config-file nodes.conf --cluster-no
 redis-cli --cluster add-node 192.168.0.2:7001 192.168.0.1:7000
 
 4. 数据预热与缓存策略
-数据预热：在系统启动或高峰期之前，将热点数据预先加载到各个节点，确保负载均衡。
+  数据预热：在系统启动或高峰期之前，将热点数据预先加载到各个节点，确保负载均衡。
 
 public void preheatCache() {
-    List<String> hotKeys = getHotKeysFromDatabase();
-    for (String key : hotKeys) {
-        int hash = hashFunction(key);
-        int nodeIndex = hash % numberOfNodes;
-        RedisNode node = nodes.get(nodeIndex);
-        node.set(key, db.query(key));
-    }
+ List<String> hotKeys = getHotKeysFromDatabase();
+ for (String key : hotKeys) {
+ int hash = hashFunction(key);
+ int nodeIndex = hash % numberOfNodes;
+ RedisNode node = nodes.get(nodeIndex);
+ node.set(key, db.query(key));
+ }
 }
 缓存层次化：使用多级缓存，如本地缓存、Redis缓存和数据库，减少对单个Redis节点的压力。
 
 String key = "user::" + userId;
 String value = localCache.get(key);
 if (value == null) {
-    value = redis.get(key);
-    if (value == null) {
-        value = db.queryUser(userId);
-        redis.set(key, value, 3600);
-    }
-    localCache.put(key, value);
+ value = redis.get(key);
+ if (value == null) {
+ value = db.queryUser(userId);
+ redis.set(key, value, 3600);
+ }
+ localCache.put(key, value);
 }
 return value;
 
 5. 监控与告警
-监控系统：部署监控系统，实时监控Redis集群的负载情况和数据分布，及时发现和处理数据倾斜问题。
+  监控系统：部署监控系统，实时监控Redis集群的负载情况和数据分布，及时发现和处理数据倾斜问题。
 
 使用Redis自带的INFO命令获取节点信息
 redis-cli -h 192.168.0.1 -p 7000 INFO
 
 使用第三方监控工具，如Prometheus和Grafana
 通过以上方法，可以有效解决Redis的数据倾斜问题，确保系统在高并发和大数据量场景下的稳定性和性能。根据具体需求和场景，可以选择一种或多种方法组合使用。
-
 
 Redis分布式锁：
 Redis分布式锁是一种基于Redis实现的锁机制，用于在分布式系统中控制资源的并发访问。Redis分布式锁的实现需要考虑锁的获取和释放，以及一些特殊情况下的处理。常用的实现方式是使用Redis的SET命令，配合NX（仅在键不存在时设置）和EX（过期时间）选项来实现。
@@ -17355,29 +18260,28 @@ String uniqueId = UUID.randomUUID().toString();
 int expireTime = 30; // 30 seconds
 String result = jedis.set(lockKey, uniqueId, SetParams.setParams().nx().ex(expireTime));
 if ("OK".equals(result)) {
-    // Lock acquired
+ // Lock acquired
 } else {
-    // Failed to acquire lock
+ // Failed to acquire lock
 }
-
 
 释放锁
 使用Lua脚本原子性地释放锁，确保只释放自己持有的锁：
 if redis.call("get",KEYS[1]) == ARGV[1] then
-    return redis.call("del",KEYS[1])
+ return redis.call("del",KEYS[1])
 else
-    return 0
+ return 0
 end
 
 示例代码：
 String script = "if redis.call('get', KEYS[0]) == ARGV[0] then " +
-                "return redis.call('del', KEYS[0]) " +
-                "else return 0 end";
+ "return redis.call('del', KEYS[0]) " +
+ "else return 0 end";
 Object result = jedis.eval(script, Collections.singletonList(lockKey), Collections.singletonList(uniqueId));
 if (result.equals(1L)) {
-    // Lock released
+ // Lock released
 } else {
-    // Failed to release lock
+ // Failed to release lock
 }
 
 注意事项
@@ -17391,27 +18295,30 @@ Redlock是由Redis创始人Antirez提出的一种实现分布式锁的算法，�
 
 示例代码：
 public boolean tryGetDistributedLock(String lockKey, String requestId, int expireTime) {
-    long startTime = System.currentTimeMillis();
-    int quorum = redisNodes.size() / 2 + 1;
-    int successCount = 0;
+ long startTime = System.currentTimeMillis();
+ int quorum = redisNodes.size() / 2 + 1;
+ int successCount = 0;
 
+```
+for (Jedis jedis : redisNodes) {
+    String result = jedis.set(lockKey, requestId, SetParams.setParams().nx().px(expireTime));
+    if ("OK".equals(result)) {
+        successCount++;
+    }
+}
+
+long elapsedTime = System.currentTimeMillis() - startTime;
+if (successCount >= quorum && elapsedTime < expireTime) {
+    return true; // Lock acquired
+} else {
+    // Lock failed, release any acquired locks
     for (Jedis jedis : redisNodes) {
-        String result = jedis.set(lockKey, requestId, SetParams.setParams().nx().px(expireTime));
-        if ("OK".equals(result)) {
-            successCount++;
-        }
+        jedis.eval(script, Collections.singletonList(lockKey), Collections.singletonList(requestId));
     }
+    return false;
+}
+```
 
-    long elapsedTime = System.currentTimeMillis() - startTime;
-    if (successCount >= quorum && elapsedTime < expireTime) {
-        return true; // Lock acquired
-    } else {
-        // Lock failed, release any acquired locks
-        for (Jedis jedis : redisNodes) {
-            jedis.eval(script, Collections.singletonList(lockKey), Collections.singletonList(requestId));
-        }
-        return false;
-    }
 }
 
 Redis分布式锁的弊端：
@@ -17424,33 +18331,33 @@ Redis分布式锁虽然提供了一种简便的分布式并发控制机制，但
 4.优化锁的粒度和锁操作，减少锁竞争，提高系统性能。
 5.通过综合考虑这些因素，可以在分布式系统中更好地应用Redis分布式锁，实现高效的并发控制。
 
-
 redis分布式锁和主从复制有哪些场景上的区别
 Redis分布式锁和Redis主从复制（Replication）在使用场景和目的上有很大的不同。以下是两者在场景上的区别：
 
 Redis分布式锁场景和目的
 
 1. 并发控制：
-   - 用于在分布式系统中控制多个节点对共享资源的并发访问，确保数据的一致性和避免数据竞争。
-   - 例如：在电商系统中，防止多个用户同时购买同一件商品导致超卖。
-
+  
+  - 用于在分布式系统中控制多个节点对共享资源的并发访问，确保数据的一致性和避免数据竞争。
+  - 例如：在电商系统中，防止多个用户同时购买同一件商品导致超卖。
 2. 任务调度：
-   - 确保在分布式环境中某个任务在某一时刻只由一个实例执行，避免任务重复执行。
-   - 例如：分布式任务调度系统中，同一任务在多个实例中只执行一次。
-
+  
+  - 确保在分布式环境中某个任务在某一时刻只由一个实例执行，避免任务重复执行。
+  - 例如：分布式任务调度系统中，同一任务在多个实例中只执行一次。
 3. 限流和排队：
-   - 控制并发请求的数量，避免系统过载。
-   - 例如：API限流，限制某个接口的访问频率。
-
+  
+  - 控制并发请求的数量，避免系统过载。
+  - 例如：API限流，限制某个接口的访问频率。
 4. 分布式事务：
-   - 在跨多个服务或数据库的事务中使用锁来确保操作的一致性。
-   - 例如：订单系统中，确保库存扣减和订单创建的原子性操作。
+  
+  - 在跨多个服务或数据库的事务中使用锁来确保操作的一致性。
+  - 例如：订单系统中，确保库存扣减和订单创建的原子性操作。
 
 实现方式
+
 - 使用Redis的SET命令结合NX（仅在键不存在时设置）和EX（过期时间）选项实现。
 - 使用Redlock算法在多个Redis实例上获取锁，提高容错性和一致性。
 - 常用命令：`SET key value NX EX seconds`，`DEL key`，Lua脚本实现原子性操作。
-
 
 Redis分布式锁的看门狗机制：
 Redis分布式锁的看门狗（Watch Dog）机制是Redisson客户端在使用Redis实现分布式锁时提供的一种重要功能。
@@ -17477,12 +18384,12 @@ Redis分布式锁的看门狗（Watch Dog）机制是Redisson客户端在使用R
 RedissonClient redisson = Redisson.create(config);
 RLock lock = redisson.getLock("myLock");
 try {
-    // 获取锁并自动启动看门狗
-    lock.lock();
-    // 执行业务逻辑（锁默认30秒TTL，看门狗每10秒续期）
-    // ...
+ // 获取锁并自动启动看门狗
+ lock.lock();
+ // 执行业务逻辑（锁默认30秒TTL，看门狗每10秒续期）
+ // ...
 } finally {
-    lock.unlock(); // 释放锁并停止看门狗
+ lock.unlock(); // 释放锁并停止看门狗
 }
 
 注意事项
@@ -17493,7 +18400,6 @@ try {
 潜在问题与优化
 网络延迟：若续期请求因网络问题未及时到达Redis，可能导致锁失效。可通过缩短续期间隔或增加重试缓解。
 线程管理：需确保客户端异常退出时，看门狗线程能正确终止，防止冗余续期。
-
 
 redis主从复制：
 Redis的主从复制主要采用的是基于主节点（master）和从节点（slave）的复制方式。在这种方式中，主节点负责接收客户端的写操作，并将这些操作同步到从节点，而从节点则主要负责读取操作，以此来分担主节点的负载压力，并实现数据的冗余和备份。
@@ -17515,21 +18421,23 @@ Redis主从复制具有以下特点：
 数据冗余和备份：通过主从复制，可以将数据备份到多个从节点上，以防止数据丢失。
 
 redis主从复制的使用场景和目的
+
 1. 高可用性：
-   - 通过主从复制实现数据的冗余备份，防止单点故障。
-   - 例如：当主节点故障时，可以通过从节点接管，确保数据的高可用性。
-
+  
+  - 通过主从复制实现数据的冗余备份，防止单点故障。
+  - 例如：当主节点故障时，可以通过从节点接管，确保数据的高可用性。
 2. 读写分离：
-   - 将读请求分散到从节点上，提高系统的读性能和扩展性。
-   - 例如：高并发场景下，主节点负责写操作，从节点负责读操作，减轻主节点压力。
-
+  
+  - 将读请求分散到从节点上，提高系统的读性能和扩展性。
+  - 例如：高并发场景下，主节点负责写操作，从节点负责读操作，减轻主节点压力。
 3. 数据备份和恢复：
-   - 通过复制机制实现数据的实时备份，方便故障恢复。
-   - 例如：定期从从节点生成数据快照，以防止数据丢失。
-
+  
+  - 通过复制机制实现数据的实时备份，方便故障恢复。
+  - 例如：定期从从节点生成数据快照，以防止数据丢失。
 4. 容灾和灾备：
-   - 在不同地理位置部署从节点，实现跨数据中心的容灾备份。
-   - 例如：在不同城市部署主从节点，确保数据在自然灾害等情况下的安全性。
+  
+  - 在不同地理位置部署从节点，实现跨数据中心的容灾备份。
+  - 例如：在不同城市部署主从节点，确保数据在自然灾害等情况下的安全性。
 
 需要注意的是，Redis主从复制虽然可以实现数据的冗余和备份，但并不能完全保证数据的一致性。在主从节点之间的网络延迟或故障情况下，可能会出现数据不一致的情况。
 因此，在实际应用中需要结合其他机制（如哨兵模式、集群模式等）来进一步提高Redis的可靠性和可用性。
@@ -17563,7 +18471,6 @@ SYNC指令的工作原理（Redis 2.8之前）
 从服务器接收并载入RDB文件，将自己的数据库状态更新至主服务器执行bgsave命令时的数据库状态。
 随后，主服务器会将保存在缓冲区中的所有写命令发送给从服务器，从服务器执行这些命令，以进一步更新自己的数据库状态，使其与主服务器保持一致。
 
-
 SYNC指令的局限性
 全量同步：每次从服务器连接到主服务器时，都会进行全量同步，不论之前是否已经进行过同步，这可能导致大量的网络带宽和CPU资源消耗。
 断线重连问题：如果主从服务器之间的连接断开后重新连接，从服务器需要重新进行全量同步，这同样会消耗大量资源。
@@ -17573,7 +18480,6 @@ PSYNC指令的引入（Redis 2.8及以后）
 
 完整重同步：处理初次复制情况，与SYNC命令的步骤类似，但效率更高。
 部分重同步：处理断线后重新复制的情况，如果条件允许，主服务器可以将从服务器断开连接期间执行的写命令发送给从服务器，从服务器只需执行这些命令即可更新数据库状态，无需重新发送整个数据快照。
-
 
 主从复制中的psync指令：
 Redis主从复制中的PSYNC指令是Redis从2.8版本开始引入的一个更为先进和高效的数据同步机制，它取代了早期版本中的SYNC指令。
@@ -17600,7 +18506,6 @@ PSYNC指令的优点
 复制积压缓冲区的大小和网络连接断开的时间将影响部分重同步的成功率。如果网络断开的时间过长或写入命令的速度过快，复制积压缓冲区可能会被覆盖，从而导致部分重同步失败。
 在使用PSYNC指令进行主从复制时，需要确保主从服务器之间的网络连接足够稳定，以避免频繁的网络断开和重连。
 
-
 redis主从复制中的复制偏移量：
 Redis主从复制中的复制偏移量（Replication Offset）是一个关键的机制，用于确保主节点（Master）和从节点（Slave）之间数据同步的一致性和可靠性。
 
@@ -17618,7 +18523,6 @@ Redis主从复制中的复制偏移量（Replication Offset）是一个关键的
 实际应用
 数据一致性校验：复制偏移量是Redis主从复制中数据一致性校验的重要依据。通过定期比较主从节点的复制偏移量，可以及时发现并修复数据不一致的问题。
 故障恢复：在主节点发生故障时，如果设置了哨兵（Sentinel）或集群（Cluster）等高可用机制，那么可以通过比较从节点的复制偏移量来选择一个数据最全、最接近主节点状态的从节点来晋升为新的主节点，以保证服务的连续性。
-
 
 redis哨兵机制：
 Redis哨兵（Sentinel）机制是Redis官方提供的一种高可用（HA）解决方案，它主要用于监控Redis主从复制集群中的节点状态，并在主节点出现故障时自动进行故障转移，从而保障Redis服务的高可用性和稳定性。
@@ -17639,20 +18543,17 @@ Redis哨兵是一个独立的进程，它可以与多个Redis服务器（包括�
 高可用性保障：通过哨兵机制的监控和故障转移功能，可以确保Redis服务的高可用性，即使在主节点出现故障时也能快速恢复服务。
 灵活性：哨兵机制支持配置多个哨兵进程进行相互监控和备份，从而提高了Redis系统的可靠性和稳定性。同时，用户还可以根据实际需求调整哨兵的配置参数以优化系统性能。
 
-
-
 Redis主从复制与分布式锁的区别：
 具体使用场景和实现方式如下：
 
-| 特性           | Redis分布式锁                             | Redis主从复制                               |
-| -------------- | ---------------------------------------- | ------------------------------------------ |
-| 主要用途       | 并发控制、任务调度、限流和分布式事务         | 高可用性、读写分离、数据备份和容灾            |
-| 实现方式       | 使用`SET NX EX`命令、Redlock算法等         | 配置主从复制、使用`SLAVEOF`命令、Redis Sentinel |
-| 典型场景       | 防止超卖、任务调度、API限流、分布式事务      | 主节点故障切换、提高读性能、跨数据中心容灾     |
-| 常用命令       | `SET key value NX EX seconds`，`DEL key`  | `SLAVEOF host port`，`INFO replication`    |
+| 特性  | Redis分布式锁 | Redis主从复制 |
+| --- | --- | --- |
+| 主要用途 | 并发控制、任务调度、限流和分布式事务 | 高可用性、读写分离、数据备份和容灾 |
+| 实现方式 | 使用`SET NX EX`命令、Redlock算法等 | 配置主从复制、使用`SLAVEOF`命令、Redis Sentinel |
+| 典型场景 | 防止超卖、任务调度、API限流、分布式事务 | 主节点故障切换、提高读性能、跨数据中心容灾 |
+| 常用命令 | `SET key value NX EX seconds`，`DEL key` | `SLAVEOF host port`，`INFO replication` |
 
 通过了解两者的区别，可以根据具体业务需求选择合适的Redis功能，以实现系统的可靠性和高效性。
-
 
 redis cluster（集群）：
 Redis Cluster是Redis的分布式解决方案，它在Redis 3.0版本之后正式推出，旨在通过数据分片与节点间通信机制，实现水平扩展、高可用性与数据容灾。
@@ -17681,7 +18582,6 @@ Gossip协议：节点间通过Gossip协议交换集群状态信息，包括节�
 高并发场景：在需要处理大量并发读写请求的场景中，Redis Cluster能够提供良好的性能支持。
 分布式系统：在分布式系统中，Redis Cluster可以作为缓存层或数据层使用，提供高效的数据存取服务。
 
-
 redis集群分片方式：虚拟节点+一致性哈希
 Redis集群的分片方式结合了虚拟节点和一致性哈希的概念，以实现高效的数据分布和负载均衡。
 
@@ -17703,81 +18603,89 @@ Redis集群的分片方式结合了虚拟节点和一致性哈希的概念，以
 Redis集群通过结合虚拟节点和一致性哈希的方式，实现了高效的数据分布和负载均衡。虚拟节点的引入使得集群在添加或删除节点时能够更加平滑地调整数据的分布；而一致性哈希则保证了数据在物理节点之间的均匀分布和负载均衡。
 这种分片方式使得Redis集群在应对大规模数据集和高并发请求时，能够保持较高的性能和稳定性。
 
-
 配置reids集群节点：
 
 一、**准备环境**
-* 安装Redis：确保已经安装了Redis服务器软件。可以从Redis的官方网站下载对应的安装包进行安装。
-* 确定节点数量：Redis集群至少需要3个主节点，以提供基本的容错能力。通常，每个主节点还会配置一个或多个从节点，以提高数据的高可用性。
+
+- 安装Redis：确保已经安装了Redis服务器软件。可以从Redis的官方网站下载对应的安装包进行安装。
+- 确定节点数量：Redis集群至少需要3个主节点，以提供基本的容错能力。通常，每个主节点还会配置一个或多个从节点，以提高数据的高可用性。
 
 二、**创建配置文件**
-* 复制配置文件：将Redis的配置文件（通常是redis.conf）复制到每个节点的配置目录中，并根据需要进行修改。
-* 配置集群相关设置：在配置文件中，需要设置集群模式为启用（cluster-enabled yes），并指定集群配置文件（cluster-config-file nodes.conf）的存储位置。此外，还需要设置节点的监听地址和端口号等。
+
+- 复制配置文件：将Redis的配置文件（通常是redis.conf）复制到每个节点的配置目录中，并根据需要进行修改。
+- 配置集群相关设置：在配置文件中，需要设置集群模式为启用（cluster-enabled yes），并指定集群配置文件（cluster-config-file nodes.conf）的存储位置。此外，还需要设置节点的监听地址和端口号等。
 
 三、**启动Redis节点**
-* 使用配置文件启动节点：通过命令行使用redis-server命令和对应的配置文件启动每个Redis节点。例如：redis-server /path/to/redis.conf。
-* 验证节点启动：使用redis-cli工具连接到每个节点，并执行一些基本命令（如PING）来验证节点是否成功启动。
+
+- 使用配置文件启动节点：通过命令行使用redis-server命令和对应的配置文件启动每个Redis节点。例如：redis-server /path/to/redis.conf。
+- 验证节点启动：使用redis-cli工具连接到每个节点，并执行一些基本命令（如PING）来验证节点是否成功启动。
 
 四、**创建集群**
-* 使用redis-cli创建集群：在Redis的客户端工具redis-cli中，使用--cluster create选项来创建集群，并指定所有节点的地址和端口。
-* 例如：redis-cli --cluster create 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 --cluster-replicas 1，其中--cluster-replicas 1表示每个主节点有一个从节点。
-* 分配槽位：Redis集群使用槽位（slot）来分配数据。总共有16384个槽位，需要将这些槽位分配给集群中的节点。可以使用CLUSTER ADDSLOTS命令来手动分配槽位，但在创建集群时，redis-cli会自动进行槽位分配。
+
+- 使用redis-cli创建集群：在Redis的客户端工具redis-cli中，使用--cluster create选项来创建集群，并指定所有节点的地址和端口。
+- 例如：redis-cli --cluster create 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 --cluster-replicas 1，其中--cluster-replicas 1表示每个主节点有一个从节点。
+- 分配槽位：Redis集群使用槽位（slot）来分配数据。总共有16384个槽位，需要将这些槽位分配给集群中的节点。可以使用CLUSTER ADDSLOTS命令来手动分配槽位，但在创建集群时，redis-cli会自动进行槽位分配。
 
 五、**设置主从关系**
-* 自动设置：在创建集群时，redis-cli会自动为每个主节点分配一个从节点（如果指定了--cluster-replicas选项）。
-* 手动设置：如果需要手动设置主从关系，可以使用CLUSTER REPLICATE命令将一个节点设置为另一个节点的从节点。
+
+- 自动设置：在创建集群时，redis-cli会自动为每个主节点分配一个从节点（如果指定了--cluster-replicas选项）。
+- 手动设置：如果需要手动设置主从关系，可以使用CLUSTER REPLICATE命令将一个节点设置为另一个节点的从节点。
 
 六、**验证集群状态**
-* 查看集群信息：使用CLUSTER INFO命令来查看集群的详细信息，如节点数量、槽位分配等。
-* 查看节点信息：使用CLUSTER NODES命令来查看集群中所有节点的信息，包括节点的ID、地址、端口、角色（主节点或从节点）等。
+
+- 查看集群信息：使用CLUSTER INFO命令来查看集群的详细信息，如节点数量、槽位分配等。
+- 查看节点信息：使用CLUSTER NODES命令来查看集群中所有节点的信息，包括节点的ID、地址、端口、角色（主节点或从节点）等。
 
 七、**其他注意事项**
-* 网络配置：确保所有节点之间的网络是互通的，以便它们能够相互通信和协作。
-* 持久化配置：根据需要配置Redis的持久化选项（如RDB或AOF），以确保数据的安全性和可靠性。
-* 密码认证：如果集群需要密码认证，请在配置文件中设置密码，并在创建集群时使用-a选项指定密码。
+
+- 网络配置：确保所有节点之间的网络是互通的，以便它们能够相互通信和协作。
+- 持久化配置：根据需要配置Redis的持久化选项（如RDB或AOF），以确保数据的安全性和可靠性。
+- 密码认证：如果集群需要密码认证，请在配置文件中设置密码，并在创建集群时使用-a选项指定密码。
 
 **redis为什么是单线程但是还能做高速缓存**
 Redis 之所以能作为**高速缓存**，即使采用单线程模型（主要指的是其核心命令处理逻辑），主要归功于以下几个关键设计理念和优化：
 
-1.  **纯内存操作：**
-    *   这是最根本的原因。Redis 的数据主要存储在内存中，而内存的访问速度（纳秒级）比磁盘（毫秒级）或网络快几个数量级。对数据的读写操作直接在内存中进行，避免了磁盘 I/O 带来的巨大延迟。单线程处理这些极快的内存操作绰绰有余。
-
-2.  **避免锁竞争和上下文切换开销：**
-    *   **无锁设计：** 单线程模型天然避免了多线程编程中最复杂、最影响性能的问题：锁竞争。多线程需要复杂的锁机制来保证数据一致性，而锁的获取、释放、等待都会消耗 CPU 时间，并可能引入死锁风险。
+1. **纯内存操作：**
+  
+  - 这是最根本的原因。Redis 的数据主要存储在内存中，而内存的访问速度（纳秒级）比磁盘（毫秒级）或网络快几个数量级。对数据的读写操作直接在内存中进行，避免了磁盘 I/O 带来的巨大延迟。单线程处理这些极快的内存操作绰绰有余。
+2. **避免锁竞争和上下文切换开销：**
+  
+  - **无锁设计：** 单线程模型天然避免了多线程编程中最复杂、最影响性能的问题：锁竞争。多线程需要复杂的锁机制来保证数据一致性，而锁的获取、释放、等待都会消耗 CPU 时间，并可能引入死锁风险。
     单线程按顺序执行命令，无需任何锁，执行路径极其简洁高效。
-    *   **零上下文切换：** 多线程环境下，操作系统需要在不同线程之间进行切换（上下文切换），这个过程需要保存和恢复线程状态，消耗 CPU 资源。单线程模型避免了这种开销，CPU 时间可以完全用于处理请求本身。
-
-3.  **高效的 I/O 多路复用模型：**
-    *   虽然命令执行是单线程的，但 Redis 使用高效的 I/O 多路复用技术（如 Linux 上的 `epoll`, `kqueue` 或 `select`）来处理大量的网络连接。
-    *   这个 I/O 线程（或更准确地说，是事件循环）可以同时监听成百上千个客户端的 Socket 连接。当任何一个 Socket 有数据可读（客户端发送命令）或有可写空间（准备向客户端发送响应）时，I/O 多路复用器会通知 Redis。
-    *   核心的单线程工作器（命令处理器）会按顺序处理这些准备好的事件：读取命令、解析命令、执行命令（内存操作）、生成响应、写入响应。这样，单线程就能高效地处理大量并发连接，瓶颈主要在内存访问速度和网络带宽，而非 CPU 计算能力。
-
-4.  **精心优化的数据结构：**
-    *   Redis 提供了丰富的数据结构（字符串、哈希、列表、集合、有序集合等），这些数据结构在内存中都有非常高效的实现（如哈希表、跳表、压缩列表等），其操作的时间复杂度通常是 O(1) 或 O(log N)。这使得单线程执行这些操作非常快速。
-
-5.  **协议简单高效：**
-    *   Redis 使用基于文本（RESP）或二进制（RESP3）的简单协议。客户端请求和服务器响应的解析和序列化都非常高效，减少了 CPU 在协议处理上的开销。
+  - **零上下文切换：** 多线程环境下，操作系统需要在不同线程之间进行切换（上下文切换），这个过程需要保存和恢复线程状态，消耗 CPU 资源。单线程模型避免了这种开销，CPU 时间可以完全用于处理请求本身。
+3. **高效的 I/O 多路复用模型：**
+  
+  - 虽然命令执行是单线程的，但 Redis 使用高效的 I/O 多路复用技术（如 Linux 上的 `epoll`, `kqueue` 或 `select`）来处理大量的网络连接。
+  - 这个 I/O 线程（或更准确地说，是事件循环）可以同时监听成百上千个客户端的 Socket 连接。当任何一个 Socket 有数据可读（客户端发送命令）或有可写空间（准备向客户端发送响应）时，I/O 多路复用器会通知 Redis。
+  - 核心的单线程工作器（命令处理器）会按顺序处理这些准备好的事件：读取命令、解析命令、执行命令（内存操作）、生成响应、写入响应。这样，单线程就能高效地处理大量并发连接，瓶颈主要在内存访问速度和网络带宽，而非 CPU 计算能力。
+4. **精心优化的数据结构：**
+  
+  - Redis 提供了丰富的数据结构（字符串、哈希、列表、集合、有序集合等），这些数据结构在内存中都有非常高效的实现（如哈希表、跳表、压缩列表等），其操作的时间复杂度通常是 O(1) 或 O(log N)。这使得单线程执行这些操作非常快速。
+5. **协议简单高效：**
+  
+  - Redis 使用基于文本（RESP）或二进制（RESP3）的简单协议。客户端请求和服务器响应的解析和序列化都非常高效，减少了 CPU 在协议处理上的开销。
 
 **单线程模型的优势与局限：**
 
-*   **优势：**
-    *   **简单性：** 设计、实现、调试、维护都相对简单。
-    *   **无锁原子性：** 任何命令的执行都是原子性的，不需要额外的同步机制，对开发者更友好（尤其在 Lua 脚本执行时）。
-    *   **避免上下文切换和锁竞争：** 如上所述，这是高性能的关键。
-*   **局限：**
-    *   **CPU 密集型操作可能成为瓶颈：** 对于非常复杂的命令（如涉及大量数据的 `KEYS`、`SORT`）或 Lua 脚本，或者需要执行持久化（RDB/AOF）操作时，单线程会被阻塞，导致所有后续请求延迟。
-    *   **无法利用多核 CPU：** 单个 Redis 实例无法充分利用服务器上的多个 CPU 核心来处理命令（虽然 I/O 线程可以分担网络读写的负载）。
+- **优势：**
+  - **简单性：** 设计、实现、调试、维护都相对简单。
+  - **无锁原子性：** 任何命令的执行都是原子性的，不需要额外的同步机制，对开发者更友好（尤其在 Lua 脚本执行时）。
+  - **避免上下文切换和锁竞争：** 如上所述，这是高性能的关键。
+- **局限：**
+  - **CPU 密集型操作可能成为瓶颈：** 对于非常复杂的命令（如涉及大量数据的 `KEYS`、`SORT`）或 Lua 脚本，或者需要执行持久化（RDB/AOF）操作时，单线程会被阻塞，导致所有后续请求延迟。
+  - **无法利用多核 CPU：** 单个 Redis 实例无法充分利用服务器上的多个 CPU 核心来处理命令（虽然 I/O 线程可以分担网络读写的负载）。
 
 **Redis 6.0+ 引入的多线程 I/O：**
-*   为了解决网络 I/O 可能成为瓶颈的问题（尤其是在高带宽场景下），Redis 6.0 引入了多线程 I/O（默认关闭）。
-*   **重要：** 这里的多线程**仅用于处理网络读（Socket Read）和写（Socket Write）**，**命令的解析和执行仍然是单线程的！**
-*   原理：
-    1.  主线程（命令执行线程）仍然使用 I/O 多路复用接收连接请求并建立连接。它会将已建立连接的 Socket 分发给 I/O 线程。
-    2.  I/O 线程（可配置数量）负责读取这些 Socket 上的请求数据（将原始字节流读入缓冲区）和将命令执行完成后的响应数据（由主线程生成）写回 Socket。
-    3.  主线程等待所有 I/O 线程完成读取后，按顺序解析缓冲区中的命令、执行命令、生成响应结果。
-    4.  主线程将响应结果交给 I/O 线程去写回给客户端。
-*   目的：将耗时的网络读写操作（特别是写大量响应数据）分摊到多个 I/O 线程上，减轻主线程（命令执行线程）在 I/O 上的压力，使其能更专注于执行命令。这在网络带宽很高（例如万兆网卡）或响应包很大的场景下提升显著。
-*   **命令执行的核心逻辑（内存操作）依然是单线程的，因此它依然保留着单线程模型的核心优势（简单、无锁、原子性）**。
+
+- 为了解决网络 I/O 可能成为瓶颈的问题（尤其是在高带宽场景下），Redis 6.0 引入了多线程 I/O（默认关闭）。
+- **重要：** 这里的多线程**仅用于处理网络读（Socket Read）和写（Socket Write）**，**命令的解析和执行仍然是单线程的！**
+- 原理：
+  1. 主线程（命令执行线程）仍然使用 I/O 多路复用接收连接请求并建立连接。它会将已建立连接的 Socket 分发给 I/O 线程。
+  2. I/O 线程（可配置数量）负责读取这些 Socket 上的请求数据（将原始字节流读入缓冲区）和将命令执行完成后的响应数据（由主线程生成）写回 Socket。
+  3. 主线程等待所有 I/O 线程完成读取后，按顺序解析缓冲区中的命令、执行命令、生成响应结果。
+  4. 主线程将响应结果交给 I/O 线程去写回给客户端。
+- 目的：将耗时的网络读写操作（特别是写大量响应数据）分摊到多个 I/O 线程上，减轻主线程（命令执行线程）在 I/O 上的压力，使其能更专注于执行命令。这在网络带宽很高（例如万兆网卡）或响应包很大的场景下提升显著。
+- **命令执行的核心逻辑（内存操作）依然是单线程的，因此它依然保留着单线程模型的核心优势（简单、无锁、原子性）**。
 
 **总结：**
 Redis 单线程高速的核心秘诀在于：**内存操作 + 无锁/无上下文切换 + I/O 多路复用 + 高效数据结构**。它巧妙地避开了传统磁盘数据库的 I/O 瓶颈和多线程编程的锁竞争/切换开销，将性能发挥在内存访问这个最快的环节上。
@@ -17799,7 +18707,6 @@ memcache主要用于分担数据库负的压力，memcache将数据调用到内�
 3.无法进行数据同步，不能将MC中的数据迁移到其他MC实例中。
 4.Memcached内存分配采用Slab Allocation机制管理内存，value大小分布差异较大时会造成内存利用率降低，并引发低利用率时依然出现踢出等问题。需要用户注重value设计。
 
-
 MongoDB:
 MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。
 在高负载的情况下，添加更多的节点，可以保证服务器性能。
@@ -17818,7 +18725,6 @@ MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组
 1.不支持事务。
 2.MongoDB占用空间过大 。
 3.MongoDB没有成熟的维护工具。
-
 
 ShardingSphere：
 ShardingSphere是一个开源的分布式数据库中间件，用于实现关系型数据库的分片和分布式数据库操作。
@@ -17841,8 +18747,8 @@ ShardingSphere 的主要特点包括：
 
 ShardingSphere 是一个强大的工具，可用于构建大规模、高性能和高可用性的分布式数据库架构，特别适用于云原生环境和大型企业应用程序。
 
-
 # 容器技术：
+
 容器技术是一种软件开发和部署技术，允许开发人员在虚拟环境中将应用程序与其依赖关系封装在一起，以实现在不同的环境中的一致性。
 容器技术通过使用容器映像来管理应用程序，并在系统上运行容器实例。容器映像是包含所有应用程序代码和依赖关系的可执行文件。容器实例则是运行在特定环境中的应用程序副本。
 
@@ -17851,7 +18757,6 @@ ShardingSphere 是一个强大的工具，可用于构建大规模、高性能�
 提高了部署效率：容器可以快速部署，并且可以方便地进行版本管理和回滚。
 支持微服务架构：容器可以作为微服务架构的基础设施，帮助开发人员快速构建、部署和管理复杂的分布式系统。
 目前，Docker是最常用的容器技术，它提供了一个开放的生态系统，可以方便地管理容器。
-
 
 Docker：
 Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从Apache2.0协议开源。
@@ -17865,12 +18770,10 @@ Docker的原理基于Linux的核心命名空间（Namespaces）和核心资源�
 Docker利用Linux中的核心分离机制，例如Cgroups，以及Linux的核心Namespace来创建独立的容器。
 Docker容器的本质还是一个直接运行在宿主机上面的特殊进程，看到的文件系统是隔离后的，但是操作系统内核是共享宿主机的，所以说Docker是轻量级的虚拟化技术。
 
-
 Docker的分层存储：
 Docker中的分层存储是指Docker镜像的一种存储方式。它使用联合挂载系统（Union Mount）的技术，
 其文件系统是分层的，将多个只读层叠加在一起，形成一个可读写的联合文件系统，以提供Docker镜像的高效存储和管理。
 分层存储是Docker镜像轻量级、易于管理，以及更容易与其他Docker操作进行组合的重要原因。
-
 
 Docker核心概念：
 docker镜像(Images)：Docker 镜像是用于创建 Docker 容器的模板。
@@ -17880,7 +18783,6 @@ Docker API(https://docs.docker.com/reference/api/docker_remote_api) 与 Docker �
 docker主机(Host)：一个物理或者虚拟的机器用于执行Docker 守护进程和容器。
 docker仓库(Registry)：Docker 仓库用来保存镜像，可以理解为代码控制中的代码仓库。
 Docker Hub(https://hub.docker.com) 提供了庞大的镜像集合供使用。
-
 
 docker的架构是怎样的？
 Docker的架构是一个复杂但高效的系统，它允许开发者创建、部署和管理容器化应用。
@@ -17912,7 +18814,6 @@ Docker的工作流程包括构建镜像、分发镜像、拉取镜像和运行�
 拉取镜像：在需要运行容器的主机上，用户可以通过docker pull命令从注册表中下载镜像。
 运行容器：用户使用docker run命令基于下载的镜像创建并运行容器。此时，Docker守护进程会分配必要的资源（如网络、存储等），启动容器进程。
 
-
 docker的执行过程：client -> containerd -> container shim -> runc() -> unshare() -> clone()
 
 Docker Client:
@@ -17921,7 +18822,7 @@ Docker Client:
 
 Docker Daemon:
 Docker Daemon 接收到来自客户端的请求后，并不直接处理容器的创建和运行。相反，它将这些请求转发给 containerd，这是 Docker 用来管理容器运行时的组件。
- 
+
 containerd:
 containerd 是一个开源的容器运行时管理守护进程，负责处理来自 Docker Daemon 的请求。
 containerd 接收请求后，会根据请求的类型（如创建、启动、停止容器等）调用相应的处理逻辑。
@@ -17942,7 +18843,6 @@ unshare() 和 clone():
 unshare() 系统调用用于将进程从某些系统资源（如用户命名空间、网络命名空间等）中分离出来。
 clone() 系统调用则用于创建新的进程，这个新进程会继承调用进程的资源（如文件描述符、内存空间等），但可以根据 unshare() 的设置来隔离这些资源。
 通过这些系统调用，runc 能够创建一个完全隔离的容器进程，这个进程运行在一个与宿主机隔离的环境中，但可以使用宿主机提供的资源。
-
 
 容器（dockers）和虚拟机的区别是什么？
 容器（特别是Docker容器）与虚拟机在多个方面存在显著的区别，这些区别主要体现在架构层次、资源利用、性能、隔离性、部署灵活性以及应用场景上。以下是对这些区别的详细阐述：
@@ -17993,7 +18893,6 @@ Docker容器：
 支持在同一宿主上运行不同操作系统（如Linux和Windows）。
 适合高隔离性需求的场景，如高安全性要求的环境。
 
-
 为什么Docker比Vm快？
 1、docker有着比虚拟机更少的抽象层。由于docker不需要Hypervisor实现硬件资源虚拟化,运行在docker容器上的程序直接使用的都是实际物理机的硬件资源。因此在CPU、内存利用率上docker将会在效率上有明显优势。
 
@@ -18011,87 +18910,117 @@ root file system （rootfs）：包含典型的目录结构，包括/dev, /proc,
 Linux部署docker（官网链接）：
 https://docs.docker.com/engine/install/centos/
 
+> Dockers常用命令：
 
-Dockers常用命令：
-docker启动命令
+# docker启动命令
+
 systemctl start docker
- 
-docker 重启命令
+
+# docker 重启命令
+
 systemctl restart docker
- 
-docker 设置开机自启
+
+# docker 设置开机自启
+
 systemctl enable docker
- 
-docker 系统信息
+
+# docker 系统信息
+
 docker info
- 
-查看docker版本
+
+# 查看docker版本
+
 docker version
- 
-运行容器（可以看当前容器ping另一个服务器的情况）
+
+# 运行容器（可以看当前容器ping另一个服务器的情况）
+
 docker run nginx 
 docker run nginx ping 1.1.1.1
 docker run -d --name aaa nginx（-d指定后台运行 aaa重命名nginx）
- 
-进入容器（exec 在运行的容器执行命令 -i交互式 输入命令返回结果 -t以终端的方式 ls为需要执行的命令）
+
+# 进入容器（exec 在运行的容器执行命令 -i交互式 输入命令返回结果 -t以终端的方式 ls为需要执行的命令）
+
 docker exec -it nginx ls
- 
-停止运行的容器
+
+# 停止运行的容器
+
 docker stop nginx
- 
-暂停运行容器
+
+# 暂停运行容器
+
 docker pause nginx
- 
-启动运行的容器
+
+# 启动运行的容器
+
 docker unpause nginx
- 
-删除/强制删除运行的容器
+
+# 删除/强制删除运行的容器
+
 docker rm nginx
 docker rm -f nginx
- 
-查看当前运行中的容器
+
+# 查看当前运行中的容器
+
 docker ps
 docker ps -a (用于列出 Docker 容器中的所有实例，无论它们的状态是运行中（running）、已停止（stopped）、已退出（exited）还是其他任何状态)
- 
-查看运行中的容器
-docker top nginx
- 
-查看资源占用
-docker status nginx
- 
-查看容器/镜像的源信息
-docker insepct nginx
- 
 
-docker镜像管理命令：
-查看所有镜像
-docker images 
- 
-搜索镜像
+# 查看运行中的容器
+
+docker top nginx
+
+# 查看资源占用
+
+docker status nginx
+
+# 查看容器/镜像的源信息
+
+docker insepct nginx
+
+> docker镜像管理命令：
+
+# 查看所有镜像
+
+docker images
+
+# 搜索镜像
+
 docker search nginx
- 
-下载镜像（可指定版本）
+
+# 下载镜像（可指定版本）
+
 docker pull nginx
 docker pull nginx:1.17.10
- 
-导出(可以导出拷贝给别人直接使用)
-docker save nginx > nginx.tar
- 
-导入
-docker load < nginx.tar
- 
-删除
-docker rmi nginx:1.17.10
- 
-更改镜像名（需要改的镜像  新的镜像名）
-docker tag nginx:1.17.10 aaa-nginx:v1.1
- 
-查看镜像历史操作
-docker history nginx:1.17.10
- 
 
-docker的命名空间：
-Docker的命名空间（Namespace）是Docker引擎用来隔离容器内进程和资源的一种重要机制。
+# 导出(可以导出拷贝给别人直接使用)
+
+docker save nginx > nginx.tar
+
+# 导入
+
+docker load < nginx.tar
+
+# 删除
+
+docker rmi nginx:1.17.10
+
+# 更改镜像名（需要改的镜像 新的镜像名）
+
+docker tag nginx:1.17.10 aaa-nginx:v1.1
+
+# 查看镜像历史操作
+
+docker history nginx:1.17.10
+
+# 重新构建镜像（使用新 JAR）
+
+docker compose up -d --build
+
+# 健康检查排查指令
+
+docker inspect --format '{{json .State.Health}}' authentication-container | jq
+
+> docker的命名空间：
+> Docker的命名空间（Namespace）是Docker引擎用来隔离容器内进程和资源的一种重要机制。
 
 一、基本概念
 命名空间是一种隔离机制，通过在不同的命名空间中运行应用程序，可以使它们彼此隔离，避免相互干扰。在Docker中，命名空间被用来为每个容器提供一个独立的运行环境，确保容器间的资源互不干扰，从而提高系统的安全性和稳定性。
@@ -18111,7 +19040,6 @@ Docker通过调用Linux内核的命名空间功能来实现上述隔离效果。
 
 四、应用场景
 Docker命名空间在云计算、微服务架构等领域得到了广泛的应用和认可。它不仅简化了应用的部署和管理，还提高了系统的稳定性和安全性。通过使用Docker命名空间，开发者可以轻松地创建和管理多个独立的容器环境，从而实现应用的快速迭代和部署。
-
 
 docker的命名空间有6大隔离技术：
 Docker的命名空间（Namespace）隔离技术是Docker容器实现资源隔离的关键机制之一。这种技术通过修改应用进程看待整个计算机的“视图”，即限制其“视线”只能看到指定的内容，从而实现了资源的有效隔离。
@@ -18167,7 +19095,6 @@ I/O：可以设置每个容器的磁盘I/O使用量，避免某个容器对磁�
 监控：可以使用Linux提供的工具（如top、htop、cgtop等）来监控cgroup的资源使用情况。此外，Docker也提供了自己的监控工具（如docker stats）来显示容器的实时资源使用情况。
 管理：可以通过修改cgroup的配置文件或使用相关命令来管理cgroup的资源限制。例如，可以使用cgcreate命令创建新的cgroup，使用cgset命令修改cgroup的参数等。在Docker中，这些操作通常通过Docker的API或命令行工具来完成。
 
-
 Docker容器的镜像技术：
 Docker的镜像技术是一种特殊的文件系统，它除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。
 镜像不包含任何动态数据，其内容在构建之后也不会被改变。Docker镜像的只读形式，在启动Docker容器中，文件系统结构和内容都包含在其中，Docker镜像是启动Docker容器的基础。
@@ -18176,7 +19103,6 @@ Docker镜像的文件内容和配置文件组成了Docker容器的静态文件�
 rootfs是Docker容器的根目录，在启动时Docker容器可见到的文件系统，rootfs包含了操作系统运行所需的文件系统，
 例如：dev、proc、bin、etc、lib等Unix目录系统以及配置文件、工具等。
 
-
 镜像技术的优势在于：
 简化部署：使用镜像可以快速地将应用程序部署到任何环境中。
 提高一致性：镜像文件包含了所有所需的文件和配置，因此可以保证在不同的环境中的一致性。
@@ -18184,167 +19110,197 @@ rootfs是Docker容器的根目录，在启动时Docker容器可见到的文件�
 镜像技术是虚拟化、容器化和云计算等计算机领域的重要技术，在微服务架构、云部署等场景中被广泛使用。
 常见的镜像技术有Docker镜像、Kubernetes镜像、OpenShift镜像等。
 
->Docker 中容器和镜像的关系
-在 Docker 中，镜像（Image）和容器（Container）是两个核心概念，它们之间的关系类似于“模板”和“实例”，或者类比编程中的“类”和“对象”。下面我一步步阐述它们的关系，帮助你理解。
+> Docker 中容器和镜像的关系
+> 在 Docker 中，镜像（Image）和容器（Container）是两个核心概念，它们之间的关系类似于“模板”和“实例”，或者类比编程中的“类”和“对象”。下面我一步步阐述它们的关系，帮助你理解。
 
 #### 1. **镜像（Image）的定义和作用**
-   - 镜像是一个**静态的、不可变的软件包**，它包含了运行一个应用程序所需的一切：应用程序代码、运行时环境（Runtime）、系统库、配置文件、环境变量等。
-   - 镜像像是一个“蓝图”或“快照”，它不运行任何代码，只是存储了所有必要的文件和元数据。
-   - 镜像可以通过 Dockerfile 构建，或者从 Docker Hub 等仓库拉取（pull）。例如，官方的 Ubuntu 镜像就是一个基础的 Linux 系统镜像。
-   - 镜像具有分层（Layered）结构：每个镜像由多个只读层组成，这使得镜像高效且可复用。
+
+- 镜像是一个**静态的、不可变的软件包**，它包含了运行一个应用程序所需的一切：应用程序代码、运行时环境（Runtime）、系统库、配置文件、环境变量等。
+- 镜像像是一个“蓝图”或“快照”，它不运行任何代码，只是存储了所有必要的文件和元数据。
+- 镜像可以通过 Dockerfile 构建，或者从 Docker Hub 等仓库拉取（pull）。例如，官方的 Ubuntu 镜像就是一个基础的 Linux 系统镜像。
+- 镜像具有分层（Layered）结构：每个镜像由多个只读层组成，这使得镜像高效且可复用。
 
 #### 2. **容器（Container）的定义和作用**
-   - 容器是镜像的**运行时实例**。当你基于一个镜像启动一个容器时，它会创建一个可写的层（Writable Layer）在镜像的只读层之上，从而允许容器运行、修改数据。
-   - 容器是动态的：它可以启动（run）、停止（stop）、重启（restart）、删除（delete），并且在运行时可以执行进程、访问网络、挂载卷等。
-   - 容器是隔离的：每个容器运行在自己的命名空间中，与宿主机和其他容器隔离，但共享内核。
+
+- 容器是镜像的**运行时实例**。当你基于一个镜像启动一个容器时，它会创建一个可写的层（Writable Layer）在镜像的只读层之上，从而允许容器运行、修改数据。
+- 容器是动态的：它可以启动（run）、停止（stop）、重启（restart）、删除（delete），并且在运行时可以执行进程、访问网络、挂载卷等。
+- 容器是隔离的：每个容器运行在自己的命名空间中，与宿主机和其他容器隔离，但共享内核。
 
 #### 3. **容器和镜像的关系**
-   - **从镜像创建容器**：容器总是从一个镜像启动而来。没有镜像，就无法创建容器。例如，使用命令 `docker run -it ubuntu:latest` 会从 `ubuntu:latest` 镜像创建一个容器，并进入交互模式。
-     - 一个镜像可以创建多个容器：这些容器共享相同的镜像层，但每个容器有自己的可写层，因此它们可以独立运行而不互相干扰。例如，你可以从同一个 Nginx 镜像启动多个 Web 服务器容器。
-     - 反之，容器不能直接存在于镜像之外：容器的生命周期依赖于镜像。
-   - **镜像的不可变性 vs. 容器的可变性**：
-     - 镜像一旦构建，就不能修改（immutable）。如果需要更新，你必须构建一个新镜像。
-     - 容器在运行时可以修改文件、安装软件等，但这些修改只存在于容器的可写层中，不会影响原始镜像。如果你停止并删除容器，这些修改会丢失，除非你使用数据卷（Volume）或提交（commit）成新镜像。
-   - **提交容器为新镜像**：你可以将一个运行中的容器“提交”（commit）成一个新镜像，使用命令如 `docker commit <container_id> new_image_name`。这会将容器的可写层转换为新镜像的层，从而创建一个新的镜像版本。这体现了从容器“反馈”到镜像的循环关系。
-   - **生命周期关系**：
-     - 镜像 -> 容器：拉取/构建镜像 -> 运行容器。
-     - 容器 -> 镜像：修改容器 -> 提交成新镜像 -> 重复使用。
-     - 删除容器不会删除镜像，但删除镜像会使基于它的容器无法启动（如果镜像已被删除）。
+
+- **从镜像创建容器**：容器总是从一个镜像启动而来。没有镜像，就无法创建容器。例如，使用命令 `docker run -it ubuntu:latest` 会从 `ubuntu:latest` 镜像创建一个容器，并进入交互模式。
+  - 一个镜像可以创建多个容器：这些容器共享相同的镜像层，但每个容器有自己的可写层，因此它们可以独立运行而不互相干扰。例如，你可以从同一个 Nginx 镜像启动多个 Web 服务器容器。
+  - 反之，容器不能直接存在于镜像之外：容器的生命周期依赖于镜像。
+- **镜像的不可变性 vs. 容器的可变性**：
+  - 镜像一旦构建，就不能修改（immutable）。如果需要更新，你必须构建一个新镜像。
+  - 容器在运行时可以修改文件、安装软件等，但这些修改只存在于容器的可写层中，不会影响原始镜像。如果你停止并删除容器，这些修改会丢失，除非你使用数据卷（Volume）或提交（commit）成新镜像。
+- **提交容器为新镜像**：你可以将一个运行中的容器“提交”（commit）成一个新镜像，使用命令如 `docker commit <container_id> new_image_name`。这会将容器的可写层转换为新镜像的层，从而创建一个新的镜像版本。这体现了从容器“反馈”到镜像的循环关系。
+- **生命周期关系**：
+  - 镜像 -> 容器：拉取/构建镜像 -> 运行容器。
+  - 容器 -> 镜像：修改容器 -> 提交成新镜像 -> 重复使用。
+  - 删除容器不会删除镜像，但删除镜像会使基于它的容器无法启动（如果镜像已被删除）。
 
 #### 4. **实际示例**
-   - 假设你有一个自定义的 Python 应用镜像 `myapp:latest`。
-     - 运行 `docker run myapp:latest` 创建一个容器，应用开始执行。
-     - 如果你在容器中安装了一个新包（如 pip install requests），这个修改只在该容器中生效。
-     - 要持久化这个修改，你可以 commit 成新镜像 `myapp:with-requests`，然后基于新镜像创建更多容器。
+
+- 假设你有一个自定义的 Python 应用镜像 `myapp:latest`。
+  - 运行 `docker run myapp:latest` 创建一个容器，应用开始执行。
+  - 如果你在容器中安装了一个新包（如 pip install requests），这个修改只在该容器中生效。
+  - 要持久化这个修改，你可以 commit 成新镜像 `myapp:with-requests`，然后基于新镜像创建更多容器。
 
 #### 5. **为什么这种关系重要？**
-   - 这种设计使得 Docker 高效、可移植：镜像可以轻松分享和部署，容器则提供轻量级、快速启动的运行环境。
-   - 它促进了 DevOps 实践，如 CI/CD：构建镜像 -> 测试容器 -> 部署到生产环境。
 
+- 这种设计使得 Docker 高效、可移植：镜像可以轻松分享和部署，容器则提供轻量级、快速启动的运行环境。
+- 它促进了 DevOps 实践，如 CI/CD：构建镜像 -> 测试容器 -> 部署到生产环境。
 
 Docker仓库：
 Docker 仓库（Docker Registry）是 Docker 生态系统中用于存储、管理和分发 Docker 镜像的核心组件。它类似于一个镜像的“仓库”或“库”，允许开发者上传、下载和共享容器镜像，从而实现容器化应用的快速部署和复用。下面我从几个方面阐述 Docker 仓库的概念、类型、工作原理以及使用注意事项。
 
 #### 1. **定义和作用**
-   - **定义**：Docker 仓库是一个服务，用于托管 Docker 镜像的存储和分发。它可以是公共的（如 Docker Hub）或私有的，支持版本控制和访问权限管理。镜像（Image）是 Docker 的核心产物，包含了应用程序及其依赖环境，而仓库则负责这些镜像的集中管理。
-   - **作用**：
-     - **存储**：保存镜像文件，包括不同版本和标签（Tag）。
-     - **分发**：允许用户通过 `docker pull` 命令从仓库拉取镜像，或 `docker push` 推送镜像。
-     - **协作**：便于团队共享镜像，支持 CI/CD 管道集成。
-     - **安全性**：支持镜像扫描、签名和访问控制，防止恶意镜像传播。
+
+- **定义**：Docker 仓库是一个服务，用于托管 Docker 镜像的存储和分发。它可以是公共的（如 Docker Hub）或私有的，支持版本控制和访问权限管理。镜像（Image）是 Docker 的核心产物，包含了应用程序及其依赖环境，而仓库则负责这些镜像的集中管理。
+- **作用**：
+  - **存储**：保存镜像文件，包括不同版本和标签（Tag）。
+  - **分发**：允许用户通过 `docker pull` 命令从仓库拉取镜像，或 `docker push` 推送镜像。
+  - **协作**：便于团队共享镜像，支持 CI/CD 管道集成。
+  - **安全性**：支持镜像扫描、签名和访问控制，防止恶意镜像传播。
 
 #### 2. **类型**
+
 Docker 仓库主要分为两种：
-   - **公共仓库**：
-     - 最常见的是 Docker Hub（hub.docker.com），由 Docker 官方维护，免费提供基本服务。
-     - 其他公共选项包括 Quay.io、Google Container Registry (GCR，现在更名为 Artifact Registry)、Amazon ECR Public 等。
-     - 适合开源项目或通用镜像（如 Alpine、Ubuntu、Nginx 的官方镜像）。
-   - **私有仓库**：
-     - 用于企业内部或敏感应用，不对外公开。
-     - 可以自建，使用 Docker Registry 开源项目搭建（例如运行 `docker run -d -p 5000:5000 --restart=always --name registry registry:2`）。
-     - 云服务提供商的私有选项：AWS ECR、Azure Container Registry (ACR)、阿里云容器镜像服务等。
-     - 优势：支持自定义访问控制、集成 LDAP/AD 等身份验证。
+
+- **公共仓库**：
+  - 最常见的是 Docker Hub（hub.docker.com），由 Docker 官方维护，免费提供基本服务。
+  - 其他公共选项包括 Quay.io、Google Container Registry (GCR，现在更名为 Artifact Registry)、Amazon ECR Public 等。
+  - 适合开源项目或通用镜像（如 Alpine、Ubuntu、Nginx 的官方镜像）。
+- **私有仓库**：
+  - 用于企业内部或敏感应用，不对外公开。
+  - 可以自建，使用 Docker Registry 开源项目搭建（例如运行 `docker run -d -p 5000:5000 --restart=always --name registry registry:2`）。
+  - 云服务提供商的私有选项：AWS ECR、Azure Container Registry (ACR)、阿里云容器镜像服务等。
+  - 优势：支持自定义访问控制、集成 LDAP/AD 等身份验证。
 
 #### 3. **工作原理**
-   - **架构**：Docker 仓库基于 RESTful API 工作，通常使用 HTTP/HTTPS 协议。镜像以层（Layer）形式存储，每层是文件系统的增量变化，支持高效的推送和拉取（只传输差异部分）。
-   - **基本流程**：
-     1. **构建镜像**：使用 Dockerfile 通过 `docker build` 命令创建镜像，并打上标签（如 `myapp:v1`）。
-     2. **推送镜像**：登录仓库（`docker login`），然后 `docker push registry.example.com/myapp:v1`。
-     3. **拉取镜像**：在其他机器上 `docker pull registry.example.com/myapp:v1`，Docker Daemon 会从仓库下载镜像层并组装。
-     4. **版本管理**：使用标签（如 `latest`、`v1.0`）管理版本，支持多架构镜像（Multi-Arch，如 amd64 和 arm64）。
-   - **认证与安全**：公共仓库需用户名/密码登录；私有仓库可配置 TLS 证书、RBAC（角色-based 访问控制）和 webhook 验证。
-   - **缓存与优化**：许多仓库支持镜像缓存（如 Docker Hub 的代理），减少网络传输。
+
+- **架构**：Docker 仓库基于 RESTful API 工作，通常使用 HTTP/HTTPS 协议。镜像以层（Layer）形式存储，每层是文件系统的增量变化，支持高效的推送和拉取（只传输差异部分）。
+- **基本流程**：
+  1. **构建镜像**：使用 Dockerfile 通过 `docker build` 命令创建镜像，并打上标签（如 `myapp:v1`）。
+  2. **推送镜像**：登录仓库（`docker login`），然后 `docker push registry.example.com/myapp:v1`。
+  3. **拉取镜像**：在其他机器上 `docker pull registry.example.com/myapp:v1`，Docker Daemon 会从仓库下载镜像层并组装。
+  4. **版本管理**：使用标签（如 `latest`、`v1.0`）管理版本，支持多架构镜像（Multi-Arch，如 amd64 和 arm64）。
+- **认证与安全**：公共仓库需用户名/密码登录；私有仓库可配置 TLS 证书、RBAC（角色-based 访问控制）和 webhook 验证。
+- **缓存与优化**：许多仓库支持镜像缓存（如 Docker Hub 的代理），减少网络传输。
 
 #### 4. **常见命令和示例**
-   - **搜索镜像**：`docker search nginx`（在 Docker Hub 上搜索）。
-   - **拉取**：`docker pull nginx:latest`。
-   - **推送**：先打标签 `docker tag myimage:latest myrepo/myimage:v1`，然后推送。
-   - **自建私有仓库示例**：
-     ```
-     # 启动仓库容器
-     docker run -d -p 5000:5000 --name registry registry:2
 
-     # 配置 Docker 使用不安全仓库（开发环境）
-     # 编辑 /etc/docker/daemon.json 添加 "insecure-registries": ["localhost:5000"]
-
-     # 推送镜像
-     docker tag alpine localhost:5000/my-alpine
-     docker push localhost:5000/my-alpine
-     ```
+- **搜索镜像**：`docker search nginx`（在 Docker Hub 上搜索）。
+  
+- **拉取**：`docker pull nginx:latest`。
+  
+- **推送**：先打标签 `docker tag myimage:latest myrepo/myimage:v1`，然后推送。
+  
+- **自建私有仓库示例**：
+  
+  ```
+  # 启动仓库容器
+  docker run -d -p 5000:5000 --name registry registry:2
+  
+  # 配置 Docker 使用不安全仓库（开发环境）
+  # 编辑 /etc/docker/daemon.json 添加 "insecure-registries": ["localhost:5000"]
+  
+  # 推送镜像
+  docker tag alpine localhost:5000/my-alpine
+  docker push localhost:5000/my-alpine
+  ```
+  
 
 #### 5. **注意事项和最佳实践**
-   - **安全性**：始终使用官方或可信镜像，避免未知来源；启用内容信任（Docker Content Trust）以验证镜像签名。
-   - **性能**：大型镜像推送/拉取可能耗时，使用多层构建和缓存优化 Dockerfile。
-   - **成本**：公共仓库免费层有限（例如 Docker Hub 限制免费推送速率），私有仓库可能涉及存储费用。
-   - **集成**：与 Kubernetes、Helm 等工具结合使用，支持自动化部署。
 
->docker容器如果想和运行在服务器（俗称宿主机）上的程序建立连接，该怎么做？
+- **安全性**：始终使用官方或可信镜像，避免未知来源；启用内容信任（Docker Content Trust）以验证镜像签名。
+- **性能**：大型镜像推送/拉取可能耗时，使用多层构建和缓存优化 Dockerfile。
+- **成本**：公共仓库免费层有限（例如 Docker Hub 限制免费推送速率），私有仓库可能涉及存储费用。
+- **集成**：与 Kubernetes、Helm 等工具结合使用，支持自动化部署。
+
+> docker容器如果想和运行在服务器（俗称宿主机）上的程序建立连接，该怎么做？
+
 ### Docker 容器连接宿主机程序的方法
 
 Docker 容器默认运行在隔离的网络命名空间中，与宿主机（服务器）的网络环境分离。这意味着容器不能直接通过 `localhost` 或 `127.0.0.1` 访问宿主机上的程序（因为这些在容器内指向容器自身）。要实现容器与宿主机程序的连接，通常假设宿主机程序是一个服务器（如监听某个端口的 HTTP 服务、数据库等），容器作为客户端发起连接。下面我阐述几种常见方法，从简单到高级，按适用场景分类。选择方法取决于你的安全需求、性能要求和程序类型。
 
 #### 1. **使用宿主机的 IP 地址（推荐入门级方法）**
-   - **原理**：容器可以通过 Docker 的桥接网络（默认 `bridge` 模式）访问宿主机的外部 IP 或 Docker 网桥 IP。宿主机程序需监听在可访问的接口上（例如 `0.0.0.0` 而非仅 `127.0.0.1`）。
-   - **步骤**：
-     1. 在宿主机上运行程序，确保它监听所有接口（例如 Python 的简单 HTTP 服务器：`python -m http.server 8000 --bind 0.0.0.0`）。
-     2. 找出宿主机的 IP：
-        - Docker 默认网桥 IP：通常是 `172.17.0.1`（运行 `ip addr show docker0` 查看）。
-        - 宿主机本地 IP：如 `192.168.x.x`（用 `ifconfig` 或 `ip addr` 查看）。
-     3. 运行容器：在容器内使用该 IP 连接宿主机程序。例如，假设宿主机程序监听 8000 端口：
-        ```
-        docker run -it --rm alpine sh  # 进入容器 shell
-        wget http://172.17.0.1:8000    # 或 curl，使用实际 IP
-        ```
-   - **优点**：简单，无需修改容器启动参数。
-   - **缺点**：IP 可能动态变化（重启 Docker 服务后）；不适合生产环境的安全性。
-   - **适用场景**：测试环境，宿主机程序是网络服务。
+
+- **原理**：容器可以通过 Docker 的桥接网络（默认 `bridge` 模式）访问宿主机的外部 IP 或 Docker 网桥 IP。宿主机程序需监听在可访问的接口上（例如 `0.0.0.0` 而非仅 `127.0.0.1`）。
+- **步骤**：
+  1. 在宿主机上运行程序，确保它监听所有接口（例如 Python 的简单 HTTP 服务器：`python -m http.server 8000 --bind 0.0.0.0`）。
+  2. 找出宿主机的 IP：
+    - Docker 默认网桥 IP：通常是 `172.17.0.1`（运行 `ip addr show docker0` 查看）。
+    - 宿主机本地 IP：如 `192.168.x.x`（用 `ifconfig` 或 `ip addr` 查看）。
+  3. 运行容器：在容器内使用该 IP 连接宿主机程序。例如，假设宿主机程序监听 8000 端口：
+    
+    ```
+    docker run -it --rm alpine sh  # 进入容器 shell
+    wget http://172.17.0.1:8000    # 或 curl，使用实际 IP
+    ```
+    
+- **优点**：简单，无需修改容器启动参数。
+- **缺点**：IP 可能动态变化（重启 Docker 服务后）；不适合生产环境的安全性。
+- **适用场景**：测试环境，宿主机程序是网络服务。
 
 #### 2. **使用 Host 网络模式（--network host）**
-   - **原理**：容器与宿主机共享相同的网络栈，这样容器可以直接使用 `localhost` 或 `127.0.0.1` 访问宿主机程序，就像在宿主机上运行一样。
-   - **步骤**：
-     1. 宿主机运行程序（如监听 8000 端口）。
-     2. 启动容器时添加 `--network host`：
-        ```
-        docker run -it --rm --network host alpine sh
-        curl http://localhost:8000  # 直接访问
-        ```
-   - **优点**：最简单，性能高，无网络隔离开销。
-   - **缺点**：降低了容器的网络隔离（容器可访问宿主机所有端口），不推荐用于生产多容器环境，可能有端口冲突。
-   - **适用场景**：开发调试，或容器需要访问宿主机所有网络资源（如 GPU 驱动等）。
+
+- **原理**：容器与宿主机共享相同的网络栈，这样容器可以直接使用 `localhost` 或 `127.0.0.1` 访问宿主机程序，就像在宿主机上运行一样。
+- **步骤**：
+  1. 宿主机运行程序（如监听 8000 端口）。
+  2. 启动容器时添加 `--network host`：
+    
+    ```
+    docker run -it --rm --network host alpine sh
+    curl http://localhost:8000  # 直接访问
+    ```
+    
+- **优点**：最简单，性能高，无网络隔离开销。
+- **缺点**：降低了容器的网络隔离（容器可访问宿主机所有端口），不推荐用于生产多容器环境，可能有端口冲突。
+- **适用场景**：开发调试，或容器需要访问宿主机所有网络资源（如 GPU 驱动等）。
 
 #### 3. **通过 Volume 挂载 Unix Socket（适用于本地文件 socket）**
-   - **原理**：如果宿主机程序使用 Unix Domain Socket（UDS，如许多数据库或服务使用 `/var/run/program.sock`），可以通过 Docker 的 volume 机制挂载 socket 文件到容器内，实现连接。
-   - **步骤**：
-     1. 宿主机程序使用 socket（如 MySQL 的 `/var/run/mysqld/mysqld.sock`）。
-     2. 启动容器时挂载：
-        ```
-        docker run -it --rm -v /var/run/mysqld/mysqld.sock:/tmp/mysqld.sock mysql mysql -S /tmp/mysqld.sock
-        ```
-     3. 在容器内通过挂载路径连接。
-   - **优点**：高效，无需网络端口；适用于非 TCP/IP 的本地通信。
-   - **缺点**：仅限 UDS，不适用于 TCP 程序；权限需匹配（可能需 --user 或 chown）。
-   - **适用场景**：数据库、IPC（进程间通信）等使用 socket 的程序。
+
+- **原理**：如果宿主机程序使用 Unix Domain Socket（UDS，如许多数据库或服务使用 `/var/run/program.sock`），可以通过 Docker 的 volume 机制挂载 socket 文件到容器内，实现连接。
+- **步骤**：
+  1. 宿主机程序使用 socket（如 MySQL 的 `/var/run/mysqld/mysqld.sock`）。
+  2. 启动容器时挂载：
+    
+    ```
+    docker run -it --rm -v /var/run/mysqld/mysqld.sock:/tmp/mysqld.sock mysql mysql -S /tmp/mysqld.sock
+    ```
+    
+  3. 在容器内通过挂载路径连接。
+- **优点**：高效，无需网络端口；适用于非 TCP/IP 的本地通信。
+- **缺点**：仅限 UDS，不适用于 TCP 程序；权限需匹配（可能需 --user 或 chown）。
+- **适用场景**：数据库、IPC（进程间通信）等使用 socket 的程序。
 
 #### 4. **暴露宿主机端口或使用代理（高级方法）**
-   - **原理**：如果宿主机程序只监听 `127.0.0.1`，可以通过 socat 或 nginx 等工具在宿主机上代理到可访问 IP，然后容器连接代理。
-   - **步骤**（以 socat 示例）：
-     1. 在宿主机安装 socat：`apt install socat`。
-     2. 代理端口：`socat TCP-LISTEN:8001,fork TCP:127.0.0.1:8000`（将本地 8000 代理到 8001）。
-     3. 容器内连接：`curl http://172.17.0.1:8001`。
-   - **优点**：灵活，适用于受限程序。
-   - **缺点**：引入额外工具，增加复杂性。
-   - **适用场景**：遗留程序或安全限制。
+
+- **原理**：如果宿主机程序只监听 `127.0.0.1`，可以通过 socat 或 nginx 等工具在宿主机上代理到可访问 IP，然后容器连接代理。
+- **步骤**（以 socat 示例）：
+  1. 在宿主机安装 socat：`apt install socat`。
+  2. 代理端口：`socat TCP-LISTEN:8001,fork TCP:127.0.0.1:8000`（将本地 8000 代理到 8001）。
+  3. 容器内连接：`curl http://172.17.0.1:8001`。
+- **优点**：灵活，适用于受限程序。
+- **缺点**：引入额外工具，增加复杂性。
+- **适用场景**：遗留程序或安全限制。
 
 #### 5. **自定义网络或 Docker Compose（多容器场景）**
-   - 如果涉及多个容器，推荐使用自定义网络：
-     ```
-     docker network create mynet
-     docker run -d --network mynet --name host-service myimage  # 模拟宿主机服务，但实际在容器中
-     ```
-     但对于纯宿主机程序，仍需结合上述方法。
-   - 在 Docker Compose 中，可以定义服务并使用 `network_mode: host`。
+
+- 如果涉及多个容器，推荐使用自定义网络：
+  
+  ```
+  docker network create mynet
+  docker run -d --network mynet --name host-service myimage  # 模拟宿主机服务，但实际在容器中
+  ```
+  
+  但对于纯宿主机程序，仍需结合上述方法。
+- 在 Docker Compose 中，可以定义服务并使用 `network_mode: host`。
 
 #### 注意事项和最佳实践
+
 - **安全性**：避免暴露不必要的端口；使用 `--network host` 时评估风险；考虑 firewall（如 ufw 或 iptables）规则。
 - **端口冲突**：Host 模式下，容器端口可能与宿主机冲突。
 - **调试**：在容器内用 `ping`、`telnet` 或 `nc` 测试连接；查看日志 `docker logs`。
@@ -18352,12 +19308,14 @@ Docker 容器默认运行在隔离的网络命名空间中，与宿主机（服�
 - **性能**：Host 模式最快，但隔离最差；桥接模式有轻微开销。
 - **更新**：Docker 版本（如 26.x）支持更多网络插件，如 macvlan（容器有独立 MAC/IP），但配置复杂。
 
->docker-compose.yml 文件
+> docker-compose.yml 文件
+
 ### Docker Compose 和 docker-compose.yml 文件概述
 
 Docker Compose 是 Docker 的一个官方工具，用于简化多容器应用程序的定义、管理和运行。它允许你通过一个配置文件来 orchestration（编排）多个 Docker 容器，而不是手动运行每个容器的命令。核心文件就是 **docker-compose.yml**（有时也写作 docker-compose.yaml），这是一个 YAML 格式的配置文件，用于描述整个应用程序的结构，包括服务（services）、网络（networks）、卷（volumes）等。
 
 #### 为什么使用 docker-compose.yml？
+
 - **简化部署**：单个文件定义所有容器及其依赖关系，避免了手动 docker run 命令的繁琐。
 - **可重复性**：便于在开发、测试和生产环境中一致性部署。
 - **多容器协作**：轻松处理如 Web 服务器 + 数据库 + 缓存的组合。
@@ -18367,15 +19325,18 @@ Docker Compose 是 Docker 的一个官方工具，用于简化多容器应用程
 Docker Compose 需要安装（在 Docker Desktop 中通常内置），命令行工具是 `docker compose`（注意：从 Docker Compose v2 开始，命令从 `docker-compose` 改为 `docker compose`，但旧命令仍兼容）。
 
 #### docker-compose.yml 的基本结构
+
 文件采用 YAML 语法，缩进敏感（通常用 2 或 4 个空格）。顶级键包括：
 
 - **version**：指定 Compose 文件格式版本（推荐使用 '3.x' 或更高，如 '3.8'，以支持最新特性）。例如：
+  
   ```
   version: '3.8'
   ```
-
+  
 - **services**：定义应用程序的核心组件，每个服务对应一个容器。每个服务下可以配置镜像、端口映射、环境变量、依赖等。
   示例：
+  
   ```
   services:
     web:  # 服务名称
@@ -18393,33 +19354,40 @@ Docker Compose 需要安装（在 Docker Desktop 中通常内置），命令行�
       environment:
         MYSQL_ROOT_PASSWORD: example
   ```
-
+  
 - **volumes**：定义持久化数据卷，避免容器重启数据丢失。可以是命名卷或主机路径。
   示例：
+  
   ```
   volumes:
     db-data:  # 命名卷
   ```
-
+  
 - **networks**：定义自定义网络，实现服务间隔离通信。
   示例：
+  
   ```
   networks:
     backend:  # 网络名称
   ```
+  
   服务中可以指定 `networks: - backend` 来加入。
-
+  
 - **其他可选键**：
+  
   - **configs** 和 **secrets**：管理配置和敏感数据。
   - **build**：如果不使用现成镜像，可以指定 Dockerfile 路径来构建自定义镜像。
     示例：
+    
     ```
     web:
       build: ./path/to/dockerfile/dir
     ```
+    
   - **deploy**：在 Swarm 模式下配置部署选项，如 replicas（副本数）。
 
 完整示例文件（一个简单的 Web + DB 应用）：
+
 ```
 version: '3.8'
 services:
@@ -18440,23 +19408,24 @@ networks:
 ```
 
 #### 如何使用 docker-compose.yml？
+
 1. **创建文件**：在项目根目录下编写 docker-compose.yml。
 2. **运行**：在文件目录下执行 `docker compose up`（后台运行加 `-d`）。这会拉取镜像、创建容器、网络等。
 3. **停止**：`docker compose down`（加 `--volumes` 删除卷）。
 4. **其他命令**：
-   - `docker compose build`：构建镜像。
-   - `docker compose ps`：查看运行容器。
-   - `docker compose logs`：查看日志。
-   - `docker compose exec web sh`：进入容器 shell。
+  - `docker compose build`：构建镜像。
+  - `docker compose ps`：查看运行容器。
+  - `docker compose logs`：查看日志。
+  - `docker compose exec web sh`：进入容器 shell。
 
 #### 注意事项和最佳实践
+
 - **环境变量**：使用 `.env` 文件存储变量（如密码），Compose 会自动加载。
 - **版本兼容**：检查 Docker 文档，确保 version 与你的 Docker 版本匹配（2026 年当前主流是 v3.9+）。
 - **扩展文件**：对于复杂项目，可以用 `docker-compose.override.yml` 覆盖默认配置，或用 `-f` 指定多个文件。
 - **安全性**：避免在 yml 中硬编码敏感信息，使用 secrets。
 - **常见错误**：缩进不对、端口冲突、镜像不存在。调试时用 `docker compose config` 验证文件语法。
 - **与 Docker Swarm/Kubernetes 的区别**：Compose 适合本地/小型部署；大规模用 Swarm 或 K8s。
-
 
 CI/CD流水线：
 CI/CD是持续集成和持续交付或持续部署的软件开发流程模型。CI/CD旨在通过自动化和持续性的构建、测试、部署和交付过程，来提高软件开发和发布的效率和质量。
@@ -18473,7 +19442,6 @@ CI/CD中的"CD"指的是持续交付和/或持续部署：
 持续部署（Continuous Deployment）指的是自动将开发人员的更改从存储库发布到生产环境，以供客户使用，
 主要为了解决因手动流程降低应用交付速度，从而使运维团队超负荷的问题。
 
-
 CI/CD流水线将程序部署到docker，再由Kubernetes（k8s）的方式如下（以Jenkins为例）：
 
 1.建立流水线项目。首先建立一个Jenkins流水线项目，并配置相关参数，如选择源代码管理系统、设置构建环境等。
@@ -18484,45 +19452,46 @@ CI/CD流水线将程序部署到docker，再由Kubernetes（k8s）的方式如�
 
 配置GitLab CI/CD流水线：
 stages:
-  - test     # 运行单元测试
-  - build    # 构建 Docker 镜像
-  - deploy   # 部署到 Kubernetes
+
+- test # 运行单元测试
+- build # 构建 Docker 镜像
+- deploy # 部署到 Kubernetes
 
 variables:
-  DOCKER_IMAGE: registry.gitlab.com/your-username/your-project:$CI_COMMIT_REF_SLUG  # 镜像名称（按分支命名）
-  KUBE_NAMESPACE: production  # Kubernetes 命名空间
+ DOCKER_IMAGE: registry.gitlab.com/your-username/your-project:$CI_COMMIT_REF_SLUG # 镜像名称（按分支命名）
+ KUBE_NAMESPACE: production # Kubernetes 命名空间
 
 阶段 1: 运行单元测试
 unit-test:
-  stage: test
-  image: python:3.9  # 根据项目语言选择基础镜像
-  script:
-    - pip install -r requirements.txt
-    - pytest tests/  # 执行测试
+ stage: test
+ image: python:3.9 # 根据项目语言选择基础镜像
+ script:
+ - pip install -r requirements.txt
+ - pytest tests/ # 执行测试
 
 阶段 2: 构建并推送 Docker 镜像
 docker-build:
-  stage: build
-  image: docker:20.10
-  services:
-    - docker:dind  # 启用 Docker-in-Docker
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"  # 仅 main 和 dev 分支触发构建
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY  # 登录镜像仓库
-    - docker build -t $DOCKER_IMAGE .
-    - docker push $DOCKER_IMAGE
+ stage: build
+ image: docker:20.10
+ services:
+ - docker:dind # 启用 Docker-in-Docker
+ rules:
+ - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev" # 仅 main 和 dev 分支触发构建
+ script:
+ - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY # 登录镜像仓库
+ - docker build -t $DOCKER_IMAGE .
+ - docker push $DOCKER_IMAGE
 
 阶段 3: 部署到 Kubernetes
 deploy-to-k8s:
-  stage: deploy
-  image: bitnami/kubectl:latest  # 使用 kubectl 镜像
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"  # 仅 main 分支触发部署
-  script:
-    - kubectl config use-context production-cluster  # 切换 Kubernetes 上下文
-    - sed -i "s|{{IMAGE}}|$DOCKER_IMAGE|g" k8s/deployment.yaml  # 动态替换镜像标签
-    - kubectl apply -f k8s/ -n $KUBE_NAMESPACE
+ stage: deploy
+ image: bitnami/kubectl:latest # 使用 kubectl 镜像
+ rules:
+ - if: $CI_COMMIT_BRANCH == "main" # 仅 main 分支触发部署
+ script:
+ - kubectl config use-context production-cluster # 切换 Kubernetes 上下文
+ - sed -i "s|{{IMAGE}}|$DOCKER_IMAGE|g" k8s/deployment.yaml # 动态替换镜像标签
+ - kubectl apply -f k8s/ -n $KUBE_NAMESPACE
 
 配置docker镜像构建：
 FROM python:3.9-slim
@@ -18535,53 +19504,52 @@ COPY . .
 
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app:app"]
 
-
 配置kubernetes部署文件：
 在 k8s/deployment.yaml 中定义 Deployment 和 Service：
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-app
+ name: my-app
 spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: my-app
-  template:
-    metadata:
-      labels:
-        app: my-app
-    spec:
-      containers:
-      - name: my-app
-        image: {{IMAGE}}  # 占位符，由流水线替换为实际镜像
-        ports:
-        - containerPort: 8000
-        resources:
-          limits:
-            memory: "256Mi"
-            cpu: "500m"
+ replicas: 3
+ selector:
+ matchLabels:
+ app: my-app
+ template:
+ metadata:
+ labels:
+ app: my-app
+ spec:
+ containers:
+ - name: my-app
+ image: {{IMAGE}} # 占位符，由流水线替换为实际镜像
+ ports:
+ - containerPort: 8000
+ resources:
+ limits:
+ memory: "256Mi"
+ cpu: "500m"
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-app-service
+ name: my-app-service
 spec:
-  selector:
-    app: my-app
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8000
-  type: ClusterIP
-
+ selector:
+ app: my-app
+ ports:
+ - protocol: TCP
+ port: 80
+ targetPort: 8000
+ type: ClusterIP
 
 前端项目如何部署？
 前端项目的部署流程：
 1.链接服务器：通过ssh @root[ipaddress]命令链接你的服务器（将ipaddress替换成你服务器的公网IP地址）。
 2.配置服务器：在服务器上配置Apache或Nginx的静态文件目录，以及反向代理，将客户端请求转发到前端项目的访问入口文件index.html。
 3.自动化部署：使用自动化工具，如Jenkins、Travis CI等，在Github中托管代码，Travis CI将自动触发构建和部署流程，生成可运行的前端代码并部署到服务器上。
-
 
 后端项目如何部署？
 后端项目的部署流程：
@@ -18607,7 +19575,6 @@ spec:
 切换到项目目录，执行启动命令（如java -jar 项目名.jar）来启动后端服务。
 确保项目成功启动，并检查日志输出以确认没有错误。
 
-
 Kubernetes：
 Kubernetes（简称K8s）是一个开源的、用于管理云平台中多个主机上的容器化的应用。
 
@@ -18618,7 +19585,6 @@ Kubernetes的目标是让部署容器化的应用简单并且高效，它提供�
 相对于虚拟机，容器能快速部署，由于容器与底层设施、机器文件系统解耦的，所以它能在不同云、不同版本操作系统间进行迁移。容器占用资源少、部署快，每个应用可以被打包成一个容器镜像，每个应用与容器间成一对一关系也使容器有更大优势。
 使用容器可以在build或release 的阶段，为应用创建容器镜像，因为每个应用不需要与其余的应用堆栈组合，也不依赖于生产环境基础结构，这使得从研发到测试、生产能提供一致环境。
 类似地，容器比虚拟机轻量、更“透明”，这更便于监控和管理。
-
 
 Kubernetes的架构：
 Kubernetes的架构整体由两部分构成，分别是Master节点（管理节点）和Worker节点（工作节点），以及一个键值存储系统etcd。
@@ -18646,20 +19612,22 @@ container-runtime：实际运行和管理容器的服务。Kubernetes支持多�
 
 在Linux上搭建kubernetes的过程：
 一、准备工作
-1. 环境要求
-节点：至少2台Linux机器（1个Master + 1个Worker，或单机All-in-One）。
-系统：Ubuntu 20.04+/CentOS 7+，禁用交换分区（swapoff -a）。
-网络：节点间互通，开放所需端口（如6443、2379-2380等）。
-硬件：2GB+ RAM，2核CPU+，硬盘20GB+。
 
+1. 环境要求
+  节点：至少2台Linux机器（1个Master + 1个Worker，或单机All-in-One）。
+  系统：Ubuntu 20.04+/CentOS 7+，禁用交换分区（swapoff -a）。
+  网络：节点间互通，开放所需端口（如6443、2379-2380等）。
+  硬件：2GB+ RAM，2核CPU+，硬盘20GB+。
+  
 2. 配置所有节点
+  
 
 禁用交换分区（永久生效需编辑 /etc/fstab）
 sudo swapoff -a
 
 设置主机名（如master/node1）
-sudo hostnamectl set-hostname master  # 控制平面节点
-sudo hostnamectl set-hostname node1   # 工作节点
+sudo hostnamectl set-hostname master # 控制平面节点
+sudo hostnamectl set-hostname node1 # 工作节点
 
 添加主机名解析（所有节点执行）
 sudo vi /etc/hosts
@@ -18677,9 +19645,9 @@ sudo modprobe br_netfilter
 
 配置网络参数
 cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
-net.bridge.bridge-nf-call-iptables  = 1
+net.bridge.bridge-nf-call-iptables = 1
 net.bridge.bridge-nf-call-ip6tables = 1
-net.ipv4.ip_forward                 = 1
+net.ipv4.ip_forward = 1
 EOF
 sudo sysctl --system
 
@@ -18687,8 +19655,8 @@ sudo sysctl --system
 选项1：安装 containerd（推荐）
 
 安装依赖
-sudo apt-get update && sudo apt-get install -y containerd  # Ubuntu/Debian
-sudo yum install -y containerd                              # CentOS
+sudo apt-get update && sudo apt-get install -y containerd # Ubuntu/Debian
+sudo yum install -y containerd # CentOS
 
 生成默认配置
 sudo mkdir -p /etc/containerd
@@ -18703,13 +19671,13 @@ sudo systemctl enable containerd
 选项2：安装 Docker
 
 安装Docker
-curl -fsSL https://get.docker.com | 
+curl -fsSL https://get.docker.com |
 
 配置Docker使用systemd作为Cgroup驱动
 sudo cat <<EOF | sudo tee /etc/docker/daemon.json
 {
-  "exec-opts": ["native.cgroupdriver=systemd"],
-  "registry-mirrors": ["https://镜像地址.mirror.aliyuncs.com"]
+ "exec-opts": ["native.cgroupdriver=systemd"],
+ "registry-mirrors": ["https://镜像地址.mirror.aliyuncs.com"]
 }
 EOF
 
@@ -18720,7 +19688,7 @@ sudo systemctl enable docker
 三、安装kubeadm、kubelet、kubectl
 
 添加Kubernetes源（所有节点执行）
-sudo apt-get update && sudo apt-get install -y apt-transport-https ca-certificates curl  # Ubuntu/Debian
+sudo apt-get update && sudo apt-get install -y apt-transport-https ca-certificates curl # Ubuntu/Debian
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
@@ -18735,17 +19703,17 @@ gpgkey=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/repodata/repomd.xml.key
 EOF
 
 安装工具
-sudo apt-get update && sudo apt-get install -y kubelet kubeadm kubectl  # Ubuntu/Debian
-sudo yum install -y kubelet kubeadm kubectl                             # CentOS
+sudo apt-get update && sudo apt-get install -y kubelet kubeadm kubectl # Ubuntu/Debian
+sudo yum install -y kubelet kubeadm kubectl # CentOS
 sudo systemctl enable --now kubelet
 
 四、初始化Master节点
 
 在Master节点执行
 sudo kubeadm init \
-  --apiserver-advertise-address=<master-ip> \
-  --pod-network-cidr=10.244.0.0/16 \  # Flannel网络插件默认CIDR
-  --image-repository registry.aliyuncs.com/google_containers  # 国内镜像加速
+ --apiserver-advertise-address=<master-ip> \
+ --pod-network-cidr=10.244.0.0/16 \ # Flannel网络插件默认CIDR
+ --image-repository registry.aliyuncs.com/google_containers # 国内镜像加速
 
 成功后会输出加入节点的命令，类似：
 kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash <hash>
@@ -18770,7 +19738,7 @@ sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-has
 七、验证集群
 
 查看节点状态
-kubectl get nodes  # 所有节点应显示Ready
+kubectl get nodes # 所有节点应显示Ready
 
 运行测试Pod
 kubectl create deployment nginx --image=nginx
@@ -18832,7 +19800,6 @@ Docker和K8S并不是互斥的，而是可以互补使用的。
 
 综上所述，K8S和Docker在容器化技术中各自扮演着不同的角色。Docker提供了容器化的基本功能，而K8S则提供了容器编排和管理的高级功能。它们可以一起使用，以便帮助开发人员更好地构建、部署和管理应用程序。
 
-
 kubectl指令:
 kubectl 是 Kubernetes 的命令行工具，用于与 Kubernetes 集群进行交互。它允许用户部署、管理和故障排除 Kubernetes 应用程序。
 以下是一些常用的 kubectl 指令及其简要说明：
@@ -18844,13 +19811,11 @@ kubectl get pods
 kubectl get nodes  
 kubectl get services
 
-
 kubectl describe
 显示资源的详细信息。
 示例：
 kubectl describe pod <pod-name>  
 kubectl describe node <node-name>
-
 
 kubectl create
 根据文件或标准输入创建资源。
@@ -18858,12 +19823,10 @@ kubectl create
 kubectl create -f deployment.yaml  
 kubectl create deployment my-deployment --image=nginx
 
-
 kubectl apply
 应用配置文件中的资源定义，并自动处理资源的更新。
 示例：
 kubectl apply -f deployment.yaml
-
 
 kubectl delete
 删除资源。
@@ -18877,12 +19840,10 @@ kubectl scale
 示例：
 kubectl scale deployment my-deployment --replicas=5
 
-
 kubectl expose
 创建一个 Service 以暴露一个或多个 Pod。
 示例：
 kubectl expose pod <pod-name> --type=LoadBalancer --port=8080
-
 
 kubectl rollout
 管理 Deployment、DaemonSet 和 StatefulSet 的滚动更新。
@@ -18890,13 +19851,11 @@ kubectl rollout
 kubectl rollout status deployment my-deployment  
 kubectl rollout undo deployment my-deployment
 
-
 kubectl logs
 获取 Pod 的日志。
 示例：
 kubectl logs <pod-name>  
-kubectl logs <pod-name> -c <container-name>  # 如果 Pod 有多个容器
-
+kubectl logs <pod-name> -c <container-name> # 如果 Pod 有多个容器
 
 kubectl exec
 在 Pod 中运行命令。
@@ -18904,32 +19863,27 @@ kubectl exec
 kubectl exec -it <pod-name> -- /bin/ba  
 kubectl exec <pod-name> -- ping google.com
 
-
 集群和节点管理命令：
 kubectl cordon
 标记节点为不可调度。
 示例：
 kubectl cordon <node-name>
 
-
 kubectl uncordon
 标记节点为可调度。
 示例：
 kubectl uncordon <node-name>
-
 
 kubectl drain
 准备节点进行维护，通过驱逐 Pod 来实现。
 示例：
 kubectl drain <node-name> --ignore-daemonsets --delete-local-data
 
-
 kubectl taint
 更新节点的污点（taint），污点可以阻止某些 Pod 调度到该节点。
 示例：
 kubectl taint nodes <node-name> key=value:NoSchedule  
 kubectl taint nodes <node-name> key:value-
-
 
 插件和扩展命令：
 kubectl plugin
@@ -18938,13 +19892,11 @@ kubectl plugin
 kubectl plugin list  
 kubectl plugin install <plugin-url>
 
-
 kubectl top
 显示资源（CPU/内存）使用情况。
 示例：
 kubectl top pods  
 kubectl top nodes
-
 
 kubectl auth
 检查和修改授权。
@@ -18953,7 +19905,6 @@ kubectl auth can-i get pods --all-namespaces
 kubectl auth reconcile -f rbac-config.yaml
 
 注意：kubectl 提供了丰富的功能和选项，可以通过 kubectl --help 或 kubectl <command> --help 查看更多详细信息。
-
 
 服务部署策略：
 蓝绿部署
@@ -18977,7 +19928,6 @@ kubectl auth reconcile -f rbac-config.yaml
 4.缺点：
 管理和维护两个独立环境需要更多的协调和管理。
 需要双倍硬件资源来支持两个生产环境的运行。
-
 
 滚动更新
 1.定义：
@@ -19024,51 +19974,56 @@ Kubernetes部署（StatefulSet + Headless Service）
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: kafka
+ name: kafka
 spec:
-  serviceName: kafka
-  replicas: 3
-  selector:
-    matchLabels:
-      app: kafka
-  template:
-    metadata:
-      labels:
-        app: kafka
-    spec:
-      containers:
-      - name: kafka
-        image: my-kafka-image:latest
-        ports:
-        - containerPort: 9092
-        env:
-        - name: KAFKA_CFG_ZOOKEEPER_CONNECT
-          value: "zookeeper:2181"
-        volumeMounts:
-        - name: kafka-data
-          mountPath: /var/lib/kafka
-  volumeClaimTemplates:
-  - metadata:
-      name: kafka-data
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "aws-ebs"  # 使用云存储类
-      resources:
-        requests:
-          storage: 50Gi
+ serviceName: kafka
+ replicas: 3
+ selector:
+ matchLabels:
+ app: kafka
+ template:
+ metadata:
+ labels:
+ app: kafka
+ spec:
+ containers:
+ - name: kafka
+ image: my-kafka-image:latest
+ ports:
+ - containerPort: 9092
+ env:
+ - name: KAFKA_CFG_ZOOKEEPER_CONNECT
+ value: "zookeeper:2181"
+ volumeMounts:
+ - name: kafka-data
+ mountPath: /var/lib/kafka
+ volumeClaimTemplates:
+
+- metadata:
+   name: kafka-data
+  spec:
+   accessModes: [ "ReadWriteOnce" ]
+   storageClassName: "aws-ebs" # 使用云存储类
+   resources:
+  
+  ```
+  requests:
+    storage: 50Gi
+  ```
+  
 
 -- kafka-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: kafka
+ name: kafka
 spec:
-  clusterIP: None  # Headless Service
-  ports:
-  - port: 9092
-  selector:
-    app: kafka
+ clusterIP: None # Headless Service
+ ports:
 
+- port: 9092
+  selector:
+  app: kafka
 
 Kubernetes编排微服务
 部署模式选择
@@ -19079,12 +20034,12 @@ Kubernetes编排微服务
 资源限制与弹性伸缩
 -- 示例：Spark Executor资源配置
 resources:
-  limits:
-    cpu: "2"
-    memory: "4Gi"
-  requests:
-    cpu: "1"
-    memory: "2Gi"
+ limits:
+ cpu: "2"
+ memory: "4Gi"
+ requests:
+ cpu: "1"
+ memory: "2Gi"
 
 -- 自动扩缩容（HPA）
 kubectl autoscale deployment spark-executor --cpu-percent=80 --min=2 --max=10
@@ -19104,25 +20059,34 @@ Ingress 控制器（七层负载均衡）
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: my-ingress
+ name: my-ingress
 spec:
-  rules:
-  - host: api.example.com
-    http:
-      paths:
-      - path: /v1
-        pathType: Prefix
-        backend:
-          service:
-            name: v1-service
-            port:
-              number: 80
-      - path: /v2
-        backend:
-          service:
-            name: v2-service
-            port:
-              number: 80
+ rules:
+
+- host: api.example.com
+  http:
+   paths:
+  - path: /v1
+    pathType: Prefix
+    backend:
+     service:
+    
+    ```
+    name: v1-service
+    port:
+      number: 80
+    ```
+    
+  - path: /v2
+    backend:
+     service:
+    
+    ```
+    name: v2-service
+    port:
+      number: 80
+    ```
+    
 
 服务网格（如 Istio）的负载均衡
 高级算法：支持一致性哈希、区域感知等策略。
@@ -19157,32 +20121,41 @@ kubectl edit svc ingress-nginx-controller
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: example-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /  # 路径重写
-    nginx.ingress.kubernetes.io/ssl-redirect: "true" # 强制 HTTPS
+ name: example-ingress
+ annotations:
+ nginx.ingress.kubernetes.io/rewrite-target: / # 路径重写
+ nginx.ingress.kubernetes.io/ssl-redirect: "true" # 强制 HTTPS
 spec:
-  tls:
-  - hosts:
-      - example.com
-    secretName: example-tls-secret  # TLS 证书（需提前创建）
-  rules:
-  - host: example.com
-    http:
-      paths:
-      - path: /api
-        pathType: Prefix
-        backend:
-          service:
-            name: api-service  # 后端 Service 名称
-            port:
-              number: 80
-      - path: /web
-        backend:
-          service:
-            name: web-service
-            port:
-              number: 80
+ tls:
+
+- hosts:
+  - example.com
+    secretName: example-tls-secret # TLS 证书（需提前创建）
+    rules:
+- host: example.com
+  http:
+   paths:
+  - path: /api
+    pathType: Prefix
+    backend:
+     service:
+    
+    ```
+    name: api-service  # 后端 Service 名称
+    port:
+      number: 80
+    ```
+    
+  - path: /web
+    backend:
+     service:
+    
+    ```
+    name: web-service
+    port:
+      number: 80
+    ```
+    
 
 与 Kubernetes Service 的协作：
 前端流量路径：
@@ -19263,7 +20236,6 @@ RPC（Remote Procedure Call，远程过程调用）是一种用于在不同的�
 常见的RPC框架有gRPC、Apache Dubbo、Thrift等，它们提供了丰富的功能和配置选项，可以满足不同的使用需求。
 在选择和使用RPC框架时，需要考虑框架的性能、可靠性、跨语言支持等因素。
 
-
 分布式系统的CAP理论：
 Consistency：一致性，在分布式系统中，更新操作执行成功后所有的用户的读操作必须返回最新值；
 client写入，server同步至整个系统；
@@ -19295,11 +20267,9 @@ Partition tolerance：分区容错，即区间通信可能失败，在网络中�
 
 总之，在设计和实现分布式系统时，需要根据实际需求进行权衡和选择合适的方案。同时，需要不断优化和改进系统的性能和可靠性，以满足日益增长的业务需求。
 
-
 分布式系统的通信方式：
 分布式通信是指在分布式系统中，不同节点之间进行消息传递和交互的方式。
 以下是常见的分布式通信方式：
-
 
 消息队列（Message Queue）
 使用消息队列作为中间件，节点之间通过发送和接收消息来实现通信。消息队列提供了异步、解耦和可靠性的通信机制，常见的消息队列系统包括RabbitMQ、Apache Kafka和ActiveMQ等。
@@ -19314,7 +20284,6 @@ Partition tolerance：分区容错，即区间通信可能失败，在网络中�
 4.消息队列服务器将消息传递给目标应用程序的过程可以通过不同的协议实现，例如AMQP协议、MQTT协议等。
 
 总之，消息队列的应用层协议连接互联网的方式是通过应用程序与消息队列服务器之间的API通信来实现的，而具体的实现方式则取决于使用的协议和应用场景。
-
 
 实现方式
 消息队列底层的实现可以有多种方式，具体取决于所使用的消息队列系统。以下是一些常见的底层实现方式：
@@ -19335,7 +20304,6 @@ Partition tolerance：分区容错，即区间通信可能失败，在网络中�
 
 需要注意的是，不同的消息队列系统可能使用不同的底层实现方式，并且可以结合多种技术来实现不同的特性和性能。
 例如，一些消息队列系统可能会将内存和文件系统结合使用，以在内存中提供高性能的消息传递，并在需要持久性时将消息写入文件系统。选择适当的底层实现方式取决于应用程序的需求，包括性能、可靠性和持久性等方面的考虑。
-
 
 优缺点及适用场景
 优点：异步通信、解耦性高、流量削峰、支持可靠性消息传递、支持消息持久化、可扩展性好。
@@ -19381,25 +20349,23 @@ Partition tolerance：分区容错，即区间通信可能失败，在网络中�
 例子：消息队列作为系统中的一个关键组件，其可用性直接影响到整个系统的稳定性。如果消息队列出现故障，可能会导致消息丢失或处理延迟。此外，还需要定期监控和维护消息队列的性能和健康状况。
 劣势：降低了系统的整体可用性，增加了运维工作量。
 
-
-
 适用场景：分布式系统解耦、异步任务处理、实时数据流处理、事件驱动架构。
-
 
 RocketMQ:
 RocketMQ作为一款纯java、分布式、队列模型的开源消息中间件，支持事务消息、顺序消息、批量消息、定时消息、消息回溯等。
 
 RocketMQ 特点：
->支持发布/订阅（Pub/Sub）和点对点（P2P）消息模型
->在一个队列中可靠的先进先出（FIFO）和严格的顺序传递 （RocketMQ可以保证严格的消息顺序，而ActiveMQ无法保证）
->支持拉（pull）和推（push）两种消息模式
-pull其实就是消费者主动从MQ中去拉消息，而push则像rabbit MQ一样，是MQ给消费者推送消息。但是RocketMQ的push其实是基于pull来实现的。
-它会先由一个业务代码从MQ中pull消息，然后再由业务代码push给特定的应用/消费者。其实底层就是一个pull模式
->单一队列百万消息的堆积能力 （RocketMQ提供亿级消息的堆积能力，这不是重点，重点是堆积了亿级的消息后，依然保持写入低延迟）
->支持多种消息协议，如 JMS、MQTT 等
->分布式高可用的部署架构,满足至少一次消息传递语义（RocketMQ原生就是支持分布式的，而ActiveMQ原生存在单点性）
->提供 docker 镜像用于隔离测试和云集群部署
->提供配置、指标和监控等功能丰富的 Dashboard
+
+> 支持发布/订阅（Pub/Sub）和点对点（P2P）消息模型
+> 在一个队列中可靠的先进先出（FIFO）和严格的顺序传递 （RocketMQ可以保证严格的消息顺序，而ActiveMQ无法保证）
+> 支持拉（pull）和推（push）两种消息模式
+> pull其实就是消费者主动从MQ中去拉消息，而push则像rabbit MQ一样，是MQ给消费者推送消息。但是RocketMQ的push其实是基于pull来实现的。
+> 它会先由一个业务代码从MQ中pull消息，然后再由业务代码push给特定的应用/消费者。其实底层就是一个pull模式
+> 单一队列百万消息的堆积能力 （RocketMQ提供亿级消息的堆积能力，这不是重点，重点是堆积了亿级的消息后，依然保持写入低延迟）
+> 支持多种消息协议，如 JMS、MQTT 等
+> 分布式高可用的部署架构,满足至少一次消息传递语义（RocketMQ原生就是支持分布式的，而ActiveMQ原生存在单点性）
+> 提供 docker 镜像用于隔离测试和云集群部署
+> 提供配置、指标和监控等功能丰富的 Dashboard
 
 Java创建RocketMQ生产者:
 package com.wn.producer;
@@ -19432,8 +20398,6 @@ e.printStackTrace();
 producer.shutdown();
 }
 }
-
-
 
 Java创建RocketMQ消费者:
 
@@ -19472,11 +20436,12 @@ RabbitMQ:
 RabbitMQ是由erlang语言开发，基于AMQP（Advanced Message Queue 高级消息队列协议）协议实现的消息队列，它是一种应用程序之间的通信方法，消息队列在分布式系统开发中应用非常广泛。
 
 RabbitMQ特点：
->RabbitMQ是使用Erlang语言开发的开源消息队列系统，基于AMQP协议来实现。
->AMQP的主要特征是面向消息、队列、路由（包括点对点和发布/订阅）、可靠性、安全。
->AMQP协议更多用在企业系统内，对数据一致性、稳定性和可靠性要求很高的场景，对性能和吞吐量的要求还在其次。
->RabbitMQ的可靠性是非常好的，数据能够保证百分之百的不丢失。可以使用镜像队列，它的稳定性非常好。所以说在我们互联网的金融行业。对数据的稳定性和可靠性要求都非常高的情况下，我们都会选择RabbitMQ。当然没有kafka性能好，但是要比AvtiveMQ性能要好很多。也可以自己做一些性能的优化。
->RabbitMQ可以构建异地双活架构，包括每一个节点存储方式可以采用磁盘或者内存的方式。
+
+> RabbitMQ是使用Erlang语言开发的开源消息队列系统，基于AMQP协议来实现。
+> AMQP的主要特征是面向消息、队列、路由（包括点对点和发布/订阅）、可靠性、安全。
+> AMQP协议更多用在企业系统内，对数据一致性、稳定性和可靠性要求很高的场景，对性能和吞吐量的要求还在其次。
+> RabbitMQ的可靠性是非常好的，数据能够保证百分之百的不丢失。可以使用镜像队列，它的稳定性非常好。所以说在我们互联网的金融行业。对数据的稳定性和可靠性要求都非常高的情况下，我们都会选择RabbitMQ。当然没有kafka性能好，但是要比AvtiveMQ性能要好很多。也可以自己做一些性能的优化。
+> RabbitMQ可以构建异地双活架构，包括每一个节点存储方式可以采用磁盘或者内存的方式。
 
 RabbitMQ创建直连交换机：
 import org.springframework.amqp.core.Binding;
@@ -19485,40 +20450,43 @@ import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
- 
+
 @Configuration
 public class DirectRabbitConfig {
- 
-    //队列 起名：TestDirectQueue
-    @Bean
-    public Queue TestDirectQueue() {
-        // durable:是否持久化,默认是false,持久化队列：会被存储在磁盘上，当消息代理重启时仍然存在，暂存队列：当前连接有效
-        // exclusive:默认也是false，只能被当前创建的连接使用，而且当连接关闭后队列即被删除。此参考优先级高于durable
-        // autoDelete:是否自动删除，当没有生产者或者消费者使用此队列，该队列会自动删除。
-        // return new Queue("TestDirectQueue",true,true,false);
- 
-        //一般设置一下队列的持久化就好,其余两个就是默认false
-        return new Queue("TestDirectQueue",true);
-    }
- 
-    //Direct交换机 起名：TestDirectExchange
-    @Bean
-    DirectExchange TestDirectExchange() {
-      //  return new DirectExchange("TestDirectExchange",true,true);
-        return new DirectExchange("TestDirectExchange",true,false);
-    }
- 
-    //绑定  
-    //将队列和交换机绑定, 并设置用于匹配键：TestDirectRouting
-    @Bean
-    Binding bindingDirect() {
-        return BindingBuilder.bind(TestDirectQueue()).to(TestDirectExchange()).with("TestDirectRouting");
-    }
-     
-    @Bean
-    DirectExchange lonelyDirectExchange() {
-        return new DirectExchange("lonelyDirectExchange");
-    }
+
+```
+//队列 起名：TestDirectQueue
+@Bean
+public Queue TestDirectQueue() {
+    // durable:是否持久化,默认是false,持久化队列：会被存储在磁盘上，当消息代理重启时仍然存在，暂存队列：当前连接有效
+    // exclusive:默认也是false，只能被当前创建的连接使用，而且当连接关闭后队列即被删除。此参考优先级高于durable
+    // autoDelete:是否自动删除，当没有生产者或者消费者使用此队列，该队列会自动删除。
+    // return new Queue("TestDirectQueue",true,true,false);
+
+    //一般设置一下队列的持久化就好,其余两个就是默认false
+    return new Queue("TestDirectQueue",true);
+}
+
+//Direct交换机 起名：TestDirectExchange
+@Bean
+DirectExchange TestDirectExchange() {
+  //  return new DirectExchange("TestDirectExchange",true,true);
+    return new DirectExchange("TestDirectExchange",true,false);
+}
+
+//绑定  
+//将队列和交换机绑定, 并设置用于匹配键：TestDirectRouting
+@Bean
+Binding bindingDirect() {
+    return BindingBuilder.bind(TestDirectQueue()).to(TestDirectExchange()).with("TestDirectRouting");
+}
+
+@Bean
+DirectExchange lonelyDirectExchange() {
+    return new DirectExchange("lonelyDirectExchange");
+}
+```
+
 }
 
 写个接口实现消息推送：
@@ -19535,23 +20503,26 @@ import java.util.UUID;
 @RestController
 public class SendMessageController {
 
-    //使用RabbitTemplate,这提供了接收/发送等等方法
-    @Autowired
-    RabbitTemplate rabbitTemplate;  
- 
-    @GetMapping("/sendDirectMessage")
-    public String sendDirectMessage() {
-        String messageId = String.valueOf(UUID.randomUUID());
-        String messageData = "test message, hello!";
-        String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        Map<String,Object> map=new HashMap<>();
-        map.put("messageId",messageId);
-        map.put("messageData",messageData);
-        map.put("createTime",createTime);
-        //将消息携带绑定键值：TestDirectRouting 发送到交换机TestDirectExchange
-        rabbitTemplate.convertAndSend("TestDirectExchange", "TestDirectRouting", map);
-        return "ok";
-    }
+```
+//使用RabbitTemplate,这提供了接收/发送等等方法
+@Autowired
+RabbitTemplate rabbitTemplate;  
+
+@GetMapping("/sendDirectMessage")
+public String sendDirectMessage() {
+    String messageId = String.valueOf(UUID.randomUUID());
+    String messageData = "test message, hello!";
+    String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    Map<String,Object> map=new HashMap<>();
+    map.put("messageId",messageId);
+    map.put("messageData",messageData);
+    map.put("createTime",createTime);
+    //将消息携带绑定键值：TestDirectRouting 发送到交换机TestDirectExchange
+    rabbitTemplate.convertAndSend("TestDirectExchange", "TestDirectRouting", map);
+    return "ok";
+}
+```
+
 }
 
 RabbitMQ死信队列：
@@ -19589,7 +20560,6 @@ RabbitMQ的死信队列（Dead Letter Queue，简称DLQ）是一种特殊的队�
 
 综上所述，RabbitMQ的死信队列是一个强大的高级特性，它可以帮助开发者更好地处理消息消费失败的情况，提高系统的稳定性和可靠性。然而，在使用死信队列时也需要注意其可能带来的复杂性和性能问题，并根据具体业务需求进行合理的配置和优化。
 
-
 在Java中创建RabbitMQ死信队列涉及到几个步骤：
 
 添加依赖：
@@ -19613,61 +20583,62 @@ RabbitMQ的死信队列（Dead Letter Queue，简称DLQ）是一种特殊的队�
 消费消息并拒绝：
 在消费者中处理消息，并拒绝消息以将其发送到死信队列。
 
-
 import com.rabbitmq.client.*;
- 
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
- 
+
 public class RabbitMQDLQExample {
- 
-    private final static String DEAD_LETTER_QUEUE = "dlq";
-    private final static String NORMAL_QUEUE = "normal_queue";
- 
-    public static void main(String[] args) throws IOException, TimeoutException {
-        // 创建连接工厂
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost"); // 设置RabbitMQ服务器地址
- 
-        // 创建连接和通道
-        try (Connection connection = factory.newConnection();
-             Channel channel = connection.createChannel()) {
- 
-            // 声明死信队列
-            channel.queueDeclare(DEAD_LETTER_QUEUE, true, false, false, null);
- 
-            // 声明普通队列，并设置死信路由键
-            Map<String, Object> arguments = new HashMap<>();
-            arguments.put("x-dead-letter-exchange", "");
-            arguments.put("x-dead-letter-routing-key", DEAD_LETTER_QUEUE);
-            channel.queueDeclare(NORMAL_QUEUE, true, false, false, arguments);
- 
-            // 发布消息到普通队列
-            String message = "This is a test message";
-            channel.basicPublish("", NORMAL_QUEUE, null, message.getBytes(StandardCharsets.UTF_8));
-            System.out.println(" [x] Sent '" + message + "'");
- 
-            // 设置消费者
-            DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-                String receivedMessage = new String(delivery.getBody(), StandardCharsets.UTF_8);
-                System.out.println(" [x] Received '" + receivedMessage + "'");
- 
-                // 拒绝消息，requeue=false表示不重新排队，消息将被发送到死信队列
-                channel.basicReject(delivery.getEnvelope().getDeliveryTag(), false);
-            };
-            channel.basicConsume(NORMAL_QUEUE, true, deliverCallback, consumerTag -> { });
-        }
+
+```
+private final static String DEAD_LETTER_QUEUE = "dlq";
+private final static String NORMAL_QUEUE = "normal_queue";
+
+public static void main(String[] args) throws IOException, TimeoutException {
+    // 创建连接工厂
+    ConnectionFactory factory = new ConnectionFactory();
+    factory.setHost("localhost"); // 设置RabbitMQ服务器地址
+
+    // 创建连接和通道
+    try (Connection connection = factory.newConnection();
+         Channel channel = connection.createChannel()) {
+
+        // 声明死信队列
+        channel.queueDeclare(DEAD_LETTER_QUEUE, true, false, false, null);
+
+        // 声明普通队列，并设置死信路由键
+        Map<String, Object> arguments = new HashMap<>();
+        arguments.put("x-dead-letter-exchange", "");
+        arguments.put("x-dead-letter-routing-key", DEAD_LETTER_QUEUE);
+        channel.queueDeclare(NORMAL_QUEUE, true, false, false, arguments);
+
+        // 发布消息到普通队列
+        String message = "This is a test message";
+        channel.basicPublish("", NORMAL_QUEUE, null, message.getBytes(StandardCharsets.UTF_8));
+        System.out.println(" [x] Sent '" + message + "'");
+
+        // 设置消费者
+        DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+            String receivedMessage = new String(delivery.getBody(), StandardCharsets.UTF_8);
+            System.out.println(" [x] Received '" + receivedMessage + "'");
+
+            // 拒绝消息，requeue=false表示不重新排队，消息将被发送到死信队列
+            channel.basicReject(delivery.getEnvelope().getDeliveryTag(), false);
+        };
+        channel.basicConsume(NORMAL_QUEUE, true, deliverCallback, consumerTag -> { });
     }
+}
+```
+
 }
 注意：
 在这个示例中，我们使用了自动确认（basicConsume的第二个参数为true），但在处理拒绝消息时，我们实际上是通过basicReject方法手动处理确认的，并传递了false来确保消息不会被重新排队。
 在生产环境中，你可能需要更复杂的错误处理逻辑来决定何时拒绝消息以及是否应该将其发送到死信队列。
 确保RabbitMQ服务器正在运行，并且你提供的连接信息（如主机名、端口、用户名和密码）是正确的。
 运行上述代码后，你应该会看到消息被发送到普通队列，然后由于被拒绝而被路由到死信队列。你可以使用RabbitMQ的管理界面（通常是http://localhost:15672）来验证这一点。
-
 
 RabbitMQ如何解决消息丢失的问题？用死信队列可以解决吗？
 RabbitMQ通过一系列机制和策略来解决消息丢失的问题，其中死信队列是其中一种解决方案，但并非唯一方法。
@@ -19697,24 +20668,23 @@ RabbitMQ服务器硬件故障、软件错误或人为误操作可能导致服务
 综上所述，RabbitMQ通过一系列机制和策略来解决消息丢失的问题，其中死信队列是其中一种重要的解决方案。但需要注意的是，死信队列并非万能之策，它更多地是作为消息处理失败后的补救措施。
 因此，在设计和实现RabbitMQ消息系统时，应综合考虑多种因素，确保消息的可靠性和完整性。
 
-
 但是在用RabbitMQ解决消息丢失问题时，使用生产者异常处理、消息持久化、RabbitMQ服务器的高可用等方案均存在各自的弊端。
 以下是对这些方案弊端的详细分析：
 
 1. 生产者异常处理
-生产者异常处理通常涉及事务机制或confirm机制来确保消息被正确发送。
+  生产者异常处理通常涉及事务机制或confirm机制来确保消息被正确发送。
 
 事务机制的弊端：RabbitMQ的事务机制是同步的，这意味着在提交事务时会阻塞生产者，直到事务被确认或回滚。这种方式会显著降低系统的吞吐量，因为每次发送消息都需要等待事务的确认。
 confirm机制的弊端：虽然confirm机制是异步的，但它仍然需要生产者维护消息的状态，并在确认消息发送成功或失败后采取相应的行动。这增加了生产者的复杂性和资源消耗。
 
 2. 消息持久化
-消息持久化是将消息存储在磁盘上，以确保在RabbitMQ服务器重启后消息不会丢失。
+  消息持久化是将消息存储在磁盘上，以确保在RabbitMQ服务器重启后消息不会丢失。
 
 性能损耗：持久化消息会导致写入和读取磁盘操作的增加，这会影响RabbitMQ的性能。特别是在高并发、大流量场景下，磁盘IO可能成为瓶颈。
 数据一致性风险：在持久化过程中，如果发生磁盘故障或系统崩溃，可能会导致数据丢失或数据不一致。此外，即使消息被持久化，但在持久化过程中如果节点宕机，也可能导致消息丢失。
 
 3. RabbitMQ服务器的高可用
-RabbitMQ服务器的高可用通常通过集群模式实现，如镜像集群模式。
+  RabbitMQ服务器的高可用通常通过集群模式实现，如镜像集群模式。
 
 网络带宽消耗：在镜像集群模式下，消息会在集群节点之间主动同步，这会消耗大量的网络带宽。特别是在集群规模较大、消息量较多的情况下，网络带宽可能成为限制集群性能的关键因素。
 集群管理复杂性：维护一个高可用性的RabbitMQ集群需要额外的管理和配置工作。例如，需要监控集群状态、处理节点故障、进行负载均衡等。这增加了运维的复杂性和成本。
@@ -19722,7 +20692,6 @@ RabbitMQ服务器的高可用通常通过集群模式实现，如镜像集群模
 
 综上所述，虽然生产者异常处理、消息持久化和RabbitMQ服务器的高可用等方案可以在一定程度上解决RabbitMQ消息丢失的问题，但它们也各自存在一些弊端。
 在实际应用中，需要根据具体的业务需求和系统环境来权衡这些方案的利弊，并选择合适的解决方案来确保消息的可靠性和系统的性能。
-
 
 RabbitMQ如何保证消息没有重复消费？
 RabbitMQ无法直接保证消息消费的唯一性，但可以通过一系列策略和机制来尽量避免消息的重复消费。以下是一些常用的方法：
@@ -19761,7 +20730,6 @@ RabbitMQ支持消息重新投递，但可以设置最大重试次数。
 
 需要强调的是，以上方法并不能完全保证消息的不重复消费，只能尽量避免重复消费的发生。在分布式系统中，完全避免重复消费是非常困难的。因此，在设计系统时，还需要考虑如何处理重复消费的情况，以及如何进行消息的补偿和处理。
 例如，可以在业务逻辑中增加去重逻辑，或者在数据库中设置唯一索引来防止重复数据的插入。
-
 
 RabbitMQ如何保证消息传输的有序性？
 RabbitMQ本身并不直接保证消息的全局传递有序性，因为它的设计目标是提供高可靠性的消息传递，并且支持消息的并发处理。然而，通过一些特定的设计模式和配置，RabbitMQ可以在一定程度上实现消息传递的局部或特定条件下的有序性。
@@ -19810,7 +20778,6 @@ RabbitMQ本身并不直接保证消息的全局传递有序性，因为它的设
 在实际应用中，还需要考虑如何处理异常情况，比如消费者崩溃后如何恢复消息的正确顺序。
 
 综上所述，RabbitMQ可以通过多种方法在一定程度上保证消息传递的有序性，但需要根据具体的应用场景和需求来选择合适的方法。
-
 
 大数据消息队列kafka：
 Kafka是一个开源的分布式事件流平台（Event Streaming Platform），也被视为一个基于发布/订阅模式的分布式消息队列（Message Queue），在大数据实时处理领域有着广泛的应用。
@@ -19861,105 +20828,108 @@ Leader选举与副本管理：在Kafka中，每个分区有一个Leader副本和
 依赖于Zookeeper进行集群管理和元数据存储，如果Zookeeper集群出现问题，可能会影响到Kafka的稳定性和可用性。
 虽然Kafka可以保证每个分区内的消息顺序性，但在跨分区的场景下，消息的顺序性可能无法得到保证。
 
-
-
 用Kafka的点对点模式（消费者主动拉取数据，消息收到后清除数据）创建消息队列
 
 1. 配置 Kafka 主题
-创建一个 Kafka 主题，并确保它的日志清理策略设置为紧凑（compact），这样当消息被消费后，日志中的消息可以被删除（或覆盖）。不过，Kafka 本身并没有直接提供“消息被消费后立即删除”的功能，但可以通过一些配置和逻辑来模拟这种行为。
+  创建一个 Kafka 主题，并确保它的日志清理策略设置为紧凑（compact），这样当消息被消费后，日志中的消息可以被删除（或覆盖）。不过，Kafka 本身并没有直接提供“消息被消费后立即删除”的功能，但可以通过一些配置和逻辑来模拟这种行为。
 
 -- 创建一个名为 "point-to-point-topic" 的主题，分区数为 1，副本因子为 1  
 kafka-topics.sh --create --topic point-to-point-topic --partitions 1 --replication-factor 1 --bootstrap-server localhost:9092
 
 2. 配置消费者
-确保消费者以独占方式读取分区，这可以通过设置 group.id 为空字符串来实现，这样消费者就不会加入任何消费组，而是以独立的方式读取消息。
+  确保消费者以独占方式读取分区，这可以通过设置 group.id 为空字符串来实现，这样消费者就不会加入任何消费组，而是以独立的方式读取消息。
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;  
 import org.apache.kafka.clients.consumer.ConsumerRecord;  
 import org.apache.kafka.clients.consumer.ConsumerRecords;  
-import org.apache.kafka.clients.consumer.KafkaConsumer;  
-  
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+
 import java.time.Duration;  
 import java.util.Collections;  
-import java.util.Properties;  
-  
+import java.util.Properties;
+
 public class PointToPointConsumer {  
-    public static void main(String[] args) {  
-        Properties props = new Properties();  
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");  
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");  
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");  
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, ""); // 独立消费者，不加入消费组  
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"); // 从最早的消息开始消费  
-  
-        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);  
-        consumer.subscribe(Collections.singletonList("point-to-point-topic"), new org.apache.kafka.clients.consumer.ConsumerRebalanceListener() {  
-            @Override  
-            public void onPartitionsRevoked(Collection<TopicPartition> partitions) {  
-                // 无需处理  
-            }  
-  
-            @Override  
-            public void onPartitionsAssigned(Collection<TopicPartition> partitions) {  
-                // 分配分区后，可以手动设置偏移量  
-                for (TopicPartition partition : partitions) {  
-                    consumer.seek(partition, 0); // 从偏移量 0 开始读取  
-                }  
-            }  
-        });  
-  
-        try {  
-            while (true) {  
-                ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));  
-                for (ConsumerRecord<String, String> record : records) {  
-                    System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());  
-  
-                    // 提交已消费消息的偏移量  
-                    consumer.commitSync(Collections.singletonMap(  
-                            new TopicPartition(record.topic(), record.partition()),  
-                            new OffsetAndMetadata(record.offset() + 1)  
-                    ));  
-  
-                    // 在这里处理业务逻辑，模拟消息被消费后删除  
-                    // 实际上，Kafka 不会立即删除消息，但可以通过配置日志保留时间和清理策略来管理  
-                }  
-            }  
-        } finally {  
-            consumer.close();  
+ public static void main(String[] args) {  
+ Properties props = new Properties();  
+ props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");  
+ props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");  
+ props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");  
+ props.put(ConsumerConfig.GROUP_ID_CONFIG, ""); // 独立消费者，不加入消费组  
+ props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"); // 从最早的消息开始消费
+
+```
+    KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);  
+    consumer.subscribe(Collections.singletonList("point-to-point-topic"), new org.apache.kafka.clients.consumer.ConsumerRebalanceListener() {  
+        @Override  
+        public void onPartitionsRevoked(Collection<TopicPartition> partitions) {  
+            // 无需处理  
         }  
+
+        @Override  
+        public void onPartitionsAssigned(Collection<TopicPartition> partitions) {  
+            // 分配分区后，可以手动设置偏移量  
+            for (TopicPartition partition : partitions) {  
+                consumer.seek(partition, 0); // 从偏移量 0 开始读取  
+            }  
+        }  
+    });  
+
+    try {  
+        while (true) {  
+            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));  
+            for (ConsumerRecord<String, String> record : records) {  
+                System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());  
+
+                // 提交已消费消息的偏移量  
+                consumer.commitSync(Collections.singletonMap(  
+                        new TopicPartition(record.topic(), record.partition()),  
+                        new OffsetAndMetadata(record.offset() + 1)  
+                ));  
+
+                // 在这里处理业务逻辑，模拟消息被消费后删除  
+                // 实际上，Kafka 不会立即删除消息，但可以通过配置日志保留时间和清理策略来管理  
+            }  
+        }  
+    } finally {  
+        consumer.close();  
     }  
+}  
+```
+
 }
 
 3. 配置生产者
-生产者部分可以保持不变，只需确保将消息发送到 point-to-point-topic 主题即可。
-
+  生产者部分可以保持不变，只需确保将消息发送到 point-to-point-topic 主题即可。
 
 import org.apache.kafka.clients.producer.KafkaProducer;  
 import org.apache.kafka.clients.producer.Producer;  
 import org.apache.kafka.clients.producer.ProducerConfig;  
 import org.apache.kafka.clients.producer.ProducerRecord;  
-import org.apache.kafka.common.serialization.StringSerializer;  
-  
-import java.util.Properties;  
-  
+import org.apache.kafka.common.serialization.StringSerializer;
+
+import java.util.Properties;
+
 public class PointToPointProducer {  
-    public static void main(String[] args) {  
-        Properties props = new Properties();  
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");  
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());  
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());  
-  
-        Producer<String, String> producer = new KafkaProducer<>(props);  
-  
-        try {  
-            for (int i = 0; i < 10; i++) {  
-                ProducerRecord<String, String> record = new ProducerRecord<>("point-to-point-topic", Integer.toString(i), "Message " + i);  
-                producer.send(record);  
-            }  
-        } finally {  
-            producer.close();  
+ public static void main(String[] args) {  
+ Properties props = new Properties();  
+ props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");  
+ props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());  
+ props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+
+```
+    Producer<String, String> producer = new KafkaProducer<>(props);  
+
+    try {  
+        for (int i = 0; i < 10; i++) {  
+            ProducerRecord<String, String> record = new ProducerRecord<>("point-to-point-topic", Integer.toString(i), "Message " + i);  
+            producer.send(record);  
         }  
+    } finally {  
+        producer.close();  
     }  
+}  
+```
+
 }
 注意事项
 日志清理：Kafka 的日志清理是通过日志保留时间（log.retention.hours）和日志段文件大小（log.segment.bytes）等配置来管理的。如果希望消息在消费后立即被删除，需要配置合适的日志保留时间和清理策略。
@@ -19967,42 +20937,41 @@ public class PointToPointProducer {
 消费确认：通过手动提交偏移量来确认消息已被消费，这是确保消息不被重复消费的关键。
 错误处理：在实际应用中，需要添加错误处理和重试机制，以处理网络故障、Kafka 服务不可用等情况。
 
-
 用Kafka的发布/订阅模式（可以有多个主题，消费者通过主题消费数据，每个消费者互相独立，都可以消费的到数据）创建消息队列
 在Kafka中，发布/订阅（Pub/Sub）模式是其核心功能之一，它允许生产者将消息发布到一个或多个主题（Topic）上，而消费者则可以订阅这些主题来消费消息。每个消费者都可以独立地消费主题中的消息，并且消息对于所有订阅了该主题的消费者都是可见的。
 
 以下是如何使用Kafka的发布/订阅模式创建消息队列的步骤：
 
 1. 创建Kafka主题
-首先，你需要创建Kafka主题。这些主题将作为消息发布的目的地。
+  首先，你需要创建Kafka主题。这些主题将作为消息发布的目的地。
 
 -- 创建一个名为 "topic1" 的主题，分区数为 3，副本因子为 1  
-kafka-topics.sh --create --topic topic1 --partitions 3 --replication-factor 1 --bootstrap-server localhost:9092  
-  
+kafka-topics.sh --create --topic topic1 --partitions 3 --replication-factor 1 --bootstrap-server localhost:9092
+
 -- 创建一个名为 "topic2" 的主题，分区数为 2，副本因子为 1  
 kafka-topics.sh --create --topic topic2 --partitions 2 --replication-factor 1 --bootstrap-server localhost:9092
 
 2. 配置生产者
-生产者负责将消息发布到Kafka主题上。你可以配置生产者来指定它要发布消息的主题。
+  生产者负责将消息发布到Kafka主题上。你可以配置生产者来指定它要发布消息的主题。
 
 // 生产者代码示例（省略了部分细节）  
 Properties props = new Properties();  
 props.put("bootstrap.servers", "localhost:9092");  
 props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");  
-props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");  
-  
-Producer<String, String> producer = new KafkaProducer<>(props);  
-  
+props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+
+Producer<String, String> producer = new KafkaProducer<>(props);
+
 for (int i = 0; i < 10; i++) {  
-    ProducerRecord<String, String> record = new ProducerRecord<>("topic1", Integer.toString(i), "Message " + i);  
-    producer.send(record);  
-}  
-  
+ ProducerRecord<String, String> record = new ProducerRecord<>("topic1", Integer.toString(i), "Message " + i);  
+ producer.send(record);  
+}
+
 producer.close();
 在这个例子中，生产者将10条消息发布到了名为"topic1"的主题上。
 
 3. 配置消费者
-消费者负责从Kafka主题中消费消息。在发布/订阅模式中，每个消费者都可以独立地订阅并消费主题中的消息。
+  消费者负责从Kafka主题中消费消息。在发布/订阅模式中，每个消费者都可以独立地订阅并消费主题中的消息。
 
 // 消费者代码示例（省略了部分细节）  
 Properties props = new Properties();  
@@ -20010,28 +20979,27 @@ props.put("bootstrap.servers", "localhost:9092");
 props.put("group.id", "consumer-group1"); // 消费者组ID，用于负载均衡和容错  
 props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");  
 props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");  
-props.put("auto.offset.reset", "earliest"); // 从最早的消息开始消费  
-  
+props.put("auto.offset.reset", "earliest"); // 从最早的消息开始消费
+
 KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);  
-consumer.subscribe(Collections.singletonList("topic1"));  
-  
+consumer.subscribe(Collections.singletonList("topic1"));
+
 while (true) {  
-    ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));  
-    for (ConsumerRecord<String, String> record : records) {  
-        System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());  
-    }  
+ ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));  
+ for (ConsumerRecord<String, String> record : records) {  
+ System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());  
+ }  
 }
 在这个例子中，消费者订阅了名为"topic1"的主题，并且属于名为"consumer-group1"的消费者组。由于Kafka的分区和消费者组机制，消息将在消费者组内的消费者之间负载均衡。
 
 4. 启动多个消费者实例
-为了演示发布/订阅模式，你可以启动多个消费者实例，它们都将能够消费到"topic1"主题中的消息。每个消费者实例都会接收到主题中消息的一个子集（根据分区和消费者组的配置）。
+  为了演示发布/订阅模式，你可以启动多个消费者实例，它们都将能够消费到"topic1"主题中的消息。每个消费者实例都会接收到主题中消息的一个子集（根据分区和消费者组的配置）。
 
 注意事项
 分区和消费者组：Kafka通过分区来实现消息的并行处理，而消费者组则用于在多个消费者之间实现负载均衡和容错。每个分区只能被一个消费者组内的一个消费者实例所消费。
 消息持久性：Kafka将消息存储在磁盘上，因此即使消费者暂时不可用，消息也不会丢失。当消费者重新连接时，它可以从上次消费的偏移量开始继续消费消息。
 自动提交偏移量：在上面的消费者示例中，我们没有手动提交偏移量。默认情况下，Kafka会自动提交已消费的偏移量。但是，在生产环境中，你可能希望更精细地控制偏移量的提交，以确保在消费者失败时不会丢失消息或重复消费消息。
 这可以通过配置enable.auto.commit为false并在适当的时候手动调用commitSync或commitAsync来实现。
-
 
 Kafka EFAK：
 Kafka EFAK，全称Eagle For Apache Kafka（以前称为Kafka Eagle），是一款由国内开源的Kafka集群监控和管理软件。
@@ -20040,8 +21008,6 @@ Kafka EFAK，全称Eagle For Apache Kafka（以前称为Kafka Eagle），是一�
 可视化展示：EFAK将Kafka集群的数据转换为图形化的界面，使得用户可以直观地查看集群的运行状态和数据流动情况。
 SQL查询：EFAK提供了独特的KQL（Kafka Query Language）功能，允许用户通过SQL语句在线查询Kafka中的数据，方便进行数据分析和处理。
 多集群管理：EFAK支持对多个Kafka集群进行统一管理，方便用户在不同集群之间进行切换和监控。
-
-
 
 常见消息队列ActiveMQ、RocketMQ、RabbitMQ、Kafka对比：
 ActiveMQ、RocketMQ、RabbitMQ、Kafka都是常见的消息队列，它们在性能、持久化、语言支持等方面各有特点：
@@ -20069,7 +21035,6 @@ ActiveMQ：作为一个基于JMS规范的消息队列，ActiveMQ具有高可用�
 RabbitMQ：具有高度的灵活性，可以根据需求进行配置和定制。它支持多种消息传递模式，如发布/订阅、点对点等，并且可以通过插件机制扩展功能。此外，RabbitMQ还提供了一个易于使用的管理界面，方便用户进行监控和管理。
 RocketMQ：具有高吞吐量、高可靠性和强大的扩展性。RocketMQ通过支持并行化消费和流水线机制实现了高吞吐量的消息传输，并采用了零拷贝技术和顺序写入磁盘的方式最大限度地减少了消息传输和存储的延迟。同时，RocketMQ还支持多种消息模式，包括发布/订阅、点对点和请求/应答模式等，可以满足不同类型的消息通信需求。
 Kafka：除了高吞吐量、高可用和高可靠等特点外，Kafka还非常适用于大数据处理和日志收集等场景。Kafka通过分区和索引等方式提高了读取速度和写入效率，并支持事务和幂等性消费等特性来确保消息的可靠性和一致性。然而，Kafka的运维难度较大，需要对配置文件、运行原理和ACK机制等有一定的了解。
-
 
 ActiveMQ、RocketMQ、RabbitMQ和Kafka各自的优缺点：
 ActiveMQ
@@ -20164,8 +21129,8 @@ RESTful API
 需要根据具体的系统要求、性能需求、可靠性需求、开发团队技术栈和经验等因素，综合考虑选择合适的分布式通信方式。
 有时候，系统可能会结合多种方式来满足不同的需求，例如使用消息队列进行异步通信，结合RESTful API进行同步交互。
 
-
 # 分布式中间件：
+
 中间件技术是计算机系统中的一个软件层，位于客户端和服务端之间，负责处理两者之间的通信和数据交换。
 它可以通过转换格式、路由消息、管理连接等方式支持多种应用场景，并具有提高系统可靠性、安全性、扩展性等优势。
 常见的中间件技术包括消息队列、缓存、负载均衡、API网关、数据库代理和文件存储代理等。
@@ -20219,7 +21184,6 @@ IO密集型和CPU密集型任务对中间件的影响主要体现在资源需求
 
 在实际应用中，中间件可能需要同时处理IO密集型和CPU密集型任务。因此，需要根据具体的任务类型和性能需求来制定合适的优化策略，以实现最佳的系统性能。
 
-
 关于中间件的性能优化：
 对于中间件的性能优化，可以从以下几个方面给出回答：
 
@@ -20270,57 +21234,57 @@ IO密集型和CPU密集型任务对中间件的影响主要体现在资源需求
 
 综上所述，中间件的性能优化是一个复杂的过程，需要综合考虑多个方面。通过合理配置资源、优化持久化配置、合理使用缓存和数据结构、代码优化、使用集群或分片、监控和调优、升级硬件和中间件版本以及优化中间件架构和网络性能等措施，可以显著提高中间件的性能和稳定性。
 
-
-
 Spring缓存：SpringCache
 Spring Cache利用了AOP，实现了基于注解的缓存功能，
 并且进行了合理的抽象，业务代码不用关心底层是使用了什么缓存框架，只需要简单地加一个注解，就能实现缓存功能了。
 @Cacheable({"category"})
 public List<CategoryEntity> getLevel1Categorys() {
-	......
+ ......
 }
 
 SpringCache自定义缓存：
 指定生成的缓存使用的key， key属性指定，接受一个SpEL
 @Cacheable(value = {"category"},key = "#root.method.name")
 public List<CategoryEntity> getLevel1Categorys() {
-    return this.baseMapper.selectList(
-            new QueryWrapper<CategoryEntity>().eq("parent_cid",0));
+ return this.baseMapper.selectList(
+ new QueryWrapper<CategoryEntity>().eq("parent_cid",0));
 }
 
 将数据保存为json格式，自定义RedisCacheConfiguration即可
 @Configuration
 @EnableCaching
 public class MyCacheConfig {
-    @Bean
-    RedisCacheConfiguration redisCacheConfiguration(CacheProperties cacheProperties){
-        RedisCacheConfiguration config  = RedisCacheConfiguration.defaultCacheConfig();
-        //修改key和value的序列化机制
-        config = config .serializeKeysWith(
-                RedisSerializationContext.SerializationPair.fromSerializer(
-                        new StringRedisSerializer()));
-        config = config.serializeValuesWith(
-                RedisSerializationContext.SerializationPair.fromSerializer(
-                        new GenericJackson2JsonRedisSerializer()));
+ @Bean
+ RedisCacheConfiguration redisCacheConfiguration(CacheProperties cacheProperties){
+ RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig();
+ //修改key和value的序列化机制
+ config = config .serializeKeysWith(
+ RedisSerializationContext.SerializationPair.fromSerializer(
+ new StringRedisSerializer()));
+ config = config.serializeValuesWith(
+ RedisSerializationContext.SerializationPair.fromSerializer(
+ new GenericJackson2JsonRedisSerializer()));
 
-        CacheProperties.Redis redisProperties = cacheProperties.getRedis();
-        //将配置文件中的所有配置都生效
-        if (redisProperties.getTimeToLive() != null) {
-            config = config.entryTtl(redisProperties.getTimeToLive());
-        }
-        if (redisProperties.getKeyPrefix() != null) {
-            config = config.prefixKeysWith(redisProperties.getKeyPrefix());
-        }
-        if (!redisProperties.isCacheNullValues()) {
-            config = config.disableCachingNullValues();
-        }
-        if (!redisProperties.isUseKeyPrefix()) {
-            config = config.disableKeyPrefix();
-        }
-        return config;
+```
+    CacheProperties.Redis redisProperties = cacheProperties.getRedis();
+    //将配置文件中的所有配置都生效
+    if (redisProperties.getTimeToLive() != null) {
+        config = config.entryTtl(redisProperties.getTimeToLive());
     }
+    if (redisProperties.getKeyPrefix() != null) {
+        config = config.prefixKeysWith(redisProperties.getKeyPrefix());
+    }
+    if (!redisProperties.isCacheNullValues()) {
+        config = config.disableCachingNullValues();
+    }
+    if (!redisProperties.isUseKeyPrefix()) {
+        config = config.disableKeyPrefix();
+    }
+    return config;
 }
+```
 
+}
 
 数据库中间件Mycat：
 从定义和分类来看，它是一个开源的分布式数据库系统，Mycat是一个实现了MySQL协议的服务器，
@@ -20345,7 +21309,6 @@ MySQL的主从复制是一种常用的数据冗余和负载均衡技术，也是
 在主从复制中，有两个关键的线程：Replication I/O Thread和Replication SQL Thread。Replication I/O Thread负责从主库拉取binlog，而Replication SQL Thread则负责执行binlog中的SQL语句。
 MySQL主从复制的配置步骤包括在主服务器上配置binlog、创建复制用户，并在从服务器上设置主服务器的信息、启动复制进程等。
 配置完成后，可以通过相关命令检查复制状态，确保Slave_IO_Running和Slave_SQL_Running都是Yes，以表示复制进程正在正常运行。
-
 
 Mycat配置Mysql数据库读写分离：
 Mycat搭建MySQL主从复制并实现读写分离的过程，主要涉及MySQL主从复制的配置以及Mycat的读写分离配置。以下是详细的步骤：
@@ -20408,8 +21371,8 @@ SHOW SLAVE STATUS\G;
 <dataHost name="localhost1" maxCon="1000" minCon="10" balance="3" writeType="0" dbType="mysql" dbDriver="native" switchType="SLAVE">
     <heartbeat>select 1</heartbeat>
     <writeHost host="hostM1" url="主数据库URL" user="用户名" password="密码">
-   	 <readHost host="hostS1" url="从数据库URL1" user="用户名" password="密码" />
-   	 <readHost host="hostS2" url="从数据库URL2" user="用户名" password="密码" />
+        <readHost host="hostS1" url="从数据库URL1" user="用户名" password="密码" />
+        <readHost host="hostS2" url="从数据库URL2" user="用户名" password="密码" />
     </writeHost>
 </dataHost>
 其中，balance属性用于配置读写分离的负载均衡策略：
@@ -20481,7 +21444,6 @@ MySQL主从复制延迟（Replication Lag）是指主服务器和从服务器之
 
 综上所述，MySQL主从复制延迟问题可能出现在日志生成、日志传输和日志应用等多个环节。通过优化网络环境、升级硬件配置、调整MySQL配置、优化SQL查询、使用半同步复制、分区数据库以及定期监控和维护等方法，可以有效地降低MySQL主从复制延迟。
 
-
 分布式文件系统：
 分布式文件系统（Distributed File System）是指文件系统管理的物理存储资源不一定直接连接在本地节点上，而是通过计算机网络与节点相连。
 它允许程序像访问本地文件一样访问或存储独立的文件，允许程序员从任何网络或计算机访问文件。
@@ -20495,8 +21457,8 @@ DFS的主要目的是允许物理分布式系统的用户通过使用公共文�
 4.InterPlanetary File System (IPFS)。 IPFS 是一个基于内容寻址的分布式文件系统，
 它通过哈希函数将文件的元数据（如名称、内容等）编码成一个唯一的地址，从而可以在全球范围内进行文件的查找和访问。
 
-
 # 分布式微服务框架：
+
 Spring Cloud：
 Spring Cloud是一个为构建分布式系统的微服务框架。
 准确的说，它不是一个框架，而是一个大的容器，将各个微服务通过接口调用，从而简化了开发者的代码量。
@@ -20511,7 +21473,6 @@ Eureka主要就是用来注册服务的，其中包括两部分：Eureka Client�
 Eureka Client：包含服务提供者、服务消费者，主要负责服务注册、心跳续约与健康状况查询
 Eureka Server：提供注册服务，各个节点启动后，都会在Eureka Server中注册，可用的节点信息可以在Eureka Server中的服务注册表中找到（Eureka Server之间通过复制的方式来完成数据的同步）
 应用启动后，Eureka Client会向Eureka Server发送心跳，一般默认周期为30秒，如果Eureka在多个心跳周期内（一般为90秒）没有接受到某个节点的心跳，Eureka就会进入自我保护机制
-
 
 其他注册中心：
 Alibaba Nacos (dynamic naming and configuration Service):
@@ -20536,35 +21497,35 @@ Nacos还支持集群管理功能，可以管理多个应用节点，包括它们
 可视化界面
 Nacos提供了一个简洁易用的UI控制台，开发者可以通过这个界面方便地管理所有的服务和应用的配置。这使得操作更为直观和便捷，提高了开发效率。
 
-
 将Spring Cloud Nacos作为注册中心：
 配置Nacos
 在application.properties或application.yml文件中，配置Nacos服务器的地址和端口。例如：
 
 application.yml配置：
 spring:  
-  cloud:  
-    nacos:  
-      discovery:  
-        server-addr: 127.0.0.1:8848 # Nacos服务器地址  
-        namespace: public # 命名空间，默认为public  
-        cluster-name: DEFAULT # 集群名称，默认为DEFAULT
+ cloud:  
+ nacos:  
+ discovery:  
+ server-addr: 127.0.0.1:8848 # Nacos服务器地址  
+ namespace: public # 命名空间，默认为public  
+ cluster-name: DEFAULT # 集群名称，默认为DEFAULT
 
 启用Nacos Discovery
 在你的Spring Boot主类或配置类上，添加@EnableDiscoveryClient注解以启用服务发现。
 
 @SpringBootApplication  
 @EnableDiscoveryClient  
-public class YourApplication {  
-  
-    public static void main(String[] args) {  
-        SpringApplication.run(YourApplication.class, args);  
-    }  
+public class YourApplication {
+
+```
+public static void main(String[] args) {  
+    SpringApplication.run(YourApplication.class, args);  
+}  
+```
+
 }
 
-
 现在，当你启动你的Spring Boot应用时，它会自动注册到Nacos服务器。你可以通过Nacos的Web控制台查看已注册的服务列表。
-
 
 将Spring Cloud Nacos作为配置中心：
 配置bootstrap.properties或bootstrap.yml
@@ -20573,14 +21534,14 @@ public class YourApplication {
 bootstrap.yml的配置可以如下所示：
 
 spring:  
-  cloud:  
-    nacos:  
-      config:  
-        server-addr: 127.0.0.1:8848 # Nacos服务器地址  
-        namespace: public # 命名空间，默认为public  
-        data-id: your-data-id # 数据ID，用于唯一标识配置  
-        group: DEFAULT_GROUP # 分组，默认为DEFAULT_GROUP  
-        file-extension: yaml # 配置文件的格式，如yaml、properties等
+ cloud:  
+ nacos:  
+ config:  
+ server-addr: 127.0.0.1:8848 # Nacos服务器地址  
+ namespace: public # 命名空间，默认为public  
+ data-id: your-data-id # 数据ID，用于唯一标识配置  
+ group: DEFAULT_GROUP # 分组，默认为DEFAULT_GROUP  
+ file-extension: yaml # 配置文件的格式，如yaml、properties等
 其中，data-id是你在Nacos中创建的配置数据的唯一标识，group是分组，file-extension是配置文件的格式。
 
 在Nacos中创建配置
@@ -20589,7 +21550,6 @@ spring:
 启动你的应用
 现在，当你启动你的Spring Boot应用时，它会从Nacos配置中心加载配置信息。你可以通过@Value或@ConfigurationProperties等注解在应用中注入这些配置。
 配置配置刷新注解@RefreshScope
-
 
 Nacos配置中心的命名空间：
 在Nacos中，命名空间是一个用于实现环境隔离的概念。每个命名空间都代表一个独立的环境，例如开发环境、测试环境和生产环境等。通过使用命名空间，我们可以将不同环境的配置和服务进行隔离，避免相互干扰。
@@ -20603,16 +21563,14 @@ Nacos配置中心的命名空间：
 
 创建一个命名空间：
 spring:  
-  cloud:  
-    nacos:  
-      discovery:  
-        server-addr: 127.0.0.1:8848 # Nacos服务地址  
-        namespace: your-namespace-id # 命名空间ID  
-      config:  
-        server-addr: 127.0.0.1:8848 # Nacos服务地址  
-        namespace: your-namespace-id # 命名空间ID
-
-
+ cloud:  
+ nacos:  
+ discovery:  
+ server-addr: 127.0.0.1:8848 # Nacos服务地址  
+ namespace: your-namespace-id # 命名空间ID  
+ config:  
+ server-addr: 127.0.0.1:8848 # Nacos服务地址  
+ namespace: your-namespace-id # 命名空间ID
 
 Nacos配置中心的配置分组：
 配置分组是Nacos中的一个功能，允许用户将不同的配置划分到不同的组中，以实现更灵活的配置管理和控制。
@@ -20628,8 +21586,6 @@ Nacos配置中心的配置分组：
 4.选择配置格式（如YAML、Properties等）。
 5.在“配置内容”字段中输入你的配置信息。
 
-
-
 如何基于Spring Cloud Alibaba Nacos进行多个DataID的配置读取？
 在Nacos中，ext-config配置项允许用户加载多个Data ID，以便微服务能够读取并使用这些额外的配置信息。
 
@@ -20641,23 +21597,23 @@ Nacos配置中心的配置分组：
 以下是一个bootstrap.yml文件中的配置示例，展示了如何使用ext-config加载多个Data ID：
 
 spring:  
-  cloud:  
-    nacos:  
-      config:  
-        server-addr: ${NACOS_SERVER_ADDR:localhost:8848} # Nacos服务器地址  
-        namespace: ${NACOS_NAMESPACE} # 命名空间（可选）  
-        group: ${NACOS_GROUP:DEFAULT_GROUP} # 默认分组（可选）  
-        file-extension: ${NACOS_FILE_EXTENSION:yml} # 文件格式（可选，默认为yml）  
-        ext-config:  
-          - data-id: config2.yml  
-            group: DEFAULT_GROUP # 可选，默认为DEFAULT_GROUP  
-            refresh: true # 可选，默认为false，表示是否支持动态刷新  
-          - data-id: config3.yml  
-            group: CUSTOM_GROUP # 指定非默认分组  
-            refresh: false # 不支持动态刷新  
-          - data-id: ext-config-common.properties  
-            group: GLOBAL_GROUP # 另一个非默认分组  
-            file-extension: properties # 指定文件格式为properties
+ cloud:  
+ nacos:  
+ config:  
+ server-addr: ${NACOS_SERVER_ADDR:localhost:8848} # Nacos服务器地址 
+namespace: ${NACOS_NAMESPACE} # 命名空间（可选）  
+ group: ${NACOS_GROUP:DEFAULT_GROUP} # 默认分组（可选） 
+file-extension: ${NACOS_FILE_EXTENSION:yml} # 文件格式（可选，默认为yml）  
+ ext-config:  
+ - data-id: config2.yml  
+ group: DEFAULT_GROUP # 可选，默认为DEFAULT_GROUP  
+ refresh: true # 可选，默认为false，表示是否支持动态刷新  
+ - data-id: config3.yml  
+ group: CUSTOM_GROUP # 指定非默认分组  
+ refresh: false # 不支持动态刷新  
+ - data-id: ext-config-common.properties  
+ group: GLOBAL_GROUP # 另一个非默认分组  
+ file-extension: properties # 指定文件格式为properties
 
 三、配置加载顺序与优先级
 加载顺序：ext-config数组中的配置会按照数组中的顺序依次加载。
@@ -20675,7 +21631,6 @@ config2.yml中的config2.name
 config3.yml中的config3.name
 ext-config-common.properties中的common.property
 那么，我们可以按照上述配置示例在bootstrap.yml文件中进行配置，并在微服务中使用@Value注解或Environment对象来读取这些配置信息。
-
 
 Java服务通过服务网关发现配置中心，再通过服务注册中心去发现配置，并启动服务的过程，是一个典型的微服务架构中的服务启动和配置管理流程。
 这个过程可以大致分为以下几个步骤：
@@ -20704,8 +21659,6 @@ Java服务通过服务网关发现配置中心，再通过服务注册中心去�
 安全性保护：对服务发现与配置管理进行安全性保护，如访问控制、认证授权等。
 监控与报警：定期监控和检查服务发现与配置管理的状态，及时发现并解决问题。
 
-
-
 2.Feign
 Feign是一个HTTP请求的轻量级客户端框架。
 通过 接口+注解 的方式发起HTTP请求的调用，而不是像Java中通过封装HTTP请求报文的方式直接调用。
@@ -20721,9 +21674,9 @@ Feign最核心的就是动态代理，同时整合了Ribbon和Hystrix，具备�
 @SpringBootApplication
 @EnableFeignClients
 public class Microservice {
-    public static void main(String[] args) {
-        SpringApplication.run(Microservice.class, args);
-    }
+ public static void main(String[] args) {
+ SpringApplication.run(Microservice.class, args);
+ }
 }
 
 3.在需要调用其他微服务的模块中，定义一个继承自FeignClient接口的自定义接口
@@ -20732,28 +21685,34 @@ public class Microservice {
 @FeignClient(name = "remote-service")
 public interface RemoteServiceClient {
 
-    @RequestMapping(value = "/api/remote-service/hello", method = RequestMethod.GET)
-    public String hello();
+```
+@RequestMapping(value = "/api/remote-service/hello", method = RequestMethod.GET)
+public String hello();
+```
+
 }
 
 4.注入并使用Feign接口
 import org.springframework.beans.factory.annotation.Autowired;  
-import org.springframework.stereotype.Service;  
-  
+import org.springframework.stereotype.Service;
+
 @Service  
-public class MyService {  
-  
-    private final RemoteServiceClient remoteServiceClient;  
-  
-    @Autowired  
-    public MyService(RemoteServiceClient remoteServiceClient) {  
-        this.remoteServiceClient = remoteServiceClient;  
-    }  
-  
-    public void doSomething() {  
-        String response = remoteServiceClient.hello();  
-        // 处理响应...  
-    }  
+public class MyService {
+
+```
+private final RemoteServiceClient remoteServiceClient;  
+
+@Autowired  
+public MyService(RemoteServiceClient remoteServiceClient) {  
+    this.remoteServiceClient = remoteServiceClient;  
+}  
+
+public void doSomething() {  
+    String response = remoteServiceClient.hello();  
+    // 处理响应...  
+}  
+```
+
 }
 
 注意：
@@ -20762,64 +21721,68 @@ public class MyService {
 
 2.1创建一个自定义的Retryer类
 import feign.Retryer;  
-import java.util.concurrent.atomic.AtomicInteger;  
-  
-public class CustomRetryer extends Retryer.Default {  
-  
-    private final int maxAttempts;  
-    private final long period;  
-    private final TimeUnit unit;  
-  
-    public CustomRetryer(int maxAttempts, long period, TimeUnit unit) {  
-        super();  
-        this.maxAttempts = maxAttempts;  
-        this.period = period;  
-        this.unit = unit;  
-    }  
-  
-    @Override  
-    public void continueOrPropagate(RetryableException e) {  
-        AtomicInteger attempt = this.attempt.get();  
-        if (attempt.get() < maxAttempts) {  
-            try {  
-                unit.sleep(period);  
-                attempt.incrementAndGet();  
-            } catch (InterruptedException ignored) {  
-                Thread.currentThread().interrupt();  
-                throw new RuntimeException(e);  
-            }  
-            continueWith(e);  
-        } else {  
-            throw e;  
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class CustomRetryer extends Retryer.Default {
+
+```
+private final int maxAttempts;  
+private final long period;  
+private final TimeUnit unit;  
+
+public CustomRetryer(int maxAttempts, long period, TimeUnit unit) {  
+    super();  
+    this.maxAttempts = maxAttempts;  
+    this.period = period;  
+    this.unit = unit;  
+}  
+
+@Override  
+public void continueOrPropagate(RetryableException e) {  
+    AtomicInteger attempt = this.attempt.get();  
+    if (attempt.get() < maxAttempts) {  
+        try {  
+            unit.sleep(period);  
+            attempt.incrementAndGet();  
+        } catch (InterruptedException ignored) {  
+            Thread.currentThread().interrupt();  
+            throw new RuntimeException(e);  
         }  
+        continueWith(e);  
+    } else {  
+        throw e;  
     }  
+}  
+```
+
 }
 
 2.2 配置 Feign 客户端使用自定义 Retryer
 import feign.Retryer;  
 import org.springframework.context.annotation.Bean;  
-import org.springframework.context.annotation.Configuration;  
-  
+import org.springframework.context.annotation.Configuration;
+
 @Configuration  
-public class FeignConfig {  
-  
-    @Bean  
-    public Retryer feignRetryer() {  
-        return new CustomRetryer(3, 1000, TimeUnit.MILLISECONDS); // 重试3次，每次间隔1秒  
-    }  
-  
-    @Bean  
-    public MyFeignClient myFeignClient(Decoder decoder, Encoder encoder, Client client, Retryer retryer) {  
-        return Feign.builder()  
-                .encoder(encoder)  
-                .decoder(decoder)  
-                .client(client)  
-                .retryer(retryer) // 使用自定义的 Retryer  
-                .target(MyFeignClient.class, "http://example.com");  
-    }  
+public class FeignConfig {
+
+```
+@Bean  
+public Retryer feignRetryer() {  
+    return new CustomRetryer(3, 1000, TimeUnit.MILLISECONDS); // 重试3次，每次间隔1秒  
+}  
+
+@Bean  
+public MyFeignClient myFeignClient(Decoder decoder, Encoder encoder, Client client, Retryer retryer) {  
+    return Feign.builder()  
+            .encoder(encoder)  
+            .decoder(decoder)  
+            .client(client)  
+            .retryer(retryer) // 使用自定义的 Retryer  
+            .target(MyFeignClient.class, "http://example.com");  
+}  
+```
+
 }
-
-
 
 3.Ribbon（负载均衡）2024.1（Ribbon已弃用）
 Ribbon是一个客户端的负载均衡器，他提供对大量的HTTP和TCP客户端的访问控制
@@ -20828,20 +21791,20 @@ Ribbon负载均衡策略：简单轮询、权重、随机、重试等多种策�
 //编写Ribbon配置类
 @Configuration
 public class ApplicationContextConfig {
-    @Bean
-    @LoadBalanced//使用@LoadBalanced注解赋予RestTemplate负载均衡的能力
-    public RestTemplate restTemplate(){
-        return new RestTemplate();
-    }
+ @Bean
+ @LoadBalanced//使用@LoadBalanced注解赋予RestTemplate负载均衡的能力
+ public RestTemplate restTemplate(){
+ return new RestTemplate();
+ }
 }
 
 //编写Ribbon自定义配置类，配置负载均衡策略
 @Configuration
 public class MySelfRule {
-    @Bean //lRule：根据特定算法中从服务列表中选取一个要访问的服务
-    public IRule myRule(){
-        return new RandomRule();//随机访问
-    }
+ @Bean //lRule：根据特定算法中从服务列表中选取一个要访问的服务
+ public IRule myRule(){
+ return new RandomRule();//随机访问
+ }
 }
 
 其他负载均衡方案：
@@ -20854,14 +21817,13 @@ LoadBalancer支持多种负载均衡算法，包括随机算法、轮询算法�
 在Spring Cloud中，LoadBalancer的配置相对灵活，可以通过配置文件或编程方式进行定制。
 此外，Spring Cloud LoadBalancer还提供了智能路由功能，可以根据服务的质量、性能等指标进行路由决策，进一步提高系统的性能和可用性。
 
-
 创建一个LoadBalancer负载均衡，使用轮询算法：
 1.配置Nacos服务注册中心的地址等信息。在application.yml或application.properties中添加如下配置：
 spring:  
-  cloud:  
-    nacos:  
-      discovery:  
-        server-addr: 127.0.0.1:8848 # Nacos服务注册中心的地址
+ cloud:  
+ nacos:  
+ discovery:  
+ server-addr: 127.0.0.1:8848 # Nacos服务注册中心的地址
 
 2.创建一个服务调用者（Client），该调用者会使用LoadBalancer和Nacos来选择合适的服务实例进行调用。
 
@@ -20869,44 +21831,46 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;  
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;  
 import org.springframework.stereotype.Service;  
-import org.springframework.web.client.RestTemplate;  
-  
-import java.util.List;  
-  
-@Service  
-public class MyServiceClient {  
-  
-    @Autowired  
-    private LoadBalancerClient loadBalancerClient;  
-  
-    @Autowired  
-    private RestTemplate restTemplate;  
-  
-    public String callMyService() {  
-        // 获取服务名，这通常是在配置文件中定义的，例如application.yml或application.properties  
-        String serviceName = "my-service";  
-  
-        // 获取服务实例列表  
-        List<ServiceInstance> serviceInstances = loadBalancerClient.getInstances(serviceName);  
-  
-        if (serviceInstances.isEmpty()) {  
-            throw new RuntimeException("No instances available for service: " + serviceName);  
-        }  
-  
-        // 使用轮询算法选择一个服务实例  
-        ServiceInstance serviceInstance = serviceInstances.get(serviceInstances.indexOf(loadBalancerClient.choose(serviceName)));  
-  
-        // 构造请求的URL  
-        String url = String.format("http://%s:%d/my-endpoint", serviceInstance.getHost(), serviceInstance.getPort());  
-  
-        // 发起调用  
-        String response = restTemplate.getForObject(url, String.class);  
-  
-        // 返回调用结果  
-        return response;  
-    }  
-}
+import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
+@Service  
+public class MyServiceClient {
+
+```
+@Autowired  
+private LoadBalancerClient loadBalancerClient;  
+
+@Autowired  
+private RestTemplate restTemplate;  
+
+public String callMyService() {  
+    // 获取服务名，这通常是在配置文件中定义的，例如application.yml或application.properties  
+    String serviceName = "my-service";  
+
+    // 获取服务实例列表  
+    List<ServiceInstance> serviceInstances = loadBalancerClient.getInstances(serviceName);  
+
+    if (serviceInstances.isEmpty()) {  
+        throw new RuntimeException("No instances available for service: " + serviceName);  
+    }  
+
+    // 使用轮询算法选择一个服务实例  
+    ServiceInstance serviceInstance = serviceInstances.get(serviceInstances.indexOf(loadBalancerClient.choose(serviceName)));  
+
+    // 构造请求的URL  
+    String url = String.format("http://%s:%d/my-endpoint", serviceInstance.getHost(), serviceInstance.getPort());  
+
+    // 发起调用  
+    String response = restTemplate.getForObject(url, String.class);  
+
+    // 返回调用结果  
+    return response;  
+}  
+```
+
+}
 
 负载均衡算法有哪些？
 负载均衡算法有多种，它们各自具有不同的特点和适用场景。以下是一些常见的负载均衡算法：
@@ -20920,7 +21884,6 @@ public class MyServiceClient {
 源地址哈希法（Source Address Hashing）：根据获取客户端的IP地址，通过哈希函数计算得到一个数值，用这个数值对服务器列表的大小进行取模运算，得到的结果便是客户端要访问的服务器序号。
 
 此外，还有一些其他的负载均衡算法，如最短响应时间法（Least Response Time），它根据服务器响应请求的时间长短来选择服务器，响应时间最短的服务器将被优先选中。
-
 
 阐述一下客户端负载均衡和服务端负载均衡有什么区别：
 客户端负载均衡和服务端负载均衡在多个方面存在显著的区别。
@@ -20939,7 +21902,6 @@ public class MyServiceClient {
 
 综上所述，客户端负载均衡和服务端负载均衡在实现位置、设备配置、效果优势等方面存在明显的区别。选择哪种负载均衡方式取决于具体的业务需求和网络环境。
 
-
 4.Hystrix（服务熔断）2024.1（Hystrix已弃用）
 Hystrix提供两个命令，分别是HystrixCommand、HystrixObservableCommand，通常是在Spring中通过注解和AOP来实现对象的构造
 熔断：简单来说，就是我们生活中的“保险丝”。如果熔断器打开，就会执行短路，直接进行降级；如果熔断器关闭，就会进入隔离逻辑。
@@ -20956,19 +21918,22 @@ hystrix.command.default.execution.isolation.strategy=THREAD
 //创建Hystrix服务
 @Service
 public class MyService {
-    @Autowired
-    private RestTemplate restTemplate;
+ @Autowired
+ private RestTemplate restTemplate;
 
-    @HystrixCommand(fallbackMethod = "fallbackMethod")
-    public String doSomething() {
-        // 这里调用远程服务
-        return restTemplate.getForObject("http://example.com/api/something", String.class);
-    }
+```
+@HystrixCommand(fallbackMethod = "fallbackMethod")
+public String doSomething() {
+    // 这里调用远程服务
+    return restTemplate.getForObject("http://example.com/api/something", String.class);
+}
 
-    public String fallbackMethod() {
-        // 这里是熔断后的fallback方法，返回一个默认值或者处理异常的逻辑
-        return "fallback";
-    }
+public String fallbackMethod() {
+    // 这里是熔断后的fallback方法，返回一个默认值或者处理异常的逻辑
+    return "fallback";
+}
+```
+
 }
 
 其他服务熔断：
@@ -20983,10 +21948,8 @@ Resilience4j的熔断降级：
 实现步骤：
 1.添加依赖：
 首先，你需要在项目的pom.xml文件中添加Resilience4j的熔断器依赖。例如：
-<dependency>  
-    <groupId>org.springframework.cloud</groupId>  
-    <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>  
-</dependency>
+<dependency> <groupId>org.springframework.cloud</groupId>  
+ <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId> </dependency>
 
 2.修改接口代码，对外暴露接口还需要配置在OpenFeign上
 然后，你需要在需要熔断降级的服务接口上使用@CircuitBreaker注解。这个注解会告诉Resilience4j在该接口调用失败率达到指定阈值时触发熔断机制。例如：
@@ -20994,37 +21957,41 @@ Resilience4j的熔断降级：
 @Restcontroller
 public class OrderCircuitcontroller{
 
-    @Resource
-    private PayFeignApi payFeignApi;
+```
+@Resource
+private PayFeignApi payFeignApi;
 
-    @GetMapping(value=v"/feign/pay/circuit/{id}")
-    @CircuitBreaker(name ="cloud-payment-service", fallbackMethod = "mycircuitFallback") //服务熔断的注解，name为注册的微服务，fallbackMethod为熔断的兜底处理方法
-    public string mycircuitBreaker(@PathVariable("id")Integer id){
-        return payFeignApi.myCircuit(id);
-    }
+@GetMapping(value=v"/feign/pay/circuit/{id}")
+@CircuitBreaker(name ="cloud-payment-service", fallbackMethod = "mycircuitFallback") //服务熔断的注解，name为注册的微服务，fallbackMethod为熔断的兜底处理方法
+public string mycircuitBreaker(@PathVariable("id")Integer id){
+    return payFeignApi.myCircuit(id);
+}
 
-    //myCircuitFallback就是服务降级后的兜底处理方法
-    public string myCircuitFallback(Integer id,Throwable t){
-        //这里是容错处理逻辑。返回各用结果
-        return"mycircuitFal1back，系统繁忙，请稍后再试-----/(ToT)/~~"
-    };
+//myCircuitFallback就是服务降级后的兜底处理方法
+public string myCircuitFallback(Integer id,Throwable t){
+    //这里是容错处理逻辑。返回各用结果
+    return"mycircuitFal1back，系统繁忙，请稍后再试-----/(ToT)/~~"
+};
+```
 
 }
 
-
 3. 配置熔断策略：
-resilience4j:  
+  resilience4j:  
   circuitbreaker:  
-    instances:  
-      myService:  
-        failureRateThreshold:50#设置50%的调用失败时打开断路器，超过失败请求百分比circuitBreaker 变为OPEN状态。
-        slidingWindowType:COUNT BASED #滑动窗的类型
-        slidingWindowsize:6 #滑动窗口的大小配置 COUNT_BASED表示6个请求，配置TIME_BASED表示6秒
-        minimumNumberofcalls:6 #断路器计算失败率或慢调用率之前所需的最小调用数(每个滑动窗口周期)。最少调用几次，才能计算失败率。
-        automaticTransitionFromopenToHalfopenEnabled:true # 是否启用自动从开启状态过波到半开状态，默认值为true。
-        waitDurationInopenstate:5s#从OPEN到HALF OPEN状态需要等待的时间
-        permittedNumberofcallsInHalfopenstate:2 #半开状态允许的最大请求数，默认值为10。在半开状态下,CircuitBreaker将允许最多permittedNumberOfCallsInHalfOpenstate个请求通过，如果有一个请求失败，CircuitBreaker将重新进入开启状态
-
+   instances:  
+   myService:
+  
+  ```
+   failureRateThreshold:50#设置50%的调用失败时打开断路器，超过失败请求百分比circuitBreaker 变为OPEN状态。
+   slidingWindowType:COUNT BASED #滑动窗的类型
+   slidingWindowsize:6 #滑动窗口的大小配置 COUNT_BASED表示6个请求，配置TIME_BASED表示6秒
+   minimumNumberofcalls:6 #断路器计算失败率或慢调用率之前所需的最小调用数(每个滑动窗口周期)。最少调用几次，才能计算失败率。
+   automaticTransitionFromopenToHalfopenEnabled:true # 是否启用自动从开启状态过波到半开状态，默认值为true。
+   waitDurationInopenstate:5s#从OPEN到HALF OPEN状态需要等待的时间
+   permittedNumberofcallsInHalfopenstate:2 #半开状态允许的最大请求数，默认值为10。在半开状态下,CircuitBreaker将允许最多permittedNumberOfCallsInHalfOpenstate个请求通过，如果有一个请求失败，CircuitBreaker将重新进入开启状态
+  ```
+  
 
 Resilience4j的信号量舱壁熔断隔离：
 信号量舱壁隔离是一种轻量级的隔离方法，它主要通过限制同时访问某一资源或服务的并发请求数来实现隔离。
@@ -21034,11 +22001,8 @@ Resilience4j的信号量舱壁熔断隔离：
 实现步骤：
 1.添加依赖：
 首先，你需要在项目的pom.xml文件中添加Resilience4j的舱壁隔离依赖。例如：
-<dependency>  
-    <groupId>io.github.resilience4j</groupId>  
-    <artifactId>resilience4j-bulkhead</artifactId>  
-</dependency>
-
+<dependency> <groupId>io.github.resilience4j</groupId>  
+ <artifactId>resilience4j-bulkhead</artifactId> </dependency>
 
 2.修改接口代码，对外暴露接口还需要配置在OpenFeign上
 然后，你需要在需要熔断降级的服务接口上使用@CircuitBreaker注解。这个注解会告诉Resilience4j在该接口调用失败率达到指定阈值时触发熔断机制。例如：
@@ -21047,33 +22011,32 @@ Resilience4j的信号量舱壁熔断隔离：
 public class OrderCircuitcontroller{
 
 @GetMapping(value ="/feign/pay/bulkhead/{id}")
-@Bulkhead(name ="cloud-payment-service",fallbackMethod = "myBulkheadFallback",type = Bulkhead.Type.SEMAPHORE)  //SEMAPHORE信号量，THREADPOOL线程池
+@Bulkhead(name ="cloud-payment-service",fallbackMethod = "myBulkheadFallback",type = Bulkhead.Type.SEMAPHORE) //SEMAPHORE信号量，THREADPOOL线程池
 //信号量舱壁隔离更注重于共享资源的访问控制，而线程池隔离则通过为每个任务分配独立线程来实现任务之间的隔离
 
 public string myBulkhead(@PathVariable("id")Integer id){
-    return payFeignApi.myBulkhead(id);
+ return payFeignApi.myBulkhead(id);
 }
 public string myBulkheadFallback(Throwable t){
-    return"myBulkheadFal1back，隔板超出最大数量限制，系统繁忙，请稍后再试-----/(ToT)/~~";
+ return"myBulkheadFal1back，隔板超出最大数量限制，系统繁忙，请稍后再试-----/(ToT)/~~";
 }
 
 }
 
 3.配置隔离策略
 resilience4j:
-    bulkhead:
-        configs:
-            default:
-                maxConcurrentcalls:2 #隔离允许并发线程执行的最大数量
-                maxwaitDuration:1s   #当达到并发调用数量时，新的线程的阻塞时间，我只愿意等待1秒，过时不候进舱壁兜底faLlback
-        instances:
-            cloud-payment-service:
-                baseConfig:default
-    timelimiter:
-        configs:
-            default:
-                timeout-duration:20s
-
+ bulkhead:
+ configs:
+ default:
+ maxConcurrentcalls:2 #隔离允许并发线程执行的最大数量
+ maxwaitDuration:1s #当达到并发调用数量时，新的线程的阻塞时间，我只愿意等待1秒，过时不候进舱壁兜底faLlback
+ instances:
+ cloud-payment-service:
+ baseConfig:default
+ timelimiter:
+ configs:
+ default:
+ timeout-duration:20s
 
 Resilience4j的限流器：
 Resilience4j的限流器会设定一个固定时间段（如每秒、每分钟或每小时）内允许的最大请求数。当有请求到达时，限流器会检查当前时间段内已经处理的请求数，并与设定的最大请求数进行比较。
@@ -21088,40 +22051,40 @@ public class OrderCircuitcontroller{
 @GetMapping(value ="/feign/pay/retelimit/{id}")
 @Bulkhead(name ="cloud-payment-service",fallbackMethod = "myRelateLimitFallBack")  
 public string myBulkhead(@PathVariable("id")Integer id){
-    return payFeignApi.myRelateLimit(id);
+ return payFeignApi.myRelateLimit(id);
 }
 
 public string myRelateLimitFallBack(Throwable t){
-    return"你被限流了，禁止访问-----/(ToT)/~~";
+ return"你被限流了，禁止访问-----/(ToT)/~~";
 }
 
 }
 
 3.配置限流策略
 resilience4j:
-    bulkhead:
-        configs:
-            default:
-                limitForPeriod:2#在次侧新周期内，允许执行的最人请求数
-                timeout-duration:1#线程等待权跟的默认等待时间
-                limitRefreshperiod:1s # 从流器每厢limitRefreshperiod则新一次，将允许处理的最大诗求数量质置为limitForperiod 
-        instances:
-            cloud-payment-service:
-                baseConfig:default
-
+ bulkhead:
+ configs:
+ default:
+ limitForPeriod:2#在次侧新周期内，允许执行的最人请求数
+ timeout-duration:1#线程等待权跟的默认等待时间
+ limitRefreshperiod:1s # 从流器每厢limitRefreshperiod则新一次，将允许处理的最大诗求数量质置为limitForperiod 
+instances:
+ cloud-payment-service:
+ baseConfig:default
 
 5.MicroMeter（分布式链路追踪）
 分布式链路追踪（Distributed System Tracing，简称DST）是一种用于追踪和分析分布式系统中请求调用链路的技术。
 在分布式系统中，一个请求可能经过多个服务节点，涉及多个网络调用，因此追踪整个请求的处理过程对于排查问题、优化性能以及理解系统行为至关重要。
 
 链路追踪原理：
->跟踪请求流转：当一个请求在分布式系统中被发起时，链路追踪系统会开始跟踪这个请求的流转路径。它会记录请求从起点开始，经过哪些服务节点，以及在这些节点上的处理情况。
->引入Span概念：为了表达请求在分布式系统中的父子关系，链路追踪系统引入了Span的概念。每个Span代表了一个操作或一段工作单元，比如一个远程过程调用或者一段本地代码的执行。
-Span之间通过父子关系连接，形成了一个完整的调用链。
->收集与传输数据：在请求流转的过程中，链路追踪系统会收集每个Span的信息，包括起始时间、结束时间、服务节点信息、调用状态等。这些信息会被发送到后端的分析系统或存储系统中。
->数据分析与可视化：后端的分析系统会对收集到的Span数据进行处理和分析，生成调用链的拓扑图，展示各个服务节点的调用关系、耗时以及请求状态等。
-同时，它还可以提供性能可视化的功能，让用户可以直观地看到系统的运行情况。
->故障定位与性能优化：通过链路追踪系统生成的调用链和性能数据，用户可以快速地定位到故障发生的节点，分析性能瓶颈，从而进行相应的优化。
+
+> 跟踪请求流转：当一个请求在分布式系统中被发起时，链路追踪系统会开始跟踪这个请求的流转路径。它会记录请求从起点开始，经过哪些服务节点，以及在这些节点上的处理情况。
+> 引入Span概念：为了表达请求在分布式系统中的父子关系，链路追踪系统引入了Span的概念。每个Span代表了一个操作或一段工作单元，比如一个远程过程调用或者一段本地代码的执行。
+> Span之间通过父子关系连接，形成了一个完整的调用链。
+> 收集与传输数据：在请求流转的过程中，链路追踪系统会收集每个Span的信息，包括起始时间、结束时间、服务节点信息、调用状态等。这些信息会被发送到后端的分析系统或存储系统中。
+> 数据分析与可视化：后端的分析系统会对收集到的Span数据进行处理和分析，生成调用链的拓扑图，展示各个服务节点的调用关系、耗时以及请求状态等。
+> 同时，它还可以提供性能可视化的功能，让用户可以直观地看到系统的运行情况。
+> 故障定位与性能优化：通过链路追踪系统生成的调用链和性能数据，用户可以快速地定位到故障发生的节点，分析性能瓶颈，从而进行相应的优化。
 
 MicroMeter监控链路实现步骤：
 1.添加依赖（略）
@@ -21129,24 +22092,26 @@ MicroMeter监控链路实现步骤：
 @Restcontroller
 public class OrderMicroMetercontroller{
 
-    @Resource
-    private PayFeignApi payFeignApi；
+```
+@Resource
+private PayFeignApi payFeignApi；
 
-    @GetMapping(value ="/feign/microMeter/{id}")
-    public string myMicroMeter(@PathVariable("id")Integer id){
-        return payFeignApi.myMicroMeter(id);
-    }
+@GetMapping(value ="/feign/microMeter/{id}")
+public string myMicroMeter(@PathVariable("id")Integer id){
+    return payFeignApi.myMicroMeter(id);
+}
+```
 
 }
 
 3.配置yaml
 management:
-    zipkin:
-        tracing:
-            endpoint:http://localhost:9411/api/v2/spans
-    tracing:
-        sampling:
-            probability:1.0 #采样率默认为0.1(0.1就是10次只能有一次被记录下来)，值越大收集越及时。
+ zipkin:
+ tracing:
+ endpoint:http://localhost:9411/api/v2/spans
+ tracing:
+ sampling:
+ probability:1.0 #采样率默认为0.1(0.1就是10次只能有一次被记录下来)，值越大收集越及时。
 
 6.GateWay（网关）
 Spring Cloud Gateway是一个由WebFlux、Netty和Reactor实现的响应式API网关，旨在为微服务架构提供简单且有效的API路由管理方式。以下是Spring Cloud Gateway的三大核心概念：
@@ -21160,43 +22125,42 @@ Spring Cloud Gateway支持动态路由和灵活的路由策略，使得路由的
 服务发现与集成：Spring Cloud Gateway能够与Spring Cloud的服务注册与发现组件进行集成，自动发现并路由到可用的服务实例。
 这使得网关能够动态地感知后端服务的状态，并根据需要调整路由规则，从而保证了服务的高可用性和稳定性。
 
-
-
 配置网关路由：
 server:
-    port: 9527
+ port: 9527
 
 spring:
-    application:
-        name:cloud-gateway#以微股务注册进consul或nacos股务列表内
-    cloud:
-        consul:#配置consul地址
-        host:localhost
-        port:8500
-        discovery:
-            prefer-ip-address:true
-            service-name:${spring.application.name} 
-        gateway:
-            routes:
-                -id:pay routh1 #pay routh1 #路由的ID(类似mysql主键ID)，没有固定规则但要求唯一，建议配合服务名#匹配后提供服务的路由地址
-                uri:http://localhost:8001  
-                predicates:
-                    Path=/pay/gateway/get/** # 断言，路径相匹配的进行路由 
+ application:
+ name:cloud-gateway#以微股务注册进consul或nacos股务列表内
+ cloud:
+ consul:#配置consul地址
+ host:localhost
+ port:8500
+ discovery:
+ prefer-ip-address:true
+ service-name:${spring.application.name} 
+gateway:
+ routes:
+ -id:pay routh1 #pay routh1 #路由的ID(类似mysql主键ID)，没有固定规则但要求唯一，建议配合服务名#匹配后提供服务的路由地址
+ uri:http://localhost:8001  
+ predicates:
+ Path=/pay/gateway/get/** # 断言，路径相匹配的进行路由
 
-                -id: pay routh2 #pay routh2 # 路由的ID(类似mysql主键ID)，没有固定规则但要求唯一，建议配合服务名#匹配后提供服务的路由地址
-                uri: http://localhost:8001
-                predicates:
-                    Path=/pay/gateway/info/** # 断言、路径相匹配的进行路由
+```
+            -id: pay routh2 #pay routh2 # 路由的ID(类似mysql主键ID)，没有固定规则但要求唯一，建议配合服务名#匹配后提供服务的路由地址
+            uri: http://localhost:8001
+            predicates:
+                Path=/pay/gateway/info/** # 断言、路径相匹配的进行路由
+```
 
 GateWay主流用法：以服务名动态获取服务URI
 修改配置 uri: lb://cloud-payment-service #微服 务的名字
 
 在注册中心中配置网关：
 spring:  
-  cloud:  
-    nacos:  
-      server-addr: <nacos-server-address> # 替换为Nacos注册中心的实际地址
-
+ cloud:  
+ nacos:  
+ server-addr: <nacos-server-address> # 替换为Nacos注册中心的实际地址
 
 基于Spring Cloud Gateway实现限流：
 Spring Cloud Gateway是Spring Cloud生态系统中的网关组件，它提供了强大的路由和过滤功能，同时也支持限流。
@@ -21205,27 +22169,27 @@ Spring Cloud Gateway是Spring Cloud生态系统中的网关组件，它提供了
 在application.yml文件中配置限流规则。
 yaml
 spring:  
-  cloud:  
-    gateway:  
-      routes:  
-        - id: limit_route  
-          uri: http://localhost:8080  
-          predicates:  
-            - Path=/api/**  
-          filters:  
-            - name: RequestRateLimiter  
-              args:  
-                key-resolver: '#{@remoteAddrKeyResolver}'  
-                redis-rate-limiter.replenishRate: 10  
-                redis-rate-limiter.burstCapacity: 20
+ cloud:  
+ gateway:  
+ routes:  
+ - id: limit_route  
+ uri: http://localhost:8080  
+ predicates:  
+ - Path=/api/**  
+ filters:  
+ - name: RequestRateLimiter  
+ args:  
+ key-resolver: '#{@remoteAddrKeyResolver}'  
+ redis-rate-limiter.replenishRate: 10  
+ redis-rate-limiter.burstCapacity: 20
 实现KeyResolver，用于定义限流键。
 
 @Configuration  
 public class RateLimiterConfig {  
-    @Bean  
-    public KeyResolver remoteAddrKeyResolver() {  
-        return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress());  
-    }  
+ @Bean  
+ public KeyResolver remoteAddrKeyResolver() {  
+ return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress());  
+ }  
 }
 上述配置中，RequestRateLimiter使用Redis限流器，key-resolver定义限流键（这里基于客户端IP地址），redis-rate-limiter.replenishRate表示每秒新增令牌数，redis-rate-limiter.burstCapacity表示令牌桶的最大容量，允许突发流量。
 
@@ -21236,8 +22200,6 @@ public class RateLimiterConfig {
 滑动窗口算法：维护一个时间窗口内的请求数量，当请求数量超过设定的阈值时，拒绝新的请求。滑动窗口算法比计数器算法更精细，能够处理更复杂的限流需求。
 漏桶算法：将请求看作是水滴，将系统处理能力看作是漏桶的容量。当水滴（请求）到达时，如果桶未满，则水滴（请求）进入桶中；如果桶已满，则水滴（请求）被丢弃或排队等待。桶中的水按固定速率流出，表示系统处理请求的能力。
 基于令牌桶的限流：使用一个令牌桶来存储单位时间内的请求令牌。当有新的请求到达时，从桶中获取一个令牌；如果令牌不足，则拒绝请求。令牌的生成速度可以根据实际情况进行调整，以达到不同的限流效果。
-
-
 
 在网关上做鉴权认证如何实现？
 网关鉴权认证是指在网络请求到达最终服务之前，通过网关进行身份验证和权限检查的过程。这种机制通过网关对请求进行预处理，确保请求者具有访问权限，是确保系统安全的重要手段之一。
@@ -21271,7 +22233,6 @@ Spring Cloud Gateway提供了丰富的功能和灵活的扩展机制，使得网
 性能：鉴权认证过程可能会对系统的性能产生一定影响。因此，在设计鉴权认证流程时，需要考虑性能优化措施，如缓存Token验证结果等。
 兼容性：在选择鉴权认证方法时，需要考虑与现有系统的兼容性。确保新的鉴权认证机制能够平滑地集成到现有系统中，不会对现有业务造成影响。
 
-
 网关鉴权认证对比：有哪些场景只能用网关做鉴权认证而不能用SpringSecurity做鉴权认证？
 在探讨哪些场景只能用网关做鉴权认证而不能用SpringSecurity做鉴权认证时，我们首先要明确网关和SpringSecurity在鉴权认证中的不同角色和特性。
 网关通常位于系统的边缘，作为外部请求进入内部服务的唯一入口。它负责路由请求、流量控制、安全保护等任务，其中包括对请求的鉴权认证。网关的鉴权认证具有全局性、集中性和高效性的特点，可以对所有进入系统的请求进行统一的身份验证和权限检查。
@@ -21297,8 +22258,6 @@ Spring Cloud Gateway提供了丰富的功能和灵活的扩展机制，使得网
 相比之下，SpringSecurity虽然也提供了强大的安全功能，但在某些情况下可能无法达到与网关相同的性能和安全性水平。
 
 综上所述，虽然SpringSecurity是一个功能强大且易于使用的身份验证和授权框架，但在一些特定场景中，网关的鉴权认证可能更为合适。这些场景包括多服务架构中的统一认证、对外部服务的访问控制、跨域请求的处理以及性能和安全性的权衡等。
-
-
 
 另一种分布式管理的工具：
 Dubbo：
@@ -21334,14 +22293,15 @@ Simple注册中心
 Dubbo优缺点
 优点：
 透明化的远程方法调用
+
 - 像调用本地方法一样调用远程方法；只需简单配置，没有任何API侵入。
-软负载均衡及容错机制
-可在内网替代nginx lvs等硬件负载均衡器。
-服务注册中心自动注册 & 配置管理
--不需要写死服务提供者地址，注册中心基于接口名自动查询提供者ip。
-使用类似zookeeper等分布式协调服务作为服务注册中心，可以将绝大部分项目配置移入zookeeper集群。
-服务接口监控与治理
--Dubbo-admin与Dubbo-monitor提供了完善的服务接口管理与监控功能，针对不同应用的不同接口，可以进行 多版本，多协议，多注册中心管理。
+  软负载均衡及容错机制
+  可在内网替代nginx lvs等硬件负载均衡器。
+  服务注册中心自动注册 & 配置管理
+  -不需要写死服务提供者地址，注册中心基于接口名自动查询提供者ip。
+  使用类似zookeeper等分布式协调服务作为服务注册中心，可以将绝大部分项目配置移入zookeeper集群。
+  服务接口监控与治理
+  -Dubbo-admin与Dubbo-monitor提供了完善的服务接口管理与监控功能，针对不同应用的不同接口，可以进行 多版本，多协议，多注册中心管理。
 
 缺点：
 只支持JAVA语言
@@ -21351,12 +22311,11 @@ Dubbo优缺点
 服务接口
 首先，定义一个公共的服务接口，这个接口将被服务提供者和消费者共享。
 
-package com.example.dubbo.demo.api;  
-  
-public interface DemoService {  
-    String sayHello(String name);  
-}
+package com.example.dubbo.demo.api;
 
+public interface DemoService {  
+ String sayHello(String name);  
+}
 
 服务提供者
 接下来，实现服务接口，并将其作为Dubbo服务暴露。
@@ -21364,47 +22323,45 @@ public interface DemoService {
 application.yml（Dubbo配置）
 
 spring:  
-  application:  
-    name: dubbo-demo-provider  
-  
-dubbo:  
-  application:  
-    name: dubbo-demo-provider  
-  registry:  
-    address: zookeeper://127.0.0.1:2181 # 使用Zookeeper作为注册中心  
-  protocol:  
-    name: dubbo  
-    port: 20880
+ application:  
+ name: dubbo-demo-provider
 
+dubbo:  
+ application:  
+ name: dubbo-demo-provider  
+ registry:  
+ address: zookeeper://127.0.0.1:2181 # 使用Zookeeper作为注册中心  
+ protocol:  
+ name: dubbo  
+ port: 20880
 
 DemoServiceImpl.java（服务实现）
 
-package com.example.dubbo.demo.provider;  
-  
+package com.example.dubbo.demo.provider;
+
 import com.example.dubbo.demo.api.DemoService;  
-import org.apache.dubbo.config.annotation.Service;  
-  
+import org.apache.dubbo.config.annotation.Service;
+
 @Service // Dubbo的@Service注解，用于暴露服务  
 public class DemoServiceImpl implements DemoService {  
-    @Override  
-    public String sayHello(String name) {  
-        return "Hello, " + name;  
-    }  
+ @Override  
+ public String sayHello(String name) {  
+ return "Hello, " + name;  
+ }  
 }
-
 
 ProviderApplication.java（Spring Boot启动类）
 
-package com.example.dubbo.demo.provider;  
-  
+package com.example.dubbo.demo.provider;
+
 import org.springframework.boot.SpringApplication;  
-import org.springframework.boot.autoconfigure.SpringBootApplication;  
-  
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 @SpringBootApplication  
 public class ProviderApplication {  
-    public static void main(String[] args) {  
-        SpringApplication.run(ProviderApplication.class, args);  
-    }  
+ public static void main(String[] args) {  
+ SpringApplication.run(ProviderApplication.class, args);  
+ }  
 }
 
 服务消费者
@@ -21415,53 +22372,52 @@ pom.xml（添加必要的依赖，与服务提供者相同）
 application.yml（Dubbo配置）
 
 spring:  
-  application:  
-    name: dubbo-demo-consumer  
-  
+ application:  
+ name: dubbo-demo-consumer
+
 dubbo:  
-  application:  
-    name: dubbo-demo-consumer  
-  registry:  
-    address: zookeeper://127.0.0.1:2181 # 使用相同的注册中心
-
-
+ application:  
+ name: dubbo-demo-consumer  
+ registry:  
+ address: zookeeper://127.0.0.1:2181 # 使用相同的注册中心
 
 ConsumerController.java（控制器，用于调用远程服务）
 
-package com.example.dubbo.demo.consumer;  
-  
+package com.example.dubbo.demo.consumer;
+
 import com.example.dubbo.demo.api.DemoService;  
 import org.apache.dubbo.config.annotation.Reference;  
 import org.springframework.web.bind.annotation.GetMapping;  
 import org.springframework.web.bind.annotation.RequestParam;  
-import org.springframework.web.bind.annotation.RestController;  
-  
+import org.springframework.web.bind.annotation.RestController;
+
 @RestController  
-public class ConsumerController {  
-  
-    @Reference // Dubbo的@Reference注解，用于引用远程服务  
-    private DemoService demoService;  
-  
-    @GetMapping("/hello")  
-    public String sayHello(@RequestParam String name) {  
-        return demoService.sayHello(name);  
-    }  
+public class ConsumerController {
+
+```
+@Reference // Dubbo的@Reference注解，用于引用远程服务  
+private DemoService demoService;  
+
+@GetMapping("/hello")  
+public String sayHello(@RequestParam String name) {  
+    return demoService.sayHello(name);  
+}  
+```
+
 }
-
-
 
 ConsumerApplication.java（Spring Boot启动类）
 
-package com.example.dubbo.demo.consumer;  
-  
+package com.example.dubbo.demo.consumer;
+
 import org.springframework.boot.SpringApplication;  
-import org.springframework.boot.autoconfigure.SpringBootApplication;  
-  
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 @SpringBootApplication  
 public class ConsumerApplication {  
-    public static void main(String[] args) {  
-        SpringApplication.run(ConsumerApplication.class, args);  
-    }  
+ public static void main(String[] args) {  
+ SpringApplication.run(ConsumerApplication.class, args);  
+ }  
 }
 
 dubbo的常见注解：
@@ -21473,76 +22429,75 @@ dubbo的常见注解：
 @Method：配置方法级别参数。
 @Activate：激活扩展点。
 
-
 dubbo的工作原理：
 Dubbo 是一款高性能的 Java RPC 框架，工作原理如下：
 
 1. 服务提供者（Provider）
-服务暴露：Provider 启动时，将服务接口注册到注册中心（如 Zookeeper）。
-服务实现：Provider 实现服务接口，处理 Consumer 的请求。
-
+  服务暴露：Provider 启动时，将服务接口注册到注册中心（如 Zookeeper）。
+  服务实现：Provider 实现服务接口，处理 Consumer 的请求。
+  
 2. 注册中心（Registry）
-服务注册：Provider 将服务信息（如 IP、端口、接口名）注册到 Registry。
-服务发现：Consumer 从 Registry 获取 Provider 的地址列表。
-
+  服务注册：Provider 将服务信息（如 IP、端口、接口名）注册到 Registry。
+  服务发现：Consumer 从 Registry 获取 Provider 的地址列表。
+  
 3. 服务消费者（Consumer）
-服务引用：Consumer 启动时，从 Registry 获取 Provider 地址列表。
-远程调用：Consumer 通过动态代理调用 Provider 的服务，支持多种协议（如 Dubbo、HTTP）。
-
+  服务引用：Consumer 启动时，从 Registry 获取 Provider 地址列表。
+  远程调用：Consumer 通过动态代理调用 Provider 的服务，支持多种协议（如 Dubbo、HTTP）。
+  
 4. 监控中心（Monitor）
-调用统计：Provider 和 Consumer 将调用数据（如调用次数、耗时）上报到 Monitor。
-服务治理：通过 Monitor 进行服务监控和治理。
-
+  调用统计：Provider 和 Consumer 将调用数据（如调用次数、耗时）上报到 Monitor。
+  服务治理：通过 Monitor 进行服务监控和治理。
+  
 5. 负载均衡
-策略选择：Consumer 根据配置的负载均衡策略（如随机、轮询）选择合适的 Provider。
-
+  策略选择：Consumer 根据配置的负载均衡策略（如随机、轮询）选择合适的 Provider。
+  
 6. 集群容错
-容错机制：Consumer 在调用失败时，根据配置的容错策略（如失败重试、快速失败）进行处理。
-
+  容错机制：Consumer 在调用失败时，根据配置的容错策略（如失败重试、快速失败）进行处理。
+  
 7. 服务降级
-降级策略：在高负载或故障时，Provider 或 Consumer 可降级部分功能，保证核心服务。
-
+  降级策略：在高负载或故障时，Provider 或 Consumer 可降级部分功能，保证核心服务。
+  
 8. 配置管理
-动态配置：通过配置中心（如 Zookeeper、Nacos）动态调整服务参数。
-
+  动态配置：通过配置中心（如 Zookeeper、Nacos）动态调整服务参数。
+  
 9. 通信协议
-协议支持：支持多种协议（如 Dubbo、RMI、HTTP），默认使用 Dubbo 协议。
-
+  协议支持：支持多种协议（如 Dubbo、RMI、HTTP），默认使用 Dubbo 协议。
+  
 10. 序列化
-数据序列化：支持多种序列化方式（如 Hessian、JSON），默认使用 Hessian2。
-
-
+  数据序列化：支持多种序列化方式（如 Hessian、JSON），默认使用 Hessian2。
+  
 
 dubbo是如何实现负载均衡的？
 Dubbo 通过多种负载均衡策略来实现服务调用的均衡分配，确保请求合理分布到多个服务提供者上。以下是 Dubbo 支持的负载均衡策略及其实现方式：
 
 1. 随机（Random）
-实现方式：随机选择一个服务提供者。
-适用场景：适合大多数场景，尤其是服务提供者性能相近时。
-
+  实现方式：随机选择一个服务提供者。
+  适用场景：适合大多数场景，尤其是服务提供者性能相近时。
+  
 2. 轮询（Round Robin）
-实现方式：按顺序依次选择服务提供者，循环往复。
-适用场景：适合服务提供者性能相近的场景。
-
+  实现方式：按顺序依次选择服务提供者，循环往复。
+  适用场景：适合服务提供者性能相近的场景。
+  
 3. 最少活跃调用（Least Active）
-实现方式：选择当前活跃请求数最少的服务提供者。
-适用场景：适合服务提供者性能差异较大的场景，能有效分配负载。
-
+  实现方式：选择当前活跃请求数最少的服务提供者。
+  适用场景：适合服务提供者性能差异较大的场景，能有效分配负载。
+  
 4. 一致性哈希（Consistent Hash）
-实现方式：根据请求参数进行哈希计算，确保相同参数的请求总是落到同一服务提供者。
-适用场景：适合需要会话保持或缓存命中的场景。
-
+  实现方式：根据请求参数进行哈希计算，确保相同参数的请求总是落到同一服务提供者。
+  适用场景：适合需要会话保持或缓存命中的场景。
+  
 5. 加权随机（Weighted Random）
-实现方式：根据服务提供者的权重随机选择，权重越高被选中的概率越大。
-适用场景：适合服务提供者性能不均的场景。
-
+  实现方式：根据服务提供者的权重随机选择，权重越高被选中的概率越大。
+  适用场景：适合服务提供者性能不均的场景。
+  
 6. 加权轮询（Weighted Round Robin）
-实现方式：根据权重轮询选择服务提供者，权重越高被选中的次数越多。
-适用场景：适合服务提供者性能不均的场景。
-
+  实现方式：根据权重轮询选择服务提供者，权重越高被选中的次数越多。
+  适用场景：适合服务提供者性能不均的场景。
+  
 7. 最短响应时间（Shortest Response）
-实现方式：选择响应时间最短的服务提供者。
-适用场景：适合对响应时间敏感的场景。
+  实现方式：选择响应时间最短的服务提供者。
+  适用场景：适合对响应时间敏感的场景。
+  
 
 配置方式
 负载均衡策略可以在服务提供者或消费者端配置，优先级为：消费者 > 提供者。
@@ -21553,35 +22508,35 @@ Dubbo 通过多种负载均衡策略来实现服务调用的均衡分配，确�
 消费端配置
 <dubbo:reference interface="com.example.Service" loadbalance="leastactive" />
 
-
 dubbo的注册中心挂了，provider还能不能调用consumer？
 在 Dubbo 中，注册中心的主要作用是服务发现和服务治理。如果注册中心挂了，已经建立连接的 Provider 和 Consumer 仍然可以正常通信，但新的服务发现和注册会受到影响。
 
 1. Provider 和 Consumer 已建立连接
-通信正常：如果 Consumer 已经成功从注册中心获取了 Provider 地址，并且与 Provider 建立了连接，即使注册中心挂了，双方仍能继续通信。
-原因：Dubbo 的通信是基于直接的网络连接（如 TCP），不依赖注册中心。
-
+  通信正常：如果 Consumer 已经成功从注册中心获取了 Provider 地址，并且与 Provider 建立了连接，即使注册中心挂了，双方仍能继续通信。
+  原因：Dubbo 的通信是基于直接的网络连接（如 TCP），不依赖注册中心。
+  
 2. 新的 Consumer 无法发现 Provider
-服务发现中断：如果注册中心挂了，新的 Consumer 无法从注册中心获取 Provider 的地址，因此无法调用服务。
-服务注册中断：新的 Provider 也无法将自身注册到注册中心，导致 Consumer 无法发现这些新 Provider。
-
+  服务发现中断：如果注册中心挂了，新的 Consumer 无法从注册中心获取 Provider 的地址，因此无法调用服务。
+  服务注册中断：新的 Provider 也无法将自身注册到注册中心，导致 Consumer 无法发现这些新 Provider。
+  
 3. Dubbo 的容错机制
-本地缓存：Dubbo 的 Consumer 会在本地缓存 Provider 的地址列表。即使注册中心挂了，Consumer 仍然可以使用缓存中的地址调用 Provider。
-重试机制：Dubbo 提供了重试机制，在调用失败时会尝试其他 Provider。
-
+  本地缓存：Dubbo 的 Consumer 会在本地缓存 Provider 的地址列表。即使注册中心挂了，Consumer 仍然可以使用缓存中的地址调用 Provider。
+  重试机制：Dubbo 提供了重试机制，在调用失败时会尝试其他 Provider。
+  
 4. 注册中心恢复后的行为
-Provider 重新注册：注册中心恢复后，Provider 会重新注册自己的服务。
-Consumer 重新订阅：Consumer 会重新从注册中心拉取最新的 Provider 列表，并更新本地缓存。
-
+  Provider 重新注册：注册中心恢复后，Provider 会重新注册自己的服务。
+  Consumer 重新订阅：Consumer 会重新从注册中心拉取最新的 Provider 列表，并更新本地缓存。
+  
 5. 高可用建议
-多注册中心：Dubbo 支持配置多个注册中心，避免单点故障。
-本地缓存：确保 Consumer 启用了本地缓存，以便在注册中心不可用时继续使用缓存中的地址。
-健康检查：Dubbo 会定期检查 Provider 的健康状态，自动剔除不可用的节点。
-
+  多注册中心：Dubbo 支持配置多个注册中心，避免单点故障。
+  本地缓存：确保 Consumer 启用了本地缓存，以便在注册中心不可用时继续使用缓存中的地址。
+  健康检查：Dubbo 会定期检查 Provider 的健康状态，自动剔除不可用的节点。
+  
 
 dubbo如何配置高可用？
+
 1. 多注册中心
-Dubbo 支持配置多个注册中心，避免单点故障。
+  Dubbo 支持配置多个注册中心，避免单点故障。
 
 配置方式：
 <dubbo:registry id="registry1" address="zookeeper://127.0.0.1:2181" />
@@ -21591,7 +22546,7 @@ Dubbo 支持配置多个注册中心，避免单点故障。
 作用：当一个注册中心不可用时，Dubbo 会自动切换到其他注册中心。
 
 2. 负载均衡
-Dubbo 提供了多种负载均衡策略，确保请求均匀分布到多个 Provider。
+  Dubbo 提供了多种负载均衡策略，确保请求均匀分布到多个 Provider。
 
 配置方式：
 <dubbo:service interface="com.example.Service" loadbalance="roundrobin" />
@@ -21604,7 +22559,7 @@ Dubbo 提供了多种负载均衡策略，确保请求均匀分布到多个 Prov
 一致性哈希（consistenthash）
 
 3. 集群容错
-Dubbo 提供了多种集群容错策略，确保在部分 Provider 不可用时系统仍能正常运行。
+  Dubbo 提供了多种集群容错策略，确保在部分 Provider 不可用时系统仍能正常运行。
 
 配置方式：
 <dubbo:service interface="com.example.Service" cluster="failover" />
@@ -21619,7 +22574,7 @@ Forking：并行调用多个 Provider，只要一个成功即返回。
 Broadcast：广播调用所有 Provider，任意一个报错则报错。
 
 4. 服务降级
-在系统压力过大或部分服务不可用时，可以通过服务降级保证核心服务的可用性。
+  在系统压力过大或部分服务不可用时，可以通过服务降级保证核心服务的可用性。
 
 配置方式：
 <dubbo:reference interface="com.example.Service" mock="return null" />
@@ -21627,7 +22582,7 @@ Broadcast：广播调用所有 Provider，任意一个报错则报错。
 Mock 实现：在服务不可用时返回默认值或执行本地 Mock 逻辑。
 
 5. 超时与重试
-通过配置超时时间和重试次数，避免因网络或服务问题导致请求长时间阻塞。
+  通过配置超时时间和重试次数，避免因网络或服务问题导致请求长时间阻塞。
 
 配置方式：
 <dubbo:service interface="com.example.Service" timeout="1000" retries="2" />
@@ -21638,7 +22593,7 @@ timeout：超时时间（毫秒）。
 retries：重试次数（不包括第一次调用）。
 
 6. 本地缓存
-Consumer 会缓存 Provider 的地址列表，即使注册中心不可用，也能继续调用服务。
+  Consumer 会缓存 Provider 的地址列表，即使注册中心不可用，也能继续调用服务。
 
 配置方式：
 <dubbo:registry address="zookeeper://127.0.0.1:2181" file="/tmp/dubbo.cache" />
@@ -21646,7 +22601,7 @@ Consumer 会缓存 Provider 的地址列表，即使注册中心不可用，也�
 作用：注册中心不可用时，Consumer 可以从本地缓存中读取 Provider 地址。
 
 7. 健康检查
-Dubbo 会定期检查 Provider 的健康状态，自动剔除不可用的节点。
+  Dubbo 会定期检查 Provider 的健康状态，自动剔除不可用的节点。
 
 配置方式：
 <dubbo:provider heartbeat="60000" />
@@ -21654,28 +22609,27 @@ Dubbo 会定期检查 Provider 的健康状态，自动剔除不可用的节点�
 作用：通过心跳机制检测 Provider 是否存活。
 
 8. 多协议支持
-Dubbo 支持多种通信协议（如 Dubbo、HTTP、RMI 等），可以根据需求选择合适的协议。
+  Dubbo 支持多种通信协议（如 Dubbo、HTTP、RMI 等），可以根据需求选择合适的协议。
 
 配置方式：
 <dubbo:protocol name="dubbo" port="20880" />
 <dubbo:protocol name="http" port="8080" />
 
 9. 服务分组与版本控制
-通过分组和版本控制，可以实现灰度发布和蓝绿部署。
+  通过分组和版本控制，可以实现灰度发布和蓝绿部署。
 
 配置方式：
 <dubbo:service interface="com.example.Service" group="group1" version="1.0.0" />
 <dubbo:reference interface="com.example.Service" group="group1" version="1.0.0" />
 
 10. 监控与治理
-Dubbo 提供了丰富的监控和治理功能，可以通过 Dubbo Admin 或 Prometheus 监控服务状态。
+  Dubbo 提供了丰富的监控和治理功能，可以通过 Dubbo Admin 或 Prometheus 监控服务状态。
 
 配置方式：
 <dubbo:monitor protocol="registry" />
 
 总结
 通过多注册中心、负载均衡、集群容错、服务降级、超时重试、本地缓存等机制，Dubbo 能够实现高可用性。具体配置可以根据实际需求灵活调整，确保系统在异常情况下仍能稳定运行。
-
 
 分布式应用程序协调服务：
 什么是注册中心？
@@ -21689,7 +22643,6 @@ Dubbo 提供了丰富的监控和治理功能，可以通过 Dubbo Admin 或 Pro
 服务注册：服务实例将自身服务信息注册到注册中心
 服务发现：服务实例通过注册中心，获取到注册到其中的服务实例的信息，通过这些信息去请求它们提供的服务
 服务剔除：服务注册中心将出问题的服务自动剔除到可用列表之外，使其不会被调用到
-
 
 Zookeeper：注册中心
 eureka：注册中心
@@ -21729,9 +22682,8 @@ filebeat隶属于beats。目前beats包含四种工具：
 （3）filebeat（搜集文件数据）
 （4）winlogbeat（搜集windows事件日志数据）
 
-
-
 # 安全：
+
 登录-安全框架Spring security：
 Spring Security是一个能够为基于Spring的企业应用系统提供声明式的安全访问控制解决方案的安全框架。
 它提供了一组可以在Spring应用上下文中配置的Bean，充分利用了Spring IoC，DI（控制反转Inversion of Control ,DI:Dependency Injection 依赖注入）和AOP（面向切面编程）功能，为应用系统提供声明式的安全访问控制功能，减少了为企业系统安全控制编写大量重复代码的工作。
@@ -21744,7 +22696,8 @@ Spring Security的登录密码校验一般流程为：
 如果用户已经登录，访问一个受限资源的时候，程序要根据url去数据库中取出该资源所对应的所有可以访问的角色，然后拿着当前用户的所有角色一一对比，判断用户是否可以访问（这里就是和权限相关）。
 
 创建一个配置类，配置Spring Security以启用JWT认证。您需要配置JWT的过滤器以验证和解析令牌。以下是一个示例配置：
-``` java
+
+```java
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21755,7 +22708,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -21764,7 +22717,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest().authenticated();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-    
+
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
@@ -21774,7 +22727,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 创建登录端点：
 创建一个登录端点，用户可以通过该端点进行身份验证，并生成JWT令牌。
-``` java
+
+```java
 @RestController
 @RequestMapping("/api")
 public class AuthenticationController {
@@ -21790,6 +22744,7 @@ public class AuthenticationController {
     }
 }
 ```
+
 这些步骤只是整合Spring Security和JWT的基本步骤。您还需要根据您的项目需求进一步定制和实现这些部分。
 确保配置Spring Security和JWT的过滤器以进行身份验证，生成和验证JWT令牌，并提供登录端点用于用户登录。
 
@@ -21809,7 +22764,7 @@ FilterSecurityInterceptor会创建一个FilterInvocation对象，该对象封装
 根据配置的安全策略（如注解、表达式等），访问决策管理器会评估用户的权限和角色。
 如果用户具有访问资源的权限，则请求会继续处理；否则，会抛出访问拒绝异常。
 
->SpringSecurity的实现原理是什么，基于哪些核心设计模式去实现的?
+> SpringSecurity的实现原理是什么，基于哪些核心设计模式去实现的?
 
 ### 一、Spring Security 的实现原理
 
@@ -21821,7 +22776,7 @@ Spring Security 的核心原理可以概括为：**一条过滤器链，对进�
 flowchart TD
     A[客户端请求] --> B[Servlet Filter Chain]
     B --> C[Spring Security Filter Chain]
-    
+
     subgraph C [Security 过滤器链（部分核心）]
         direction TB
         C1[SecurityContextPersistenceFilter]
@@ -21833,7 +22788,7 @@ flowchart TD
     C -- 遍历执行过滤器 --> D{是否认证/授权?}
     D -- 认证失败或权限不足 --> E[ExceptionTranslationFilter 处理]
     E -- 引导认证或返回403 --> F[返回响应]
-    
+
     D -- 认证/授权通过 --> G[执行业务逻辑]
     G --> H[返回响应]
 ```
@@ -21844,23 +22799,23 @@ flowchart TD
 
 Spring Security 的功能是通过一系列内置的 `Filter` 组成的链条来实现的。这些过滤器按顺序执行，每个都有特定的职责。一些关键的过滤器包括：
 
-*   **SecurityContextPersistenceFilter：** **请求开始时**，它从 Session（如果配置了）中获取安全上下文（`SecurityContext`，包含用户认证信息）并设置到 `SecurityContextHolder` 中；**请求结束后**，它清理 `SecurityContextHolder` 并可能将 `SecurityContext` 保存回 Session。
-*   **UsernamePasswordAuthenticationFilter：** 处理表单登录。它拦截登录请求（默认是 `/login` POST），尝试从请求中提取用户名和密码，创建一个 `UsernamePasswordAuthenticationToken`（一种 `Authentication` 对象）并进行认证。
-*   **ExceptionTranslationFilter：** 这个过滤器不进行实际的认证或授权，而是**处理过滤器链中抛出的异常**。它将 `AccessDeniedException`（访问被拒绝）和 `AuthenticationException`（认证失败）转换成相应的 HTTP 响应，如重定向到登录页或返回 403 错误。
-*   **FilterSecurityInterceptor：** 这是过滤器链的**最后一关**，负责进行**访问控制（授权）**。它从 `SecurityContextHolder` 中获取已认证的用户信息，然后根据配置的权限规则（在 `HttpSecurity` 中配置的 `.antMatchers().hasRole(...)` 等）来决定是允许访问还是抛出 `AccessDeniedException`。
+- **SecurityContextPersistenceFilter：** **请求开始时**，它从 Session（如果配置了）中获取安全上下文（`SecurityContext`，包含用户认证信息）并设置到 `SecurityContextHolder` 中；**请求结束后**，它清理 `SecurityContextHolder` 并可能将 `SecurityContext` 保存回 Session。
+- **UsernamePasswordAuthenticationFilter：** 处理表单登录。它拦截登录请求（默认是 `/login` POST），尝试从请求中提取用户名和密码，创建一个 `UsernamePasswordAuthenticationToken`（一种 `Authentication` 对象）并进行认证。
+- **ExceptionTranslationFilter：** 这个过滤器不进行实际的认证或授权，而是**处理过滤器链中抛出的异常**。它将 `AccessDeniedException`（访问被拒绝）和 `AuthenticationException`（认证失败）转换成相应的 HTTP 响应，如重定向到登录页或返回 403 错误。
+- **FilterSecurityInterceptor：** 这是过滤器链的**最后一关**，负责进行**访问控制（授权）**。它从 `SecurityContextHolder` 中获取已认证的用户信息，然后根据配置的权限规则（在 `HttpSecurity` 中配置的 `.antMatchers().hasRole(...)` 等）来决定是允许访问还是抛出 `AccessDeniedException`。
 
 #### 2. 核心认证流程
 
 认证的核心是 `AuthenticationManager`。
 
-1.  **发起认证：** 一个过滤器（如 `UsernamePasswordAuthenticationFilter`）捕获到认证请求（如登录），并创建一个 `Authentication` 对象（此时是未认证状态，`isAuthenticated()` 为 `false`）。
-2.  **委托认证：** 过滤器调用 `AuthenticationManager` 的 `authenticate(Authentication)` 方法。
-3.  **处理认证：** `AuthenticationManager` 本身是一个调度器，它通常将认证任务**委托**给一个或多个 `AuthenticationProvider`。
-4.  **实际认证：** `AuthenticationProvider` 负责执行特定类型的认证逻辑。例如：
-    *   `DaoAuthenticationProvider` 是最常用的一个，它使用 `UserDetailsService` 来根据用户名加载用户信息（`UserDetails`），然后比较密码是否匹配。
-5.  **认证结果：**
-    *   **成功：** `AuthenticationProvider` 返回一个**已认证**的 `Authentication` 对象（`isAuthenticated()` 为 `true`），其中包含用户的权限信息（`GrantedAuthority`）。
-    *   **失败：** 抛出 `AuthenticationException`。
+1. **发起认证：** 一个过滤器（如 `UsernamePasswordAuthenticationFilter`）捕获到认证请求（如登录），并创建一个 `Authentication` 对象（此时是未认证状态，`isAuthenticated()` 为 `false`）。
+2. **委托认证：** 过滤器调用 `AuthenticationManager` 的 `authenticate(Authentication)` 方法。
+3. **处理认证：** `AuthenticationManager` 本身是一个调度器，它通常将认证任务**委托**给一个或多个 `AuthenticationProvider`。
+4. **实际认证：** `AuthenticationProvider` 负责执行特定类型的认证逻辑。例如：
+  - `DaoAuthenticationProvider` 是最常用的一个，它使用 `UserDetailsService` 来根据用户名加载用户信息（`UserDetails`），然后比较密码是否匹配。
+5. **认证结果：**
+  - **成功：** `AuthenticationProvider` 返回一个**已认证**的 `Authentication` 对象（`isAuthenticated()` 为 `true`），其中包含用户的权限信息（`GrantedAuthority`）。
+  - **失败：** 抛出 `AuthenticationException`。
 
 #### 3. 安全上下文存储
 
@@ -21876,68 +22831,70 @@ Spring Security 的优雅架构很大程度上归功于其对经典设计模式�
 
 > **这是最核心的模式，构成了整个安全框架的骨架。**
 
-*   **体现：** 整个 Spring Security 的防护就是通过一个 `Filter` 链条（`FilterChainProxy` 内部维护了多个安全过滤器链）实现的。
-*   **作用：** 每个过滤器负责一个特定的安全任务（如持久化上下文、处理登录、处理异常、进行授权）。请求像“击鼓传花”一样在链中传递，每个过滤器处理自己关心的部分，实现了**职责分离**，使得系统非常灵活和可扩展。你可以轻松地添加、移除或替换过滤器。
+- **体现：** 整个 Spring Security 的防护就是通过一个 `Filter` 链条（`FilterChainProxy` 内部维护了多个安全过滤器链）实现的。
+- **作用：** 每个过滤器负责一个特定的安全任务（如持久化上下文、处理登录、处理异常、进行授权）。请求像“击鼓传花”一样在链中传递，每个过滤器处理自己关心的部分，实现了**职责分离**，使得系统非常灵活和可扩展。你可以轻松地添加、移除或替换过滤器。
 
 #### 2. 代理模式
 
 > **用于封装和控制。**
 
-*   **体现：**
-    *   `FilterChainProxy` 是代理模式的典型应用。Spring Boot 应用中，实际的过滤器链并不是直接注册到 Servlet 容器，而是由 `FilterChainProxy` 这个“代理”来统一管理。它将请求委托给内部定义的一系列 Spring Security 过滤器。
-    *   在方法级安全（`@PreAuthorize` 等）中，Spring 使用 AOP（动态代理）来包装目标 Bean。当调用被保护的方法时，代理会先拦截调用，执行安全检查和授权逻辑，然后再决定是否调用实际的方法。
+- **体现：**
+  - `FilterChainProxy` 是代理模式的典型应用。Spring Boot 应用中，实际的过滤器链并不是直接注册到 Servlet 容器，而是由 `FilterChainProxy` 这个“代理”来统一管理。它将请求委托给内部定义的一系列 Spring Security 过滤器。
+  - 在方法级安全（`@PreAuthorize` 等）中，Spring 使用 AOP（动态代理）来包装目标 Bean。当调用被保护的方法时，代理会先拦截调用，执行安全检查和授权逻辑，然后再决定是否调用实际的方法。
 
 #### 3. 模板方法模式
 
 > **用于定义算法骨架，将特定步骤延迟到子类。**
 
-*   **体现：** `AbstractAuthenticationProcessingFilter` 是一个完美的例子。它定义了处理认证请求的通用流程：
-    1.  尝试认证（`attemptAuthentication`） - **抽象方法，由子类实现**
-    2.  认证成功处理（`successfulAuthentication`）
-    3.  认证失败处理（`unsuccessfulAuthentication`）
-*   **作用：** `UsernamePasswordAuthenticationFilter` 只需要继承它，并实现 `attemptAuthentication` 方法来提取用户名和密码即可，复用了一套完整的认证前后处理逻辑（如 Session 处理、跳转等）。
+- **体现：** `AbstractAuthenticationProcessingFilter` 是一个完美的例子。它定义了处理认证请求的通用流程：
+  1. 尝试认证（`attemptAuthentication`） - **抽象方法，由子类实现**
+  2. 认证成功处理（`successfulAuthentication`）
+  3. 认证失败处理（`unsuccessfulAuthentication`）
+- **作用：** `UsernamePasswordAuthenticationFilter` 只需要继承它，并实现 `attemptAuthentication` 方法来提取用户名和密码即可，复用了一套完整的认证前后处理逻辑（如 Session 处理、跳转等）。
 
 #### 4. 建造者模式
 
 > **用于简化复杂对象的构造过程。**
 
-*   **体现：** Spring Security 的配置类（特别是 `HttpSecurity`）大量使用了建造者模式。
-    ```java
-    http
-        .authorizeRequests(authorize -> authorize
-            .antMatchers("/public/**").permitAll()
-            .antMatchers("/admin/**").hasRole("ADMIN")
-            .anyRequest().authenticated()
-        )
-        .formLogin(withDefaults())
-        .httpBasic(withDefaults());
-    ```
-*   **作用：** 通过这种**流式 API**，我们可以清晰地、一步一步地构建出复杂的安全配置规则，代码可读性极高。
+- **体现：** Spring Security 的配置类（特别是 `HttpSecurity`）大量使用了建造者模式。
+  
+  ```java
+  http
+      .authorizeRequests(authorize -> authorize
+          .antMatchers("/public/**").permitAll()
+          .antMatchers("/admin/**").hasRole("ADMIN")
+          .anyRequest().authenticated()
+      )
+      .formLogin(withDefaults())
+      .httpBasic(withDefaults());
+  ```
+  
+- **作用：** 通过这种**流式 API**，我们可以清晰地、一步一步地构建出复杂的安全配置规则，代码可读性极高。
 
 #### 5. 策略模式
 
 > **用于定义一族可互换的算法。**
 
-*   **体现：**
-    *   `AuthenticationManager` 的 `authenticate` 方法是一个策略接口。`ProviderManager` 是其实现，它内部维护了一个 `List<AuthenticationProvider>` 列表，这就是不同的认证“策略”。你可以同时拥有基于数据库的、基于 LDAP 的、基于 JWT 的多种认证策略。
-    *   `UserDetailsService` 是一个加载用户数据的策略接口。你可以提供基于数据库、内存、或其他任何数据源的实现。
-    *   `AccessDecisionManager` 负责最终的授权决策，它可以使用 `AffirmativeBased`（一票通过）、`ConsensusBased`（少数服从多数）等不同的投票策略。
-*   **作用：** 提供了极高的**灵活性和可扩展性**，允许开发者根据需要注入不同的实现策略。
+- **体现：**
+  - `AuthenticationManager` 的 `authenticate` 方法是一个策略接口。`ProviderManager` 是其实现，它内部维护了一个 `List<AuthenticationProvider>` 列表，这就是不同的认证“策略”。你可以同时拥有基于数据库的、基于 LDAP 的、基于 JWT 的多种认证策略。
+  - `UserDetailsService` 是一个加载用户数据的策略接口。你可以提供基于数据库、内存、或其他任何数据源的实现。
+  - `AccessDecisionManager` 负责最终的授权决策，它可以使用 `AffirmativeBased`（一票通过）、`ConsensusBased`（少数服从多数）等不同的投票策略。
+- **作用：** 提供了极高的**灵活性和可扩展性**，允许开发者根据需要注入不同的实现策略。
 
 #### 6. 观察者模式
 
-*   **体现：** Spring Security 拥有完善的事件机制，例如 `AuthenticationSuccessEvent`（认证成功事件）、`AuthenticationFailureEvent`（认证失败事件）等。
-*   **作用：** 应用可以监听这些安全事件，在认证授权的不同生命周期节点执行自定义逻辑（如记录审计日志、发送通知等），实现了与核心安全流程的**解耦**。
+- **体现：** Spring Security 拥有完善的事件机制，例如 `AuthenticationSuccessEvent`（认证成功事件）、`AuthenticationFailureEvent`（认证失败事件）等。
+- **作用：** 应用可以监听这些安全事件，在认证授权的不同生命周期节点执行自定义逻辑（如记录审计日志、发送通知等），实现了与核心安全流程的**解耦**。
 
 #### 7. 装饰器模式
 
-*   **体现：** 在处理密码时，`PasswordEncoder` 接口的实现有时会使用装饰器来增加功能。例如，可以使用一个装饰器来为密码编码过程添加日志记录或性能监控，而不需要修改原有的编码器逻辑。
-*   **作用：** 动态地给对象添加额外的职责，提供了比继承更灵活的功能扩展方式。
+- **体现：** 在处理密码时，`PasswordEncoder` 接口的实现有时会使用装饰器来增加功能。例如，可以使用一个装饰器来为密码编码过程添加日志记录或性能监控，而不需要修改原有的编码器逻辑。
+- **作用：** 动态地给对象添加额外的职责，提供了比继承更灵活的功能扩展方式。
 
 ### 总结
 
 | 设计模式 | 在 Spring Security 中的体现 | 解决的问题 |
-| :--- | :--- | :--- |
+| --- | --- | --- |
 | **责任链模式** | `Filter` 链条 | 解耦请求处理过程，使各安全职责单一、灵活可配 |
 | **代理模式** | `FilterChainProxy`, AOP 方法拦截 | 集中管理，控制访问，增加安全逻辑 |
 | **模板方法模式** | `AbstractAuthenticationProcessingFilter` | 定义认证流程骨架，复用通用逻辑 |
@@ -21947,21 +22904,21 @@ Spring Security 的优雅架构很大程度上归功于其对经典设计模式�
 
 Spring Security 通过将这些设计模式精妙地组合在一起，构建了一个既强大、灵活又易于扩展的安全框架。理解这些模式，对于深入掌握 Spring Security 和编写高质量的安全代码至关重要。
 
-
 Shiro：
 Shiro是一个Java安全框架，它提供了身份验证、授权、密码和会话管理等安全特性。Shiro可以帮助开发者快速构建安全的应用程序，包括Web应用、移动应用和企业级应用。
 
 使用Shiro进行登录身份验证：
 
 1.创建Shiro的认证类
-``` java
+
+```java
 package com.yourcompany.yourapp.yourpackage;  
-  
+
 import org.apache.shiro.authc.*;  
 import org.apache.shiro.realm.AuthenticatingRealm;  
 import org.apache.shiro.subject.PrincipalCollection;  
 import java.util.*;  
-  
+
 public class CustomAuthenticationRealm extends AuthenticatingRealm {  
     @Override  
     protected AuthenticationInfo doGetAuthenticationInfo(PrincipalCollection pc) throws AuthenticationException {  
@@ -21975,8 +22932,10 @@ public class CustomAuthenticationRealm extends AuthenticatingRealm {
     }   
 }
 ```
+
 2.使用Shiro进行安全验证
-``` java
+
+```java
 @RestController  
 public class MyController {  
     @RequestMapping("/secure")  
@@ -21987,62 +22946,66 @@ public class MyController {
     }  
 }
 ```
+
 使用Shiro进行密码管理：
 
-
 1. 配置Shiro Realm：
-创建一个自定义的Shiro Realm，这个Realm负责处理认证和授权的逻辑，包括密码的验证和存储。
-扩展 AuthorizingRealm 类，并实现 doGetAuthenticationInfo 方法来处理密码验证。
-``` java
-   public class CustomRealm extends AuthorizingRealm {
-       // 实现认证逻辑
-       @Override
-       protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-           UsernamePasswordToken upToken = (UsernamePasswordToken) token;
-           String username = upToken.getUsername();
-           // 获取用户的密码（通常从数据库中查询）
-           String storedPassword = getPasswordFromDatabase(username);
-
-           if (storedPassword == null) {
-               throw new UnknownAccountException("User not found.");
-           }
-
-           return new SimpleAuthenticationInfo(username, storedPassword, getName());
-       }
-
-       // 从数据库获取用户的密码（模拟）
-       private String getPasswordFromDatabase(String username) {
-           // 这里可以连接数据库查询用户密码
-           // 通常需要使用加密的密码存储方式，例如BCrypt
-           return "hashed_password"; // 替换为实际的密码
-       }
-   }
-```
-
+  创建一个自定义的Shiro Realm，这个Realm负责处理认证和授权的逻辑，包括密码的验证和存储。
+  扩展 AuthorizingRealm 类，并实现 doGetAuthenticationInfo 方法来处理密码验证。
+  
+  ```java
+  public class CustomRealm extends AuthorizingRealm {
+      // 实现认证逻辑
+      @Override
+      protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+          UsernamePasswordToken upToken = (UsernamePasswordToken) token;
+          String username = upToken.getUsername();
+          // 获取用户的密码（通常从数据库中查询）
+          String storedPassword = getPasswordFromDatabase(username);
+  
+          if (storedPassword == null) {
+              throw new UnknownAccountException("User not found.");
+          }
+  
+          return new SimpleAuthenticationInfo(username, storedPassword, getName());
+      }
+  
+      // 从数据库获取用户的密码（模拟）
+      private String getPasswordFromDatabase(String username) {
+          // 这里可以连接数据库查询用户密码
+          // 通常需要使用加密的密码存储方式，例如BCrypt
+          return "hashed_password"; // 替换为实际的密码
+      }
+  }
+  ```
+  
 2. 存储密码安全：
-在实际应用中，开发者应该存储用户密码的哈希值而不是明文密码。
-Shiro本身不提供密码哈希功能，所以你可以使用其他库如BCrypt或PBKDF2来安全地存储密码。以下是一个示例使用BCrypt的方法：
-``` java
-import org.mindrot.jbcrypt.BCrypt;
+  在实际应用中，开发者应该存储用户密码的哈希值而不是明文密码。
+  Shiro本身不提供密码哈希功能，所以你可以使用其他库如BCrypt或PBKDF2来安全地存储密码。以下是一个示例使用BCrypt的方法：
+  
+  ```java
+  import org.mindrot.jbcrypt.BCrypt;
+  ```
+  
 
 // 生成并存储BCrypt哈希密码
 String plainPassword = "password";
 String hashedPassword = BCrypt.hashpw(plainPassword, BCrypt.gensalt());
 // 存储hashedPassword到数据库
-```
 
+````
 3. 配置Shiro SecurityManager：
    在Shiro配置中，创建 SecurityManager 并将自定义的Realm添加到 SecurityManager 中。
 ``` java
 DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 securityManager.setRealm(yourCustomRealm);
 SecurityUtils.setSecurityManager(securityManager);
-```   
-   
-4. 使用Shiro验证密码：
-   在用户登录时，使用Shiro来验证用户提供的密码。Shiro会自动从Realm中获取用户的密码进行验证。
+````
 
-``` java
+4. 使用Shiro验证密码：
+  在用户登录时，使用Shiro来验证用户提供的密码。Shiro会自动从Realm中获取用户的密码进行验证。
+
+```java
 UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 try {
     SecurityUtils.getSubject().login(token);
@@ -22050,12 +23013,12 @@ try {
 } catch (AuthenticationException e) {
     // 登录失败
 }
-```   
+```
 
 这是一个基本的使用Shiro进行密码管理的示例。在实际应用中，开发者需要根据具体需求来配置Shiro的Realm、密码哈希算法、密码策略等。
 确保密码存储和验证的安全性，以保护用户的凭据。
 
->Java在处理敏感数据的时候如何实现数据的安全性？
+> Java在处理敏感数据的时候如何实现数据的安全性？
 
 使用加密算法：Java提供了多种加密算法，如AES、DES、RSA等，可以对敏感数据进行加密，保护数据不被非法获取。
 使用安全协议：Java提供了SSL/TLS协议，可以用于实现加密通信，保证数据在传输过程中的安全性。
@@ -22063,9 +23026,7 @@ try {
 权限控制：Java可以通过权限控制机制，如Java安全管理器（Security Manager），对敏感数据进行访问控制，防止非法访问和操作。
 数据备份：对于重要的敏感数据，应该定期备份，并存储到安全的地方，以防止数据丢失或损坏。
 
-
-
->Java后端是如何对密文数据进行存储、使用的？
+> Java后端是如何对密文数据进行存储、使用的？
 
 ### 核心原则：数据安全分层
 
@@ -22077,21 +23038,22 @@ try {
 
 这是最经典、最安全的场景。**密码**是典型的“只需要比对，不需要知道具体是什么”的数据。
 
-*   **后端存储方式：哈希（Hashing）**
-    *   **流程：**
-        1.  用户注册时，前端将密码加密传输到后端。
-        2.  后端对密码进行一次**不可逆的哈希计算**（例如使用 bcrypt, Argon2 等强哈希算法），并加上一个随机的“盐值”以抵御彩虹表攻击。
-        3.  后端只存储最终的**哈希值**，**绝对不存储明文密码或其加密后的密文**。
-    *   **登录校验流程：**
-        1.  用户登录，输入密码，前端加密传输。
-        2.  后端收到加密的密码后，进行解密（在内存中进行），然后对解密后的密码**进行完全相同的哈希计算**。
-        3.  将计算出的哈希值与数据库中存储的哈希值进行**比对**。
-        4.  如果一致，则密码正确；否则，错误。
-        5.  **关键点：** 比对完成后，内存中的明文密码会被立即清除。服务器**从未**将用户的明文密码持久化到硬盘或数据库中。
-
-*   **为什么用哈希？**
-    *   **绝对安全：** 即使是数据库管理员或攻击者入侵了数据库，他们拿到的也只是哈希值，无法反推出原始密码。
-    *   **不可逆：** 哈希是单向函数，设计上就无法解密。
+- **后端存储方式：哈希（Hashing）**
+  
+  - **流程：**
+    1. 用户注册时，前端将密码加密传输到后端。
+    2. 后端对密码进行一次**不可逆的哈希计算**（例如使用 bcrypt, Argon2 等强哈希算法），并加上一个随机的“盐值”以抵御彩虹表攻击。
+    3. 后端只存储最终的**哈希值**，**绝对不存储明文密码或其加密后的密文**。
+  - **登录校验流程：**
+    1. 用户登录，输入密码，前端加密传输。
+    2. 后端收到加密的密码后，进行解密（在内存中进行），然后对解密后的密码**进行完全相同的哈希计算**。
+    3. 将计算出的哈希值与数据库中存储的哈希值进行**比对**。
+    4. 如果一致，则密码正确；否则，错误。
+    5. **关键点：** 比对完成后，内存中的明文密码会被立即清除。服务器**从未**将用户的明文密码持久化到硬盘或数据库中。
+- **为什么用哈希？**
+  
+  - **绝对安全：** 即使是数据库管理员或攻击者入侵了数据库，他们拿到的也只是哈希值，无法反推出原始密码。
+  - **不可逆：** 哈希是单向函数，设计上就无法解密。
 
 ---
 
@@ -22099,20 +23061,20 @@ try {
 
 身份证号在某些业务中（例如金融、实名认证）需要与官方渠道进行核验，或者需要向用户完整展示。因此，不能使用不可逆的哈希，因为后端需要知道它的“原文”。
 
-*   **后端存储方式：加密（Encryption）**
-    *   **流程：**
-        1.  用户提交身份证号，前端加密传输到后端。
-        2.  后端接收到数据后，使用一个**只有后端知道的、高度保密的密钥** 对身份证号进行**对称加密**（例如使用 AES-256-GCM 算法），生成密文。
-        3.  将密文存储到数据库中。
-    *   **登录校验流程：**
-        1.  用户登录时，输入身份证号，前端加密传输。
-        2.  后端收到数据后，先解密得到明文A（在内存中）。
-        3.  后端去数据库取出对应账号的身份证密文，用相同的密钥解密，得到明文B（在内存中）。
-        4.  在内存中对比明文A和明文B是否一致。
-        5.  比对完成后，立即从内存中清除两个明文。
-    *   **关键点：**
-        *   **密钥管理是关键：** 加密密钥的安全性至关重要。它必须与数据库分开存储（例如使用硬件安全模块 HSM、云服务商的密钥管理服务 KMS，或配置在服务器的环境变量中），绝不能写在代码里或放在数据库里。
-        *   **内存安全：** 加解密操作都在内存中进行，且明文在内存中的存活时间应尽可能短。
+- **后端存储方式：加密（Encryption）**
+  - **流程：**
+    1. 用户提交身份证号，前端加密传输到后端。
+    2. 后端接收到数据后，使用一个**只有后端知道的、高度保密的密钥** 对身份证号进行**对称加密**（例如使用 AES-256-GCM 算法），生成密文。
+    3. 将密文存储到数据库中。
+  - **登录校验流程：**
+    1. 用户登录时，输入身份证号，前端加密传输。
+    2. 后端收到数据后，先解密得到明文A（在内存中）。
+    3. 后端去数据库取出对应账号的身份证密文，用相同的密钥解密，得到明文B（在内存中）。
+    4. 在内存中对比明文A和明文B是否一致。
+    5. 比对完成后，立即从内存中清除两个明文。
+  - **关键点：**
+    - **密钥管理是关键：** 加密密钥的安全性至关重要。它必须与数据库分开存储（例如使用硬件安全模块 HSM、云服务商的密钥管理服务 KMS，或配置在服务器的环境变量中），绝不能写在代码里或放在数据库里。
+    - **内存安全：** 加解密操作都在内存中进行，且明文在内存中的存活时间应尽可能短。
 
 ---
 
@@ -22120,18 +23082,17 @@ try {
 
 这是一个更复杂的场景。如果数据被加密存储，如何对它进行模糊查询（如“姓张的人”）或精确查询？
 
-*   **解决方案：**
-    1.  **可搜索加密：** 一种前沿密码学技术，允许在密文上进行计算和搜索，但性能开销大，尚未大规模应用。
-    2.  **在应用层处理：** 将所有数据加载到应用内存中解密，然后进行查询。这仅适用于极小数据集，不现实。
-    3.  ** token化：** 用一个无意义的、可逆的令牌（Token）代替原始数据存储和搜索。令牌本身不暴露信息，需要时再通过安全的令牌化服务换取真实数据。
-    4.  **最常用方案：密文索引/哈希前缀（权衡安全与性能）：**
-        *   在存储完整加密数据的同时，**额外存储一个不可逆的哈希值**（例如对身份证号前6位和后4位进行哈希）作为索引。
-        *   查询时，用户输入完整信息，后端用同样的方式计算哈希值，然后在数据库里匹配这个哈希索引。这可以实现**精确匹配查询**，但无法进行模糊查询。这是一种安全与功能的折衷。
+- **解决方案：**
+  1. **可搜索加密：** 一种前沿密码学技术，允许在密文上进行计算和搜索，但性能开销大，尚未大规模应用。
+  2. **在应用层处理：** 将所有数据加载到应用内存中解密，然后进行查询。这仅适用于极小数据集，不现实。
+  3. ** token化：** 用一个无意义的、可逆的令牌（Token）代替原始数据存储和搜索。令牌本身不暴露信息，需要时再通过安全的令牌化服务换取真实数据。
+  4. **最常用方案：密文索引/哈希前缀（权衡安全与性能）：**
+    - 在存储完整加密数据的同时，**额外存储一个不可逆的哈希值**（例如对身份证号前6位和后4位进行哈希）作为索引。
+    - 查询时，用户输入完整信息，后端用同样的方式计算哈希值，然后在数据库里匹配这个哈希索引。这可以实现**精确匹配查询**，但无法进行模糊查询。这是一种安全与功能的折衷。
 
-
->如何对上传文件做必要的安全管理？
-对上传文件进行安全管理是Web应用开发中至关重要的一环，处理不当可能导致严重的安全漏洞，例如服务器被植入恶意脚本、病毒传播、数据泄露等。
-一个健壮的文件上传安全管理策略应该是**多层次、纵深防御**的，涵盖了从客户端到服务器端，再到最终存储和访问的每一个环节。
+> 如何对上传文件做必要的安全管理？
+> 对上传文件进行安全管理是Web应用开发中至关重要的一环，处理不当可能导致严重的安全漏洞，例如服务器被植入恶意脚本、病毒传播、数据泄露等。
+> 一个健壮的文件上传安全管理策略应该是**多层次、纵深防御**的，涵盖了从客户端到服务器端，再到最终存储和访问的每一个环节。
 
 ---
 
@@ -22139,11 +23100,13 @@ try {
 
 前端控制主要是为了提升用户体验，减轻服务器压力，**绝不能**作为安全防御的手段，因为它可以被轻易绕过。
 
-1.  **文件类型限制**：通过 `accept` 属性限制用户可选择文件的类型。
-    ```html
-    <input type="file" accept=".jpg,.jpeg,.png,.pdf">
-    ```
-2.  **文件大小限制**：在提交前通过JavaScript检查文件大小，并给用户即时反馈。
+1. **文件类型限制**：通过 `accept` 属性限制用户可选择文件的类型。
+  
+  ```html
+  <input type="file" accept=".jpg,.jpeg,.png,.pdf">
+  ```
+  
+2. **文件大小限制**：在提交前通过JavaScript检查文件大小，并给用户即时反馈。
 
 **核心原则**：所有前端验证都必须在后端**再次、严格地**进行验证。
 
@@ -22154,94 +23117,103 @@ try {
 这是文件上传安全的核心，所有检查都必须在服务器端进行。
 
 #### 1. 文件大小限制
-*   在服务器端（如Nginx、应用服务器）配置最大文件上传大小，防止攻击者通过超大文件耗尽服务器资源（DoS攻击）。
+
+- 在服务器端（如Nginx、应用服务器）配置最大文件上传大小，防止攻击者通过超大文件耗尽服务器资源（DoS攻击）。
 
 #### 2. 文件类型验证（多重校验）
+
 不要相信客户端传来的任何信息，包括文件名和MIME类型。
 
-*   **检查MIME类型**：读取文件内容的头部字节，判断其真实的MIME类型，而不是依赖 `Content-Type` 请求头。
-    *   例如，一个JPEG文件的开头字节总是 `FF D8 FF E0`。
-*   **检查文件扩展名**：使用一个**白名单**机制，只允许预定义的安全扩展名（如 `.jpg`, `.png`, `.pdf`）。**绝对不要使用黑名单**，因为很容易被绕过。
-    *   例如，如果一个文件被检测为JPEG图像，那么它的扩展名也必须是 `.jpg` 或 `.jpeg`。
+- **检查MIME类型**：读取文件内容的头部字节，判断其真实的MIME类型，而不是依赖 `Content-Type` 请求头。
+  - 例如，一个JPEG文件的开头字节总是 `FF D8 FF E0`。
+- **检查文件扩展名**：使用一个**白名单**机制，只允许预定义的安全扩展名（如 `.jpg`, `.png`, `.pdf`）。**绝对不要使用黑名单**，因为很容易被绕过。
+  - 例如，如果一个文件被检测为JPEG图像，那么它的扩展名也必须是 `.jpg` 或 `.jpeg`。
 
 #### 3. 文件名安全处理
-*   **重命名文件**：永远不要使用用户上传的文件名。应为文件生成一个随机的、唯一的文件名（如UUID），并保留正确的扩展名。
-    *   `a1b2c3d4e5f6.jpg` 比 `我的照片.jpg` 或 `../../../malware.php.jpg` 安全得多。
-*   **过滤特殊字符**：如果必须保留原文件名，务必严格过滤 `../`, `NULL` 字节、路径分隔符等，防止路径遍历攻击。
+
+- **重命名文件**：永远不要使用用户上传的文件名。应为文件生成一个随机的、唯一的文件名（如UUID），并保留正确的扩展名。
+  - `a1b2c3d4e5f6.jpg` 比 `我的照片.jpg` 或 `../../../malware.php.jpg` 安全得多。
+- **过滤特殊字符**：如果必须保留原文件名，务必严格过滤 `../`, `NULL` 字节、路径分隔符等，防止路径遍历攻击。
 
 #### 4. 文件内容安全检查
+
 这是最后一道，也是极其重要的一道防线。
 
-*   **病毒/恶意软件扫描**：
-    *   对上传的文件进行病毒扫描。可以使用ClamAV等开源工具或商业杀毒软件的API。这对于允许上传文档（如PDF、DOCX）的应用尤为重要，因为这些文件可能包含恶意宏或脚本。
-*   **图片文件处理**：
-    *   对图片进行**重采样/重压缩**。这个过程可以剥离掉嵌入在图片元数据（如EXIF）中的恶意脚本。
-    *   使用图像处理库（如GD、ImageMagick）将图片调整到所需尺寸。一个被成功处理的图片，其是恶意代码的可能性会大大降低。
-*   **防止WebShell**：
-    *   如果上传目录被设置为可执行，攻击者上传一个恶意脚本文件（如 `.php`, `.jsp`）并访问它，就能控制服务器。
-    *   **最佳实践**：将文件上传到一个**Web根目录之外**的专用目录。然后通过一个无法直接访问的脚本（如PHP的 `readfile()`）或一个**静态资源服务器**来代理访问这些文件，确保文件内容被安全地发送给用户，而不会在服务器上执行。
+- **病毒/恶意软件扫描**：
+  - 对上传的文件进行病毒扫描。可以使用ClamAV等开源工具或商业杀毒软件的API。这对于允许上传文档（如PDF、DOCX）的应用尤为重要，因为这些文件可能包含恶意宏或脚本。
+- **图片文件处理**：
+  - 对图片进行**重采样/重压缩**。这个过程可以剥离掉嵌入在图片元数据（如EXIF）中的恶意脚本。
+  - 使用图像处理库（如GD、ImageMagick）将图片调整到所需尺寸。一个被成功处理的图片，其是恶意代码的可能性会大大降低。
+- **防止WebShell**：
+  - 如果上传目录被设置为可执行，攻击者上传一个恶意脚本文件（如 `.php`, `.jsp`）并访问它，就能控制服务器。
+  - **最佳实践**：将文件上传到一个**Web根目录之外**的专用目录。然后通过一个无法直接访问的脚本（如PHP的 `readfile()`）或一个**静态资源服务器**来代理访问这些文件，确保文件内容被安全地发送给用户，而不会在服务器上执行。
 
 ---
 
 ### 第三层：存储与访问策略
 
 #### 1. 存储路径隔离
-*   如上所述，将用户上传的文件存储在Web服务器无法直接执行的路径下。例如：
-    *   Web根目录：`/var/www/html/`
-    *   上传文件目录：`/var/app_uploads/` (此目录不应包含任何可执行脚本)
+
+- 如上所述，将用户上传的文件存储在Web服务器无法直接执行的路径下。例如：
+  - Web根目录：`/var/www/html/`
+  - 上传文件目录：`/var/app_uploads/` (此目录不应包含任何可执行脚本)
 
 #### 2. 访问控制
-*   实现权限验证。在提供下载/访问服务的前端脚本中，检查当前用户是否有权限查看该文件。
-*   设置正确的HTTP头：
-    *   `Content-Disposition: attachment`：强制浏览器下载而非执行文件。
-    *   正确的 `Content-Type` 头，防止浏览器错误地解析文件（如将文本文件当作HTML执行）。
+
+- 实现权限验证。在提供下载/访问服务的前端脚本中，检查当前用户是否有权限查看该文件。
+- 设置正确的HTTP头：
+  - `Content-Disposition: attachment`：强制浏览器下载而非执行文件。
+  - 正确的 `Content-Type` 头，防止浏览器错误地解析文件（如将文本文件当作HTML执行）。
 
 #### 3. 静态资源服务
-*   使用Nginx/Apache的 `X-Accel-Redirect` (Nginx) 或 `X-Sendfile` (Apache) 特性，由Web服务器高效、安全地提供已授权文件，同时将业务逻辑与文件服务解耦。
+
+- 使用Nginx/Apache的 `X-Accel-Redirect` (Nginx) 或 `X-Sendfile` (Apache) 特性，由Web服务器高效、安全地提供已授权文件，同时将业务逻辑与文件服务解耦。
 
 ---
 
 ### 第四层：运维与监控
 
 #### 1. 权限最小化
-*   运行Web服务器的用户对上传目录应只有**写入**权限，而**没有执行**权限。
+
+- 运行Web服务器的用户对上传目录应只有**写入**权限，而**没有执行**权限。
 
 #### 2. 日志记录
-*   详细记录所有文件上传操作：谁、什么时候、上传了什么文件（原文件名和新文件名）、文件大小、IP地址等。这对于安全审计和事故追踪至关重要。
+
+- 详细记录所有文件上传操作：谁、什么时候、上传了什么文件（原文件名和新文件名）、文件大小、IP地址等。这对于安全审计和事故追踪至关重要。
 
 #### 3. 定期安全审计与清理
-*   定期检查上传目录，清理未被引用的“孤儿文件”。
-*   保持服务器、图像处理库、病毒库等所有相关组件的更新。
+
+- 定期检查上传目录，清理未被引用的“孤儿文件”。
+- 保持服务器、图像处理库、病毒库等所有相关组件的更新。
 
 ---
 
 ### 总结：一个安全的上传流程示例
 
-1.  **用户选择**：用户通过前端 `<input type="file">` 选择文件。
-2.  **前端检查**：（可选）检查文件大小和类型，给出友好提示。
-3.  **上传至服务器**：文件被发送到后端API。
-4.  **后端校验**：
-    *   检查文件大小是否在限制内。
-    *   检查文件扩展名是否在白名单内。
-    *   读取文件头，验证真实的MIME类型是否与扩展名匹配。
-5.  **深度检测**：
-    *   对文件进行病毒扫描。
-    *   （如果是图片）使用图像库进行缩放/重压缩。
-6.  **安全存储**：
-    *   生成一个随机文件名（如 `uuid.jpg`）。
-    *   将文件保存到Web根目录之外的指定路径（如 `/app/uploads/uuid.jpg`）。
-    *   在数据库中记录原始文件名、随机文件名、上传者等信息。
-7.  **安全访问**：
-    *   当用户请求查看文件时，后端先验证用户权限。
-    *   通过一个安全的文件服务脚本（或Nginx的 `X-Accel-Redirect`）从隔离目录中读取文件流，并设置正确的HTTP头，返回给用户。
+1. **用户选择**：用户通过前端 `<input type="file">` 选择文件。
+2. **前端检查**：（可选）检查文件大小和类型，给出友好提示。
+3. **上传至服务器**：文件被发送到后端API。
+4. **后端校验**：
+  - 检查文件大小是否在限制内。
+  - 检查文件扩展名是否在白名单内。
+  - 读取文件头，验证真实的MIME类型是否与扩展名匹配。
+5. **深度检测**：
+  - 对文件进行病毒扫描。
+  - （如果是图片）使用图像库进行缩放/重压缩。
+6. **安全存储**：
+  - 生成一个随机文件名（如 `uuid.jpg`）。
+  - 将文件保存到Web根目录之外的指定路径（如 `/app/uploads/uuid.jpg`）。
+  - 在数据库中记录原始文件名、随机文件名、上传者等信息。
+7. **安全访问**：
+  - 当用户请求查看文件时，后端先验证用户权限。
+  - 通过一个安全的文件服务脚本（或Nginx的 `X-Accel-Redirect`）从隔离目录中读取文件流，并设置正确的HTTP头，返回给用户。
 
 通过遵循这套多层次、纵深防御的策略，您可以极大地降低因文件上传功能而引入的安全风险。
 
-
-
 常用的密码加密方式：
->哈希算法加密
-哈希算法是一种常用于加密和数据完整性验证的技术。它将任意长度的输入数据映射为固定长度的输出，通常是一个固定长度的哈希值。这个过程是单向的，即从哈希值无法还原出原始数据。因此，哈希算法通常用于存储密码、验证数据完整性等场景。
+
+> 哈希算法加密
+> 哈希算法是一种常用于加密和数据完整性验证的技术。它将任意长度的输入数据映射为固定长度的输出，通常是一个固定长度的哈希值。这个过程是单向的，即从哈希值无法还原出原始数据。因此，哈希算法通常用于存储密码、验证数据完整性等场景。
 
 以下是一些哈希算法加密的关键特性和应用：
 
@@ -22255,8 +23227,8 @@ try {
 常见的哈希算法包括MD5、SHA-1、SHA-256等。然而，由于计算能力的提升和一些算法漏洞的发现，一些哈希算法已经被认为不再安全，推荐使用更安全的算法，如SHA-256。
 在密码存储方面，推荐使用带有盐（salt）的哈希算法，以提高安全性。盐是一个随机值，与密码结合使用，使得相同的密码在不同用户之间产生不同的哈希值。
 
->盐值
-盐值（Salt）在密码学中，是指通过在密码任意固定位置插入特定的字符串，让散列后的结果和使用原始密码的散列结果不相符。这种加入随机数据片段（即盐值）的方法，与密码结合在一起后再进行哈希处理，可以有效增强密码存储的安全性。
+> 盐值
+> 盐值（Salt）在密码学中，是指通过在密码任意固定位置插入特定的字符串，让散列后的结果和使用原始密码的散列结果不相符。这种加入随机数据片段（即盐值）的方法，与密码结合在一起后再进行哈希处理，可以有效增强密码存储的安全性。
 
 要保证相同的密码在不同用户之间产生不同的哈希值，可以采用以下方法：
 
@@ -22280,10 +23252,9 @@ try {
 需要注意的是，尽管加盐可以提高安全性，但MD5本身已经不再被认为是安全的哈希函数。因为它容易受到多种攻击，如碰撞攻击。因此，在需要高安全性的场合，建议使用更安全的哈希算法，如SHA-256或Argon2等。
 这些算法具有更高的抗冲突性和更强的计算能力要求，能够提供更高级别的安全性保障。
 
-
->对称加密
-对称加密是一种加密方法，它使用相同的密钥（称为密钥）来进行加密和解密数据。在对称加密中，发送方和接收方必须共享相同的密钥，这样他们就能够互相加密和解密彼此传递的信息。
-对称加密的速度通常很快，因为它只涉及一个密钥，但它也面临一些安全性方面的挑战。
+> 对称加密
+> 对称加密是一种加密方法，它使用相同的密钥（称为密钥）来进行加密和解密数据。在对称加密中，发送方和接收方必须共享相同的密钥，这样他们就能够互相加密和解密彼此传递的信息。
+> 对称加密的速度通常很快，因为它只涉及一个密钥，但它也面临一些安全性方面的挑战。
 
 以下是对称加密的一些关键特点和用途：
 
@@ -22295,9 +23266,8 @@ try {
 
 常见的对称加密算法包括DES（Data Encryption Standard）、3DES、AES（Advanced Encryption Standard）等。AES目前是最常用的对称加密算法之一，由于其高度的安全性和性能表现，广泛应用于安全通信和数据加密领域。
 
-
->非对称加密
-非对称加密，也称为公钥加密，是一种使用一对密钥来进行加密和解密的加密技术。这一对密钥包括公钥和私钥，它们是数学相关的，但在使用上有着不同的功能。公钥可以公开分享，而私钥必须保持机密。
+> 非对称加密
+> 非对称加密，也称为公钥加密，是一种使用一对密钥来进行加密和解密的加密技术。这一对密钥包括公钥和私钥，它们是数学相关的，但在使用上有着不同的功能。公钥可以公开分享，而私钥必须保持机密。
 
 以下是非对称加密的一些关键特点和用途：
 
@@ -22309,32 +23279,37 @@ try {
 
 常见的非对称加密算法包括RSA（Rivest–Shamir–Adleman）、DSA（Digital Signature Algorithm）、ECC（Elliptic Curve Cryptography）等。RSA是其中最为广泛应用的非对称加密算法之一。
 
-
 基于证书的加密：
 基于证书的加密是一种使用数字证书来实现身份验证和数据加密的加密方法。数字证书是一种由可信的第三方机构颁发的电子文档，用于确认公钥的拥有者身份。基于证书的加密通常与非对称加密技术相结合，以确保通信的安全性和可信度。
 
 以下是基于证书的加密的关键特点和过程：
 
 1. 数字证书：数字证书是包含公钥及其拥有者身份信息的电子文档。证书由证书颁发机构（CA）签名，CA是一个受信任的第三方机构。数字证书通常包含以下信息：
-   - 公钥
-   - 拥有者的身份信息，如名称、电子邮件等
-   - 证书颁发者的数字签名
-   - 证书的有效期限
-
+  
+  - 公钥
+  - 拥有者的身份信息，如名称、电子邮件等
+  - 证书颁发者的数字签名
+  - 证书的有效期限
 2. 证书颁发机构（CA）：CA是负责验证申请者身份并签署数字证书的机构。CA的数字签名用于验证证书的真实性。常见的CA包括Verisign、Let's Encrypt等。
+  
 3. 身份验证：当通信的一方希望与另一方进行安全通信时，它们可以交换数字证书。通过验证证书的签名和有效期，通信双方可以确保对方的身份是合法的。
+  
 4. 密钥交换：一旦身份得到验证，通信的双方可以使用证书中包含的公钥来进行密钥交换。通常，此阶段可以使用非对称加密技术，例如RSA。
+  
 5. 对称加密：一旦密钥交换完成，通信的双方可以使用共享的对称密钥来进行数据加密和解密。对称加密相对较快，因此在保护大量数据的传输中，对称密钥通常用于实际的数据加密。
+  
 6. 加密通信：现在，通信双方可以使用共享的对称密钥加密和解密其通信内容，确保数据的机密性和完整性。
+  
 
 基于证书的加密提供了一种安全且可信的通信方式，因为它结合了数字证书的身份验证和非对称加密的安全性。这种方法常用于安全套接字层（SSL）和传输层安全性（TLS）协议中，以保护网站和网络通信。
 
 网络安全：
 网络安全是通过一系列综合性的措施和技术来保证的，旨在保护网络系统、数据和用户免受未经授权的访问、攻击、破坏或泄露。这些措施和技术构成了一个复杂的防御体系，既包含被动的防护手段，也包含主动的检测和响应机制。
 
->如何保障网络安全？
+> 如何保障网络安全？
 
 ### 一、被动的防护手段
+
 **制定并执行严格的安全管理制度：**
 网络运营者应按照网络安全等级保护制度的要求，制定内部安全管理制度和操作规程，确保网络运行的规范性和安全性。
 确定网络安全负责人，由其负责监督网络安全保护责任的落实，确保各项安全措施得到有效执行。
@@ -22355,6 +23330,7 @@ try {
 定期备份重要数据，并制定灾难恢复计划，以确保在数据丢失或损坏时能够及时恢复。
 
 ### 二、主动的检测和响应机制
+
 **风险评估与策略制定：**
 定期评估网络面临的各种风险，并根据评估结果制定相应的安全策略和计划。
 
@@ -22374,17 +23350,18 @@ try {
 定期接受监管机构的检查和评估，确保网络安全措施的有效性和合规性。
 
 ### 三、两者的结合
+
 网络安全是一个动态的过程，需要不断地更新和完善防御体系以应对新的威胁和挑战。因此，“矛”与“盾”的结合是确保网络安全的关键。一方面，需要不断加强被动的防护手段，提高系统的安全性和稳定性；另一方面，也需要积极运用主动的检测和响应机制，及时发现并应对潜在的安全威胁。
 
 综上所述，网络安全的保证是一个复杂而系统的过程，需要综合运用多种技术手段和管理措施。通过不断地加强防御体系、提高安全意识、遵守法律法规等措施，可以有效地降低网络安全风险并保护网络系统的安全稳定。
 
-
->如何在设计程序时保证网络安全？
-**安全性与便利性常常存在天然的张力**。从代码工程（Code Engineering）的角度来看，安全性不能仅靠“后期加固”，而必须在**设计阶段就作为核心要素**融入整个软件生命周期。
+> 如何在设计程序时保证网络安全？
+> **安全性与便利性常常存在天然的张力**。从代码工程（Code Engineering）的角度来看，安全性不能仅靠“后期加固”，而必须在**设计阶段就作为核心要素**融入整个软件生命周期。
 
 ---
 
 ### 一、默认不信任：零信任架构（Zero Trust Architecture）
+
 > **哲学：永远不要信任任何输入，也不要信任用户、系统或网络。**
 
 - **输入验证**：对所有外部输入（用户输入、文件、API 请求、数据库读取等）进行**严格校验与清洗**。使用白名单而非黑名单。
@@ -22396,6 +23373,7 @@ try {
 ---
 
 ### 二、安全即代码（Security as Code）
+
 > **哲学：安全策略应像功能代码一样被版本控制、测试和自动化。**
 
 - **静态代码分析（SAST）**：在 CI/CD 流程中集成工具（如 SonarQube、Semgrep、CodeQL）自动扫描漏洞。
@@ -22407,12 +23385,13 @@ try {
 ---
 
 ### 三、纵深防御（Defense in Depth）
+
 > **哲学：不依赖单一防线，而是通过多层防护机制降低被突破的风险。**
 
 - **多层验证**：即使前端有校验，后端也必须重新验证；即使 API 有鉴权，数据库层也要有权限控制。
 - **加密分层**：
   - 传输层：使用 TLS 1.3 加密通信。
-  - 存储层：敏感数据加密存储（如使用 AES-256 +  envelope encryption）。
+  - 存储层：敏感数据加密存储（如使用 AES-256 + envelope encryption）。
   - 内存层：防止敏感数据在内存中明文长期驻留（如使用 `SecureString` 或内存加密技术）。
 - **错误处理**：避免泄露堆栈信息或内部结构，统一错误响应，记录日志但不暴露敏感信息。
 
@@ -22421,6 +23400,7 @@ try {
 ---
 
 ### 四、失败安全（Fail Securely）
+
 > **哲学：系统出错时，应默认进入安全状态，而非开放状态。**
 
 - **默认拒绝（Deny by Default）**：访问控制列表（ACL）中，未明确允许的权限一律拒绝。
@@ -22432,6 +23412,7 @@ try {
 ---
 
 ### 五、透明与可审计（Transparency & Auditability）
+
 > **哲学：安全不是一次性行为，而是持续监控与响应的过程。**
 
 - **日志记录**：记录所有关键操作（登录、权限变更、数据访问），并确保日志不可篡改（如使用只追加日志或区块链审计链）。
@@ -22443,6 +23424,7 @@ try {
 ---
 
 ### 六、人机平衡：安全不阻碍生产力
+
 > **哲学：安全机制必须“可理解、可配置、可绕过（在授权下）”，否则会被用户绕过。**
 
 - **开发者体验（DX）**：提供安全的默认配置，减少开发者“踩坑”。例如，框架默认启用 CSRF 保护、自动转义模板输出。
@@ -22455,8 +23437,8 @@ try {
 
 ### 总结：安全设计哲学的工程化落地
 
-| 原则 | 工程实践 |
-|------|----------|
+| 原则  | 工程实践 |
+| --- | --- |
 | 零信任 | 输入验证、最小权限、沙箱运行 |
 | 安全即代码 | SAST/SCA、CI 集成、安全测试 |
 | 纵深防御 | 多层校验、多层加密、错误安全 |
@@ -22467,14 +23449,15 @@ try {
 ---
 
 ### 最后一句话总结：
+
 > **安全不是功能的对立面，而是质量的底线。**  
 > 在代码工程中，**把安全当作“非功能性需求”是最大的误区**——它必须是**功能性需求**，而且是**优先级最高的功能之一**。
-
 
 网络安全威胁：
 网络安全威胁是指任何可能对网络系统、数据或服务造成损害、破坏或未经授权访问的潜在因素。这些威胁可以来自多个方面，包括但不限于恶意软件、网络攻击、数据泄露、身份盗窃等。以下是对网络安全威胁的详细阐述：
 
 ### 1. 恶意软件（Malware）
+
 - **病毒（Viruses）**：附着在正常文件上，通过感染其他文件传播。
 - **蠕虫（Worms）**：自我复制并通过网络传播，不需要宿主文件。
 - **特洛伊木马（Trojans）**：伪装成合法软件，诱使用户安装，从而控制或破坏系统。
@@ -22482,58 +23465,70 @@ try {
 - **间谍软件（Spyware）**：秘密收集用户信息，如浏览习惯、个人数据等。
 
 ### 2. 网络攻击
+
 - **拒绝服务攻击（DoS/DDoS）**：通过大量请求使网络服务瘫痪。
 - **中间人攻击（MitM）**：攻击者拦截通信双方的数据传输，窃取或篡改信息。
 - **SQL注入**：攻击者通过在Web表单输入恶意SQL代码，获取数据库访问权限。
 - **跨站脚本攻击（XSS）**：在网页上注入恶意脚本，窃取用户信息或破坏网站功能。
 
 ### 3. 数据泄露
+
 - **敏感数据泄露**：如个人身份信息、财务数据、商业机密等被未经授权访问或公开。
 - **数据丢失**：由于硬件故障、软件错误或恶意攻击导致数据丢失。
 
 ### 4. 身份盗窃
+
 - **账户盗用**：攻击者通过盗取用户凭证（如用户名和密码）来冒充用户。
 - **社交工程**：通过欺骗手段获取用户敏感信息，如假冒客服、钓鱼邮件等。
 
 ### 5. 内部威胁
+
 - **恶意内部人员**：有权限访问敏感数据的员工或合作伙伴故意泄露或破坏数据。
 - **无意失误**：员工因疏忽或缺乏安全意识而泄露敏感信息。
 
 ### 6. 供应链攻击
+
 - **第三方供应商**：攻击者通过渗透供应链中的薄弱环节，间接攻击目标组织。
 - **软件漏洞**：利用软件供应商的漏洞，将恶意代码植入合法软件中。
 
 ### 7. 物联网（IoT）威胁
+
 - **设备漏洞**：物联网设备可能存在安全漏洞，被攻击者利用。
 - **僵尸网络（Botnets）**：大量被感染的物联网设备被控制，用于发起大规模网络攻击。
 
 ### 8. 云安全威胁
+
 - **数据泄露**：云服务中的数据可能因配置错误或攻击而泄露。
 - **账户劫持**：攻击者通过盗取云服务账户凭证，控制云资源。
 
 ### 9. 移动安全威胁
+
 - **恶意应用**：通过应用商店或第三方渠道传播的恶意移动应用。
 - **设备丢失或被盗**：移动设备丢失可能导致敏感数据泄露。
 
 ### 10. 社会工程学
+
 - **钓鱼攻击**：通过伪造的电子邮件、短信或网站诱骗用户泄露敏感信息。
 - **假冒身份**：攻击者冒充可信任的个人或机构，获取敏感信息。
 
 ### 11.高危漏洞
+
 - **零日漏洞**：指软件或系统中未被开发者发现、尚未发布补丁的安全漏洞。攻击者在漏洞公开前（即“第0天”）就已知晓并利用，因此防御方毫无准备。
 - **后门**：开发者或攻击者故意植入的隐蔽入口，绕过正常认证机制，直接获取系统控制权。
 
 ### 12.高级持续性威胁
+
 - **震网病毒（Stuxnet，2010）**：破坏伊朗核设施，使用了4个零日漏洞，是全球首个公开的国家级网络武器。
 - **UNC3886组织攻击Juniper路由器（2024）**：利用漏洞植入后门，长期潜伏于关键网络设备中。
 
 ### 13.国家级间谍软件
+
 - **“三角测量”攻击（2023）**：针对iPhone的零点击漏洞攻击，植入间谍软件，无需用户交互即可完全控制设备。
 - **Google Play间谍软件事件**：101款安卓应用中植入间谍SDK，下载量超4.2亿次。
 
 ### 总结
-网络安全威胁是多方面的，不断变化的。随着技术的发展，新的威胁不断出现。组织和个人需要持续更新安全措施，提高安全意识，以应对这些威胁。
 
+网络安全威胁是多方面的，不断变化的。随着技术的发展，新的威胁不断出现。组织和个人需要持续更新安全措施，提高安全意识，以应对这些威胁。
 
 搜索引擎：
 搜索引擎的原理：
@@ -22569,7 +23564,6 @@ replica shard 副本分片
 
 在Elasticsearch中，建立索引的过程是通过定义一个映射（mapping）来完成的。映射定义了索引的结构，包括字段的类型、分析器、索引选项等。
 
-
 Elasticsearch中的索引有什么特点？
 在Elasticsearch中，索引具有以下特点：
 
@@ -22584,7 +23578,6 @@ Elasticsearch中的索引有什么特点？
 
 总之，Elasticsearch中的索引具有数据组织、分片和复制、多种索引类型、动态映射、近实时搜索、查询功能强大、可扩展性和灵活的配置选项等特点，这些特点使得Elasticsearch成为一个强大、灵活和可靠的搜索引擎。
 
-
 Elasticsearch中如何建立索引？
 创建一个索引：使用PUT请求和index端点来创建一个新的索引。例如，要创建一个名为my_index的索引，可以使用以下命令：
 PUT /my_index
@@ -22592,23 +23585,23 @@ PUT /my_index
 定义映射：在创建索引时，需要定义一个映射来指定索引的结构。映射定义了每个字段的类型、分析器和其他索引选项。可以使用PUT请求和mapping端点来定义映射。例如，以下命令定义了一个名为my_index的索引的映射：
 PUT /my_index/_mapping  
 {  
-  "properties": {  
-    "title": {  
-      "type": "text"  
-    },  
-    "content": {  
-      "type": "text",  
-      "analyzer": "standard"  
-    }  
-  }  
+ "properties": {  
+ "title": {  
+ "type": "text"  
+ },  
+ "content": {  
+ "type": "text",  
+ "analyzer": "standard"  
+ }  
+ }  
 }
 在上面的示例中，我们定义了两个字段：title和content。title字段的类型为text，而content字段的类型也为text，并指定了分析器为standard。
 
 添加文档：一旦建立了索引和映射，就可以向索引中添加文档了。文档是包含要索引的数据的JSON对象。可以使用POST请求和_doc端点来添加文档。例如，以下命令将一个文档添加到名为my_index的索引中：
 POST /my_index/_doc/1  
 {  
-  "title": "Elasticsearch",  
-  "content": "Elasticsearch is a distributed search and analytics engine."  
+ "title": "Elasticsearch",  
+ "content": "Elasticsearch is a distributed search and analytics engine."  
 }
 在上面的示例中，我们添加了一个包含title和content字段的文档，并指定了文档的ID为1。
 
@@ -22616,21 +23609,19 @@ POST /my_index/_doc/1
 可以使用GET请求和_search端点来执行搜索操作。例如，以下命令搜索名为my_index的索引中的所有文档：
 GET /my_index/_search  
 {  
-  "query": {  
-    "match_all": {}  
-  }  
+ "query": {  
+ "match_all": {}  
+ }  
 }  
 在上面的示例中，我们执行了一个匹配所有文档的查询。查询结果将返回匹配的所有文档。
-
-
 
 分布式版本控制系统Git：
 Git是一个开源的分布式版本控制系统，可以有效、高速地处理从很小到非常大的项目版本管理。
 
 从一般开发者的角度来看，git有以下功能：
 1、从服务器上克隆完整的Git仓库（包括代码和版本信息）到单机上。(指令 git clone)
-2、在自己的机器上根据不同的开发目的，创建分支，修改代码。	(指令 git branch xxx )
-3、在单机上自己创建的分支上提交代码。	(指令 git add .)
+2、在自己的机器上根据不同的开发目的，创建分支，修改代码。 (指令 git branch xxx )
+3、在单机上自己创建的分支上提交代码。 (指令 git add .)
 4、在单机上合并分支。 (指令 git merge xxx(分支名字))
 5、把服务器上最新版的代码fetch下来，然后跟自己的主分支合并。
 6、生成补丁（patch），把补丁发送给主开发者。
@@ -22643,9 +23634,10 @@ Git是一个开源的分布式版本控制系统，可以有效、高速地处�
 3、向公共服务器提交结果，然后通知所有开发人员。
 
 git中一些重要的指令：
+
 1. Rebase
-用途：rebase主要用于将一系列的提交在另一个基点上重新应用。它主要用于合并分支，以保持一个更线性的提交历史。
-工作原理：当你对一个分支进行rebase操作时，Git会首先找到这两个分支最近的共同祖先，然后将当前分支的每一个提交取消掉（实际上是暂存起来），接着将这些提交一个一个地在目标分支的顶端重新应用。
+  用途：rebase主要用于将一系列的提交在另一个基点上重新应用。它主要用于合并分支，以保持一个更线性的提交历史。
+  工作原理：当你对一个分支进行rebase操作时，Git会首先找到这两个分支最近的共同祖先，然后将当前分支的每一个提交取消掉（实际上是暂存起来），接着将这些提交一个一个地在目标分支的顶端重新应用。
 
 常用场景：
 当你想要在一个干净的、线性的提交历史中集成你的更改时。
@@ -22656,7 +23648,7 @@ git中一些重要的指令：
 git rebase master
 
 2. Reset
-用途：reset用于将当前HEAD重置到指定状态。它可以用来撤销最近的提交。
+  用途：reset用于将当前HEAD重置到指定状态。它可以用来撤销最近的提交。
 
 工作原理：reset命令会改变HEAD的指向，同时根据选项的不同，可能会更新索引（index）和工作目录（working directory）。
 
@@ -22672,15 +23664,15 @@ git rebase master
 命令：
 将当前分支HEAD重置到最近的一个提交，不改变工作目录和索引
 git reset --soft HEAD~1
- 
+
 将当前分支HEAD重置到最近的一个提交，改变索引但不改变工作目录
 git reset --mixed HEAD~1 或 git reset HEAD~1
- 
+
 将当前分支HEAD重置到最近的一个提交，改变索引和工作目录
 git reset --hard HEAD~1
 
 3. Revert
-用途：revert用于创建一个新的提交，这个提交会撤销之前的某次提交所做的更改。
+  用途：revert用于创建一个新的提交，这个提交会撤销之前的某次提交所做的更改。
 
 工作原理：revert会生成一个新的提交，这个新提交的内容是之前某次提交的逆操作。这意味着你不会丢失或更改任何已有的提交历史。
 
@@ -22690,7 +23682,7 @@ git reset --hard HEAD~1
 
 命令：
 git revert HEAD
- 
+
 撤销指定哈希值的提交
 git revert <commit-hash>
 
@@ -22698,7 +23690,6 @@ git revert <commit-hash>
 Rebase：重新应用提交到另一个基点，用于保持线性历史。
 Reset：重置HEAD到指定状态，可以撤销提交，但会改变历史。
 Revert：创建一个新的提交来撤销之前的提交，不会改变历史。
-
 
 git指令中，merge和rebase的区别是什么？
 在Git中，merge和rebase是用于整合来自不同分支更改的两种主要方法。它们虽然目标相似，但实现方式和结果有所不同。
@@ -22734,26 +23725,25 @@ merge保留了分支的历史和独立性，但可能会导致一个更复杂的
 rebase创建了一个更线性、更简洁的提交历史，但需要更仔细地处理冲突和提交历史。
 选择使用merge还是rebase取决于你的具体需求和项目的工作流程。在团队协作中，通常建议在公共分支（如main或master）上使用merge，以保持完整的分支历史，而在私有特性分支上使用rebase，以保持线性的提交历史。
 
-
-
 .git文件包含哪些信息？
-1.  branches ：这个目录包含分支的相关信息。
-2.  hooks ：在此目录中，您可以定义Git挂钩脚本，这些脚本可以在特定的Git操作（如提交或合并）发生时触发。
-3.  info ：这个目录包含一些全局信息，如排除文件的规则。
-4.  objects ：Git存储数据的核心目录，包括所有提交、树和文件对象。
-它有三个子目录： objects/commit 、 objects/tree  和  objects/blob ，分别用于存储提交、树和文件对象。
-5.  refs ：此目录包含指向各种Git引用（如分支和标签）的文件，这些引用用于跟踪不同提交。
-6.  logs ：包含引用日志，用于跟踪引用的历史变化。
-7.  config ：存储仓库特定的配置信息。
-8.  description ：一个可读的仓库描述文件。
-9.  HEAD ：指向当前分支的符号链接。
-10.  index ：Git的暂存区文件，用于跟踪已修改但尚未提交的更改。
-11.  packed-refs ：包含指向引用的压缩文件，通常在引用较多时使用。
-12.  info/exclude ：包含Git忽略规则的文件，类似于项目根目录中的 .gitignore  文件。
+
+1. branches ：这个目录包含分支的相关信息。
+2. hooks ：在此目录中，您可以定义Git挂钩脚本，这些脚本可以在特定的Git操作（如提交或合并）发生时触发。
+3. info ：这个目录包含一些全局信息，如排除文件的规则。
+4. objects ：Git存储数据的核心目录，包括所有提交、树和文件对象。
+  它有三个子目录： objects/commit 、 objects/tree 和 objects/blob ，分别用于存储提交、树和文件对象。
+5. refs ：此目录包含指向各种Git引用（如分支和标签）的文件，这些引用用于跟踪不同提交。
+6. logs ：包含引用日志，用于跟踪引用的历史变化。
+7. config ：存储仓库特定的配置信息。
+8. description ：一个可读的仓库描述文件。
+9. HEAD ：指向当前分支的符号链接。
+10. index ：Git的暂存区文件，用于跟踪已修改但尚未提交的更改。
+11. packed-refs ：包含指向引用的压缩文件，通常在引用较多时使用。
+12. info/exclude ：包含Git忽略规则的文件，类似于项目根目录中的 .gitignore 文件。
 
 这些文件和目录包含了Git仓库的核心信息，允许Git跟踪历史、分支、标签、配置和文件更改等信息。
-请注意， .git  文件夹通常是隐藏的，因此在文件浏览器中不容易看到，但它是Git版本控制系统的核心。
-不要删除或修改 .git  文件夹中的文件，以免破坏Git仓库的完整性。
+请注意， .git 文件夹通常是隐藏的，因此在文件浏览器中不容易看到，但它是Git版本控制系统的核心。
+不要删除或修改 .git 文件夹中的文件，以免破坏Git仓库的完整性。
 
 Git和GitHub的关系
 Git 是底层的版本控制系统，负责跟踪和管理代码的更改。
@@ -22772,9 +23762,8 @@ fork：从别人的仓库里复制一份到自己的仓库里，可以理解成�
 pull request：将自己的修改推送给原仓库，向原仓库的开发者申请将自己在其他分支做的修改合并到原仓库的主分支中，
 原仓库的开发者同意后，会自动将修改合并到原仓库的主分支中，这就实现了多人协作开发同一个项目。
 
-
-
 # 分布式计算-大数据：
+
 从业务层面来说，"大数据" 指的是由企业、组织和个人生成的大量和复杂的数据集。
 这些数据集太大、太快或太复杂，它们无法用传统的数据处理工具进行处理和分析，它们通常来自多种来源，包括但不限于社交媒体、电子商务交易、移动设备、传感器和日志文件渠道获取数据。大数据既给社会带来机会，也给行业带来挑战。
 一方面，企业可以利用大数据获得有价值的洞察力、改进决策和优化运营。另一方面，管理、存储和处理大数据需要专门的工具和技术，例如分布式系统、并行处理和机器学习算法。
@@ -22826,7 +23815,6 @@ MapReduce 核心功能是将用户编写的业务逻辑代码和自带默认组�
 相当于YARN集群的客户端，用于提交我们整个程序到YARN集群，提交的是
 封装了MapReduce程序相关运行参数的job对象
 
-
 大数据资源管理系统YARN：
 Yarn是Hadoop的分布式资源调度平台，负责为集群的运算提供运算资源。
 如果把分布式计算机和单个计算机相对应的话，HDFS就相当于计算机的文件系统，Yarn就是计算机的操作系统，MapReduce就是计算机上的应用程序。
@@ -22837,25 +23825,26 @@ NodeManager：他是单个节点的老大，管理本节点的用户作业和工
 ApplicationMaster：他是单个应用程序的老大，负责单个应用的监控运行。
 
 1. ResourceManager
-ResourceManager 负责整个集群的资源管理和分配，是一个全局的资源管理系统。
-NodeManager 以心跳的方式向 ResourceManager 汇报资源使用情况（目前主要是 CPU 和内存的使用情况）。
-RM 只接受 NM 的资源回报信息，对于具体的资源处理则交给 NM 自己处理。
-YARN Scheduler 根据 application 的请求为其分配资源，不负责application job 的监控、追踪、运行状态反馈、启动等工作。
-
+  ResourceManager 负责整个集群的资源管理和分配，是一个全局的资源管理系统。
+  NodeManager 以心跳的方式向 ResourceManager 汇报资源使用情况（目前主要是 CPU 和内存的使用情况）。
+  RM 只接受 NM 的资源回报信息，对于具体的资源处理则交给 NM 自己处理。
+  YARN Scheduler 根据 application 的请求为其分配资源，不负责application job 的监控、追踪、运行状态反馈、启动等工作。
+  
 2. NodeManager
-NodeManager 是每个节点上的资源和任务管理器，它是管理这台机器的代理，负责该节点程序的运行，以及该节点资源的管理和监控。YARN 集群每个节点都运行一个NodeManager。
-NodeManager 定时向 ResourceManager 汇报本节点资源（CPU、内存）的使用情况和Container 的运行状态。当 ResourceManager 宕机时 NodeManager 自动连接 RM 备用节点。
-NodeManager 接收并处理来自 ApplicationMaster 的 Container 启动、停止等各种请求。
-
+  NodeManager 是每个节点上的资源和任务管理器，它是管理这台机器的代理，负责该节点程序的运行，以及该节点资源的管理和监控。YARN 集群每个节点都运行一个NodeManager。
+  NodeManager 定时向 ResourceManager 汇报本节点资源（CPU、内存）的使用情况和Container 的运行状态。当 ResourceManager 宕机时 NodeManager 自动连接 RM 备用节点。
+  NodeManager 接收并处理来自 ApplicationMaster 的 Container 启动、停止等各种请求。
+  
 3. ApplicationMaster
-用户提交的每个应用程序均包含一个 ApplicationMaster ， 它可以运行在ResourceManager 以外的机器上。
-负责与 RM 调度器协商以获取资源（用 Container 表示）。
-将得到的任务进一步分配给内部的任务(资源的二次分配)。
-与 NM 通信以启动/停止任务。
-监控所有任务运行状态，并在任务运行失败时重新为任务申请资源以重启任务。
-当前 YARN 自带了两个 ApplicationMaster 实现，一个是用于演示AM 编写方法的实例程序 DistributedShell，
-它可以申请一定数目的Container 以并行运行一个 Shell 命令或者 Shell 脚本；
-另一个是运行 MapReduce 应用程序的 AM—MRAppMaster。
+  用户提交的每个应用程序均包含一个 ApplicationMaster ， 它可以运行在ResourceManager 以外的机器上。
+  负责与 RM 调度器协商以获取资源（用 Container 表示）。
+  将得到的任务进一步分配给内部的任务(资源的二次分配)。
+  与 NM 通信以启动/停止任务。
+  监控所有任务运行状态，并在任务运行失败时重新为任务申请资源以重启任务。
+  当前 YARN 自带了两个 ApplicationMaster 实现，一个是用于演示AM 编写方法的实例程序 DistributedShell，
+  它可以申请一定数目的Container 以并行运行一个 Shell 命令或者 Shell 脚本；
+  另一个是运行 MapReduce 应用程序的 AM—MRAppMaster。
+  
 
 YARN工作机制：
 1.客户端程序向ResourceManager提交应用并请求一个ApplicationMaster实例。
@@ -22870,51 +23859,51 @@ Container，container-launch-specification信息包含了能够让Container和Ap
 8.一但应用程序执行完成并且所有相关工作也已经完成，ApplicationMaster向ResourceManager取消注册然后关闭，
 用到所有的Container也归还给系统。
 
-
 数据仓库架构：
 离线数仓：
 数据由大数据技术保存在数据仓库中，而离线数据仓库的架构通常是什么？
 离线数仓（离线数据仓库）的架构通常包含以下几个主要组件和步骤：
 
 1. 数据源层（Data Sources Layer）：
-    - 包括各种原始数据源，如关系数据库（MySQL、PostgreSQL）、日志文件、CSV文件、API数据等。
-    - 数据源可以是结构化、半结构化或非结构化的数据。
-
+  
+  - 包括各种原始数据源，如关系数据库（MySQL、PostgreSQL）、日志文件、CSV文件、API数据等。
+  - 数据源可以是结构化、半结构化或非结构化的数据。
 2. 数据采集层（Data Ingestion Layer）：
-    - 使用ETL（Extract, Transform, Load）工具或ELT（Extract, Load, Transform）工具进行数据采集。
-    - 常见工具有Apache Sqoop、Flume、Kafka、Nifi等。
-    - 负责从数据源提取数据并加载到数据仓库的暂存区（Staging Area）。
-
+  
+  - 使用ETL（Extract, Transform, Load）工具或ELT（Extract, Load, Transform）工具进行数据采集。
+  - 常见工具有Apache Sqoop、Flume、Kafka、Nifi等。
+  - 负责从数据源提取数据并加载到数据仓库的暂存区（Staging Area）。
 3. 暂存区（Staging Area）：
-    - 用于存放从数据源提取的原始数据，通常是未经过处理的数据。
-    - 这部分数据可以是文件系统（如HDFS）或数据库表。
-    - 在暂存区进行初步的数据清洗和格式转换。
-
+  
+  - 用于存放从数据源提取的原始数据，通常是未经过处理的数据。
+  - 这部分数据可以是文件系统（如HDFS）或数据库表。
+  - 在暂存区进行初步的数据清洗和格式转换。
 4. 数据存储层（Data Storage Layer）：
-    - 数据仓库的核心存储区，用于存放清洗和转换后的数据。
-    - 通常使用列式存储的分布式数据库，如Apache Hive、HBase，或者MPP（大规模并行处理）数据库如Greenplum、Snowflake、Amazon Redshift等。
-    - 数据按照主题域（主题分区）进行存储，以便于分析和查询。
-
+  
+  - 数据仓库的核心存储区，用于存放清洗和转换后的数据。
+  - 通常使用列式存储的分布式数据库，如Apache Hive、HBase，或者MPP（大规模并行处理）数据库如Greenplum、Snowflake、Amazon Redshift等。
+  - 数据按照主题域（主题分区）进行存储，以便于分析和查询。
 5. 数据处理层（Data Processing Layer）：
-    - 使用批处理框架进行数据处理和计算，如Apache Spark、MapReduce等。
-    - 数据处理的任务包括数据清洗、转换、聚合、分析等。
-    - 处理后的数据会存入数据仓库的事实表和维度表中。
-
+  
+  - 使用批处理框架进行数据处理和计算，如Apache Spark、MapReduce等。
+  - 数据处理的任务包括数据清洗、转换、聚合、分析等。
+  - 处理后的数据会存入数据仓库的事实表和维度表中。
 6. 数据访问层（Data Access Layer）：
-    - 提供数据查询和分析的接口。
-    - 包括SQL查询工具（如Apache Hive、Presto、Impala）、BI（商业智能）工具（如Tableau、Power BI）、数据科学工具（如Jupyter Notebook、R Studio）等。
-
+  
+  - 提供数据查询和分析的接口。
+  - 包括SQL查询工具（如Apache Hive、Presto、Impala）、BI（商业智能）工具（如Tableau、Power BI）、数据科学工具（如Jupyter Notebook、R Studio）等。
 7. 数据展现层（Data Presentation Layer）：
-    - 数据的最终展示和可视化层。
-    - 使用BI工具、报表工具、仪表盘等将数据以图表、报表等形式展示给最终用户。
-
+  
+  - 数据的最终展示和可视化层。
+  - 使用BI工具、报表工具、仪表盘等将数据以图表、报表等形式展示给最终用户。
 8. 元数据管理（Metadata Management）：
-    - 负责管理数据仓库的元数据，包括数据的结构信息、血缘关系、数据质量等。
-    - 常见工具有Apache Atlas、AWS Glue等。
-
+  
+  - 负责管理数据仓库的元数据，包括数据的结构信息、血缘关系、数据质量等。
+  - 常见工具有Apache Atlas、AWS Glue等。
 9. 数据治理和安全（Data Governance and Security）：
-    - 确保数据的一致性、完整性和安全性。
-    - 包括数据访问控制、数据审计、数据隐私保护等。
+  
+  - 确保数据的一致性、完整性和安全性。
+  - 包括数据访问控制、数据审计、数据隐私保护等。
 
 ## 常见的离线数仓架构图示例
 
@@ -22934,44 +23923,43 @@ Container，container-launch-specification信息包含了能够让Container和Ap
 
 这种架构有助于确保离线数据仓库能够高效、稳定地处理大量数据，支持复杂的数据分析和查询需求。
 
-
-
 实时数仓：
 实时数仓（实时数据仓库）的架构通常更加复杂，因为它需要处理实时数据流，同时也要保持高效的查询和分析能力。以下是一个典型的实时数仓架构组件和步骤：
 
 1. 数据源层（Data Sources Layer）：
-    - 包括各种实时数据源，如数据库变更数据（CDC，Change Data Capture）、实时日志、消息队列（如Kafka、RabbitMQ）、IoT设备数据等。
-
+  
+  - 包括各种实时数据源，如数据库变更数据（CDC，Change Data Capture）、实时日志、消息队列（如Kafka、RabbitMQ）、IoT设备数据等。
 2. 数据采集层（Data Ingestion Layer）：
-    - 使用实时数据采集工具，如Kafka、Flink、Spark Streaming、NiFi等。
-    - 负责将实时数据流从数据源采集并加载到流处理系统。
-
+  
+  - 使用实时数据采集工具，如Kafka、Flink、Spark Streaming、NiFi等。
+  - 负责将实时数据流从数据源采集并加载到流处理系统。
 3. 流处理层（Stream Processing Layer）：
-    - 使用流处理框架进行数据的实时处理和分析。
-    - 常用工具包括Apache Flink、Apache Kafka Streams、Apache Spark Streaming等。
-    - 任务包括实时数据清洗、转换、聚合、窗口操作等。
-    - 处理后的数据可以实时写入到数据存储系统。
-
+  
+  - 使用流处理框架进行数据的实时处理和分析。
+  - 常用工具包括Apache Flink、Apache Kafka Streams、Apache Spark Streaming等。
+  - 任务包括实时数据清洗、转换、聚合、窗口操作等。
+  - 处理后的数据可以实时写入到数据存储系统。
 4. 数据存储层（Data Storage Layer）：
-    - 实时数仓需要支持低延迟的存储系统。
-    - 包括内存数据库（如Redis）、NoSQL数据库（如Cassandra、HBase）、实时分析数据库（如Druid、ClickHouse）、传统数据仓库的实时扩展（如Snowflake、Amazon Redshift）等。
-    - 数据按照主题域或时间分区进行存储，以支持高效查询。
-
+  
+  - 实时数仓需要支持低延迟的存储系统。
+  - 包括内存数据库（如Redis）、NoSQL数据库（如Cassandra、HBase）、实时分析数据库（如Druid、ClickHouse）、传统数据仓库的实时扩展（如Snowflake、Amazon Redshift）等。
+  - 数据按照主题域或时间分区进行存储，以支持高效查询。
 5. 数据访问层（Data Access Layer）：
-    - 提供实时数据查询和分析的接口。
-    - 包括实时SQL查询引擎（如Presto、Trino、Druid SQL）、BI工具、实时仪表盘（如Grafana、Tableau）等。
-
+  
+  - 提供实时数据查询和分析的接口。
+  - 包括实时SQL查询引擎（如Presto、Trino、Druid SQL）、BI工具、实时仪表盘（如Grafana、Tableau）等。
 6. 数据展现层（Data Presentation Layer）：
-    - 实时数据的可视化和展示层。
-    - 使用BI工具、报表工具、仪表盘等，将数据以图表、报表等形式展示给最终用户，支持实时刷新和动态更新。
-
+  
+  - 实时数据的可视化和展示层。
+  - 使用BI工具、报表工具、仪表盘等，将数据以图表、报表等形式展示给最终用户，支持实时刷新和动态更新。
 7. 元数据管理（Metadata Management）：
-    - 负责管理数据仓库的元数据，包括数据的结构信息、血缘关系、数据质量等。
-    - 需要支持实时数据的元数据管理。
-
+  
+  - 负责管理数据仓库的元数据，包括数据的结构信息、血缘关系、数据质量等。
+  - 需要支持实时数据的元数据管理。
 8. 数据治理和安全（Data Governance and Security）：
-    - 确保数据的一致性、完整性和安全性。
-    - 包括数据访问控制、数据审计、数据隐私保护等。
+  
+  - 确保数据的一致性、完整性和安全性。
+  - 包括数据访问控制、数据审计、数据隐私保护等。
 
 **常见的实时数仓架构图示例**
 
@@ -22983,26 +23971,28 @@ Container，container-launch-specification信息包含了能够让Container和Ap
 ```
 
 详细说明：
+
 1. 数据源层（Data Sources Layer）：
-    - 数据源可以是应用日志、用户行为日志、交易系统数据、传感器数据等。
-
+  
+  - 数据源可以是应用日志、用户行为日志、交易系统数据、传感器数据等。
 2. 数据采集层（Data Ingestion Layer）：
-    - 使用Kafka Connect、Flink Connectors等将数据源的数据流式采集到数据处理系统中。
-
+  
+  - 使用Kafka Connect、Flink Connectors等将数据源的数据流式采集到数据处理系统中。
 3. 流处理层（Stream Processing Layer）：
-    - 在这一层，实时数据被处理、清洗和转换。
-    - 例如，使用Flink进行数据聚合和复杂事件处理（CEP）。
-
+  
+  - 在这一层，实时数据被处理、清洗和转换。
+  - 例如，使用Flink进行数据聚合和复杂事件处理（CEP）。
 4. 数据存储层（Data Storage Layer）：
-    - 处理后的数据被存储在支持高并发和低延迟查询的存储系统中。
-    - 常用的存储系统有Druid、ClickHouse、Cassandra等。
-
+  
+  - 处理后的数据被存储在支持高并发和低延迟查询的存储系统中。
+  - 常用的存储系统有Druid、ClickHouse、Cassandra等。
 5. 数据访问层（Data Access Layer）：
-    - 提供查询接口，允许用户通过SQL或API访问实时处理后的数据。
-    - 例如，使用Presto或Trino进行实时数据查询。
-
+  
+  - 提供查询接口，允许用户通过SQL或API访问实时处理后的数据。
+  - 例如，使用Presto或Trino进行实时数据查询。
 6. 数据展现层（Data Presentation Layer）：
-    - 使用Grafana、Tableau等工具将数据以实时仪表盘和报表的形式展示给用户。
+  
+  - 使用Grafana、Tableau等工具将数据以实时仪表盘和报表的形式展示给用户。
 
 这种架构确保了实时数据能够快速被处理和分析，支持实时决策和动态报告。
 
@@ -23044,7 +24034,6 @@ HBase提供了高性能、可靠性、扩展性和灵活性，使得它成为大
 HBase支持多种数据操作方式，包括读取、写入、更新和删除数据。客户端可以使用HBase提供的API来执行这些操作请求。
 访问控制：
 HBase通过访问控制列表（ACL）来控制用户对表和列族的访问权限。管理员可以授予或撤销用户的权限，以支持读、写和管理等多种操作。
-
 
 Hbase的实现原理：
 HBase是一个开源的、分布式的、版本化的NoSQL数据库（即非关系型数据库），其实现原理主要基于以下几点：
@@ -23103,7 +24092,6 @@ HBase只有一个索引——行键（RowKey）。
 查找时会跳过被删除的键。
 DBA运维会定期删除被标记删除的数据。
 
-
 Hbase可以保障分布式吗？
 HBase可以保障分布式存储。HBase是一个分布式、可扩展、高性能的列式存储系统，它基于Google的Bigtable设计，是Hadoop生态系统的一部分。
 一、分布式架构
@@ -23123,7 +24111,6 @@ HDFS支持：HBase依赖于Hadoop分布式文件系统（HDFS）来提供底层�
 身份验证：HBase支持基于用户名和密码的身份验证，确保只有授权的用户可以访问HBase系统。
 授权：HBase支持基于角色的访问控制（RBAC），确保用户只能访问他们具有权限的数据。
 加密：HBase支持数据加密，防止未经授权的访问和篡改。用户可以通过HBase配置文件设置加密算法和密钥，启用表级数据加密。
-
 
 数据仓库工具Hive：
 Hive是由 Facebook 开源用于解决海量结构化日志的数据统计工具，Hive 是基于 Hadoop 的一个数据仓库工具，
@@ -23147,7 +24134,6 @@ Hive和SQL在建表语句、对等值连接和非等值连接、存储NULL值、
 等值连接：Hive不支持等值连接，如果想进行等值连接操作，需要使用SQL语句。
 存储NULL值：在传统数据库中字段没有值或者为空即表示为NULL，但是在Hive中默认的NULL值是\N。
 落地方式：Hive将数据落地到HDFS，而SQL将数据落地到文件。
-
 
 Hive的本质是将HQL转化成MapReduce程序：
 Hive 通过给用户提供的一系列交互接口，接收到用户的指令(SQL)，使用自己的 Driver，结合元数据(MetaStore)，
@@ -23182,37 +24168,38 @@ Scala：
 Scala是一种多范式的编程语言，它集成了面向对象编程和函数式编程的特性，运行在Java虚拟机（JVM）上，并兼容Java程序。下面我们将用更专业的语言对Scala进行详细阐述。具有函数式编程，面向对象编程等特点。
 
 1. 语言特性
-Scala的语言设计旨在提供简洁、优雅且类型安全的代码。它支持模式匹配、隐式转换、高阶函数、不可变集合等特性，使得开发者能够编写出更加表达力强且易于维护的代码。
-此外，Scala的case类提供了代数数据类型（ADT）的实现，这对于领域特定语言（DSL）的构建特别有用。
-
+  Scala的语言设计旨在提供简洁、优雅且类型安全的代码。它支持模式匹配、隐式转换、高阶函数、不可变集合等特性，使得开发者能够编写出更加表达力强且易于维护的代码。
+  此外，Scala的case类提供了代数数据类型（ADT）的实现，这对于领域特定语言（DSL）的构建特别有用。
+  
 2. 函数式编程
-Scala强调函数式编程，支持不可变数据、高阶函数和尾递归优化等。这使得Scala在处理并行和并发编程时具有优势，因为函数式编程范式天然地支持无共享状态的并发执行。此外，Scala的集合库提供了丰富的函数式操作，使得数据处理变得简单而高效。
-
+  Scala强调函数式编程，支持不可变数据、高阶函数和尾递归优化等。这使得Scala在处理并行和并发编程时具有优势，因为函数式编程范式天然地支持无共享状态的并发执行。此外，Scala的集合库提供了丰富的函数式操作，使得数据处理变得简单而高效。
+  
 3. 面向对象编程
-尽管Scala以函数式编程为特色，但它同样支持传统的面向对象编程特性，如类、继承、封装和多态等。Scala的类系统比Java更加灵活，支持特质（traits）这一特性，可以实现类似于多重继承的效果，同时避免了多重继承带来的复杂性。
-
+  尽管Scala以函数式编程为特色，但它同样支持传统的面向对象编程特性，如类、继承、封装和多态等。Scala的类系统比Java更加灵活，支持特质（traits）这一特性，可以实现类似于多重继承的效果，同时避免了多重继承带来的复杂性。
+  
 4. 与Java的互操作性
-Scala运行在JVM上，因此可以与Java代码无缝集成。Scala代码可以调用Java库，反之亦然。这种互操作性使得Scala能够充分利用Java生态系统的丰富资源，同时也为Java开发者提供了一种更加现代和灵活的编程选择。
-
+  Scala运行在JVM上，因此可以与Java代码无缝集成。Scala代码可以调用Java库，反之亦然。这种互操作性使得Scala能够充分利用Java生态系统的丰富资源，同时也为Java开发者提供了一种更加现代和灵活的编程选择。
+  
 5. 并发和并行编程
-Scala提供了强大的并发和并行编程支持，包括Actor模型、Futures和Promises等机制。这些特性使得Scala在处理大规模并发任务时表现出色，特别是在构建高性能的分布式系统时具有显著优势。
-
+  Scala提供了强大的并发和并行编程支持，包括Actor模型、Futures和Promises等机制。这些特性使得Scala在处理大规模并发任务时表现出色，特别是在构建高性能的分布式系统时具有显著优势。
+  
 6. 类型系统
-Scala的类型系统非常强大且灵活，支持泛型、类型参数化、类型推断和类型别名等特性。这使得开发者能够编写出更加安全且易于理解的代码，同时减少了运行时错误的可能性。
+  Scala的类型系统非常强大且灵活，支持泛型、类型参数化、类型推断和类型别名等特性。这使得开发者能够编写出更加安全且易于理解的代码，同时减少了运行时错误的可能性。
+  
 
 Scala的编译过程是运用了Java jvm生成单例模式，并用静态方法调用它。Scala底层运行在Java虚拟机（JVM）上，并且可以很好地与Java代码互操作。
 在Scala中创建单例模式并利用静态方法调用这个单例实例的过程与在Java中非常相似，但Scala提供了更简洁的语法。
 
 object MySingleton {  
-  def sayHello(): Unit = {  
-    println("Hello from MySingleton!")  
-  }  
-}  
-  
+ def sayHello(): Unit = {  
+ println("Hello from MySingleton!")  
+ }  
+}
+
 object SingletonCaller {  
-  def main(args: Array[String]): Unit = {  
-    MySingleton.sayHello() // 调用单例对象的静态方法  
-  }  
+ def main(args: Array[String]): Unit = {  
+ MySingleton.sayHello() // 调用单例对象的静态方法  
+ }  
 }
 
 在这个例子中，MySingleton 是一个单例对象，而不是一个类。在Scala中，使用 object 关键字来定义一个单例对象。Scala会自动为这个对象提供线程安全的懒加载实现，保证它在首次使用时才被创建，并且在整个应用程序生命周期中只有一个实例。
@@ -23247,7 +24234,6 @@ Scala通过类和对象的概念，实现了代码的模块化和复用，提高
 函数也是对象：Scala不仅是一种面向对象的语言，还融合了函数式编程的特点。在Scala中，函数也是对象，可以像其他对象一样被传递、赋值和调用。
 这种设计使得Scala在保持面向对象特性的同时，也具备了函数式编程的灵活性和高效性。
 
-
 Scala基本数据类型：
 
 数值类型（AnyVal）：
@@ -23271,7 +24257,7 @@ Nothing类型：Nothing 类型是一个特殊的底类型（bottom type），它
 
 Scala函数式编程：
 def sum ( x : Int, y : Int) : Int = {
-    x + y
+ x + y
 }
 def：定义函数的关键字
 sum：函数名
@@ -23282,7 +24268,7 @@ Int：参数类型
 函数至简原则：
 //return可以省略，Scala会使用两数体的最后一行代码作为返回
 def f1(name:string):string ={
-        name
+ name
 }
 
 //如果函数体只有一行代码，可以省略花括号
@@ -23293,7 +24279,7 @@ def f3(name :string) = name
 
 //Scala如果期望是无返回值类型，可以省略等号
 def f6(name: string){
-    println(name)
+ println(name)
 }
 
 //如果函数无参，但是声明了参数列表，那么调用时，小括号，可加可不加
@@ -23310,17 +24296,17 @@ fun("atguigu")
 
 //柯里化:函数柯里化是高阶函数的一种，高阶函数是指接收函数作为参数或返回函数的函数。柯里化提供了逐步传参的过程，使得函数的调用更加灵活和模块化。
 def addcurrying(a:Int)(b:Int):Int={
-    a + b 
+ a + b 
 }
 
 Scala变量和常量:
 var 变量名：变量类型 = 初始值
 val 常量名：常量类型 = 初始值
- 
+
 tips：1.声明变量时，类型可以省略
-      2.类型确定后，就不能修改。（Scala是强类型语言）
-      3.变量声明时，必须要有初始值
-      
+ 2.类型确定后，就不能修改。（Scala是强类型语言）
+ 3.变量声明时，必须要有初始值
+
 Scala字符串：
 通过+号拼接 
 val name: String ="I"
@@ -23347,10 +24333,10 @@ Scala尾递归计算阶乘：
 尾递归是函数式编程语言中一种重要的递归形式，因为它可以确保在递归调用之后没有其他的计算需要执行，因此编译器可以优化它，使得递归调用类似于循环，避免了递归深度的限制。
 
 def factorialTailRec(n: BigInt, acc: BigInt = BigInt(1)): BigInt = {  
-  if (n <= 0) acc  
-  else factorialTailRec(n - 1, n * acc)  
-}  
-  
+ if (n <= 0) acc  
+ else factorialTailRec(n - 1, n * acc)  
+}
+
 // 使用示例  
 val result = factorialTailRec(BigInt(5)) // 计算5的阶乘  
 println(result) // 输出120
@@ -23360,12 +24346,12 @@ Scala传名函数：
 这与传值参数（By-value Parameter）不同，后者在传递给函数时只计算一次，并将结果传递给函数。
 
 def f1(): Int ={
-    printin("f1调用")
-    12
+ printin("f1调用")
+ 12
 }
 def f2(a:=>Int):Unit ={
-    println("a:" + a)
-    println("a:"+ a)
+ println("a:" + a)
+ println("a:"+ a)
 }
 
 输出:
@@ -23400,16 +24386,16 @@ Scala伴生对象（单例对象）：
 伴生对象在Scala中的定义非常简单，它只需要在类定义之外使用object关键字，并赋予与类相同的名称即可。例如：
 
 class MyClass {  
-  // 类的实例成员  
-}  
-  
+ // 类的实例成员  
+}
+
 object MyClass {  
-  // 伴生对象的成员  
-  def myStaticMethod(): Unit = {  
-    // 静态方法的实现  
-  }  
-    
-  val myStaticField = "Some value"  
+ // 伴生对象的成员  
+ def myStaticMethod(): Unit = {  
+ // 静态方法的实现  
+ }
+
+val myStaticField = "Some value"  
 }
 在上面的代码中，MyClass是一个类定义，而object MyClass则是与该类相关联的伴生对象。myStaticMethod是伴生对象的一个方法，可以像调用静态方法一样调用它，而不需要创建类的实例。
 同样地，myStaticField是伴生对象的一个字段，可以作为静态字段使用。
@@ -23429,80 +24415,85 @@ PS：在Scala中有很多情况是用伴生对象来创建对象
 Scala特质：
 Scala 的特质（Traits）和 Java 的接口（Interfaces）在功能和用法上有一些相似之处，但也存在一些关键的差异。
 相似之处：
+
 1. 定义方法但不实现它们： Scala 的特质和 Java 的接口都可以定义方法，但不实现它们。它们的主要目的是为类提供一个契约，类必须实现这些方法来满足这个契约。
 2. 多重继承： 在 Scala 中，一个类可以继承多个特质。同样，在 Java 8 及以后的版本中，一个类也可以实现多个接口。这允许开发者组合多个接口或特质的功能，实现更灵活的编程。
 
 不同之处：
+
 1. 实现细节：Scala 的特质不仅可以定义方法，还可以包含字段和方法的实现。这意味着特质可以包含更丰富的功能，而不仅仅是方法的声明。
-相比之下，Java 的接口在 Java 8 之前只能定义方法的声明，不能包含字段或方法的实现。
-从 Java 8 开始，接口可以包含默认方法和静态方法，但字段仍然只能是常量（即，public static final）。
-
+  相比之下，Java 的接口在 Java 8 之前只能定义方法的声明，不能包含字段或方法的实现。
+  从 Java 8 开始，接口可以包含默认方法和静态方法，但字段仍然只能是常量（即，public static final）。
+  
 2. 继承与混入：在 Scala 中，特质可以通过混入（mixin composition）的方式与类结合，而不仅仅是像 Java 中的接口那样通过继承。
-这提供了更大的灵活性，允许开发者将特质与类以任何顺序组合，从而创建出具有所需功能的对象。
-
+  这提供了更大的灵活性，允许开发者将特质与类以任何顺序组合，从而创建出具有所需功能的对象。
+  
 3. 类型检查：Scala 的特质可以用于类型检查，而 Java 的接口也可以。但是，Scala 的特质在这方面提供了更强大的功能，因为它们可以包含更多类型的成员（例如字段和方法）。
-
+  
 4. 特质可以扩展其他特质：Scala 的特质可以扩展其他特质，这使得特质可以像类一样形成一个层次结构。而 Java 的接口则不能继承其他接口（在 Java 8 之前），从 Java 8 开始，接口可以扩展其他接口。
+  
 
 总结来说，Scala 的特质在功能性和灵活性上超过了 Java 的接口。它们提供了更丰富的功能，包括字段和方法的实现，以及更灵活的混入机制。
 然而，这并不意味着特质总是优于接口。在选择使用特质还是接口时，应根据具体的需求和场景来决定。
 
 //定义特质
 trait Greetable {  
-  // 抽象方法，需要在实现该特质的类中定义  
-  def greet: String  
-  
-  // 具体方法，可以直接在特质中实现  
-  def sayHello: Unit = {  
-    println("Hello, " + greet)  
-  }  
+ // 抽象方法，需要在实现该特质的类中定义  
+ def greet: String
+
+// 具体方法，可以直接在特质中实现  
+ def sayHello: Unit = {  
+ println("Hello, " + greet)  
+ }  
 }
 
 //创建类，实现特质
 class Person(val name: String) extends Greetable {  
-  // 实现特质中的抽象方法  
-  override def greet: String = "Mr. " + name  
-  
-  // Person类还可以定义自己的方法  
-  def introduce: Unit = {  
-    println("My name is " + name)  
-  }  
+ // 实现特质中的抽象方法  
+ override def greet: String = "Mr. " + name
+
+// Person类还可以定义自己的方法  
+ def introduce: Unit = {  
+ println("My name is " + name)  
+ }  
 }
 
 //创建对象，并调用它的方法
 class Person(val name: String) extends Greetable {  
-  // 实现特质中的抽象方法  
-  override def greet: String = "Mr. " + name  
-  
-  // Person类还可以定义自己的方法  
-  def introduce: Unit = {  
-    println("My name is " + name)  
-  }  
+ // 实现特质中的抽象方法  
+ override def greet: String = "Mr. " + name
+
+// Person类还可以定义自己的方法  
+ def introduce: Unit = {  
+ println("My name is " + name)  
+ }  
 }
 
 //输出
 Hello, Mr. Alice  
 My name is Alice
 
-
 //Scala特质混入
 object Main {  
-  def main(args: Array[String]): Unit = {  
-    val person = new Person("Alice")  
-      
-    // 动态混入Greetable特质  
-    val greetablePerson = new {  
-      val name: String = person.name // 捕获外部person的name字段  
-    } with Greetable {  
-      override def greet: String = "Ms. " + name // 实现greet方法  
-    }  
-      
-    // 调用混入特质的方法  
-    greetablePerson.sayHello  
-      
-    // 调用原始Person类的方法  
-    person.introduce  
-  }  
+ def main(args: Array[String]): Unit = {  
+ val person = new Person("Alice")
+
+```
+// 动态混入Greetable特质  
+val greetablePerson = new {  
+  val name: String = person.name // 捕获外部person的name字段  
+} with Greetable {  
+  override def greet: String = "Ms. " + name // 实现greet方法  
+}  
+
+// 调用混入特质的方法  
+greetablePerson.sayHello  
+
+// 调用原始Person类的方法  
+person.introduce  
+```
+
+}  
 }
 
 关于特质叠加的执行顺序，Scala遵循一定的规则。当特质中存在方法调用super.xx时，Scala会从右到左执行这些调用。
@@ -23522,37 +24513,37 @@ Scala的自身类型（self-type）是一种特性，它用于声明一个特质
 总的来说，Scala的自身类型是一种强大的机制，用于在特质和类之间建立明确的依赖关系，并确保类型安全。它允许开发者以更灵活和可维护的方式组织和管理代码。
 
 trait Logger {  
-  def log(message: String): Unit  
-}  
-  
+ def log(message: String): Unit  
+}
+
 trait Loggable {  
-  this: Logger => // 声明自身类型，表示Loggable的使用者必须混入Logger特质  
-  
-  def doSomething(): Unit = {  
-    // 使用Logger特质中的log方法  
-    log("Doing something important")  
-    // ... 执行其他操作 ...  
-  }  
-}  
-  
+ this: Logger => // 声明自身类型，表示Loggable的使用者必须混入Logger特质
+
+def doSomething(): Unit = {  
+ // 使用Logger特质中的log方法  
+ log("Doing something important")  
+ // ... 执行其他操作 ...  
+ }  
+}
+
 // 一个具体的Logger实现  
 class SimpleLogger extends Logger {  
-  override def log(message: String): Unit = {  
-    println(s"Logging: $message")  
-  }  
-}  
-  
+ override def log(message: String): Unit = {  
+ println(s"Logging: $message")  
+ }  
+}
+
 // 一个类，它混入了Loggable特质，并隐式地也混入了Logger特质（通过自身类型的要求）  
 class MyService extends SimpleLogger with Loggable {  
-  // 由于MyService混入了Loggable，它必须也混入Logger（通过继承SimpleLogger实现）  
-  // 因此，doSomething方法中的log调用是有效的  
-}  
-  
+ // 由于MyService混入了Loggable，它必须也混入Logger（通过继承SimpleLogger实现）  
+ // 因此，doSomething方法中的log调用是有效的  
+}
+
 object Main {  
-  def main(args: Array[String]): Unit = {  
-    val service = new MyService()  
-    service.doSomething() // 输出 "Logging: Doing something important"  
-  }  
+ def main(args: Array[String]): Unit = {  
+ val service = new MyService()  
+ service.doSomething() // 输出 "Logging: Doing something important"  
+ }  
 }
 
 Scala集合：
@@ -23591,7 +24582,6 @@ Set:
 不可变 Set 的主要优点是线程安全且易于推理。由于它们是不可变的，所以你可以在多个线程之间共享它们，而无需担心并发修改的问题。
 此外，由于每次操作都返回一个新的集合，所以你可以很容易地通过链式调用或组合多个操作来构建复杂的集合转换。
 
-
 可变（Mutable）Set
 可变 Set 允许你在创建后修改它（例如添加、删除或更新元素）。与不可变 Set 相比，可变 Set 提供了更高的灵活性，但也带来了线程安全和复杂性方面的问题。
 如果你在多线程环境中使用可变 Set，并且至少有一个线程修改它，那么你需要确保对它的访问是同步的，以避免并发修改异常或数据不一致。
@@ -23627,12 +24617,11 @@ Scala中的隐式转换（Implicit Conversions）是一种强大的特性，它�
 implicit val myImplicitValue: String = "Hello, World!"
 
 def greet(implicit message: String): Unit = {
-  println(message)
+ println(message)
 }
 
 // 调用时省略了隐式参数message
 greet() // 输出: Hello, World!
-
 
 在上面的例子中，`greet`方法有一个隐式参数`message`。当调用`greet()`时，我们没有提供任何参数，但编译器找到了作用域内的隐式值`myImplicitValue`，并将其作为参数传递给`greet`方法。
 
@@ -23646,11 +24635,11 @@ greet() // 输出: Hello, World!
 
 例如：
 object RichInt {
-  implicit class IntWithTimes(x: Int) {
-    def times(f: => Unit): Unit = {
-      for (_ <- 1 to x) f
-    }
-  }
+ implicit class IntWithTimes(x: Int) {
+ def times(f: => Unit): Unit = {
+ for (_ <- 1 to x) f
+ }
+ }
 }
 
 import RichInt._
@@ -23658,12 +24647,12 @@ import RichInt._
 // 使用隐式类定义的times方法
 5.times { println("Hello") } // 输出Hello五次
 
-
 在上面的例子中，我们定义了一个名为`RichInt`的对象，并在其中定义了一个隐式类`IntWithTimes`。这个隐式类接受一个`Int`类型的参数，并为其添加了一个`times`方法。
 当我们在代码中写`5.times`时，编译器会自动找到并使用这个隐式类来将`Int`类型的值`5`转换为`IntWithTimes`的实例，从而可以调用`times`方法。
 
 注意事项：
 虽然隐式转换非常强大，但过度使用它也可能导致代码难以理解和维护。因此，在使用隐式转换时应该谨慎，并遵循一些最佳实践：
+
 - 尽量将隐式定义放在与它们最相关的地方，比如伴随对象或特定的作用域内。
 - 避免在全局范围内定义过多的隐式转换，以免产生意外的副作用。
 - 隐式转换应该是可预测的，避免产生歧义或令人困惑的行为。
@@ -23677,17 +24666,17 @@ Scala的上下文限定（Context Bounds）是一种语法糖，它允许在类�
 这有助于在编译时捕获潜在的错误，提高代码的可读性和可维护性。
 
 下面是一个使用上下文限定的简单示例：
-import scala.math.Ordering  
+import scala.math.Ordering
 
 class Pair[T: Ordering](val first: T, val second: T) {  
-  def smaller(implicit ord: Ordering[T]): T = {  
-    if (ord.compare(first, second) < 0) first else second  
-  }  
-}  
+ def smaller(implicit ord: Ordering[T]): T = {  
+ if (ord.compare(first, second) < 0) first else second  
+ }  
+}
 
 // 隐式定义的Ordering，用于Int类型  
-implicit val intOrdering: Ordering[Int] = Ordering.Int  
-  
+implicit val intOrdering: Ordering[Int] = Ordering.Int
+
 // 使用Pair类，并自动使用隐式定义的intOrdering  
 val pair = new Pair(3, 4)  
 val smallerValue = pair.smaller // 调用smaller方法时，编译器会自动查找并使用intOrdering  
@@ -23696,7 +24685,6 @@ println(smallerValue) // 输出: 3
 
 上下文限定提供了一种灵活且类型安全的方式来扩展现有类型的功能，而无需修改这些类型的源代码。它使得代码更加模块化，并允许开发者以声明式的方式定义类型之间的约束和关系。
 注意：Scala中的语法糖运用得非常普遍。Scala作为一种多范式编程语言，旨在融合面向对象编程和函数式编程的最佳特性，并通过语法糖来简化这些特性的使用，这些语法糖使得代码更加简洁、易读和易于维护。
-
 
 大数据Spark：
 Spark 是一个分布式数据快速分析项目。它的核心技术是弹性分布式数据集（Resilient Distributed Datasets），提供了比 MapReduce 丰富的模型，可以快速在内存中对数据集进行多次迭代，来支持复杂的数据挖掘算法和图形计算算法。
@@ -23724,8 +24712,9 @@ Distributed ： 它里面的元素是分布式存储的，可以用于分布式�
 Dataset: 它是一个集合，可以存放很多元素。
 
 Spark中的RDD（Resilient Distributed Dataset）具有以下几个主要特点：
+
 1. 分布式
-RDD是一个分布式的数据集合，数据被分割成多个分区，并分布在集群的各个节点上。通过这种分布式设计，RDD能够在集群上并行处理数据，充分利用集群的计算资源和存储资源。
+  RDD是一个分布式的数据集合，数据被分割成多个分区，并分布在集群的各个节点上。通过这种分布式设计，RDD能够在集群上并行处理数据，充分利用集群的计算资源和存储资源。
 
 从HDFS读取数据并进行分布式处理
 import org.apache.spark.{SparkConf, SparkContext}
@@ -23740,8 +24729,8 @@ val logsRDD = sc.textFile(logFile)
 
 // 分布式计算每个IP地址的访问次数
 val ipCounts = logsRDD
-  .map(line => (line.split(" ")(0), 1)) // 提取IP地址并计数
-  .reduceByKey(_ + _) // 聚合计数
+ .map(line => (line.split(" ")(0), 1)) // 提取IP地址并计数
+ .reduceByKey(_ + _) // 聚合计数
 
 // 打印结果
 ipCounts.collect().foreach(println)
@@ -23750,9 +24739,9 @@ ipCounts.collect().foreach(println)
 sc.stop()
 
 2. 不可变
-RDD是不可变的，一旦创建就不能修改。每个RDD上的转换操作都会生成一个新的RDD。这种不可变性简化了并行编程中的数据管理问题，避免了多个任务对同一数据集进行并发修改时的冲突和数据不一致问题。
-RDD的转换操作生成新的RDD
-import org.apache.spark.{SparkConf, SparkContext}
+  RDD是不可变的，一旦创建就不能修改。每个RDD上的转换操作都会生成一个新的RDD。这种不可变性简化了并行编程中的数据管理问题，避免了多个任务对同一数据集进行并发修改时的冲突和数据不一致问题。
+  RDD的转换操作生成新的RDD
+  import org.apache.spark.{SparkConf, SparkContext}
 
 // 创建SparkConf和SparkContext
 val conf = new SparkConf().setAppName("Immutable Example").setMaster("local[*]")
@@ -23775,7 +24764,7 @@ sc.stop()
 在这个例子中，originalRDD、squaredRDD和filteredRDD都是不可变的。每个转换操作（map和filter）生成一个新的RDD，而不会改变原始的RDD。
 
 3. 弹性（容错性）
-RDD具有容错性，通过血统（Lineage）信息实现。当一个数据分区丢失时，Spark可以根据RDD的血统信息重新计算丢失的数据分区。这种基于血统的容错机制确保了在集群节点故障时，计算任务仍然能够继续运行。
+  RDD具有容错性，通过血统（Lineage）信息实现。当一个数据分区丢失时，Spark可以根据RDD的血统信息重新计算丢失的数据分区。这种基于血统的容错机制确保了在集群节点故障时，计算任务仍然能够继续运行。
 
 基于血统信息的容错机制
 import org.apache.spark.{SparkConf, SparkContext}
@@ -23791,34 +24780,34 @@ val originalRDD = sc.parallelize(data, 10) // 分成10个分区
 
 // RDD的转换操作
 val transformedRDD = originalRDD.map { x =>
-  if (Random.nextInt(1000) == 0) {
-    // 模拟随机节点故障
-    throw new RuntimeException("Simulated error")
-  }
-  x * 2
+ if (Random.nextInt(1000) == 0) {
+ // 模拟随机节点故障
+ throw new RuntimeException("Simulated error")
+ }
+ x * 2
 }
 
 // 行动操作
 try {
-  val result = transformedRDD.collect()
-  println("Transformation successful")
+ val result = transformedRDD.collect()
+ println("Transformation successful")
 } catch {
-  case e: Exception =>
-    println("Transformation failed, but Spark will handle it.")
-    // 重新尝试操作
-    val result = transformedRDD.collect()
-    println("Transformation retried and successful")
+ case e: Exception =>
+ println("Transformation failed, but Spark will handle it.")
+ // 重新尝试操作
+ val result = transformedRDD.collect()
+ println("Transformation retried and successful")
 }
 
 // 关闭SparkContext
 sc.stop()
 
-
 4. 惰性求值
-RDD的转换操作（如map、filter）是惰性求值的，这意味着这些操作并不会立即执行，而是记录在RDD的血统信息中，只有在遇到行动操作（如count、collect）时才会触发实际的计算。惰性求值可以优化计算过程，减少不必要的数据传输和计算。
-
+  RDD的转换操作（如map、filter）是惰性求值的，这意味着这些操作并不会立即执行，而是记录在RDD的血统信息中，只有在遇到行动操作（如count、collect）时才会触发实际的计算。惰性求值可以优化计算过程，减少不必要的数据传输和计算。
+  
 5. 分区
-RDD由多个分区组成，每个分区可以并行处理。分区是RDD的基本并行单位，Spark对每个分区独立进行操作，这使得计算过程可以充分利用多核处理器和分布式计算资源。
+  RDD由多个分区组成，每个分区可以并行处理。分区是RDD的基本并行单位，Spark对每个分区独立进行操作，这使得计算过程可以充分利用多核处理器和分布式计算资源。
+  
 
 import org.apache.spark.{SparkConf, SparkContext}
 
@@ -23839,19 +24828,20 @@ partitionRDD.collect().foreach(println)
 sc.stop()
 
 6. 基于血统（Lineage）记录
-RDD维护了数据的血统信息，记录了从初始数据集到当前RDD的所有转换操作。血统信息不仅用于容错，还用于优化计算，通过分析血统信息，Spark可以进行诸如操作合并、过滤条件下推等优化。
-
+  RDD维护了数据的血统信息，记录了从初始数据集到当前RDD的所有转换操作。血统信息不仅用于容错，还用于优化计算，通过分析血统信息，Spark可以进行诸如操作合并、过滤条件下推等优化。
+  
 7. 丰富的API
-RDD提供了丰富的操作API，包括转换操作和行动操作。转换操作包括map、filter、flatMap、groupBy、reduceByKey等，行动操作包括collect、count、saveAsTextFile等。通过这些API，用户可以方便地进行各种数据处理和计算。
-
+  RDD提供了丰富的操作API，包括转换操作和行动操作。转换操作包括map、filter、flatMap、groupBy、reduceByKey等，行动操作包括collect、count、saveAsTextFile等。通过这些API，用户可以方便地进行各种数据处理和计算。
+  
 8. 内存计算
-RDD支持内存计算，可以将中间结果缓存到内存中，以加快后续的计算过程。通过缓存机制，重复使用的RDD可以避免重复计算，从而显著提高性能。
-
+  RDD支持内存计算，可以将中间结果缓存到内存中，以加快后续的计算过程。通过缓存机制，重复使用的RDD可以避免重复计算，从而显著提高性能。
+  
 9. 支持多种数据源
-RDD可以从多种数据源创建，包括本地文件系统、HDFS、S3、HBase、Cassandra等。这使得Spark能够处理不同格式和来源的大数据集。
-
+  RDD可以从多种数据源创建，包括本地文件系统、HDFS、S3、HBase、Cassandra等。这使得Spark能够处理不同格式和来源的大数据集。
+  
 10. 跨语言支持
-RDD支持多种编程语言，包括Scala、Java、Python和R。无论开发者使用哪种语言，都可以利用RDD的强大功能进行大数据处理。
+  RDD支持多种编程语言，包括Scala、Java、Python和R。无论开发者使用哪种语言，都可以利用RDD的强大功能进行大数据处理。
+  
 
 RDD的创建：
 1.用集合创建RDD
@@ -23891,8 +24881,6 @@ rdd.collect().foreach(println)
 // 关闭SparkSession
 spark.stop()
 
-
-
 RDD算子：
 RDD的算子分为两类:
 1.Transformation转换操作:返回一个新的 RDD
@@ -23923,7 +24911,6 @@ RDD 中的所有转换都是惰性求值/延迟执行的，也就是说并不会
 之所以使用惰性求值/延迟执行，是因为这样可以在 Action 时对 RDD 操作形成 DAG有向无环图进行 Stage 的划分和并行优化，
 这种设计让 Spark 更加有效率地运行。
 
-
 mapPartiti算子：
 mapPartitions算子是Spark中一个强大且灵活的转换操作，用于对RDD中的每个分区应用一个函数。与map算子不同，mapPartitions对每个分区的数据集进行处理，而不是单独对每个元素进行处理。
 
@@ -23944,7 +24931,7 @@ val rdd = sc.parallelize(data, 2) // 将数据分为两个分区
 
 // 使用mapPartitions算子将每个分区的元素加倍
 val mapPartitionsRDD = rdd.mapPartitions(iter => {
-  iter.map(x => x * 2)
+ iter.map(x => x * 2)
 })
 
 // 打印结果
@@ -23989,7 +24976,7 @@ val rdd = sc.parallelize(data, 2) // 将数据分为两个分区
 
 // 使用mapPartitionsWithIndex算子将每个分区的元素加倍，并附加分区号
 val mapPartitionsWithIndexRDD = rdd.mapPartitionsWithIndex((index, iter) => {
-  iter.map(x => s"Partition: $index, Value: ${x * 2}")
+ iter.map(x => s"Partition: $index, Value: ${x * 2}")
 })
 
 // 打印结果
@@ -23997,7 +24984,6 @@ mapPartitionsWithIndexRDD.collect().foreach(println)
 
 // 关闭SparkContext
 sc.stop()
-
 
 flatMap算子：flatMap 是 Spark 中的一个常用算子，用于将一个RDD中的每个元素通过一个指定的函数进行转换，然后将多个结果元素“扁平化”成一个新的RDD。
 与 map 不同的是，flatMap 允许返回一个包含多个元素的集合，并将这些集合中的所有元素展平为一个新的RDD。
@@ -24036,10 +25022,10 @@ val sc = new SparkContext(conf)
 
 // 创建事件列表
 val events = List(
-  ClickEvent("user1", "http://example.com"),
-  PurchaseEvent("user1", "item1", 19.99),
-  UnknownEvent("some random data"),
-  ClickEvent("user2", "http://example.org")
+ ClickEvent("user1", "http://example.com"),
+ PurchaseEvent("user1", "item1", 19.99),
+ UnknownEvent("some random data"),
+ ClickEvent("user2", "http://example.org")
 )
 
 // 创建RDD
@@ -24047,8 +25033,8 @@ val eventsRDD = sc.parallelize(events)
 
 // 使用flatMap和模式匹配提取ClickEvent并展开
 val clickEventsRDD = eventsRDD.flatMap {
-  case ClickEvent(user, url) => Some((user, url))
-  case _ => None
+ case ClickEvent(user, url) => Some((user, url))
+ case _ => None
 }
 
 // 打印结果
@@ -24056,7 +25042,6 @@ clickEventsRDD.collect().foreach(println)
 
 // 关闭SparkContext
 sc.stop()
-
 
 flatMap使用场景
 1.分词处理：如示例所示，将句子分割成单词。
@@ -24130,7 +25115,7 @@ val groupedRDD = rdd.groupBy(word => word.charAt(0))
 
 // 打印结果
 groupedRDD.collect().foreach{ case (key, values) => 
-  println(s"$key: ${values.mkString(", ")}")
+println(s"$key: ${values.mkString(", ")}")
 }
 
 // 关闭SparkContext
@@ -24143,7 +25128,6 @@ c: cherry
 
 groupBy 是 Spark 中一个非常强大的算子，可以根据指定的条件将 RDD 中的元素进行分组，并生成一个新的键值对 RDD。它广泛应用于分类统计、数据聚合和复杂查询等场景。
 然而，使用 groupBy 时需要注意数据倾斜问题，特别是在分组键分布不均匀的情况下。通过理解和合理使用 groupBy，可以更高效地处理和分析大规模数据。
-
 
 filter算子：
 filter算子是Apache Spark中的一个重要操作符，用于从RDD（Resilient Distributed Dataset）中筛选出满足给定条件的数据。它的作用类似于SQL中的WHERE子句。
@@ -24168,8 +25152,6 @@ val evenNumbers = data.filter(_ % 2 == 0)
 
 // 收集结果并打印
 evenNumbers.collect().foreach(println)
-
-
 
 sample算子：
 sample算子是Apache Spark中的一个有用操作符，用于从RDD（Resilient Distributed Dataset）中随机抽取一个子集。这个操作在数据分析和机器学习中经常使用，例如抽取训练集和测试集。
@@ -24202,8 +25184,6 @@ sampleWithoutReplacement.collect().foreach(println)
 println("Sample with replacement:")
 sampleWithReplacement.collect().foreach(println)
 
-
-
 distinct算子：
 distinct算子是Apache Spark中的一个重要操作符，用于从RDD（Resilient Distributed Dataset）中去除重复元素，生成一个只包含唯一元素的新RDD。
 
@@ -24227,11 +25207,11 @@ val sc = new SparkContext("local", "Distinct Example")
 
 // 创建一个包含用户点击数据的RDD
 val clicks = sc.parallelize(Seq(
-  ("user1", "page1"),
-  ("user2", "page2"),
-  ("user1", "page1"),
-  ("user2", "page3"),
-  ("user1", "page4")
+ ("user1", "page1"),
+ ("user2", "page2"),
+ ("user1", "page1"),
+ ("user2", "page3"),
+ ("user1", "page4")
 ))
 
 // 提取所有用户的访问页面，并去除重复页面
@@ -24239,7 +25219,6 @@ val distinctPages = clicks.map { case (user, page) => page }.distinct()
 
 // 收集结果并打印
 distinctPages.collect().foreach(println)
-
 
 repartition算子：
 repartition算子是Apache Spark中的一个重要操作符，用于重新分区RDD（Resilient Distributed Dataset）。它在数据分布和负载均衡方面起到了重要作用，尤其是在数据处理和性能优化时非常有用。
@@ -24263,11 +25242,11 @@ val sc = new SparkContext("local", "Repartition Example")
 
 // 创建一个包含用户点击数据的RDD，并将其分成10个分区
 val clicks = sc.parallelize(Seq(
-  ("user1", "page1"),
-  ("user2", "page2"),
-  ("user1", "page1"),
-  ("user2", "page3"),
-  ("user1", "page4")
+ ("user1", "page1"),
+ ("user2", "page2"),
+ ("user1", "page1"),
+ ("user2", "page3"),
+ ("user1", "page4")
 ), 10)
 
 // 过滤出某些条件的点击数据
@@ -24282,8 +25261,6 @@ println(s"Number of partitions after repartition: ${repartitionedClicks.getNumPa
 
 // 收集结果并打印
 repartitionedClicks.collect().foreach(println)
-
-
 
 coalesce算子：
 coalesce算子是Apache Spark中的一个重要操作符，用于减少RDD（Resilient Distributed Dataset）的分区数量。它在进行性能优化和资源管理时非常有用。
@@ -24318,20 +25295,18 @@ println(s"Number of partitions after coalesce: ${coalescedData.getNumPartitions}
 // 收集结果并打印
 coalescedData.collect().foreach(println)
 
-
 coalesce算子和repartition算子的区别：
 区别总结
-特性	coalesce	repartition
-是否洗牌（shuffle）	默认不洗牌，可选洗牌	总是洗牌
-主要用途	减少分区数量	增加或减少分区数量
-依赖类型	窄依赖	宽依赖
-性能	效率较高，适合减少分区数量的场景	开销较大，适合需要重新分布数据的场景
-数据分布	数据可能不均匀	数据重新分布更加均匀
+特性 coalesce repartition
+是否洗牌（shuffle） 默认不洗牌，可选洗牌 总是洗牌
+主要用途 减少分区数量 增加或减少分区数量
+依赖类型 窄依赖 宽依赖
+性能 效率较高，适合减少分区数量的场景 开销较大，适合需要重新分布数据的场景
+数据分布 数据可能不均匀 数据重新分布更加均匀
 
 选择使用
 使用coalesce：当需要减少分区数量且不关心数据分布是否均匀时，使用coalesce效率更高。
 使用repartition：当需要增加分区数量或需要确保数据分布均匀时，使用repartition更合适。
-
 
 sortBy算子：
 sortBy算子是Apache Spark中的一个重要操作符，用于对RDD（Resilient Distributed Dataset）中的元素进行排序。它在需要对数据进行排序的场景中非常有用。
@@ -24360,7 +25335,7 @@ val rdd2 = sc.parallelize(Seq(3, 4, 5, 6, 7))
 
 val intersectionRDD = rdd1.intersection(rdd2)
 
-intersectionRDD.collect().foreach(println)  // 输出: 3, 4, 5
+intersectionRDD.collect().foreach(println) // 输出: 3, 4, 5
 
 并集 (union)：返回两个RDD的并集，包含两个RDD的所有元素（不去重）。
 val rdd1 = sc.parallelize(Seq(1, 2, 3))
@@ -24368,7 +25343,7 @@ val rdd2 = sc.parallelize(Seq(3, 4, 5))
 
 val unionRDD = rdd1.union(rdd2)
 
-unionRDD.collect().foreach(println)  // 输出: 1, 2, 3, 3, 4, 5
+unionRDD.collect().foreach(println) // 输出: 1, 2, 3, 3, 4, 5
 
 差集 (subtract)：返回第一个RDD中不包含在第二个RDD中的元素。
 val rdd1 = sc.parallelize(Seq(1, 2, 3, 4, 5))
@@ -24376,7 +25351,7 @@ val rdd2 = sc.parallelize(Seq(3, 4, 5, 6, 7))
 
 val subtractRDD = rdd1.subtract(rdd2)
 
-subtractRDD.collect().foreach(println)  // 输出: 1, 2
+subtractRDD.collect().foreach(println) // 输出: 1, 2
 
 拉链 (zip)：将两个RDD按位置进行拉链操作，返回键值对的RDD。
 val rdd1 = sc.parallelize(Seq(1, 2, 3))
@@ -24384,7 +25359,7 @@ val rdd2 = sc.parallelize(Seq("a", "b", "c"))
 
 val zippedRDD = rdd1.zip(rdd2)
 
-zippedRDD.collect().foreach(println)  // 输出: (1, a), (2, b), (3, c)
+zippedRDD.collect().foreach(println) // 输出: (1, a), (2, b), (3, c)
 
 partitionBy算子：
 partitionBy算子是Apache Spark中的一个重要操作符，用于对数据进行分区操作，通常用于Pair RDD（键值对RDD）。它在需要对数据进行分区处理以优化性能和资源利用时非常有用。
@@ -24452,7 +25427,7 @@ val data = sc.parallelize(Seq(("a", 1), ("b", 1), ("a", 2), ("b", 2), ("b", 3)))
 val reducedData = data.reduceByKey((x, y) => x + y)
 
 // 收集结果并打印
-reducedData.collect().foreach(println)  // 输出: (a, 3), (b, 6)
+reducedData.collect().foreach(println) // 输出: (a, 3), (b, 6)
 
 groupByKey算子：
 groupByKey 算子是 Spark 中用于对键值对 RDD 进行分组操作的算子。它将具有相同键的所有值放入一个迭代器中，并生成一个新的键值对 RDD。
@@ -24486,7 +25461,7 @@ val groupedData = data.groupByKey()
 
 // 收集结果并打印
 groupedData.collect().foreach { case (key, values) =>
-  println(s"Key: $key, Values: ${values.mkString(", ")}")
+ println(s"Key: $key, Values: ${values.mkString(", ")}")
 }
 
 reduceByKey和groupByKey的区别：
@@ -24529,15 +25504,15 @@ val sc = new SparkContext(conf)
 
 // 创建一个包含用户点击数据的RDD
 val clicks = sc.parallelize(Seq(
-  ("user1", 1),
-  ("user2", 2),
-  ("user1", 3),
-  ("user2", 4),
-  ("user1", 5)
+ ("user1", 1),
+ ("user2", 2),
+ ("user1", 3),
+ ("user2", 4),
+ ("user1", 5)
 ))
 
 // 使用aggregateByKey算子计算每个用户的点击总数和点击次数
-val zeroValue = (0, 0)  // (sum, count)
+val zeroValue = (0, 0) // (sum, count)
 val seqOp = (acc: (Int, Int), value: Int) => (acc._1 + value, acc._2 + 1)
 val combOp = (acc1: (Int, Int), acc2: (Int, Int)) => (acc1._1 + acc2._1, acc1._2 + acc2._2)
 
@@ -24547,7 +25522,7 @@ val aggregatedClicks = clicks.aggregateByKey(zeroValue)(seqOp, combOp)
 val averageClicks = aggregatedClicks.mapValues { case (sum, count) => sum.toDouble / count }
 
 // 收集结果并打印
-averageClicks.collect().foreach(println)  // 输出: (user1, 3.0), (user2, 3.0)
+averageClicks.collect().foreach(println) // 输出: (user1, 3.0), (user2, 3.0)
 
 foldByKey算子：
 foldByKey 是 Spark 中的一个算子，用于对键值对 RDD 进行聚合操作。它类似于 aggregateByKey 和 reduceByKey，但提供了更简洁的语法，同时具有类似于 fold 操作的特性。
@@ -24574,11 +25549,11 @@ val sc = new SparkContext(conf)
 
 // 创建一个包含用户点击数据的RDD
 val clicks = sc.parallelize(Seq(
-  ("user1", 1),
-  ("user2", 2),
-  ("user1", 3),
-  ("user2", 4),
-  ("user1", 5)
+ ("user1", 1),
+ ("user2", 2),
+ ("user1", 3),
+ ("user2", 4),
+ ("user1", 5)
 ))
 
 // 使用foldByKey算子计算每个用户的点击总数
@@ -24588,7 +25563,7 @@ val foldFunc = (x: Int, y: Int) => x + y
 val foldedClicks = clicks.foldByKey(zeroValue)(foldFunc)
 
 // 收集结果并打印
-foldedClicks.collect().foreach(println)  // 输出: (user1, 9), (user2, 6)
+foldedClicks.collect().foreach(println) // 输出: (user1, 9), (user2, 6)
 
 combineByKey算子：
 combineByKey 是 Spark 中最灵活的键值对 RDD 聚合算子。它允许用户定义三个函数来分别处理每个分区内和分区之间的数据聚合，从而提供了极大的灵活性。
@@ -24599,9 +25574,9 @@ combineByKey 算子的概念
 
 语法：
 def combineByKey[C](
-    createCombiner: V => C,
-    mergeValue: (C, V) => C,
-    mergeCombiners: (C, C) => C
+ createCombiner: V => C,
+ mergeValue: (C, V) => C,
+ mergeCombiners: (C, C) => C
 ): RDD[(K, C)]
 
 参数说明
@@ -24626,11 +25601,11 @@ val sc = new SparkContext(conf)
 
 // 创建一个包含用户点击数据的RDD
 val clicks = sc.parallelize(Seq(
-  ("user1", 1),
-  ("user2", 2),
-  ("user1", 3),
-  ("user2", 4),
-  ("user1", 5)
+ ("user1", 1),
+ ("user2", 2),
+ ("user1", 3),
+ ("user2", 4),
+ ("user1", 5)
 ))
 
 // 使用combineByKey算子计算每个用户的点击总数和点击次数
@@ -24644,8 +25619,7 @@ val combinedClicks = clicks.combineByKey(createCombiner, mergeValue, mergeCombin
 val averageClicks = combinedClicks.mapValues { case (sum, count) => sum.toDouble / count }
 
 // 收集结果并打印
-averageClicks.collect().foreach(println)  // 输出: (user1, 3.0), (user2, 3.0)
-
+averageClicks.collect().foreach(println) // 输出: (user1, 3.0), (user2, 3.0)
 
 join算子：
 leftOuterJoin和RightOuterJoin算子：
@@ -24666,11 +25640,9 @@ foreach()
 Spark闭包检测：
 Spark闭包检查是Spark框架中一个重要的机制，主要用于确保在分布式计算环境中，闭包（Closure）内的对象可以被正确地序列化并传输到Executor节点上执行。闭包检查的主要目的是防止因为序列化失败而导致的任务执行错误。
 
-
 Spark的Kryo序列化：
 Spark Kryo序列化是Apache Spark框架中支持的一种高性能的Java序列化机制。Kryo是一个快速且高效的序列化框架，它通过使用自定义的序列化方式来避免Java标准序列化的一些性能问题，如序列化体积大、序列化速度慢等。
 在Spark中引入Kryo序列化框架的主要目的是为了提高Spark作业的性能，特别是在处理大规模数据时，序列化的性能对整个作业的性能影响非常大。
-
 
 Spark血缘分析：
 在Apache Spark中，血缘分析（Lineage Analysis）是指追踪和记录RDD（Resilient Distributed Dataset）之间的依赖关系和操作链的过程。
@@ -24704,7 +25676,6 @@ GroupByKey：每个输出分区依赖于多个输入分区的数据。
 ReduceByKey：每个输出分区依赖于多个输入分区的数据。
 Join：需要将两个RDD的数据按照键进行重新分配。
 
-
 Spark DAG：
 DAG(Directed Acyclic Graph 有向无环图)：指的是数据转换执行的过程，有方向，无闭环(其实就是 RDD 执行的流程)；
 原始的 RDD 通过一系列的转换操作就形成了 DAG 有向无环图，任务执行时，可以按照 DAG 的描述，执行真正的计算(数据被操作的一个过程)。
@@ -24719,7 +25690,6 @@ DAG 的边界:
 
 总结：Spark 会根据 shuffle/宽依赖使用回溯算法来对 DAG 进行 Stage 划分，
 从后往前，遇到宽依赖就断开，遇到窄依赖就把当前的 RDD 加入到当前的 stage/阶段中。
-
 
 Spark持久化：
 Spark 持久化（Persistence）是指将 RDD（Resilient Distributed Datasets，弹性分布式数据集）存储在内存或磁盘中，以便在后续的操作中重用，从而提高计算效率。
@@ -24762,7 +25732,6 @@ println(s"Count: $count")
 val sum = data.sum()
 println(s"Sum: $sum")
 
-
 持久化的优缺点
 优点
 提高计算效率：避免重复计算，提高性能，特别是在需要对同一个 RDD 进行多次操作时。
@@ -24772,7 +25741,6 @@ println(s"Sum: $sum")
 缺点
 内存开销：持久化需要占用内存和磁盘资源，如果资源不足，可能会影响其他计算任务。
 管理复杂度：需要合理选择存储级别和管理持久化的生命周期，增加了一定的管理复杂度。
-
 
 RDD 容错机制Checkpoint：
 在 Spark 中，RDD（Resilient Distributed Datasets）是具有弹性和容错性的分布式数据集。Spark 提供了多种机制来确保 RDD 在故障情况下的可靠性和容错性，其中一种重要的机制是检查点（Checkpointing）。
@@ -24838,140 +25806,153 @@ filteredData.collect().foreach(println)
 持久化的性能开销较低，因为其主要涉及内存和磁盘的读写操作。
 检查点的性能开销较高，因为其涉及将数据写入持久存储（如 HDFS），需要更多的 I/O 操作。
 
-
-
 Spark I/O流：Spark I/O是指在Apache Spark中进行数据输入（Input）和输出（Output）操作的过程和机制。Spark I/O涉及从各种数据源读取数据（输入），以及将处理后的数据写入到各种存储系统（输出）。
 Spark I/O的主要组件和功能
 数据读取（Input）
 
 1. 文件系统：
-   - HDFS（Hadoop Distributed File System）：Spark可以从HDFS中读取数据，这对于分布式计算环境非常重要。    
-     val rdd = sc.textFile("hdfs://path/to/file")
-     
-   - 本地文件系统：Spark也支持从本地文件系统读取数据，适用于开发和测试。     
-     val rdd = sc.textFile("file:///path/to/local/file")
-     
-   - S3（Amazon Simple Storage Service）：Spark可以从S3中读取数据，适用于云计算环境。    
-     val rdd = sc.textFile("s3a://bucket/path/to/file")
-     
+  
+  - HDFS（Hadoop Distributed File System）：Spark可以从HDFS中读取数据，这对于分布式计算环境非常重要。  
+    val rdd = sc.textFile("hdfs://path/to/file")
+    
+  - 本地文件系统：Spark也支持从本地文件系统读取数据，适用于开发和测试。  
+    val rdd = sc.textFile("file:///path/to/local/file")
+    
+  - S3（Amazon Simple Storage Service）：Spark可以从S3中读取数据，适用于云计算环境。  
+    val rdd = sc.textFile("s3a://bucket/path/to/file")
+    
 
 2. 数据库：
-   - JDBC：通过JDBC连接，Spark可以从关系数据库中读取数据。
-     
-     val jdbcDF = spark.read
-       .format("jdbc")
-       .option("url", "jdbc:postgresql://hostname:port/dbname")
-       .option("dbtable", "tablename")
-       .option("user", "username")
-       .option("password", "password")
-       .load()
-     
+  
+  - JDBC：通过JDBC连接，Spark可以从关系数据库中读取数据。
+    
+    val jdbcDF = spark.read
+     .format("jdbc")
+     .option("url", "jdbc:postgresql://hostname:port/dbname")
+     .option("dbtable", "tablename")
+     .option("user", "username")
+     .option("password", "password")
+     .load()
+    
 
 3. NoSQL数据库：
-   - Cassandra：通过Spark Cassandra连接器，可以从Cassandra数据库中读取数据。
-   - HBase：使用Spark HBase连接器，可以从HBase读取数据。
-
+  
+  - Cassandra：通过Spark Cassandra连接器，可以从Cassandra数据库中读取数据。
+  - HBase：使用Spark HBase连接器，可以从HBase读取数据。
 4. 数据流：
-   - Kafka：通过Spark Streaming，可以从Kafka读取实时数据流。    
-     import org.apache.spark.streaming._
-     import org.apache.spark.streaming.kafka._
-
-     val ssc = new StreamingContext(sc, Seconds(10))
-     val kafkaStream = KafkaUtils.createStream(ssc, "zkQuorum", "groupId", Map("topic" -> 1))
-     
+  
+  - Kafka：通过Spark Streaming，可以从Kafka读取实时数据流。  
+    import org.apache.spark.streaming._
+    import org.apache.spark.streaming.kafka._
+    
+    val ssc = new StreamingContext(sc, Seconds(10))
+    val kafkaStream = KafkaUtils.createStream(ssc, "zkQuorum", "groupId", Map("topic" -> 1))
+    
 
 数据写入（Output）
+
 1. 文件系统：
-   - HDFS：将数据写入HDFS，便于分布式存储和后续处理。  
-     rdd.saveAsTextFile("hdfs://path/to/output")
-     
-   - 本地文件系统：将数据写入本地文件系统，适用于小规模数据处理和测试。 
-     rdd.saveAsTextFile("file:///path/to/local/output")
-     
-   - S3：将数据写入S3，适用于云存储和分布式处理。
-     rdd.saveAsTextFile("s3a://bucket/path/to/output")
-     
+  
+  - HDFS：将数据写入HDFS，便于分布式存储和后续处理。  
+    rdd.saveAsTextFile("hdfs://path/to/output")
+    
+  - 本地文件系统：将数据写入本地文件系统，适用于小规模数据处理和测试。 
+    rdd.saveAsTextFile("file:///path/to/local/output")
+    
+  - S3：将数据写入S3，适用于云存储和分布式处理。
+    rdd.saveAsTextFile("s3a://bucket/path/to/output")
+    
 
 2. 数据库：
-   - JDBC：通过JDBC连接，将处理结果写入关系数据库。
-     
-     jdbcDF.write
-       .format("jdbc")
-       .option("url", "jdbc:postgresql://hostname:port/dbname")
-       .option("dbtable", "output_table")
-       .option("user", "username")
-       .option("password", "password")
-       .save()
-     
+  
+  - JDBC：通过JDBC连接，将处理结果写入关系数据库。
+    
+    jdbcDF.write
+     .format("jdbc")
+     .option("url", "jdbc:postgresql://hostname:port/dbname")
+     .option("dbtable", "output_table")
+     .option("user", "username")
+     .option("password", "password")
+     .save()
+    
 
 3. NoSQL数据库：
-   - Cassandra：通过Spark Cassandra连接器，将数据写入Cassandra。
-   - HBase：使用Spark HBase连接器，将数据写入HBase。
-
+  
+  - Cassandra：通过Spark Cassandra连接器，将数据写入Cassandra。
+  - HBase：使用Spark HBase连接器，将数据写入HBase。
 4. 数据流：
-   - Kafka：通过Spark Streaming，将处理结果写入Kafka。
-     
-     kafkaStream.map(record => (record.key, record.value)).foreachRDD { rdd =>
-       rdd.foreachPartition { partitionOfRecords =>
-         val producer = new KafkaProducer[String, String](kafkaParams)
-         partitionOfRecords.foreach { record =>
-           val message = new ProducerRecord[String, String](outputTopic, record._1, record._2)
-           producer.send(message)
-         }
-         producer.close()
-       }
-     }
-     
+  
+  - Kafka：通过Spark Streaming，将处理结果写入Kafka。
+    
+    kafkaStream.map(record => (record.key, record.value)).foreachRDD { rdd =>
+     rdd.foreachPartition { partitionOfRecords =>
+    
+    ```
+    val producer = new KafkaProducer[String, String](kafkaParams)
+    partitionOfRecords.foreach { record =>
+      val message = new ProducerRecord[String, String](outputTopic, record._1, record._2)
+      producer.send(message)
+    }
+    producer.close()
+    ```
+    
+    }
+    }
+    
 
 Spark I/O的特点和优势
+
 1. 多种数据源支持：
-   - Spark支持多种数据源，包括本地文件系统、分布式文件系统（如HDFS、S3）、关系数据库、NoSQL数据库、消息队列等。
-
+  
+  - Spark支持多种数据源，包括本地文件系统、分布式文件系统（如HDFS、S3）、关系数据库、NoSQL数据库、消息队列等。
 2. 统一的API：
-   - Spark提供统一的API来处理不同类型的数据源和数据格式，使得用户可以通过一致的编程模型进行数据读取和写入操作。
-
+  
+  - Spark提供统一的API来处理不同类型的数据源和数据格式，使得用户可以通过一致的编程模型进行数据读取和写入操作。
 3. 高效的分布式处理：
-   - Spark I/O操作天然支持分布式处理，能够充分利用集群资源进行大规模数据的高效读写。
-
+  
+  - Spark I/O操作天然支持分布式处理，能够充分利用集群资源进行大规模数据的高效读写。
 4. 容错机制：
-   - Spark I/O操作具备容错机制，通过数据分区和重算机制，确保在节点故障时能够恢复数据处理。
-
+  
+  - Spark I/O操作具备容错机制，通过数据分区和重算机制，确保在节点故障时能够恢复数据处理。
 
 SparkI/O流和Java I/O流的比较：
 Spark的I/O流和Java的I/O流在功能、用途和设计理念上有一些相同点和不同点。
 
 相同点
+
 1. 基本概念：
-   - 两者都涉及输入和输出操作，即读取数据和写入数据。
-   - 都需要处理数据流和数据块。
-
+  
+  - 两者都涉及输入和输出操作，即读取数据和写入数据。
+  - 都需要处理数据流和数据块。
 2. 数据格式支持：
-   - 都支持多种数据格式的读写，包括文本文件、二进制文件等。
-
+  
+  - 都支持多种数据格式的读写，包括文本文件、二进制文件等。
 3. 抽象和接口：
-   - 两者都提供了抽象和接口来简化I/O操作，例如，Java的InputStream和OutputStream，Spark的DataFrameReader和DataFrameWriter。
+  
+  - 两者都提供了抽象和接口来简化I/O操作，例如，Java的InputStream和OutputStream，Spark的DataFrameReader和DataFrameWriter。
 
 不同点
+
 1. 应用层次：
-   - Java I/O流：是底层I/O操作的基础类库，提供对文件、网络等的基本读写功能。它是Java标准库的一部分，广泛用于各种Java应用程序。
-   - Spark I/O流：是用于大数据处理的高级抽象，专注于分布式数据处理和存储。它建立在Hadoop等分布式文件系统之上，支持大规模数据的并行读写。
-
+  
+  - Java I/O流：是底层I/O操作的基础类库，提供对文件、网络等的基本读写功能。它是Java标准库的一部分，广泛用于各种Java应用程序。
+  - Spark I/O流：是用于大数据处理的高级抽象，专注于分布式数据处理和存储。它建立在Hadoop等分布式文件系统之上，支持大规模数据的并行读写。
 2. 抽象级别：
-   - Java I/O流：提供低级别的I/O操作，开发者需要手动管理流的打开、关闭和处理。例如，FileInputStream、FileOutputStream、BufferedReader、BufferedWriter等。
-   - Spark I/O流：提供高级别的数据抽象，数据以分布式集合（如RDD、DataFrame、Dataset）形式进行操作。Spark自动管理数据的分区、调度和容错。用户主要通过API进行数据加载和存储，如spark.read、spark.write等。
-
+  
+  - Java I/O流：提供低级别的I/O操作，开发者需要手动管理流的打开、关闭和处理。例如，FileInputStream、FileOutputStream、BufferedReader、BufferedWriter等。
+  - Spark I/O流：提供高级别的数据抽象，数据以分布式集合（如RDD、DataFrame、Dataset）形式进行操作。Spark自动管理数据的分区、调度和容错。用户主要通过API进行数据加载和存储，如spark.read、spark.write等。
 3. 并行和分布式处理：
-   - Java I/O流：主要是单机模式，处理文件或网络数据时通常是单线程或多线程的方式，但需要开发者自行管理并行和同步问题。
-   - Spark I/O流：天然支持分布式和并行处理，能够在集群上运行，通过分布式文件系统（如HDFS）进行数据存储和读取。Spark自动处理数据的分区和并行计算，大大简化了大数据处理的复杂性。
-
+  
+  - Java I/O流：主要是单机模式，处理文件或网络数据时通常是单线程或多线程的方式，但需要开发者自行管理并行和同步问题。
+  - Spark I/O流：天然支持分布式和并行处理，能够在集群上运行，通过分布式文件系统（如HDFS）进行数据存储和读取。Spark自动处理数据的分区和并行计算，大大简化了大数据处理的复杂性。
 4. 使用场景：
-   - Java I/O流：适用于小规模数据处理、系统编程、文件处理、网络编程等场景。
-   - Spark I/O流：适用于大数据分析、ETL（提取、转换、加载）、机器学习等需要处理大规模数据的场景。
-
+  
+  - Java I/O流：适用于小规模数据处理、系统编程、文件处理、网络编程等场景。
+  - Spark I/O流：适用于大数据分析、ETL（提取、转换、加载）、机器学习等需要处理大规模数据的场景。
 5. API设计：
-   - Java I/O流：设计上比较底层，需要处理较多的细节，如异常处理、资源管理等。
-   - Spark I/O流：设计上更加高层次和面向用户，提供简单易用的接口，并且集成了许多大数据处理功能，如数据源连接器、数据转换、聚合等。
-
+  
+  - Java I/O流：设计上比较底层，需要处理较多的细节，如异常处理、资源管理等。
+  - Spark I/O流：设计上更加高层次和面向用户，提供简单易用的接口，并且集成了许多大数据处理功能，如数据源连接器、数据转换、聚合等。
 
 Spark广播变量：Spark广播变量用来把变量在所有节点的内存之间进行共享，在每个机器上缓存一个只读的变量，而不是为机器上的每个任务都生成一个副本。
 
@@ -24980,30 +25961,32 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
 
 object BroadcastVariablesTest {
-  def main(args: Array[String]): Unit = {
-    val conf: SparkConf = new SparkConf().setAppName("wc").setMaster("local[*]")
-    val sc: SparkContext = new SparkContext(conf)
-    sc.setLogLevel("WARN")
+ def main(args: Array[String]): Unit = {
+ val conf: SparkConf = new SparkConf().setAppName("wc").setMaster("local[*]")
+ val sc: SparkContext = new SparkContext(conf)
+ sc.setLogLevel("WARN")
 
-    //不使用广播变量
-    val kvFruit: RDD[(Int, String)] = sc.parallelize(List((1,"apple"),(2,"orange"),(3,"banana"),(4,"grape")))
-    val fruitMap: collection.Map[Int, String] =kvFruit.collectAsMap
-    //scala.collection.Map[Int,String] = Map(2 -> orange, 4 -> grape, 1 -> apple, 3 -> banana)
-    val fruitIds: RDD[Int] = sc.parallelize(List(2,4,1,3))
-    //根据水果编号取水果名称
-    val fruitNames: RDD[String] = fruitIds.map(x=>fruitMap(x))
-    fruitNames.foreach(println)
-    //注意:以上代码看似一点问题没有,但是考虑到数据量如果较大,且Task数较多,
-    //那么会导致,被各个Task共用到的fruitMap会被多次传输
-    //应该要减少fruitMap的传输,一台机器上一个,被该台机器中的Task共用即可
-    //如何做到?---使用广播变量
-    //注意:广播变量的值不能被修改,如需修改可以将数据存到外部数据源,如MySQL、Redis
-    println("=====================")
-    val BroadcastFruitMap: Broadcast[collection.Map[Int, String]] = sc.broadcast(fruitMap)
-    val fruitNames2: RDD[String] = fruitIds.map(x=>BroadcastFruitMap.value(x))
-    fruitNames2.foreach(println)
+```
+//不使用广播变量
+val kvFruit: RDD[(Int, String)] = sc.parallelize(List((1,"apple"),(2,"orange"),(3,"banana"),(4,"grape")))
+val fruitMap: collection.Map[Int, String] =kvFruit.collectAsMap
+//scala.collection.Map[Int,String] = Map(2 -> orange, 4 -> grape, 1 -> apple, 3 -> banana)
+val fruitIds: RDD[Int] = sc.parallelize(List(2,4,1,3))
+//根据水果编号取水果名称
+val fruitNames: RDD[String] = fruitIds.map(x=>fruitMap(x))
+fruitNames.foreach(println)
+//注意:以上代码看似一点问题没有,但是考虑到数据量如果较大,且Task数较多,
+//那么会导致,被各个Task共用到的fruitMap会被多次传输
+//应该要减少fruitMap的传输,一台机器上一个,被该台机器中的Task共用即可
+//如何做到?---使用广播变量
+//注意:广播变量的值不能被修改,如需修改可以将数据存到外部数据源,如MySQL、Redis
+println("=====================")
+val BroadcastFruitMap: Broadcast[collection.Map[Int, String]] = sc.broadcast(fruitMap)
+val fruitNames2: RDD[String] = fruitIds.map(x=>BroadcastFruitMap.value(x))
+fruitNames2.foreach(println)
+```
 
-  }
+}
 }
 
 Spark Executor：
@@ -25027,13 +26010,13 @@ spark.executor.memory：指定每个Executor分配的内存大小。这决定了
 
 示例配置：
 spark-submit \
-  --class org.apache.spark.examples.SparkPi \
-  --master yarn \
-  --deploy-mode cluster \
-  --num-executors 10 \  # 启动10个Executor
-  --executor-cores 4 \  # 每个Executor使用4个核心
-  --executor-memory 8G \  # 每个Executor使用8 GB内存
-  /path/to/examples.jar
+ --class org.apache.spark.examples.SparkPi \
+ --master yarn \
+ --deploy-mode cluster \
+ --num-executors 10 \ # 启动10个Executor
+ --executor-cores 4 \ # 每个Executor使用4个核心
+ --executor-memory 8G \ # 每个Executor使用8 GB内存
+ /path/to/examples.jar
 
 在这个示例中：
 1.我们启动了10个Executor。
@@ -25065,11 +26048,11 @@ DAG的无环性（Acyclic）意味着图中没有循环，即数据流不会回�
 行动（Actions）：这些操作（如collect、count、saveAsTextFile）会触发实际的计算，返回结果或将数据保存到外部存储。
 
 示例
-val lines = sc.textFile("hdfs://...")  // 读取数据
-val words = lines.flatMap(_.split(" "))  // 转换：分割单词
-val pairs = words.map(word => (word, 1))  // 转换：生成键值对
-val counts = pairs.reduceByKey(_ + _)  // 转换：按键聚合
-counts.saveAsTextFile("hdfs://...")  // 行动：保存结果
+val lines = sc.textFile("hdfs://...") // 读取数据
+val words = lines.flatMap(_.split(" ")) // 转换：分割单词
+val pairs = words.map(word => (word, 1)) // 转换：生成键值对
+val counts = pairs.reduceByKey(_ + _) // 转换：按键聚合
+counts.saveAsTextFile("hdfs://...") // 行动：保存结果
 
 节点：表示各个RDD和操作。
 有向边：表示RDD之间的数据依赖关系。
@@ -25103,7 +26086,7 @@ val data = sc.parallelize(1 to 10)
 data.foreach(x => acc.add(x))
 
 // 打印累加器的值
-println(s"Accumulated value: ${acc.value}")  // 输出: Accumulated value: 55
+println(s"Accumulated value: ${acc.value}") // 输出: Accumulated value: 55
 
 自定义累加器：有时内置的累加器无法满足所有需求，Spark 允许用户自定义累加器。自定义累加器需要继承 AccumulatorV2 类，并实现相关方法。
 
@@ -25113,40 +26096,40 @@ import org.apache.spark.util.AccumulatorV2
 
 // 自定义字符串累加器
 class StringAccumulator extends AccumulatorV2[String, String] {
-  private var _value: String = ""
+ private var _value: String = ""
 
-  // 判断累加器是否为空
-  def isZero: Boolean = _value.isEmpty
+// 判断累加器是否为空
+ def isZero: Boolean = _value.isEmpty
 
-  // 复制累加器
-  def copy(): AccumulatorV2[String, String] = {
-    val newAcc = new StringAccumulator
-    newAcc._value = this._value
-    newAcc
-  }
+// 复制累加器
+ def copy(): AccumulatorV2[String, String] = {
+ val newAcc = new StringAccumulator
+ newAcc._value = this._value
+ newAcc
+ }
 
-  // 重置累加器
-  def reset(): Unit = {
-    _value = ""
-  }
+// 重置累加器
+ def reset(): Unit = {
+ _value = ""
+ }
 
-  // 添加值
-  def add(v: String): Unit = {
-    _value += v
-  }
+// 添加值
+ def add(v: String): Unit = {
+ _value += v
+ }
 
-  // 合并两个累加器
-  def merge(other: AccumulatorV2[String, String]): Unit = {
-    other match {
-      case o: StringAccumulator => _value += o._value
-      case _ => throw new UnsupportedOperationException(
-        "Cannot merge StringAccumulator with different type"
-      )
-    }
-  }
+// 合并两个累加器
+ def merge(other: AccumulatorV2[String, String]): Unit = {
+ other match {
+ case o: StringAccumulator => _value += o._value
+ case _ => throw new UnsupportedOperationException(
+ "Cannot merge StringAccumulator with different type"
+ )
+ }
+ }
 
-  // 返回累加器的值
-  def value: String = _value
+// 返回累加器的值
+ def value: String = _value
 }
 
 // 使用自定义字符串累加器
@@ -25164,7 +26147,7 @@ val data = sc.parallelize(Seq("Hello", " ", "World", "!"))
 data.foreach(str => stringAcc.add(str))
 
 // 打印累加器的值
-println(s"Accumulated value: ${stringAcc.value}")  // 输出: Accumulated value: Hello World!
+println(s"Accumulated value: ${stringAcc.value}") // 输出: Accumulated value: Hello World!
 
 自定义累加器方法说明
 isZero：判断累加器是否为空。
@@ -25174,9 +26157,8 @@ add：添加值到累加器。
 merge：合并两个累加器。
 value：返回累加器的值。
 
-
 Spark工程化代码方法：
-Controller Service DAO 
+Controller Service DAO
 
 Spark SQL:Spark SQL 是 Spark 用来操作结构化数据的组件。
 通过 Spark SQL，用户可以使用 SQL或者 Apache Hive 版本的 SQL 方言（HQL）来查询数据。
@@ -25209,7 +26191,6 @@ DataFrame = RDD - 泛型 + Schema + SQL + 优化
 DataSet[Person]：不光有 schema 信息，还有类型信息。
 DataSet = DataFrame + 泛型
 DataSet = RDD + Schema + SQL + 优化
-
 
 Spark Streaming:Spark Streaming 是 Spark 平台上针对实时数据进行流式计算的组件，提供了丰富的处理数据流的API。
 Spark Streaming 的特点：
@@ -25247,15 +26228,15 @@ Structured Streaming 最核心的思想就是将实时到达的数据看作是�
 Transform实时计算：
 case class DeviceData(device: String, deviceType: String, signal: Double, time: DateTime)
 val df: DataFrame = ... // streaming DataFrame with IOT device data with schema { device: string, deviceType: string, signal: double, time: string }
-val ds: Dataset[DeviceData] = df.as[DeviceData]    // streaming Dataset with IOT device data
+val ds: Dataset[DeviceData] = df.as[DeviceData] // streaming Dataset with IOT device data
 // Select the devices which have signal more than 10
-df.select("device").where("signal > 10")      // using untyped APIs
-ds.filter(_.signal > 10).map(_.device)         // using typed APIs
+df.select("device").where("signal > 10") // using untyped APIs
+ds.filter(_.signal > 10).map(_.device) // using typed APIs
 // Running count of the number of updates for each device type
-df.groupBy("deviceType").count()                 // using untyped API
+df.groupBy("deviceType").count() // using untyped API
 // Running average signal for each device type
 import org.apache.spark.sql.expressions.scalalang.typed
-ds.groupByKey(_.deviceType).agg(typed.avg(_.signal))    // using typed API
+ds.groupByKey(_.deviceType).agg(typed.avg(_.signal)) // using typed API
 
 计算结果可以选择输出到多种设备并进行如下设定：
 output mode：以哪种方式将 result table 的数据写入 sink,即是全部输出 complete 还是只输出新增数据；
@@ -25280,7 +26261,6 @@ Spark运行流程：
 8.TaskScheduler 将 Task 发送给 Executor 运行
 9.同时 SparkContext 将应用程序代码发放给 Executor
 10.Task 在 Executor 上运行，运行完毕释放所有资源
-
 
 Flink 大数据批处理运算+流式运算：
 Apache Flink 是一个开源的、分布式的大数据处理框架，可以处理批量数据和实时数据处理。它被设计成快速、可扩展和可靠，并提供统一的批量和流数据处理编程模型。
@@ -25310,11 +26290,11 @@ Apache kafka、RabbitMQ、MySQL、ElasticSearch、Apache Cassandra、Hadoop File
 同理你也可以定义自己的 sink。
 
 2. Flink 并行数据流
-Flink 程序在执行的时候，会被映射成一个 Streaming Dataflow，一个 Streaming Dataflow 是由一组 Stream 和 Transformation Operator 组成的。
-在启动时从一个或多个 Source Operator 开始，结束于一个或多个 Sink Operator。
-Flink 程序本质上是并行的和分布式的，在执行过程中，一个流(stream)包含一个或多个流分区，
-而每一个 operator 包含一个或多个 operator 子任务。操作子任务间彼此独立，在不同的线程中执行，甚至是在不同的机器或不同的容器上。
-operator 子任务的数量是这一特定 operator 的并行度。相同程序中的不同 operator 有不同级别的并行度。
+  Flink 程序在执行的时候，会被映射成一个 Streaming Dataflow，一个 Streaming Dataflow 是由一组 Stream 和 Transformation Operator 组成的。
+  在启动时从一个或多个 Source Operator 开始，结束于一个或多个 Sink Operator。
+  Flink 程序本质上是并行的和分布式的，在执行过程中，一个流(stream)包含一个或多个流分区，
+  而每一个 operator 包含一个或多个 operator 子任务。操作子任务间彼此独立，在不同的线程中执行，甚至是在不同的机器或不同的容器上。
+  operator 子任务的数量是这一特定 operator 的并行度。相同程序中的不同 operator 有不同级别的并行度。
 
 一个 Stream 可以被分成多个 Stream 的分区，也就是 Stream Partition。一个 Operator 也可以被分为多个 Operator Subtask。
 每一个 Operator Subtask 都是在不同的线程当中独立执行的。一个 Operator 的并行度，就等于 Operator Subtask 的个数。
@@ -25325,17 +26305,16 @@ One to One 模式：两个 operator 用此模式传递的时候，会保持数�
 Redistributing （重新分配）模式：这种模式会改变数据的分区数；每个一个 operator subtask 会根据选择 transformation 把数据发送到不同的目标 subtasks,比如 keyBy()会通过 hashcode 重新分区,broadcast()和 rebalance()方法会随机重新分区；
 
 3. Task 和 Operator chain
-Flink的所有操作都称之为Operator，客户端在提交任务的时候会对Operator进行优化操作，
-能进行合并的Operator会被合并为一个Operator，合并后的Operator称为Operator chain，实际上就是一个执行链，
-每个执行链会在TaskManager上一个独立的线程中执行。
-
+  Flink的所有操作都称之为Operator，客户端在提交任务的时候会对Operator进行优化操作，
+  能进行合并的Operator会被合并为一个Operator，合并后的Operator称为Operator chain，实际上就是一个执行链，
+  每个执行链会在TaskManager上一个独立的线程中执行。
 
 4. 任务调度与执行
-当Flink执行executor会自动根据程序代码生成DAG数据流图；
-ActorSystem创建Actor将数据流图发送给JobManager中的Actor；
-JobManager会不断接收TaskManager的心跳消息，从而可以获取到有效的TaskManager；
-JobManager通过调度器在TaskManager中调度执行Task（在Flink中，最小的调度单元就是task，对应就是一个线程）；
-在程序运行过程中，task与task之间是可以进行数据传输的。
+  当Flink执行executor会自动根据程序代码生成DAG数据流图；
+  ActorSystem创建Actor将数据流图发送给JobManager中的Actor；
+  JobManager会不断接收TaskManager的心跳消息，从而可以获取到有效的TaskManager；
+  JobManager通过调度器在TaskManager中调度执行Task（在Flink中，最小的调度单元就是task，对应就是一个线程）；
+  在程序运行过程中，task与task之间是可以进行数据传输的。
 
 Job Client：
 主要职责是提交任务, 提交后可以结束进程, 也可以等待结果返回；
@@ -25356,22 +26335,24 @@ Task Manager 是在 JVM 中的一个或多个线程中执行任务的工作节�
 TaskManager在创建之初就设置好了Slot, 每个Slot可以执行一个任务。
 
 5. 任务槽和槽共享
-每个TaskManager是一个JVM的进程, 可以在不同的线程中执行一个或多个子任务。
-为了控制一个worker能接收多少个task。worker通过task slot来进行控制（一个worker至少有一个task slot）。
+  每个TaskManager是一个JVM的进程, 可以在不同的线程中执行一个或多个子任务。
+  为了控制一个worker能接收多少个task。worker通过task slot来进行控制（一个worker至少有一个task slot）。
+  
 
-1) 任务槽
-每个task slot表示TaskManager拥有资源的一个固定大小的子集。
-flink将进程的内存进行了划分到多个slot中。
-图中有2个TaskManager，每个TaskManager有3个slot的，每个slot占有1/3的内存。
-内存被划分到不同的slot之后可以获得如下好处:
-TaskManager最多能同时并发执行的任务是可以控制的，那就是3个，因为不能超过slot的数量。
-slot有独占的内存空间，这样在一个TaskManager中可以运行多个不同的作业，作业之间不受影响。
-
-2) 槽共享
-默认情况下，Flink允许子任务共享插槽，即使它们是不同任务的子任务，只要它们来自同一个作业。结果是一个槽可以保存作业的整个管道。允许插槽共享有两个主要好处：
-只需计算Job中最高并行度（parallelism）的task slot,只要这个满足，其他的job也都能满足。
-资源分配更加公平，如果有比较空闲的slot可以将更多的任务分配给它。图中若没有任务槽共享，负载不高的Source/Map等subtask将会占据许多资源，而负载较高的窗口subtask则会缺乏资源。
-有了任务槽共享，可以将基本并行度（base parallelism）从2提升到6.提高了分槽资源的利用率。同时它还可以保障TaskManager给subtask的分配的slot方案更加公平。
+1. 任务槽
+  每个task slot表示TaskManager拥有资源的一个固定大小的子集。
+  flink将进程的内存进行了划分到多个slot中。
+  图中有2个TaskManager，每个TaskManager有3个slot的，每个slot占有1/3的内存。
+  内存被划分到不同的slot之后可以获得如下好处:
+  TaskManager最多能同时并发执行的任务是可以控制的，那就是3个，因为不能超过slot的数量。
+  slot有独占的内存空间，这样在一个TaskManager中可以运行多个不同的作业，作业之间不受影响。
+  
+2. 槽共享
+  默认情况下，Flink允许子任务共享插槽，即使它们是不同任务的子任务，只要它们来自同一个作业。结果是一个槽可以保存作业的整个管道。允许插槽共享有两个主要好处：
+  只需计算Job中最高并行度（parallelism）的task slot,只要这个满足，其他的job也都能满足。
+  资源分配更加公平，如果有比较空闲的slot可以将更多的任务分配给它。图中若没有任务槽共享，负载不高的Source/Map等subtask将会占据许多资源，而负载较高的窗口subtask则会缺乏资源。
+  有了任务槽共享，可以将基本并行度（base parallelism）从2提升到6.提高了分槽资源的利用率。同时它还可以保障TaskManager给subtask的分配的slot方案更加公平。
+  
 
 FLink的Time和Window：
 流式：就是数据源源不断的流进来，也就是数据没有边界，但是我们计算的时候必须在一个有边界的范围内进行，
@@ -25397,7 +26378,6 @@ timeWindow(size, slide)：将数据按照时间分成指定大小和滑动间隔
 sessionWindow(size, slide)：将数据按照时间分成指定大小和滑动间隔的会话窗口，每个会话窗口内的数据是一组数据。
 globalWindow()：将数据分成一个全局窗口，每个全局窗口内的数据是一组数据。
 
-
 Time：
 在Flink中，如果以时间段划分边界的话，那么时间就是一个极其重要的字段。
 Flink中的时间有三种类型：
@@ -25417,9 +26397,7 @@ sessionWindow(size, slide)：将数据按照时间分成指定大小和滑动间
 countWindow(size)：将数据分成指定大小的窗口，每个窗口内的数据是一组数据。
 globalWindow()：将数据分成一个全局窗口，每个全局窗口内的数据是一组数据。
 
-
 总之，Flink 是一个强大的大数据处理框架，适用于批量数据和实时数据处理。它提供了低延迟处理、容错性、可扩展性
-
 
 ClickHouse 大数据列式存储：
 ClickHouse是一个开源的，用于联机分析（OLAP）的列式数据库管理系统（DBMS-database manager system）, 它是面向列的，并允许使用SQL查询，实时生成分析报告。
@@ -25493,7 +26471,6 @@ ZAB过程：
 （6）Leader向所有Follower广播commit消息，同时自身也会完成事务提交。Follower 接收到commit消息后，会将上一条事务提交。
 （7）Zookeeper采用Zab协议的核心，就是只要有一台服务器提交了Proposal，就要确保所有的服务器最终都能正确提交Proposal。
 
-
 Flume 大数据数据采集：Flume 是 Cloudera 提供的一个高可用的，高可靠的，分布式的海量日志采集、聚合和传输的系统。
 Flume最主要的作用是实时读取服务器本地的文件，将数据写入到HDFS。
 
@@ -25522,13 +26499,10 @@ File Channel 将所有事件写到磁盘。因此在程序关闭或机器宕机�
 传输单元，Flume 数据传输的基本单元，以 Event 的形式将数据从源头送至目的地。
 Event 由 Header 和 Body 两部分组成，Header 用来存放该 event 的一些属性，为 K-V 结构，Body 用来存放该条数据，形式为字节数组。
 
-
-
 Azkaban 大数据任务调度
 Azkaban是由Linkedin公司推出的一个批量工作流任务调度器，主要用于在一个工作流内以一个特定的顺序运行一组工作和流程，
 它的配置是通过简单的<key, value>对的方式，通过配置中的dependencies来设置依赖关系。
 Azkaban使用job配置文件建立任务之间的依赖关系，并提供一个易于使用的Web用户界面维护和跟踪你的工作流。
-
 
 常见工作流调度系统:
 1.简单的任务调度：直接使用 Linux 的 Crontab 来定义；
@@ -25578,7 +26552,6 @@ Executor判断是否设置作业粒度分配，如果未设置作业粒度分配
 分配节点从Zookeeper获取各个Executor的资源状态信息，然后根据策略选择一个Executor分配作业；
 被分配到作业的Executor即成为执行节点，执行作业，然后更新数据库。
 
-
 Atlas 大数据元数据管理
 Apache Atlas 为组织提供开放式元数据管理和治理功能，用以构建其数据资产目录，对
 这些资产进行分类和管理，形成数据字典。并为数据分析师和数据治理团队，提供围绕这些
@@ -25593,56 +26566,62 @@ Atlas 的使用相对简单，其主要工作是同步各服务（主要是 Hive
 Apache Atlas为Hadoop的元数据治理提供了以下特性：
 
 数据分类
+
 - 为元数据导入或定义业务导向的分类注释
 - 定义，注释，以及自动捕获数据集和底层元素之间的关系
 - 导出元数据到第三方系统
 
 集中审计
+
 - 捕获与所有应用，过程以及与数据交互的安全访问信息
 - 捕获执行，步骤，活动等操作的信息
 
 搜索与血缘
+
 - 预定义的导航路径用来探索数据分类以及审计信息
 - 基于文本的搜索特性来快速和准确的定位相关联的数据和审计事件
 - 对数据集血缘关系的可视化浏览使用户可以下钻到操作，安全以及数据起源相关的信息
 
 安全与策略引擎
+
 - 基于数据分类模式，属性以及角色的运行时合理合规策略
 - 基于分类-预测的高级策略定义以防止数据推导
 - 基于cell的属性和值的行/列级别的masking
 
 Core
+
 - Type System: Atlas 允许用户为他们想要管理的元数据对象定义一个模型。该模型由称为 "类型" 的定义组成。
-"类型" 的 实例被称为 "实体" 表示被管理的实际元数据对象。类型系统是一个组件，允许用户定义和管理类型和实体。
-由 Atlas 管理的所有元数据对象（例如Hive表）都使用类型进行建模，并表示为实体。要在 Atlas 中存储新类型的元数据，
-需要了解类型系统组件的概念。
-
+  "类型" 的 实例被称为 "实体" 表示被管理的实际元数据对象。类型系统是一个组件，允许用户定义和管理类型和实体。
+  由 Atlas 管理的所有元数据对象（例如Hive表）都使用类型进行建模，并表示为实体。要在 Atlas 中存储新类型的元数据，
+  需要了解类型系统组件的概念。
+  
 - Ingest/Export：Ingest 组件允许将元数据添加到 Atlas。类似地，Export 组件暴露由 Atlas 检测到的元数据更改，
-以作为事件引发，消费者可以使用这些更改事件来实时响应元数据更改。
-
+  以作为事件引发，消费者可以使用这些更改事件来实时响应元数据更改。
+  
 - Graph Engine：在内部，Atlas 通过使用图形模型管理元数据对象。以实现元数据对象之间的巨大灵活性和丰富的关系。
-图形引擎是负责在类型系统的类型和实体之间进行转换的组件，以及基础图形模型。除了管理图形对象之外，
-图形引擎还为元数据对象创建适当的索引，以便有效地搜索它们。
-
+  图形引擎是负责在类型系统的类型和实体之间进行转换的组件，以及基础图形模型。除了管理图形对象之外，
+  图形引擎还为元数据对象创建适当的索引，以便有效地搜索它们。
+  
 - Titan：目前，Atlas 使用 Titan 图数据库来存储元数据对象。 Titan 使用两个存储：默认情况下元数据存储配置为 HBase ，
-索引存储配置为 Solr。也可以通过构建相应的配置文件使用BerkeleyDB存储元数据存储 和使用ElasticSearch存储 Index。
-元数据存储用于存储元数据对象本身，索引存储用于存储元数据属性的索引，其允许高效搜索。
+  索引存储配置为 Solr。也可以通过构建相应的配置文件使用BerkeleyDB存储元数据存储 和使用ElasticSearch存储 Index。
+  元数据存储用于存储元数据对象本身，索引存储用于存储元数据属性的索引，其允许高效搜索。
+  
 
 Integration
 用户可以使用两种方法管理 Atlas 中的元数据：
+
 - API： Atlas 的所有功能都可以通过 REST API 提供给最终用户，允许创建，更新和删除类型和实体。
-它也是查询和发现通过 Atlas 管理的类型和实体的主要方法。
+  它也是查询和发现通过 Atlas 管理的类型和实体的主要方法。
 - Messaging：除了 API 之外，用户还可以选择使用基于 Kafka 的消息接口与 Atlas 集成。
-这对于将元数据对象传输到 Atlas 以及从 Atlas 使用可以构建应用程序的元数据更改事件都非常有用。
-如果希望使用与 Atlas 更松散耦合的集成，这可以允许更好的可扩展性，可靠性等，消息传递接口是特别有用的。
-Atlas 使用 Apache Kafka 作为通知服务器用于钩子和元数据通知事件的下游消费者之间的通信。
-事件由钩子(hook)和 Atlas 写到不同的 Kafka 主题。
+  这对于将元数据对象传输到 Atlas 以及从 Atlas 使用可以构建应用程序的元数据更改事件都非常有用。
+  如果希望使用与 Atlas 更松散耦合的集成，这可以允许更好的可扩展性，可靠性等，消息传递接口是特别有用的。
+  Atlas 使用 Apache Kafka 作为通知服务器用于钩子和元数据通知事件的下游消费者之间的通信。
+  事件由钩子(hook)和 Atlas 写到不同的 Kafka 主题。
 - ATLAS_HOOK: 来自各个组件的Hook 的元数据通知事件通过写入到名为 ATLAS_HOOK 的 Kafka topic 发送到 Atlas
 - ATLAS_ENTITIES：从 Atlas 到其他集成组件（如Ranger）的事件写入到名为 ATLAS_ENTITIES 的 Kafka topic
 
-
-
 Metadata source
+
 - Hive：通过hive bridge， atlas可以接入Hive的元数据，包括hive_db/hive_table/hive_column/hive_process
 - Sqoop：通过sqoop bridge，atlas可以接入关系型数据库的元数据，包括sqoop_operation_type/ sqoop_dbstore_usage/sqoop_process/sqoop_dbdatastore
 - Falcon：通过falcon bridge，atlas可以接入Falcon的元数据，包括falcon_cluster/falcon_feed/falcon_feed_creation/falcon_feed_replication/ falcon_process
@@ -25652,43 +26631,53 @@ Metadata source
 Atlas集成大数据组件的元数据源需要实现以下两点：
 
 - 首先，需要基于atlas的类型系统定义能够表达大数据组件元数据对象的元数据模型
-(例如Hive的元数据模型实现在org.apache.atlas.hive.model.HiveDataModelGenerator)；
-
+  (例如Hive的元数据模型实现在org.apache.atlas.hive.model.HiveDataModelGenerator)；
+  
 - 然后，需要提供hook组件去从大数据组件的元数据源中提取元数据对象，实时侦听元数据的变更并反馈给atlas；
+  
 
 Applications
+
 - Atlas Admin UI: 该组件是一个基于 Web 的应用程序，允许数据管理员和科学家发现和注释元数据。
-Admin UI提供了搜索界面和类SQL的查询语言，可以用来查询由 Atlas 管理的元数据类型和对象。
-Admin UI 使用 Atlas 的 REST API 来构建其功能。
-
+  Admin UI提供了搜索界面和类SQL的查询语言，可以用来查询由 Atlas 管理的元数据类型和对象。
+  Admin UI 使用 Atlas 的 REST API 来构建其功能。
+  
 - Tag Based Policies: Apache Ranger 是针对 Hadoop 生态系统的高级安全管理解决方案，与各种 Hadoop 组件具有广泛的集成。
-通过与 Atlas 集成，Ranger 允许安全管理员定义元数据驱动的安全策略，以实现有效的治理。 
-Ranger 是由 Atlas 通知的元数据更改事件的消费者。
-
+  通过与 Atlas 集成，Ranger 允许安全管理员定义元数据驱动的安全策略，以实现有效的治理。 
+  Ranger 是由 Atlas 通知的元数据更改事件的消费者。
+  
 - Business Taxonomy:从元数据源获取到 Atlas 的元数据对象主要是一种技术形式的元数据。
-为了增强可发现性和治理能力，Atlas 提供了一个业务分类界面，允许用户首先定义一组代表其业务域的业务术语，
-并将其与 Atlas 管理的元数据实体相关联。业务分类法是一种 Web 应用程序，目前是 Atlas Admin UI 的一部分，
-并且使用 REST API 与 Atlas 集成。
+  为了增强可发现性和治理能力，Atlas 提供了一个业务分类界面，允许用户首先定义一组代表其业务域的业务术语，
+  并将其与 Atlas 管理的元数据实体相关联。业务分类法是一种 Web 应用程序，目前是 Atlas Admin UI 的一部分，
+  并且使用 REST API 与 Atlas 集成。
+  
 
- 
 ATlas类型系统
 Atlas 允许用户为他们想要管理的元数据对象定义一个模型。该模型由称为 “类型” (type)的定义组成。被称为 “实体” (entities)的 “类型” 实例表示被管理的实际元数据对象。由 Atlas 管理的所有元数据对象（例如Hive表）都使用类型进行建模，并表示为实体。
 
 - Type：Atlas中的 “类型” 定义了如何存储和访问特定类型的元数据对象。类型表示了所定义元数据对象的一个或多个属性集合。
-具有开发背景的用户可以将 “类型” 理解成面向对象的编程语言的 “类” 定义的或关系数据库的 “表模式”。
-类型具有元类型，元类型表示 Atlas 中此模型的类型：
-
+  具有开发背景的用户可以将 “类型” 理解成面向对象的编程语言的 “类” 定义的或关系数据库的 “表模式”。
+  类型具有元类型，元类型表示 Atlas 中此模型的类型：
+  
 - 基本元类型： Int，String，Boolean等
+  
 - 集合元类型：例如Array，Map
+  
 - Class，Struct，Trait
-
+  
 - Entities：Atlas中的 “实体” 是类 “类型” 的特定值或实例，因此表示真实世界中的特定元数据对象。
   回顾我们的面向对象编程语言的类比，“实例” 是某个 “类” 的 “对象”。
+  
 - Attributes：Atlas中的属性还有一些属性，其定义了与类型系统相关的更多概念，包括：
+  
 - isComposite - 是否复合
+  
 - isIndexable - 是否索引
+  
 - isUnique - 是否唯一
+  
 - multiplicity - 指示此属性是（必需的／可选的／还是可以是多值）的
+  
 
 Atlas 提供了一些预定义的系统类型：
 
@@ -25696,14 +26685,14 @@ Atlas 提供了一些预定义的系统类型：
 - Asset：此类型包含名称，说明和所有者等属性
 - Infrastructure：此类型扩展了Referenceable和Asset ，通常可用于基础设施元数据对象（如群集，主机等）的常用超类型
 - DataSet：此类型扩展了Referenceable和Asset 。在概念上，它可以用于表示存储数据的类型。在 Atlas 中，hive表，Sqoop RDBMS表等
-都是从 DataSet 扩展的类型。扩展 DataSet 的类型可以期望具有模式，它们将具有定义该数据集的属性的属性。
-例如， hive_table 中的 columns 属性。另外，扩展 DataSet 的实体类型的实体参与数据转换，
-这种转换可以由 Atlas 通过 lineage（或 provenance）生成图形。
+  都是从 DataSet 扩展的类型。扩展 DataSet 的类型可以期望具有模式，它们将具有定义该数据集的属性的属性。
+  例如， hive_table 中的 columns 属性。另外，扩展 DataSet 的实体类型的实体参与数据转换，
+  这种转换可以由 Atlas 通过 lineage（或 provenance）生成图形。
 - Process：此类型扩展了Referenceable和Asset 。在概念上，它可以用于表示任何数据变换操作。
-例如，将原始数据的 hive 表转换为存储某个聚合的另一个 hive 表的 ETL 过程可以是扩展过程类型的特定类型。
-流程类型有两个特定的属性，输入和输出。
- 
-Prometheus 大数据监控系统	
+  例如，将原始数据的 hive 表转换为存储某个聚合的另一个 hive 表的 ETL 过程可以是扩展过程类型的特定类型。
+  流程类型有两个特定的属性，输入和输出。
+
+Prometheus 大数据监控系统  
 Prometheus 是一个开源的完整监控解决方案，其对传统监控系统的测试和告警模型进行了彻底的颠覆，
 形成了基于中央化的规则计算、统一分析和告警的新模型。
 
@@ -25776,172 +26765,1445 @@ Redis，RethinkDB，Rsyslog 等等。
 也可以输出支持其它监控系统的格式化数据，比如 Graphite。
 因此你甚至可以在不使用 Prometheus 的情况下，采用 Prometheus 的 client library 来让你的应用程序支持监控数据采集。
 
-
 # 人工智能AIGC：
+
 AIGC（AI-Generated Content），即人工智能生成内容，是指利用人工智能技术自动生成各种形式的内容，包括文本、图像、视频、音频等。
 AIGC 技术的核心在于利用机器学习，特别是深度学习模型来处理海量数据，并基于特定输入或条件生成具有创造性或实用性的内容。
 
 AIGC 的发展背景
 随着人工智能技术的快速发展，特别是自然语言处理（NLP）和生成对抗网络（GAN）等领域的突破，AI 已经从辅助决策的工具转向创造性领域。最初，人工智能更多被用于数据分析和模式识别，但近年来，它的生成能力得到了显著提升，能够生成高度复杂、逼真的内容，甚至是人类难以区分的内容。
 AIGC 的核心技术
+
 1. 自然语言生成（NLG）
-   - 自然语言生成技术可以根据给定的输入数据生成符合逻辑和语法的文本内容。当前最先进的文本生成模型是基于Transformer架构的深度学习模型，比如 GPT（Generative Pretrained Transformer） 系列。
-   - 应用场景：文章撰写、新闻报道、自动对话生成、程序代码生成等。
+  - 自然语言生成技术可以根据给定的输入数据生成符合逻辑和语法的文本内容。当前最先进的文本生成模型是基于Transformer架构的深度学习模型，比如 GPT（Generative Pretrained Transformer） 系列。
+  - 应用场景：文章撰写、新闻报道、自动对话生成、程序代码生成等。
 2. 生成对抗网络（GAN）
-   - GAN 是由两个神经网络组成的框架，一个生成网络负责生成数据，另一个判别网络则对生成的数据进行判断和反馈。这个过程不断迭代，使得生成器的输出逐渐逼近真实数据。
-   - 应用场景：图像生成、视频生成、艺术创作、虚拟角色设计等。
+  - GAN 是由两个神经网络组成的框架，一个生成网络负责生成数据，另一个判别网络则对生成的数据进行判断和反馈。这个过程不断迭代，使得生成器的输出逐渐逼近真实数据。
+  - 应用场景：图像生成、视频生成、艺术创作、虚拟角色设计等。
 3. 深度学习与图像生成
-   - 深度学习可以用于图像生成任务，如风格迁移、超分辨率图像生成等。通过训练神经网络，AI 可以根据输入的描述生成对应的图像。
-   - 应用场景：游戏场景设计、广告创意生成、数字艺术等。
+  - 深度学习可以用于图像生成任务，如风格迁移、超分辨率图像生成等。通过训练神经网络，AI 可以根据输入的描述生成对应的图像。
+  - 应用场景：游戏场景设计、广告创意生成、数字艺术等。
 4. 音频与音乐生成
-   - 基于深度学习的音频生成可以模拟人类语言，甚至可以根据输入生成原创的音乐和声音效果。
-   - 应用场景：自动配音、音乐创作、声音合成等。
+  - 基于深度学习的音频生成可以模拟人类语言，甚至可以根据输入生成原创的音乐和声音效果。
+  - 应用场景：自动配音、音乐创作、声音合成等。
 
 AIGC 的主要应用场景
-1. 内容创作
-   - AI 可用于自动生成新闻报道、产品描述、营销文案等。通过输入主题或关键信息，AI 可以生成符合要求的文本内容。这类应用尤其适合电商、媒体等行业，能够大幅提升内容生产效率。
-2. 虚拟角色和数字人
-   - AIGC 技术可以生成虚拟人物的外观、动作，甚至是互动对话。虚拟偶像、虚拟主播等都基于 AIGC 技术，广泛应用于娱乐、直播和广告领域。
-3. 游戏与虚拟世界设计
-   - AIGC 可以用于自动生成游戏中的关卡、场景、人物形象等，大大加快游戏开发的速度，丰富游戏内容。程序化生成的场景设计已成为许多游戏的关键组成部分。
-4. 图像和艺术创作
-   - AI 能够根据用户的要求生成艺术风格的图像、插画等。例如，基于 GAN 的模型可以自动生成高质量的图像或进行风格转换，从而应用于广告设计、艺术创作等领域。
-5. 个性化推荐与生成
-   - AI 可以根据用户的兴趣、行为数据自动生成个性化内容。例如，在电商领域，AI 可以自动生成个性化的商品推荐文案或促销方案。
-6. 教育与培训
-   - AIGC 技术可以自动生成符合特定学习需求的教学内容或练习题，帮助教师或教育机构提升教学内容的覆盖面和效率。
-AIGC 的优势
-1. 高效性
-   - AIGC 可以在短时间内生成大量高质量的内容，极大地提高了生产效率，尤其是在需要大量个性化内容的场景中，AI 的生成能力无可比拟。
-2. 成本降低
-   - 自动生成内容减少了对人工的依赖，能够显著降低内容创作和设计的成本，尤其在一些重复性工作中，AI 的表现优于人工。
-3. 个性化
-   - AIGC 能够根据用户的个人偏好或特定需求生成个性化内容，使用户体验更加独特和定制化，尤其在广告、教育和娱乐等领域。
-4. 创造性增强
-   - 在某些情况下，AI 可以产生出具有创造性和独特性的内容，如艺术作品或音乐，从而激发人类创造力。
-AIGC 面临的挑战
-1. 版权与伦理问题
-   - AI 生成的内容可能涉及到版权问题，尤其是当 AI 使用了大量的已存在的内容进行训练时，如何确保生成的内容不侵犯原作者的权利是一个复杂的问题。
-2. 内容质量控制
-   - 尽管 AI 生成内容可以高效地生成大量内容，但这些内容的质量和可靠性可能不如人类创作。如何确保生成内容的逻辑性、准确性仍是技术挑战。
-3. 恶意使用
-   - AIGC 技术也可能被滥用于生成虚假新闻、深度伪造（deepfake）等恶意用途，可能对社会产生负面影响。
-4. 创造力的局限性
-   - 尽管 AI 能生成大量内容，但它的创造性仍受限于现有的数据和模型。与人类相比，AI 的独立创新能力依然有限。
-总结
-AIGC 是人工智能生成内容的缩写，代表了 AI 在内容创作领域中的应用趋势。它通过自动生成文本、图像、音频等多种形式的内容，在诸多领域如内容创作、虚拟角色、艺术设计等方面展现出了巨大潜力。
-虽然面临一些技术和伦理挑战，但 AIGC 的发展无疑会极大推动未来内容生产的效率和个性化水平。
 
+1. 内容创作
+  - AI 可用于自动生成新闻报道、产品描述、营销文案等。通过输入主题或关键信息，AI 可以生成符合要求的文本内容。这类应用尤其适合电商、媒体等行业，能够大幅提升内容生产效率。
+2. 虚拟角色和数字人
+  - AIGC 技术可以生成虚拟人物的外观、动作，甚至是互动对话。虚拟偶像、虚拟主播等都基于 AIGC 技术，广泛应用于娱乐、直播和广告领域。
+3. 游戏与虚拟世界设计
+  - AIGC 可以用于自动生成游戏中的关卡、场景、人物形象等，大大加快游戏开发的速度，丰富游戏内容。程序化生成的场景设计已成为许多游戏的关键组成部分。
+4. 图像和艺术创作
+  - AI 能够根据用户的要求生成艺术风格的图像、插画等。例如，基于 GAN 的模型可以自动生成高质量的图像或进行风格转换，从而应用于广告设计、艺术创作等领域。
+5. 个性化推荐与生成
+  - AI 可以根据用户的兴趣、行为数据自动生成个性化内容。例如，在电商领域，AI 可以自动生成个性化的商品推荐文案或促销方案。
+6. 教育与培训
+  - AIGC 技术可以自动生成符合特定学习需求的教学内容或练习题，帮助教师或教育机构提升教学内容的覆盖面和效率。
+    AIGC 的优势
+7. 高效性
+  - AIGC 可以在短时间内生成大量高质量的内容，极大地提高了生产效率，尤其是在需要大量个性化内容的场景中，AI 的生成能力无可比拟。
+8. 成本降低
+  - 自动生成内容减少了对人工的依赖，能够显著降低内容创作和设计的成本，尤其在一些重复性工作中，AI 的表现优于人工。
+9. 个性化
+  - AIGC 能够根据用户的个人偏好或特定需求生成个性化内容，使用户体验更加独特和定制化，尤其在广告、教育和娱乐等领域。
+10. 创造性增强
+  - 在某些情况下，AI 可以产生出具有创造性和独特性的内容，如艺术作品或音乐，从而激发人类创造力。
+    AIGC 面临的挑战
+11. 版权与伦理问题
+  - AI 生成的内容可能涉及到版权问题，尤其是当 AI 使用了大量的已存在的内容进行训练时，如何确保生成的内容不侵犯原作者的权利是一个复杂的问题。
+12. 内容质量控制
+  - 尽管 AI 生成内容可以高效地生成大量内容，但这些内容的质量和可靠性可能不如人类创作。如何确保生成内容的逻辑性、准确性仍是技术挑战。
+13. 恶意使用
+  - AIGC 技术也可能被滥用于生成虚假新闻、深度伪造（deepfake）等恶意用途，可能对社会产生负面影响。
+14. 创造力的局限性
+  - 尽管 AI 能生成大量内容，但它的创造性仍受限于现有的数据和模型。与人类相比，AI 的独立创新能力依然有限。
+    总结
+    AIGC 是人工智能生成内容的缩写，代表了 AI 在内容创作领域中的应用趋势。它通过自动生成文本、图像、音频等多种形式的内容，在诸多领域如内容创作、虚拟角色、艺术设计等方面展现出了巨大潜力。
+    虽然面临一些技术和伦理挑战，但 AIGC 的发展无疑会极大推动未来内容生产的效率和个性化水平。
+
+# AI 基础认知与发展趋势
+
+## 一、AI、机器学习、深度学习的区别
+
+在讨论 AI 应用时，经常会听到"人工智能（AI）""机器学习（ML）"和"深度学习（DL）"这三个概念。虽然它们经常被混用，但它们之间存在明确的层级关系。
+
+### 1. 人工智能（Artificial Intelligence, AI）
+
+**定义**：人工智能是计算机科学的一个分支，旨在开发能够执行通常需要人类智能的任务的计算机系统。
+
+**特点**：
+
+- **最广泛的概念**，是一个总体范畴。
+- 涵盖任何使计算机能够模拟、推理、学习或执行智能行为的技术。
+- 包括规则引擎、专家系统、游戏求解器等"非学习"方法。
+
+**应用例子**：
+
+- 国际象棋 AI（国际象棋引擎，纯规则搜索）。
+- 垃圾邮件过滤（规则匹配）。
+- 语音识别助手（涉及 ML）。
+
+### 2. 机器学习（Machine Learning, ML）
+
+**定义**：机器学习是人工智能的一个子集，专注于使计算机系统能够从数据中**自动学习和改进**，而不是被显式编程。
+
+**核心思想**：不是由程序员明确编写规则，而是让系统通过观察数据中的模式来"发现"规则。
+
+**主要方法**：
+
+- **监督学习**：利用有标签的训练数据学习。例如，根据历史房价数据预测新房价。
+- **无监督学习**：在没有标签的数据中发现隐藏的模式。例如，客户群聚类。
+- **强化学习**：通过奖励和惩罚学习。例如，AlphaGo 学习围棋。
+
+**与 AI 的关系**：ML 是 AI 实现预测、分类、聚类等任务的**具体方法**。
+
+**应用例子**：
+
+- 推荐系统（Netflix 推荐电影）。
+- 图像分类（识别猫和狗）。
+- 欺诈检测（银行交易异常识别）。
+
+### 3. 深度学习（Deep Learning, DL）
+
+**定义**：深度学习是机器学习的一个子集，使用**多层神经网络**（也称为深度神经网络）来学习数据的复杂表示。
+
+**关键特性**：
+
+- 利用神经网络的多个隐藏层（深度）。
+- 能够自动提取特征（而不是人工设计特征）。
+- 需要大量数据和计算资源。
+
+**为什么叫"深度"**？
+
+- 传统神经网络：1-2 层隐藏层。
+- 深度神经网络：10+ 层隐藏层。
+- 层数越多，能学到的特征越复杂。
+
+**主要架构**：
+
+- **卷积神经网络（CNN）**：适合图像处理。
+- **循环神经网络（RNN、LSTM）**：适合序列数据（文本、语音、时间序列）。
+- **Transformer**：适合自然语言处理和序列建模（GPT、BERT 等都基于此）。
+
+**应用例子**：
+
+- 图像识别（自动驾驶汽车）。
+- 自然语言处理（ChatGPT、翻译）。
+- 语音识别（Siri、Google 助手）。
+
+### 关系图
+
+```
+┌─────────────────────────────────────────────┐
+│          人工智能（AI）                      │
+│  （所有使计算机智能化的技术）                 │
+│                                             │
+│  ┌───────────────────────────────────────┐ │
+│  │    机器学习（ML）                      │ │
+│  │  （从数据中自动学习）                   │ │
+│  │                                       │ │
+│  │  ┌─────────────────────────────────┐ │ │
+│  │  │  深度学习（DL）                 │ │ │
+│  │  │  （多层神经网络）                 │ │ │
+│  │  └─────────────────────────────────┘ │ │
+│  └───────────────────────────────────────┘ │
+└─────────────────────────────────────────────┘
+```
+
+---
+
+## 二、大型语言模型（LLM）与生成式 AI 详解
+
+### 1. 什么是大型语言模型（LLM）?
+
+**定义**：大型语言模型是一种基于深度学习（特别是 Transformer 架构）训练的神经网络，能够理解和生成人类语言。
+
+**"大型"的含义**：
+
+- **参数数量庞大**：现代 LLM 通常拥有数十亿到数万亿个参数。例如，GPT-3.5 有 1750 亿个参数。
+- **训练数据规模巨大**：在互联网数据的大部分上训练。
+- **计算成本高昂**：需要强大的 GPU/TPU 集群才能训练。
+
+**核心能力**：
+
+- 理解和生成文本。
+- 完成各种自然语言任务（翻译、总结、问答、代码生成等）。
+- 进行少量示例学习（Few-shot Learning）。
+- 执行跨领域的泛化任务。
+
+### 2. LLM 的工作原理（简化版）
+
+#### a. Transformer 架构（基础）
+
+大多数现代 LLM（如 GPT、Claude、Qwen）都基于 **Transformer** 架构，发表于 2017 年的论文《Attention is All You Need》。
+
+**核心机制**：
+
+- **Tokenization（分词）**：输入文本被分解为"词元"（通常是子词）。
+- **Embedding（嵌入）**：每个词元转换为一个向量表示。
+- **Attention 机制**：模型学习关键词间的关系。例如，在句子"The cat sat on the mat"中，模型学到"cat"和"sat"相关，"the"和"cat"相关。
+- **Feed-Forward 网络**：进一步处理信息。
+- **多层堆叠**：重复上述步骤多次（深度）。
+
+**简单比喻**：
+
+- 人类阅读文本时，会关注重要词汇和它们之间的关系。
+- Transformer 通过 Attention 机制做同样的事情，但大规模且自动化。
+
+#### b. 自回归生成（Autoregressive Generation）
+
+LLM 生成文本是一个**逐字生成**的过程：
+
+1. 用户输入：**"写一个 Python 函数来计算"**
+2. 模型预测下一个词：**"斐波那契"**
+3. 模型再预测：**"数列"**
+4. ...依次类推，直到生成完整的代码。
+
+每一步，模型都计算所有可能词的概率，然后选择最可能的（或根据"温度"参数采样）。
+
+### 3. GPT 系列演进
+
+| 模型  | 发布时间 | 参数量 | 关键特性 |
+| --- | --- | --- | --- |
+| **GPT** | 2018 | 1.17 亿 | 首个大规模预训练语言模型 |
+| **GPT-2** | 2019 | 15 亿 | 表现惊人，OpenAI 担心滥用而延迟发布 |
+| **GPT-3** | 2020 | 1750 亿 | 少量示例学习（Few-shot），能解决新任务无需微调 |
+| **GPT-3.5** | 2022 | 未公开 | 引入 ChatGPT，性能大幅提升，成本显著降低 |
+| **GPT-4** | 2023 | 未公开（估计 1T+） | 多模态（文本+图像），推理能力更强，安全性更好 |
+| **GPT-4 Turbo** | 2023 | 未公开 | 更大上下文窗口（128K tokens），推理速度更快 |
+| **GPT-4o** | 2024 | 未公开 | 跨模态（文本、图像、音频），成本更低，速度更快 |
+
+### 4. 当前主流 LLM 对比（2024-2025）
+
+| 模型  | 开发者 | 优势  | 缺点  | 适用场景 |
+| --- | --- | --- | --- | --- |
+| **GPT-4o** | OpenAI | 多模态，推理能力强，生态成熟 | 价格高，闭源 | 复杂推理、高质量内容生成 |
+| **Claude 3.5 Sonnet** | Anthropic | 安全性强，理解能力深，代码生成优秀 | 价格相对高，回复较慢 | 代码开发、安全应用、长文本分析 |
+| **Qwen 2.5** | 阿里  | 中文能力强，开源，推理快 | 英文能力略弱，社区较小 | 中文应用、本地部署、成本敏感场景 |
+| **Llama 3.1** | Meta | 开源，可本地部署，性能好 | 需自行部署和优化 | 隐私敏感应用、定制化需求 |
+| **Gemini 2.0** | Google | 多模态，推理能力强 | 生态不如 OpenAI，文档不全 | 研究、多模态应用 |
+
+### 5. 与前端开发相关的关键概念
+
+#### a. 上下文窗口（Context Window）
+
+- **定义**：模型一次能处理的最大 token 数量。
+- **影响**：窗口大，能提供更多历史对话或文档作为上下文。
+- **前端应用**：在聊天应用中，较大的窗口允许保留更多对话历史。
+
+#### b. 温度（Temperature）参数
+
+- **定义**：控制生成文本的随机性。
+  - `temperature = 0`：完全确定性（总是选概率最高的词）。
+  - `temperature = 1`：平衡创意和确定性。
+  - `temperature > 1`：更随机和创意。
+- **前端应用**：
+  - 聊天：`temperature = 0.7`（平衡流畅度和多样性）。
+  - 代码生成：`temperature = 0.2`（精准）。
+  - 创意写作：`temperature = 0.9`（创意）。
+
+#### c. Token 计数
+
+- **定义**：1 token 通常 ≈ 4 个英文字符或 2 个中文字。
+- **重要性**：API 按 token 计费，开发者需关注。
+- **前端应用**：实时计算输入的 token 数，在发送前提醒用户成本。
+
+---
+
+# 前端开发者如何利用 AI
+
+## 一、核心应用场景
+
+### 1. 代码生成与优化
+
+**场景 1：生成样板代码**
+
+- 快速生成常见组件（如表单、数据表）。
+- 减少重复工作。
+
+**示例需求**：
+
+```
+提示词："生成一个 React 组件，包含登录表单，有邮箱和密码输入框，使用 Tailwind CSS 样式。"
+```
+
+AI 可立即生成：
+
+```jsx
+export default function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  // ... 完整代码
+}
+```
+
+**场景 2：代码审查与优化建议**
+
+- 粘贴代码到 AI，获取改进建议。
+- 学习最佳实践。
+
+**示例**：
+
+```
+提示词："审查这个 JavaScript 函数，并建议如何使其更高效和可读性更强。"
+```
+
+**场景 3：Bug 修复**
+
+- 描述错误症状。
+- AI 分析并提出修复方案。
+
+### 2. 设计与 UX 增强
+
+**场景 1：配色方案生成**
+
+- 使用 AI 工具（如 Vercel 的 v0）生成配色组合。
+- 确保色彩协调和可访问性。
+
+**场景 2：布局建议**
+
+- 描述设计需求。
+- AI 提出响应式布局方案。
+
+**示例**：
+
+```
+提示词："为电商产品列表页面建议一个布局，考虑移动端、平板和桌面端的适配。"
+```
+
+**场景 3：UX 文案优化**
+
+- AI 改进按钮文字、提示信息等。
+- 提高用户理解度和转化率。
+
+**示例原文**：
+
+```
+"点击这里"  →  "查看商品详情"
+"错误"     →  "邮箱格式不正确，请输入有效的邮箱地址"
+```
+
+### 3. 内容生成与个性化
+
+**场景 1：动态页面描述**
+
+- AI 根据产品属性生成唯一的产品描述。
+- 适合电商平台有数千 SKU 的情况。
+
+**场景 2：SEO 优化**
+
+- AI 生成关键词丰富的元描述（Meta Description）。
+- 改进搜索引擎排名。
+
+**示例**：
+
+```
+输入：Product name = "蓝牙耳机", Brand = "Sony", Price = 399
+生成：
+<meta name="description" content="Sony 品牌高保真蓝牙耳机，仅需 399 元。支持 40 小时续航、主动降噪、快速充电。立即购买！">
+```
+
+**场景 3：个性化推荐文案**
+
+- 根据用户浏览历史生成定制化推荐。
+- 提高点击率和销售转化。
+
+### 4. 数据分析与可视化
+
+**场景 1：自然语言查询数据**
+
+- 用户用自然语言问问题：**"过去 30 天的销售趋势如何？"**
+- AI 生成相应的数据查询代码或 SQL。
+
+**场景 2：图表建议**
+
+- 根据数据类型建议最佳的图表类型。
+- 生成图表配置代码（如 Chart.js、ECharts）。
+
+### 5. 可访问性增强
+
+**场景 1：自动生成 Alt 文本**
+
+- 上传图片。
+- AI 生成描述性的 `alt` 属性文本。
+
+**示例**：
+
+```html
+<!-- 原始 -->
+<img src="product.jpg" alt="">
+
+<!-- AI 生成后 -->
+<img src="product.jpg" alt="蓝色运动鞋，品牌 Nike，侧面视图，白色背景">
+```
+
+**场景 2：颜色对比检查**
+
+- AI 分析前景色与背景色的对比度。
+- 确保符合 WCAG 无障碍标准。
+
+### 6. 文件与文档生成
+
+**场景 1：API 文档生成**
+
+- 从代码自动生成 API 文档。
+- 示例：JSDoc 注释 → 自动生成 HTML 文档。
+
+**场景 2：测试用例生成**
+
+- AI 分析函数，自动生成单元测试。
+
+**示例**：
+
+```javascript
+// 原始函数
+function validateEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// AI 生成的测试
+test('validateEmail should accept valid emails', () => {
+  expect(validateEmail('test@example.com')).toBe(true);
+});
+
+test('validateEmail should reject invalid emails', () => {
+  expect(validateEmail('invalid-email')).toBe(false);
+});
+```
+
+---
+
+## 二、前端开发者的 AI 工具生态
+
+| 工具  | 功能  | 适用场景 |
+| --- | --- | --- |
+| **GitHub Copilot** | 代码补全、生成 | 日常开发、快速原型 |
+| **Claude (Anthropic)** | 代码审查、解释、优化 | 复杂问题、深度分析 |
+| **ChatGPT** | 通用问题解答、代码生成 | 学习、故障排除 |
+| **Vercel v0** | AI UI 生成 | React 组件快速生成 |
+| **Bolt.new** | 全栈应用快速开发 | 快速原型、演示 |
+| **Cursor** | IDE 集成 AI | 实时代码生成和修改 |
+
+---
+
+# 提示词工程最佳实践
+
+## 一、核心原则
+
+### 1. 明确与具体
+
+**❌ 不好**：
+
+```
+生成一个组件。
+```
+
+**✅ 好**：
+
+```
+生成一个 React 组件，实现一个带搜索框的用户列表。
+要求：
+- 搜索实时过滤
+- 使用 Tailwind CSS 样式
+- 显示用户名、邮箱、状态（在线/离线）
+- 结果用表格展示
+```
+
+### 2. 提供上下文
+
+**❌ 不好**：
+
+```
+这个代码有错，请修复。
+[代码片段]
+```
+
+**✅ 好**：
+
+```
+我正在构建一个 Next.js 应用，使用 React Query 管理数据。
+以下代码在获取数据时出现内存泄漏警告，请诊断并修复：
+[代码片段]
+```
+
+### 3. 使用示例（Few-shot Prompting）
+
+**提示 AI 生成特定格式**：
+
+```
+生成 5 个产品推荐文案，按照以下格式：
+[格式例子]
+产品 1：[品牌] [产品名]
+描述：[2 句简短描述]
+优势：[3 个核心优势]
+
+实际产品：iPhone 15 Pro
+```
+
+---
+
+## 二、常用提示词技巧
+
+### 1. 角色扮演（Role Playing）
+
+让 AI 扮演特定角色来获得更好的结果。
+
+```
+你是一位资深的 React 性能优化专家。
+我有一个有 1000 个项目的列表，页面滚动时很卡。
+请分析这个代码，并提出优化方案：
+[代码]
+```
+
+### 2. 链式思维（Chain-of-Thought，CoT）
+
+要求 AI 逐步思考，而不是直接给出答案。
+
+**❌ 直接方式**：
+
+```
+这个算法的时间复杂度是多少？
+```
+
+**✅ CoT 方式**：
+
+```
+逐步分析这个算法的时间复杂度：
+1. 首先，描述算法的主要步骤
+2. 分析每一步的操作数
+3. 找出主导项
+4. 得出整体复杂度
+
+代码：[代码]
+```
+
+### 3. 约束与限制
+
+明确指定输出的约束。
+
+```
+生成一个函数来验证密码强度。
+约束条件：
+- 只使用原生 JavaScript，不依赖外部库
+- 代码行数不超过 15 行
+- 必须检查长度、大小写、数字、特殊字符
+- 返回一个对象：{ isValid: boolean, reasons: string[] }
+```
+
+### 4. 分解复杂任务
+
+将大问题分解为小问题。
+
+**❌ 一次性大任务**：
+
+```
+帮我完整重写整个项目的用户认证系统。
+```
+
+**✅ 分解方式**：
+
+```
+Step 1: 分析当前的用户认证流程，指出安全漏洞
+Step 2: 提出改进的架构设计
+Step 3: 生成登录组件代码
+Step 4: 生成令牌刷新机制的代码
+Step 5: 提出测试用例
+
+请先从 Step 1 开始。
+```
+
+---
+
+## 三、前端特定的提示词模板
+
+### 模板 1：代码审查
+
+```
+请审查以下 [框架] 代码，并提供改进建议：
+
+代码：
+[代码片段]
+
+检查项：
+- 性能问题（如不必要的重新渲染）
+- 安全漏洞（如 XSS、CSRF）
+- 可读性和可维护性
+- 是否遵循最佳实践
+- 可能的边界情况
+
+请用 Markdown 格式组织回复。
+```
+
+### 模板 2：API 集成
+
+```
+我需要集成一个新的 API 到我的 React 应用。
+
+API 详情：
+- 端点：[URL]
+- 方法：GET / POST
+- 认证：[Bearer Token / API Key]
+- 响应格式：[JSON 样例]
+
+要求：
+- 使用 [fetch / axios]
+- 添加错误处理和加载状态
+- 使用 TypeScript
+- 集成到 React Query / Zustand（状态管理库）
+
+请生成完整的集成代码。
+```
+
+### 模板 3：性能优化
+
+```
+我的 React 应用在处理 [具体场景] 时性能下降。
+
+当前情况：
+- 组件数量：[数字]
+- 每次更新的数据量：[描述]
+- 明显卡顿的地方：[描述]
+
+代码：
+[相关代码片段]
+
+请提供：
+1. 瓶颈分析
+2. 3 个具体优化方案
+3. 改进后的代码示例
+4. 预期性能提升
+```
+
+---
+
+# 实战案例教程
+
+## 案例 1：AI 驱动的聊天小部件
+
+### 需求
+
+构建一个嵌入到网站的 AI 聊天小部件，用户可以：
+
+- 输入问题。
+- 实时接收 AI 回复。
+- 查看对话历史。
+- 清空对话。
+
+### 技术栈
+
+- **前端**：React + TypeScript + Tailwind CSS
+- **后端**：Node.js + Express（简单代理）
+- **AI**：OpenAI API（GPT-4o）
+
+### 架构
+
+```
+用户输入
+    ↓
+[React 组件]
+    ↓
+[Node.js API 代理]
+    ↓
+[OpenAI API]
+    ↓
+流式返回响应
+    ↓
+实时更新 UI
+```
+
+### 关键代码
+
+#### 1. React 聊天组件
+
+```jsx
+import React, { useState, useRef, useEffect } from 'react';
+
+export default function ChatWidget() {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  // 滚动到最新消息
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  const sendMessage = async (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    // 添加用户消息到对话
+    const userMessage = { role: 'user', content: input };
+    setMessages(prev => [...prev, userMessage]);
+    setInput('');
+    setLoading(true);
+
+    try {
+      // 调用后端 API
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [...messages, userMessage],
+          temperature: 0.7,
+        }),
+      });
+
+      const data = await response.json();
+      const assistantMessage = { role: 'assistant', content: data.reply };
+      setMessages(prev => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error('Error:', error);
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: '抱歉，发生错误。请重试。',
+      }]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col h-screen bg-white">
+      {/* 消息列表 */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {messages.map((msg, idx) => (
+          <div
+            key={idx}
+            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+          >
+            <div
+              className={`max-w-xs px-4 py-2 rounded-lg ${
+                msg.role === 'user'
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-200 text-gray-900'
+              }`}
+            >
+              {msg.content}
+            </div>
+          </div>
+        ))}
+        <div ref={messagesEndRef} />
+      </div>
+
+      {/* 输入区域 */}
+      <form onSubmit={sendMessage} className="p-4 border-t">
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            disabled={loading}
+            placeholder="输入你的问题..."
+            className="flex-1 px-4 py-2 border rounded-lg focus:outline-none"
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
+          >
+            {loading ? '发送中...' : '发送'}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+```
+
+#### 2. 后端 API 端点（Node.js + Express）
+
+```javascript
+import express from 'express';
+import { OpenAI } from 'openai';
+
+const app = express();
+app.use(express.json());
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+app.post('/api/chat', async (req, res) => {
+  try {
+    const { messages, temperature = 0.7 } = req.body;
+
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o',
+      messages: messages.map(m => ({
+        role: m.role,
+        content: m.content,
+      })),
+      temperature,
+      max_tokens: 500,
+    });
+
+    const reply = completion.choices[0].message.content;
+
+    res.json({ reply });
+  } catch (error) {
+    console.error('OpenAI Error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.listen(3001, () => console.log('Server running on port 3001'));
+```
+
+### 关键学习点
+
+1. **流式处理**：对于长回复，考虑使用 OpenAI 的流式 API 实现实时显示。
+2. **上下文管理**：保存对话历史，让 AI 理解上下文。
+3. **错误处理**：网络问题、API 限流、超时等都需处理。
+4. **成本控制**：监控 token 使用量，设置合理的 `max_tokens`。
+
+---
+
+## 案例 2：AI 代码片段生成器
+
+### 需求
+
+创建一个工具，开发者可以描述需求，AI 生成代码片段。
+
+### 关键功能
+
+1. 输入框：描述需求。
+2. 代码类型选择：JavaScript、React、Vue、Python 等。
+3. 输出：可复制的代码。
+4. 代码高亮。
+
+### 核心代码
+
+```jsx
+import React, { useState } from 'react';
+import { Clipboard, Copy } from 'lucide-react';
+
+export default function CodeGenerator() {
+  const [description, setDescription] = useState('');
+  const [language, setLanguage] = useState('javascript');
+  const [code, setCode] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const generateCode = async () => {
+    if (!description.trim()) return;
+
+    setLoading(true);
+    try {
+      const response = await fetch('/api/generate-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          description,
+          language,
+        }),
+      });
+
+      const data = await response.json();
+      setCode(data.code);
+    } catch (error) {
+      console.error('Error:', error);
+      setCode('// 生成失败，请重试');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">AI 代码生成器</h1>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        {/* 输入侧 */}
+        <div>
+          <label className="block mb-2 font-semibold">需求描述</label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="例如：生成一个函数，检查数组中是否存在重复元素..."
+            className="w-full h-40 p-4 border rounded-lg focus:outline-none"
+          />
+
+          <label className="block mt-4 mb-2 font-semibold">编程语言</label>
+          <select
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            className="w-full p-2 border rounded-lg"
+          >
+            <option value="javascript">JavaScript</option>
+            <option value="react">React (JSX)</option>
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+            <option value="sql">SQL</option>
+          </select>
+
+          <button
+            onClick={generateCode}
+            disabled={loading}
+            className="w-full mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+          >
+            {loading ? '生成中...' : '生成代码'}
+          </button>
+        </div>
+
+        {/* 输出侧 */}
+        <div>
+          <label className="block mb-2 font-semibold">生成的代码</label>
+          <div className="relative">
+            <pre className="bg-gray-900 text-green-400 p-4 rounded-lg overflow-auto h-40">
+              <code>{code || '// 等待生成...'}</code>
+            </pre>
+            <button
+              onClick={copyToClipboard}
+              className="absolute top-2 right-2 p-2 bg-gray-700 hover:bg-gray-600 rounded"
+            >
+              {copied ? '已复制!' : <Copy size={20} />}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### 后端提示词工程
+
+关键是在后端构建精确的提示词：
+
+```javascript
+app.post('/api/generate-code', async (req, res) => {
+  const { description, language } = req.body;
+
+  const systemPrompt = `你是一个专业的代码生成助手。
+你必须生成高质量、可直接运行的代码。
+代码必须包含必要的注释和错误处理。
+不要生成解释文本，只输出代码。`;
+
+  const userPrompt = `生成一个${language}代码片段。
+需求：${description}
+输出格式：直接输出代码，无其他文本。`;
+
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4o',
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt },
+    ],
+    temperature: 0.3, // 较低，确保代码准确
+  });
+
+  res.json({ code: completion.choices[0].message.content });
+});
+```
+
+---
+
+# Java 整合 AGI
+
+## 一、AI API 集成指南
+
+### 1. OpenAI API（Java 客户端）
+
+#### 安装依赖
+
+```xml
+<dependency>
+    <groupId>com.openai</groupId>
+    <artifactId>openai-java</artifactId>
+    <version>0.10.0</version>
+</dependency>
+```
+
+#### 基础使用
+
+```java
+import com.openai.api.OpenAiApi;
+import com.openai.api.models.ChatCompletionRequest;
+import com.openai.api.models.ChatCompletionResponse;
+
+public class OpenAIExample {
+    public static void main(String[] args) {
+        String apiKey = System.getenv("OPENAI_API_KEY");
+        OpenAiApi openai = new OpenAiApi(apiKey);
+
+        // 创建聊天请求
+        ChatCompletionRequest request = ChatCompletionRequest.builder()
+                .model("gpt-4o")
+                .temperature(0.7)
+                .maxTokens(500)
+                .message("user", "解释一下 Java 中的 Stream API")
+                .build();
+
+        // 获取响应
+        ChatCompletionResponse response = openai.createChatCompletion(request);
+        System.out.println(response.getChoices().get(0).getMessage().getContent());
+    }
+}
+```
+
+#### 流式响应
+
+```java
+openai.createChatCompletionStream(request, chunk -> {
+    if (chunk.getChoices().size() > 0) {
+        String delta = chunk.getChoices().get(0).getDelta().getContent();
+        System.out.print(delta); // 实时输出
+    }
+});
+```
+
+### 2. Anthropic Claude API（Java）
+
+#### 依赖
+
+```xml
+<dependency>
+    <groupId>com.anthropic</groupId>
+    <artifactId>anthropic-sdk</artifactId>
+    <version>0.1.0</version>
+</dependency>
+```
+
+#### 使用示例
+
+```java
+import com.anthropic.client.Anthropic;
+import com.anthropic.models.Message;
+import com.anthropic.models.MessageCreateParams;
+
+public class ClaudeExample {
+    public static void main(String[] args) {
+        Anthropic client = new Anthropic();
+
+        Message message = client.messages().create(MessageCreateParams.builder()
+                .model("claude-3-5-sonnet-20241022")
+                .maxTokens(500)
+                .messages(MessageCreateParams.MessageParam.ofUserMessage("你好，请介绍一下你自己"))
+                .build());
+
+        System.out.println(message.getContent().get(0).getText());
+    }
+}
+```
+
+### 3. 阿里 Qwen API（Java）
+
+#### 配置依赖
+
+```xml
+<dependency>
+    <groupId>com.aliyun</groupId>
+    <artifactId>alibabacloud-imagesearch20210120</artifactId>
+    <version>1.1.1</version>
+</dependency>
+<!-- 或使用通用 HTTP 客户端 -->
+<dependency>
+    <groupId>com.google.code.gson</groupId>
+    <artifactId>gson</artifactId>
+    <version>2.8.9</version>
+</dependency>
+```
+
+#### 使用示例（HTTP 调用）
+
+```java
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.io.OutputStream;
+import java.util.Scanner;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+public class QwenExample {
+    public static void main(String[] args) throws Exception {
+        String apiKey = System.getenv("DASHSCOPE_API_KEY");
+        String url = "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation";
+
+        HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestProperty("Authorization", "Bearer " + apiKey);
+        conn.setDoOutput(true);
+
+        String requestBody = """
+                {
+                    "model": "qwen-turbo",
+                    "input": {
+                        "messages": [
+                            {"role": "user", "content": "用 Java 怎样发送 HTTP 请求？"}
+                        ]
+                    },
+                    "parameters": {
+                        "temperature": 0.7
+                    }
+                }
+                """;
+
+        try (OutputStream os = conn.getOutputStream()) {
+            os.write(requestBody.getBytes());
+            os.flush();
+        }
+
+        Scanner scanner = new Scanner(conn.getInputStream()).useDelimiter("\\A");
+        String response = scanner.hasNext() ? scanner.next() : "";
+
+        JsonObject json = JsonParser.parseString(response).getAsJsonObject();
+        System.out.println(json.get("output"));
+    }
+}
+```
+
+---
+
+## 二、AI 工具链与框架选型
+
+### Java 主流 AI 框架对比
+
+| 框架  | 用途  | 特点  | 适用场景 |
+| --- | --- | --- | --- |
+| **Deeplearning4j** | 深度学习 | 分布式、支持 GPU、企业级 | 大规模数据处理、神经网络训练 |
+| **TensorFlow Java** | 深度学习推理 | 跨平台、官方支持 | 使用预训练模型进行推理 |
+| **Apache Spark MLlib** | 机器学习 | 分布式、大数据生态集成 | 大规模数据分析、分类回归 |
+| **Weka** | 数据挖掘 | 易于使用、图形界面 | 原型开发、教学 |
+| **LangChain4j** | LLM 应用框架 | 链式操作、多模型支持 | 快速开发 LLM 应用 |
+| **OpenAI / Claude / Qwen SDK** | API 客户端 | 官方支持、最新模型 | 集成云端 AI 模型 |
+
+### 推荐的技术组合
+
+#### 场景 1：Web 服务中集成 LLM
+
+**技术栈**：
+
+```
+Spring Boot (Web 框架)
+  ├── OpenAI / Claude SDK (API 调用)
+  ├── LangChain4j (链式组织)
+  ├── Redis / Memcached (缓存响应、会话)
+  └── Spring Security (认证与请求限流)
+```
+
+**关键点**：
+
+- **请求封装**：把前端输入转为统一的 Prompt 模板。
+- **上下文管理**：对话历史、用户身份、系统角色等需要归档并控制 token 长度。
+- **缓存与去重**：对重复请求或常见问答缓存结果，降低 API 调用成本。
+- **安全与合规**：避免将敏感数据直接发给 LLM，必要时做脱敏或过滤。
+
+**示例**：
+
+```java
+@RestController
+@RequestMapping("/api/ai")
+public class AIController {
+    private final OpenAiChatModel chatModel;
+    private final Cache<String, String> responseCache;
+
+    @Autowired
+    public AIController() {
+        this.chatModel = OpenAiChatModel.builder()
+                .apiKey(System.getenv("OPENAI_API_KEY"))
+                .modelName("gpt-4o")
+                .temperature(0.7)
+                .build();
+        this.responseCache = Caffeine.newBuilder()
+                .maximumSize(10_000)
+                .expireAfterWrite(Duration.ofMinutes(10))
+                .build();
+    }
+
+    @PostMapping("/chat")
+    public ResponseEntity<String> chat(@RequestBody ChatRequest request) {
+        String prompt = buildPrompt(request);
+        String cacheKey = DigestUtils.sha256Hex(prompt);
+        String cached = responseCache.getIfPresent(cacheKey);
+        if (cached != null) {
+            return ResponseEntity.ok(cached);
+        }
+
+        String answer = chatModel.generate(prompt);
+        responseCache.put(cacheKey, answer);
+        return ResponseEntity.ok(answer);
+    }
+
+    private String buildPrompt(ChatRequest request) {
+        return String.format("用户: %s\n系统: 你是一名 Java 开发助手。", request.getMessage());
+    }
+}
+```
+
+#### 场景 2：大数据 + AI
+
+**技术栈**：
+
+```
+Apache Spark
+  ├── Spark MLlib (批量特征工程、模型训练)
+  ├── Hadoop / HDFS 或 Hive (数据存储)
+  └── TensorFlow Java / ONNX Runtime (模型推理)
+```
+
+**关键点**：
+
+- **数据预处理**：用 Spark 处理日志、行为、访问记录，进行清洗和特征提取。
+- **离线训练**：使用 MLlib 或 TensorFlow 在大规模数据上训练模型，保存为 TF SavedModel 或 ONNX 模型。
+- **批量推理**：在离线任务中对历史数据进行预测，生成报表、推荐结果或风控评分。
+- **模型监控**：监控模型性能、漂移和数据分布变化。
+
+**应用示例**：
+
+- 用户画像与推荐系统：基于用户行为构建特征向量，预测用户偏好。
+- 订单风险评估：利用历史订单数据训练分类模型，判断异常交易。
+- 文本标签分类：对客服留言、评论进行批量分类。
+
+#### 场景 3：实时推理
+
+**技术栈**：
+
+```
+TensorFlow Serving / ONNX Runtime
+  ├── Spring Boot 微服务 (API 包装)
+  ├── Nginx / Envoy (负载均衡)
+  └── Prometheus + Grafana (性能监控)
+```
+
+**关键点**：
+
+- **低延迟**：使用专用推理引擎，如 TensorFlow Serving、ONNX Runtime 或 Triton Inference Server。
+- **模型优化**：可采用量化、剪枝、TensorRT 等手段减小模型大小并提高推理速度。
+- **异步请求**：对于复杂推理，可以使用异步队列和回调返回结果。
+- **弹性伸缩**：在高峰期水平扩展推理实例，确保响应稳定。
+
+**典型场景**：
+
+- 智能客服实时问答
+- 实时推荐与个性化展示
+- 在线风控与欺诈检测
+- 语音/图像实时解析
+
+---
+
+### LangChain4j 快速入门
+
+LangChain4j 是 LangChain 的 Java 版本，简化了 LLM 应用开发。
+
+#### 安装
+
+```xml
+<dependency>
+    <groupId>dev.langchain4j</groupId>
+    <artifactId>langchain4j-core</artifactId>
+    <version>0.21.0</version>
+</dependency>
+<dependency>
+    <groupId>dev.langchain4j</groupId>
+    <artifactId>langchain4j-open-ai</artifactId>
+    <version>0.21.0</version>
+</dependency>
+```
+
+#### 基础例子
+
+```java
+import dev.langchain4j.model.openai.OpenAiChatModel;
+import dev.langchain4j.model.chat.ChatLanguageModel;
+
+public class LangChain4jExample {
+    public static void main(String[] args) {
+        // 初始化模型
+        ChatLanguageModel model = OpenAiChatModel.builder()
+                .apiKey(System.getenv("OPENAI_API_KEY"))
+                .modelName("gpt-4o")
+                .build();
+
+        // 简单对话
+        String response = model.generate("用 Java 怎样读取文件？");
+        System.out.println(response);
+
+        // 结构化输出（强大特性）
+        // ...（需要额外配置，参考官方文档）
+    }
+}
+```
+
+---
+
+# AI 工具链与框架选型
+
+## 一、前端与全栈开发工具对比
+
+| 工具  | 功能  | 易用度 | 成本  | 适用场景 |
+| --- | --- | --- | --- | --- |
+| **GitHub Copilot** | 代码补全、生成 | ⭐⭐⭐⭐⭐ | $10/月 | 日常开发 |
+| **Cursor IDE** | IDE + AI 集成 | ⭐⭐⭐⭐ | $20/月 | 代码编辑、生成 |
+| **Vercel v0** | UI 组件生成 | ⭐⭐⭐⭐ | $0-20/月 | React 组件快速生成 |
+| **Bolt.new** | 全栈应用生成 | ⭐⭐⭐⭐ | 免费  | 快速原型、演示 |
+| **ChatGPT / Claude** | 通用 AI | ⭐⭐⭐⭐ | $20/月 | 问题解答、代码审查 |
+| **LangChain** | LLM 应用框架 | ⭐⭐⭐ | 开源  | 构建复杂 AI 应用 |
+
+---
+
+## 二、选型建议
+
+### 快速原型/演示
+
+- **首选**：Bolt.new + ChatGPT
+- **时间**：1-2 小时完成可演示的原型
+
+### 日常开发
+
+- **首选**：GitHub Copilot + ChatGPT
+- **辅助**：Cursor IDE
+
+### UI 组件开发
+
+- **首选**：Vercel v0
+- **优势**：Tailwind CSS 集成，视觉预览
+
+### 生产级 AI 应用
+
+- **前端**：React + LangChain.js 或 Vercel AI SDK
+- **后端**：Node.js + LangChain / Java + LangChain4j
+- **模型**：OpenAI / Anthropic / 本地 Llama
+
+---
 
 Java整合AGI：
 在 Java 中整合 AGI（人工通用智能，Artificial General Intelligence）通常涉及使用现有的 AI/机器学习框架和库来构建强大的智能应用程序。
 AGI 的实现目前仍处于研究阶段，现实中的项目更倾向于应用狭义 AI（Artificial Narrow Intelligence, ANI）来解决具体问题。然而，可以通过整合 Java 与 AGI 相关的工具和库，构建智能系统，并为未来的 AGI 实现做好准备。
 要整合 AGI 或与 AI 密切相关的技术，可以考虑以下几个步骤：
+
 1. 使用现有的机器学习框架
-Java 可以整合一些流行的机器学习框架和库来处理 AI 问题，包括自然语言处理、图像识别等复杂任务。以下是一些常见的库：
-a. Deeplearning4j
-Deeplearning4j 是一个开源的、基于 Java 和 Scala 的深度学习框架，支持分布式计算。它可以处理卷积神经网络（CNNs）、循环神经网络（RNNs）等高级 AI 模型。
-你可以用它来创建和训练神经网络，并集成到你的 Java 应用中。
-示例：简单的深度学习模型
-import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
-import org.deeplearning4j.nn.conf.layers.DenseLayer;
-import org.deeplearning4j.nn.conf.layers.OutputLayer;
-import org.nd4j.linalg.activations.Activation;
-import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
-import org.nd4j.linalg.lossfunctions.LossFunctions;
-public class DeepLearningExample {
-    public static void main(String[] args) {
-        // 定义神经网络配置
-        MultiLayerNetwork model = new MultiLayerNetwork(new NeuralNetConfiguration.Builder()
-                .list()
-                .layer(0, new DenseLayer.Builder().nIn(4).nOut(3)
-                        .activation(Activation.RELU)
-                        .build())
-                .layer(1, new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
-                        .activation(Activation.SOFTMAX)
-                        .nIn(3).nOut(3).build())
-                .build());
-        // 初始化模型
-        model.init();
-        // 使用训练数据迭代器进行训练
-        DataSetIterator trainData = // 获取训练数据
-        model.fit(trainData);
-    }
-}
-b. Weka
-Weka 是一个流行的机器学习库，主要用于数据挖掘和简单的机器学习任务。Weka 提供了一些易于使用的算法和工具，用于分类、聚类和回归等任务。
-示例：使用 Weka 进行数据分类
-import weka.classifiers.Classifier;
-import weka.core.Instances;
-import weka.core.converters.ConverterUtils.DataSource;
-public class WekaExample {
-    public static void main(String[] args) throws Exception {
-        // 加载数据
-        DataSource source = new DataSource("data.arff");
-        Instances data = source.getDataSet();
-        data.setClassIndex(data.numAttributes() - 1); // 设置类标签
-        // 使用J48算法进行分类
-        Classifier classifier = new weka.classifiers.trees.J48();
-        classifier.buildClassifier(data);
-        // 进行预测
-        double label = classifier.classifyInstance(data.instance(0));
-        System.out.println("Classified label: " + label);
-    }
-}
-c. TensorFlow Java
-TensorFlow Java API 是 Google 的深度学习框架 TensorFlow 的 Java 版本。它允许 Java 开发者调用 TensorFlow 的模型和服务，适合在 Java 项目中嵌入预训练的 AI 模型。
-示例：使用 TensorFlow Java API 进行预测
-import org.tensorflow.Tensor;
-import org.tensorflow.SavedModelBundle;
-public class TensorFlowExample {
-    public static void main(String[] args) {
-        // 加载预训练的 TensorFlow 模型
-        SavedModelBundle model = SavedModelBundle.load("model_path", "serve");
-        // 准备输入数据
-        Tensor<Float> input = Tensor.create(new float[][]{{1.0f, 2.0f}});
-        // 执行模型预测
-        Tensor<?> output = model.session().runner()
-                .feed("input_tensor", input)
-                .fetch("output_tensor")
-                .run()
-                .get(0);
-        System.out.println(output);
-    }
-}
-
+  Java 可以整合一些流行的机器学习框架和库来处理 AI 问题，包括自然语言处理、图像识别等复杂任务。以下是一些常见的库：
+  a. Deeplearning4j
+  Deeplearning4j 是一个开源的、基于 Java 和 Scala 的深度学习框架，支持分布式计算。它可以处理卷积神经网络（CNNs）、循环神经网络（RNNs）等高级 AI 模型。
+  你可以用它来创建和训练神经网络，并集成到你的 Java 应用中。
+  示例：简单的深度学习模型
+  import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
+  import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
+  import org.deeplearning4j.nn.conf.layers.DenseLayer;
+  import org.deeplearning4j.nn.conf.layers.OutputLayer;
+  import org.nd4j.linalg.activations.Activation;
+  import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
+  import org.nd4j.linalg.lossfunctions.LossFunctions;
+  public class DeepLearningExample {
+   public static void main(String[] args) {
+  
+  ```
+   // 定义神经网络配置
+   MultiLayerNetwork model = new MultiLayerNetwork(new NeuralNetConfiguration.Builder()
+           .list()
+           .layer(0, new DenseLayer.Builder().nIn(4).nOut(3)
+                   .activation(Activation.RELU)
+                   .build())
+           .layer(1, new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
+                   .activation(Activation.SOFTMAX)
+                   .nIn(3).nOut(3).build())
+           .build());
+   // 初始化模型
+   model.init();
+   // 使用训练数据迭代器进行训练
+   DataSetIterator trainData = // 获取训练数据
+   model.fit(trainData);
+  ```
+  
+  }
+  }
+  b. Weka
+  Weka 是一个流行的机器学习库，主要用于数据挖掘和简单的机器学习任务。Weka 提供了一些易于使用的算法和工具，用于分类、聚类和回归等任务。
+  示例：使用 Weka 进行数据分类
+  import weka.classifiers.Classifier;
+  import weka.core.Instances;
+  import weka.core.converters.ConverterUtils.DataSource;
+  public class WekaExample {
+   public static void main(String[] args) throws Exception {
+  
+  ```
+   // 加载数据
+   DataSource source = new DataSource("data.arff");
+   Instances data = source.getDataSet();
+   data.setClassIndex(data.numAttributes() - 1); // 设置类标签
+   // 使用J48算法进行分类
+   Classifier classifier = new weka.classifiers.trees.J48();
+   classifier.buildClassifier(data);
+   // 进行预测
+   double label = classifier.classifyInstance(data.instance(0));
+   System.out.println("Classified label: " + label);
+  ```
+  
+  }
+  }
+  c. TensorFlow Java
+  TensorFlow Java API 是 Google 的深度学习框架 TensorFlow 的 Java 版本。它允许 Java 开发者调用 TensorFlow 的模型和服务，适合在 Java 项目中嵌入预训练的 AI 模型。
+  示例：使用 TensorFlow Java API 进行预测
+  import org.tensorflow.Tensor;
+  import org.tensorflow.SavedModelBundle;
+  public class TensorFlowExample {
+   public static void main(String[] args) {
+  
+  ```
+   // 加载预训练的 TensorFlow 模型
+   SavedModelBundle model = SavedModelBundle.load("model_path", "serve");
+   // 准备输入数据
+   Tensor<Float> input = Tensor.create(new float[][]{{1.0f, 2.0f}});
+   // 执行模型预测
+   Tensor<?> output = model.session().runner()
+           .feed("input_tensor", input)
+           .fetch("output_tensor")
+           .run()
+           .get(0);
+   System.out.println(output);
+  ```
+  
+  }
+  }
+  
 2. 自然语言处理（NLP）整合
-如果你的 AGI 任务涉及 NLP 任务，Java 也可以集成各种自然语言处理库：
-a. Stanford NLP
-Stanford NLP 是一个强大的自然语言处理工具包，支持词性标注、句法分析、命名实体识别等任务。
-示例：使用 Stanford NLP 进行文本分析
-import edu.stanford.nlp.pipeline.*;
-import java.util.Properties;
-public class NLPExample {
-    public static void main(String[] args) {
-        // 设置NLP管道配置
-        Properties props = new Properties();
-        props.setProperty("annotators", "tokenize,ssplit,pos,lemma,ner");
-        StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-        // 输入文本
-        String text = "Barack Obama was born in Hawaii.";
-        // 创建注释
-        CoreDocument document = new CoreDocument(text);
-        // 运行NLP管道
-        pipeline.annotate(document);
-        // 输出命名实体识别结果
-        document.tokens().forEach(token -> System.out.println(token.word() + " - " + token.ner()));
-    }
-}
-
+  如果你的 AGI 任务涉及 NLP 任务，Java 也可以集成各种自然语言处理库：
+  a. Stanford NLP
+  Stanford NLP 是一个强大的自然语言处理工具包，支持词性标注、句法分析、命名实体识别等任务。
+  示例：使用 Stanford NLP 进行文本分析
+  import edu.stanford.nlp.pipeline.*;
+  import java.util.Properties;
+  public class NLPExample {
+   public static void main(String[] args) {
+  
+  ```
+   // 设置NLP管道配置
+   Properties props = new Properties();
+   props.setProperty("annotators", "tokenize,ssplit,pos,lemma,ner");
+   StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+   // 输入文本
+   String text = "Barack Obama was born in Hawaii.";
+   // 创建注释
+   CoreDocument document = new CoreDocument(text);
+   // 运行NLP管道
+   pipeline.annotate(document);
+   // 输出命名实体识别结果
+   document.tokens().forEach(token -> System.out.println(token.word() + " - " + token.ner()));
+  ```
+  
+  }
+  }
+  
 3. AGI 研究和应用方向
-目前 AGI 的实现仍在研究中，但通过整合 AI 工具、框架和智能算法，你可以构建接近 AGI 的智能应用。Java 作为一个强大的编程语言，可以帮助构建智能系统的基础设施，包括：
-智能助手系统：集成自然语言处理和知识推理能力。
-自动化决策系统：基于大数据和机器学习进行预测和决策。
-机器人控制：结合计算机视觉和自然语言理解，控制复杂的机器人系统。
-
+  目前 AGI 的实现仍在研究中，但通过整合 AI 工具、框架和智能算法，你可以构建接近 AGI 的智能应用。Java 作为一个强大的编程语言，可以帮助构建智能系统的基础设施，包括：
+  智能助手系统：集成自然语言处理和知识推理能力。
+  自动化决策系统：基于大数据和机器学习进行预测和决策。
+  机器人控制：结合计算机视觉和自然语言理解，控制复杂的机器人系统。
+  
 
 # 分布式账本：
+
 分布式账本是一种基于分布式计算和密码学技术的数据记录和交互方式。它是一种去中心化的数据库系统，由多个参与方共同管理和维护。
 
 分布式账本技术的核心是区块链技术。区块链是一个由区块组成的链式结构，每个区块包含了一定的数据记录和相应的验证信息。
@@ -25969,19 +28231,22 @@ DLT技术的应用场景非常广泛，包括金融服务、供应链管理、�
 
 public class Block {
 
-    private String hash;
-    private String previousHash;
-    private String data;
-    private long timestamp;
+```
+private String hash;
+private String previousHash;
+private String data;
+private long timestamp;
 
-    public Block(String hash, String previousHash, String data, long timestamp) {
-        this.hash = hash;
-        this.previousHash = previousHash;
-        this.data = data;
-        this.timestamp = timestamp;
-    }
+public Block(String hash, String previousHash, String data, long timestamp) {
+    this.hash = hash;
+    this.previousHash = previousHash;
+    this.data = data;
+    this.timestamp = timestamp;
+}
 
-    // getters and setters...
+// getters and setters...
+```
+
 }
 然后我们需要一个Blockchain类，它会存储一个链表，链表中的每个元素都是一个Block对象：
 
@@ -25990,21 +28255,24 @@ import java.util.List;
 
 public class Blockchain {
 
-    private List<Block> blockchain;
+```
+private List<Block> blockchain;
 
-    public Blockchain() {
-        blockchain = new ArrayList<>();
-    }
+public Blockchain() {
+    blockchain = new ArrayList<>();
+}
 
-    public void addBlock(Block block) {
-        blockchain.add(block);
-    }
+public void addBlock(Block block) {
+    blockchain.add(block);
+}
 
-    public Block getBlock(int index) {
-        return blockchain.get(index);
-    }
+public Block getBlock(int index) {
+    return blockchain.get(index);
+}
 
-    // more methods...
+// more methods...
+```
+
 }
 
 现在我们有了基本的区块链结构，我们需要一种方法来创建新的区块并将其添加到链上。这可以通过一个名为"mining"的过程来完成，其中我们可以创建新的区块并将其添加到链的末尾。
@@ -26012,27 +28280,30 @@ public class Blockchain {
 
 public class Miner {
 
-    private Blockchain blockchain;
-    private static final int HASH_difficulty = 2; // made this up, but in reality it would be a large number like 20 or 32
+```
+private Blockchain blockchain;
+private static final int HASH_difficulty = 2; // made this up, but in reality it would be a large number like 20 or 32
 
-    public Miner(Blockchain blockchain) {
-        this.blockchain = blockchain;
-    }
+public Miner(Blockchain blockchain) {
+    this.blockchain = blockchain;
+}
 
-    public boolean mineBlock(String data) {
-        String hash = calculateHash(data); // this should be a function that takes the data and calculates a hash (using SHA-256 or something)
-        if (isHashValid(hash)) { // check if the hash starts with enough zeros for the difficulty level
-            Block newBlock = new Block(hash, blockchain.getBlock(blockchain.blockchain.size() - 1).getHash(), data, System.currentTimeMillis()); 
-            blockchain.addBlock(newBlock); 
-            return true; 
-        } else { 
-            return false; 
-        } 
+public boolean mineBlock(String data) {
+    String hash = calculateHash(data); // this should be a function that takes the data and calculates a hash (using SHA-256 or something)
+    if (isHashValid(hash)) { // check if the hash starts with enough zeros for the difficulty level
+        Block newBlock = new Block(hash, blockchain.getBlock(blockchain.blockchain.size() - 1).getHash(), data, System.currentTimeMillis()); 
+        blockchain.addBlock(newBlock); 
+        return true; 
+    } else { 
+        return false; 
     } 
-   private boolean isHashValid(String hash) { 
-       return hash.substring(0, HASH_difficulty).equals(String.format("%" + HASH_difficulty + "$0", "0")); 
-   } 
-   // here we would need a function that calculates a hash from the block's data - for simplicity, we'll leave it out here, but in a real blockchain implementation, this is crucial! 
+} 
+```
+
+private boolean isHashValid(String hash) { 
+return hash.substring(0, HASH_difficulty).equals(String.format("%" + HASH_difficulty + "$0", "0")); 
+} 
+// here we would need a function that calculates a hash from the block's data - for simplicity, we'll leave it out here, but in a real blockchain implementation, this is crucial! 
 }
 
 在这个例子中，mineBlock() 方法尝试添加一个新的区块到区块链上。它首先计算数据的哈希值，并检查该哈希值是否满足难度要求（在本例中，哈希值的前两个字符是否为零）。如果哈希值满足难度要求，那么它将创建一个新的区块并将其添加到链上。
@@ -26043,65 +28314,71 @@ Java如何实现区块链数据上链？
 import java.util.Date;
 
 public class Block {
-    private int index;
-    private long timestamp;
-    private String data;
-    private String previousHash;
-    private String hash;
-    private int nonce;
+ private int index;
+ private long timestamp;
+ private String data;
+ private String previousHash;
+ private String hash;
+ private int nonce;
 
-    // 构造函数
-    public Block(int index, String data, String previousHash) {
-        this.index = index;
-        this.timestamp = new Date().getTime();
-        this.data = data;
-        this.previousHash = previousHash;
-        this.hash = calculateHash();
-        this.nonce = 0;
+```
+// 构造函数
+public Block(int index, String data, String previousHash) {
+    this.index = index;
+    this.timestamp = new Date().getTime();
+    this.data = data;
+    this.previousHash = previousHash;
+    this.hash = calculateHash();
+    this.nonce = 0;
+}
+
+// 计算哈希值（SHA-256）
+public String calculateHash() {
+    String input = index + timestamp + data + previousHash + nonce;
+    return Sha256.applySha256(input);
+}
+
+// 挖矿（工作量证明）
+public void mineBlock(int difficulty) {
+    String target = new String(new char[difficulty]).replace('\0', '0');
+    while (!hash.substring(0, difficulty).equals(target)) {
+        nonce++;
+        hash = calculateHash();
     }
+    System.out.println("区块已挖出：" + hash);
+}
 
-    // 计算哈希值（SHA-256）
-    public String calculateHash() {
-        String input = index + timestamp + data + previousHash + nonce;
-        return Sha256.applySha256(input);
-    }
+// Getter方法
+public String getHash() { return hash; }
+public String getPreviousHash() { return previousHash; }
+// ... 其他getter
+```
 
-    // 挖矿（工作量证明）
-    public void mineBlock(int difficulty) {
-        String target = new String(new char[difficulty]).replace('\0', '0');
-        while (!hash.substring(0, difficulty).equals(target)) {
-            nonce++;
-            hash = calculateHash();
-        }
-        System.out.println("区块已挖出：" + hash);
-    }
-
-    // Getter方法
-    public String getHash() { return hash; }
-    public String getPreviousHash() { return previousHash; }
-    // ... 其他getter
 }
 
 2.加密工具类
 import java.security.MessageDigest;
 
 public class Sha256 {
-    public static String applySha256(String input) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(input.getBytes("UTF-8"));
-            StringBuilder hexString = new StringBuilder();
-            
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+ public static String applySha256(String input) {
+ try {
+ MessageDigest digest = MessageDigest.getInstance("SHA-256");
+ byte[] hash = digest.digest(input.getBytes("UTF-8"));
+ StringBuilder hexString = new StringBuilder();
+
+```
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
         }
+        return hexString.toString();
+    } catch (Exception e) {
+        throw new RuntimeException(e);
     }
+}
+```
+
 }
 
 3.区块链类
@@ -26109,82 +28386,88 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Blockchain {
-    private List<Block> chain;
-    private int difficulty;
+ private List<Block> chain;
+ private int difficulty;
 
-    public Blockchain(int difficulty) {
-        this.chain = new ArrayList<>();
-        this.difficulty = difficulty;
-        // 创建创世区块
-        chain.add(new Block(0, "Genesis Block", "0"));
-    }
+```
+public Blockchain(int difficulty) {
+    this.chain = new ArrayList<>();
+    this.difficulty = difficulty;
+    // 创建创世区块
+    chain.add(new Block(0, "Genesis Block", "0"));
+}
 
-    // 添加新区块
-    public void addBlock(String data) {
-        Block previousBlock = chain.get(chain.size() - 1);
-        Block newBlock = new Block(chain.size(), data, previousBlock.getHash());
-        newBlock.mineBlock(difficulty);
-        chain.add(newBlock);
-    }
+// 添加新区块
+public void addBlock(String data) {
+    Block previousBlock = chain.get(chain.size() - 1);
+    Block newBlock = new Block(chain.size(), data, previousBlock.getHash());
+    newBlock.mineBlock(difficulty);
+    chain.add(newBlock);
+}
 
-    // 验证区块链有效性
-    public boolean isValid() {
-        for (int i = 1; i < chain.size(); i++) {
-            Block current = chain.get(i);
-            Block previous = chain.get(i - 1);
+// 验证区块链有效性
+public boolean isValid() {
+    for (int i = 1; i < chain.size(); i++) {
+        Block current = chain.get(i);
+        Block previous = chain.get(i - 1);
 
-            if (!current.getHash().equals(current.calculateHash())) {
-                return false;
-            }
-
-            if (!current.getPreviousHash().equals(previous.getHash())) {
-                return false;
-            }
+        if (!current.getHash().equals(current.calculateHash())) {
+            return false;
         }
-        return true;
+
+        if (!current.getPreviousHash().equals(previous.getHash())) {
+            return false;
+        }
     }
+    return true;
+}
+```
+
 }
 
 4.使用示例
 public class Main {
-    public static void main(String[] args) {
-        // 创建难度为3的区块链
-        Blockchain blockchain = new Blockchain(3);
-        
-        // 添加区块
-        System.out.println("正在挖掘第一个区块...");
-        blockchain.addBlock("转账10 BTC");
-        
-        System.out.println("正在挖掘第二个区块...");
-        blockchain.addBlock("转账20 BTC");
-        
-        // 验证区块链
-        System.out.println("区块链是否有效: " + blockchain.isValid());
-        
-        // 尝试篡改数据
-        blockchain.getChain().get(1).setData("转账100 BTC");
-        System.out.println("篡改后区块链是否有效: " + blockchain.isValid());
-    }
-}
+ public static void main(String[] args) {
+ // 创建难度为3的区块链
+ Blockchain blockchain = new Blockchain(3);
 
+```
+    // 添加区块
+    System.out.println("正在挖掘第一个区块...");
+    blockchain.addBlock("转账10 BTC");
+
+    System.out.println("正在挖掘第二个区块...");
+    blockchain.addBlock("转账20 BTC");
+
+    // 验证区块链
+    System.out.println("区块链是否有效: " + blockchain.isValid());
+
+    // 尝试篡改数据
+    blockchain.getChain().get(1).setData("转账100 BTC");
+    System.out.println("篡改后区块链是否有效: " + blockchain.isValid());
+}
+```
+
+}
 
 区块链的加密技术和传统密码加密技术有什么不同？
 区块链的加密技术与传统密码加密技术有一些关键的不同之处，这些不同主要是为了满足区块链分布式、去中心化的特性。以下是一些区块链加密技术与传统密码加密技术之间的不同点：
 
 1. 去中心化的信任模型：
-   - 传统密码加密：在传统的密码学中，通常依赖于中央授权机构（例如，证书颁发机构）来验证和签署数字证书，确保公钥的合法性。
-   - 区块链加密：区块链采用去中心化的信任模型，通过分布式账本和共识算法来验证和记录交易。公钥的合法性通常是通过区块链网络中的节点共同验证的。
-
+  
+  - 传统密码加密：在传统的密码学中，通常依赖于中央授权机构（例如，证书颁发机构）来验证和签署数字证书，确保公钥的合法性。
+  - 区块链加密：区块链采用去中心化的信任模型，通过分布式账本和共识算法来验证和记录交易。公钥的合法性通常是通过区块链网络中的节点共同验证的。
 2. 智能合约和可编程性：
-   - 传统密码加密：传统加密主要用于点对点的通信加密，通常不涉及可编程逻辑。
-   - 区块链加密：区块链技术引入了智能合约，这是一种可编程的、自动执行的合约。智能合约通常使用特定的编程语言（如Solidity），并通过区块链上的节点进行执行。加密在智能合约中发挥关键作用，以确保合约的安全性和不可篡改性。
-
+  
+  - 传统密码加密：传统加密主要用于点对点的通信加密，通常不涉及可编程逻辑。
+  - 区块链加密：区块链技术引入了智能合约，这是一种可编程的、自动执行的合约。智能合约通常使用特定的编程语言（如Solidity），并通过区块链上的节点进行执行。加密在智能合约中发挥关键作用，以确保合约的安全性和不可篡改性。
 3. 共识算法和网络安全：
-   - 传统密码加密：传统网络通常依赖于中央授权机构和传统的网络安全措施，如防火墙和入侵检测系统。
-   - 区块链加密：区块链网络通过共识算法（如工作量证明、权益证明）来保护网络安全。加密技术用于确保交易的保密性和完整性，以及在共识过程中的节点身份验证。
-
+  
+  - 传统密码加密：传统网络通常依赖于中央授权机构和传统的网络安全措施，如防火墙和入侵检测系统。
+  - 区块链加密：区块链网络通过共识算法（如工作量证明、权益证明）来保护网络安全。加密技术用于确保交易的保密性和完整性，以及在共识过程中的节点身份验证。
 4. 不可篡改的分布式账本：
-   - 传统密码加密：传统系统的数据通常存储在中心化的数据库中，容易成为攻击目标。
-   - 区块链加密：区块链使用去中心化的、不可篡改的分布式账本，每个区块都包含了前一个区块的哈希值，确保数据的安全性和完整性。加密技术用于确保区块链的不可篡改性。
+  
+  - 传统密码加密：传统系统的数据通常存储在中心化的数据库中，容易成为攻击目标。
+  - 区块链加密：区块链使用去中心化的、不可篡改的分布式账本，每个区块都包含了前一个区块的哈希值，确保数据的安全性和完整性。加密技术用于确保区块链的不可篡改性。
 
 总体而言，区块链加密技术强调了去中心化、智能合约、分布式共识和不可篡改性等特性，以满足区块链的独特需求。传统密码学主要用于传统网络通信的保密性和身份验证。
